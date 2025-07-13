@@ -23,28 +23,31 @@
 
     <div class="flex flex-col md:flex-row justify-center items-center md:mt-20 mt-6 mb-10">
         <div class="md:h-[600px] md:w-[22rem] h-[21rem] w-[20rem] shadow-lg bg-[#EB1C26] md:rounded-l-[15px]  p-2 rounded-t-[15px] md:rounded-r-none">
-            <a href="{{ route('clinic.login') }}" class="hover:outline-none focus:outline-none">
+            <a href="{{ url('/') }} " class="hover:outline-none focus:outline-none">
                 <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 " />
             </a>
         </div>
-        <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[30rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
+        <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[34rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
 
 
             <div class="flex flex-col justify-center ">
 
-
-                <!--Form-->
-                <div class="flex items-end justify-end mb-5">
-                    <div id="datetime" class="md:text-md text-sm text-black font-bold"></div>
+                <div class="flex  justify-between mb-5">
+                    <div class="flex items-center justify-center gap-2 hover:underline underline-offset-4">
+                        <i data-lucide="circle-chevron-left" class="text-red-500"></i>
+                        <a href="{{url('/')}}" class="text-sm text-red-500 ">Return to menu</a>
+                    </div>
+                    <div class="flex items-center justify-between gap-3">
+                        <div id="datetime" class="md:text-md text-sm text-black font-bold"></div>
+                    </div>
                 </div>
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
 
-                <form method="POST" action="{{ route('clinic.login') }}" class="mt-5">
+                <form method="POST" action="{{ route('login') }}" class="mt-5">
                     @csrf
-
                     <!-- Email Address -->
-                    <h1 class="text-center text-xl font-bold text-black">Login Clinic Account</h1>
+                    <h1 class="items-center justify-center gap-2 text-xl font-bold text-black flex"><img src="{{asset('drcare_logo.png')}}" alt="Dr.Care logo" class="w-8 h-8">Login Account</h1>
                     <div class="mt-6">
                         <x-input-label for="email" :value="__('Email')" />
                         <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
@@ -84,9 +87,12 @@
                             {{ __('Log in') }}
                         </x-primary-button>
                     </div>
+                    <div class="mt-3 flex items-center justify-center hover:underline underline-offset-4 text-sm text-gray-700">
+                        <a href="{{route('register')}}">Don't have an account?</a>
+                    </div>
                 </form>
 
-                <div class="flex items-end justify-end mt-12 text-sm text-gray-400 ">
+                <div class="flex items-end justify-end mt-8 text-sm text-gray-400 ">
                     <p>iBiteCare<sup>+</sup></p>
                 </div>
             </div>

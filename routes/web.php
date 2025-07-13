@@ -23,9 +23,9 @@ require __DIR__.'/auth.php';
 
 // Staff/Admin Auth (default)
 
-
 // Patient Auth
 use App\Http\Controllers\Auth\ClinicUser\ClinicUserAuthController;
+
 Route::get('/clinic/login', [ClinicUserAuthController::class, 'showLoginForm'])->name('clinic.login');
 Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])->name('clinic.login.store');
 
@@ -42,4 +42,3 @@ Route::middleware('auth:clinic_user')->group(function () {
         return view('ClinicUser.dashboard');
     })->name('ClinicUser.dashboard'); // ✅ Add this
 });
-
