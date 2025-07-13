@@ -49,8 +49,13 @@ A brief description of what this project does and who it's for
     php artisan key:generate
     ```
 4. **Run the development server and frontend compiler:**
-   ```bash
-   php artisan serve
-   npm run dev  
-   _Visit the following URL to access the admin login page:_
-   http://127.0.0.1:8000/clinic/login
+    ```bash
+    php artisan serve
+    npm run dev
+    ```
+
+**Visit the following URL to access the admin login page:**
+
+```bash
+ http://127.0.0.1:8000/clinic/login
+```
