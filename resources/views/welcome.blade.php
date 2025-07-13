@@ -24,8 +24,7 @@
     .dr-care {
         font-family: 'Geologica', sans-serif;
         font-weight: 900;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 
     }
 
@@ -33,125 +32,128 @@
         background-image: url('/images/bg.png');
         background-size: cover;
         background-repeat: no-repeat;
-        height: 90vh;
+        height: 100vh;
         /* Full screen height */
         width: 100%;
     }
 </style>
 
-<nav class="bg-white px-8 py-2 shadow-md">
-    <div class="grid grid-cols-2 items-center gap-2 lg:grid-cols-5 ">
-        <div class="flex items-center justify-start gap-2 col-span-2 lg:col-span-1">
-            <a href="{{ url('/') }}" class="focus:outline-none hover:outline-none">
-                <img src="{{ asset('drcare_logo.png') }}" alt="" class="w-14 h-14" />
-            </a>
-            <p class="text-3xl dr-care text-[#ff000dff] ">Dr.Care</p>
-        </div>
-        <div class="col-span-3 lg:col-span-3 ">
-            <nav>
-                <ul class="flex justify-evenly text-lg font-semibold p-2">
-                    <li>
-                        <a href="{{ url('/') }}"
-                            class="text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26] p-2">
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/') }}"
-                            class="text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26] p-2">
-                            About</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/') }}"
-                            class="text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26] p-2">
-                            Services</a>
-                    </li>
-            </nav>
-        </div>
+<nav class="bg-white border-gray-200 shadow-md relative">
+    <div class="w-full flex flex-wrap items-center justify-between md:px-12  p-4">
 
-        <div class="col-span-3 lg:col-span-1">
+        <!-- Logo & Brand -->
+        <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse hover:outline-none focus:outline-none">
+            <img src="{{ asset('drcare_logo.png') }}" class="h-10 w-10" alt="Dr.Care Logo" />
+            <span class="dr-care text-2xl font-bold text-[#FF000D] whitespace-nowrap">Dr.Care</span>
+        </a>
 
+        <!-- Login/Register & Toggle -->
+        <div class="flex md:order-2 space-x-2 rtl:space-x-reverse">
             @if (Route::has('login'))
-            <nav class=" flex items-center justify-evenly text-md font-semibold p-3 gap-2">
-                @auth
-                <a
-                    href="{{ url('/dashboard') }}"
-                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-dark dark:hover:text-white/80 dark:focus-visible:ring-white">
-                    Dashboard
-                </a>
-                @else
-                <a
-                    href="{{ route('login') }}"
-                    class="bg-red-600 w-full text-white text-center p-2 rounded-md hover:bg-red-500">
-                    Log in
-                </a>
-
-                @if (Route::has('register'))
-                <a
-                    href="{{ route('register') }}"
-                    class="bg-gray-800 w-full text-white text-center p-2 rounded-md hover:bg-gray-700">
-                    Sign up
-                </a>
-                @endif
-                @endauth
-            </nav>
+            @auth
+            <a href="{{ url('/dashboard') }}" class="hidden md:inline-block bg-gray-800 text-white text-sm px-4 py-2 rounded-md hover:bg-gray-700">
+                Dashboard
+            </a>
+            @else
+            <a href="{{ route('login') }}" class="bg-red-600 text-white text-sm px-4 py-2 rounded-md hover:bg-red-500">
+                Log in
+            </a>
+            @if (Route::has('register'))
+            <a href="{{ route('register') }}" class="bg-gray-800 text-white text-sm px-4 py-2 rounded-md hover:bg-gray-700 hidden md:inline-block">
+                Sign up
+            </a>
+            @endif
+            @endauth
             @endif
 
+            <!-- Hamburger Toggle Button -->
+            <button id="menu-toggle" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                aria-controls="navbar-dr-care" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
         </div>
-    </div>
 
+        <!-- Navigation Links -->
+        <div id="navbar-dr-care"
+            class="hidden absolute top-full left-0 z-50 w-full  flex-col items-start rounded-b-lg bg-red-50 md:bg-white border-t md:static md:flex md:flex-row md:items-center  md:w-auto md:border-0">
+            <ul
+                class="flex flex-col w-full font-medium  p-4 md:p-0 md:flex-row md:space-x-14 lg:text-lg">
+                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
+                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">About</a></li>
+                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Services</a></li>
+                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Contact</a></li>
+            </ul>
+        </div>
+
+    </div>
 </nav>
 
+<script>
+    const toggleButton = document.getElementById('menu-toggle');
+    const menu = document.getElementById('navbar-dr-care');
+
+    toggleButton.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('#navbar-dr-care a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                menu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
+
 <body>
-    <div class="flex flex-col">
-        <div class="bg-section flex flex-row items-center justify-center  ">
-            <div class="grid grid-cols-1 md:grid-cols-2 w-full mt-20 ">
-                <div class="col-span-1 gap-10  p-10">
-                    <div class="flex gap-5 ml-10">
-                        <a href="{{ url('/') }}" class="focus:outline-none hover:outline-none">
-                            <img src="{{ asset('images/dark-logo.png') }}" alt="" class="w-50 h-50" />
-                        </a>
-                        <div class="mt-4">
-                            <p class="text-8xl dr-care text-[#FF000C]">
-                                Dr.Care
-                            </p>
-                            <p class="text-4xl dr-care text-white "><span class="text-red-600">A</span>nimal <span class="text-green-600">B</span>ite <span class="text-indigo-800">C</span>enter</p>
 
-                        </div>
-                    </div>
-                    <div class="w-full flex flex-col ml-10 px-8 ">
-                        <img src="{{asset('images/guinobatan.png')}}" alt="" class="w-full h-full " />
-                        <div class="w-full items-end justify-start flex px-2">
-                            <button class="w-[8rem]  text-white bg-red-600 p-3 rounded-md font-bold">Book Now!</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-span-1 flex items-center justify-center"> <a href="{{ url('/') }}" class="focus:outline-none hover:outline-none">
-                        <img src="{{asset('images/location.png')}}" alt="" class="w-[28rem] h-[28rem] " /></a>
-                </div>
-                <div class="col-span-2 bg-black bg-opacity-20 p-6 px-20 rounded-md shadow-lg text-white grid grid-cols-2 ">
-                    <div class="col-span-1 flex flex-col gap-1">
-                        <h1 class="flex gap-2"><i data-lucide="map-pin"></i> 2nd Floor, CPD Building, Ilawod, Guinobatan, Albay, Philippines</h1>
-                        <h1 class="flex gap-2"><i data-lucide="phone-call"></i>0954 195 2374</h1>
-                        <h1 class="flex gap-2"><img src="{{asset('socials/gmail.svg')}}" alt="Gmail-logo" class="w-6 h-6"> drcareguinobatan@gmail.com</h1>
-                        <h1 class="flex gap-2"><img src="{{asset('socials/facebook.svg')}}" alt="Facebook-logo" class="w-6 h-6"> Dr. Care Animal Bite Center-Guinobatan</h1>
-                    </div>
-                    <div class="col-span-1 flex flex-col gap-1 opacity-80">
-                      <h1 class="dr-care text-xl">Clinic Hours</h1>
-                      <h1 class="dr-care text-3xl">Monday to Saturday</h1>
-                      <h1 class="font-bold text-2xl">8 : 00 AM - 5 : 00 PM</h1>
+    <section class="bg-section bg-no-repeat bg-center w-full h-screen bg-contain sm:bg-cover">
+        <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center md:h-[80%]  w-full gap-2">
+            <div class="flex flex-col md:mt-5 mt-0">
+                <div class="flex gap-5 ml-10">
+                    <a href="{{ url('/') }}" class="focus:outline-none hover:outline-none ">
+                        <img src="{{ asset('images/dark-logo.png') }}" alt="" class="md:w-full md:h-full  w-16 w-16" />
+                    </a>
+                    <div class="md:mt-4">
+                        <p class="md:text-8xl text-4xl dr-care text-[#FF000C]"> Dr.Care</p>
+                        <p class="md:text-4xl text-md dr-care text-white "><span class="text-red-600">A</span>nimal <span class="text-green-600">B</span>ite <span class="text-indigo-800">C</span>enter</p>
                     </div>
                 </div>
+                <div class="w-full flex flex-col md:ml-10 px-8 ">
+                    <img src="{{asset('images/guinobatan.png')}}" alt="" class="md:w-full md:h-full  w-50 w-50 " />
+                    <div class="w-full items-end justify-start flex px-2 py-2">
+                        <a href="" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 md:mt-5">
+                <a href="{{ url('/') }}" class="focus:outline-none hover:outline-none">
+                    <img src="{{asset('images/location.png')}}" alt="" class="md:w-[29rem] md:h-[32rem]  w-[16rem] h-[17rem]" />
+                </a>
+            </div>
+        </div>
+        <div class="mt-10 md:mt-0 bg-black md:bg-opacity-30  bg-opacity-40 md:p-6 p-3 md:px-20  shadow-lg text-white grid grid-cols-2 gap-5">
+            <div class="col-span-1 flex flex-col gap-1">
+                <h1 class="flex gap-2 md:text-[16px] text-[11px]"><i data-lucide="map-pin" class="w-10 h-10 md:w-6 md:h-6"></i> 2nd Floor, CPD Building, Ilawod, Guinobatan, Albay, Philippines</h1>
+                <h1 class="flex gap-2 md:text-[16px] text-[11px]"><i data-lucide="phone-call" class="w-4 h-4 md:w-6 md:h-6 "></i>0954 195 2374</h1>
+                <h1 class="flex gap-2 md:text-[16px] text-[10px]"><img src="{{asset('socials/gmail.svg')}}" alt="Gmail-logo" class="w-4 h-4 md:w-6 md:h-6"> drcareguinobatan@gmail.com</h1>
+                <h1 class="flex gap-2 md:text-[16px] text-[11px]"><img src="{{asset('socials/facebook.svg')}}" alt="Facebook-logo" class="w-4 h-4 md:w-6 md:h-6"> Dr. Care Animal Bite Center-Guinobatan</h1>
+            </div>
+            <div class="col-span-1 flex flex-col gap-1 opacity-80 ml-5">
+                <h1 class="font-bold md:text-xl text-[14px]">Clinic Hours</h1>
+                <h1 class="dr-care md:text-3xl text-[17px]">Monday to Saturday</h1>
+                <h1 class="font-bold md:text-2xl text-[14px]">8:00 AM - 5:00 PM</h1>
             </div>
         </div>
 
 
-        
-    </div>
-
-
-
+    </section>
 </body>
 
 
