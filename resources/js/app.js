@@ -16,6 +16,7 @@ import {
         House,
         CircleChevronLeft,
         CalendarClock,
+        Syringe,
     } 
      from 'lucide';
 
@@ -28,5 +29,6 @@ createIcons({
     House,
     CircleChevronLeft,
     CalendarClock,
+    Syringe,
   }
 });

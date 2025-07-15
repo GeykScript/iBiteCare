@@ -25,6 +25,12 @@
         font-family: 'Geologica', sans-serif;
         font-weight: 900;
         text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .font-900 {
+        font-family: 'Geologica', sans-serif;
+        font-weight: 900;
+        text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
 
     }
 
@@ -44,7 +50,7 @@
         <!-- Logo & Brand -->
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse hover:outline-none focus:outline-none">
             <img src="{{ asset('drcare_logo.png') }}" class="h-10 w-10" alt="Dr.Care Logo" />
-            <span class="dr-care text-2xl font-bold text-[#FF000D] whitespace-nowrap">Dr.Care</span>
+            <span class="font-900 text-2xl font-bold text-[#FF000D] whitespace-nowrap">Dr.Care</span>
         </a>
 
         <!-- Login/Register & Toggle -->
@@ -93,26 +99,7 @@
     </div>
 </nav>
 
-<script>
-    const toggleButton = document.getElementById('menu-toggle');
-    const menu = document.getElementById('navbar-dr-care');
-
-    toggleButton.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
-
-    document.querySelectorAll('#navbar-dr-care a').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth < 768) {
-                menu.classList.add('hidden');
-            }
-        });
-    });
-</script>
-
-
 <body>
-
     <section class="bg-section bg-no-repeat bg-center w-full h-screen bg-contain sm:bg-cover">
         <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center md:h-[80%]  w-full gap-2">
             <div class="flex flex-col md:mt-5 mt-0">
@@ -138,23 +125,94 @@
                 </a>
             </div>
         </div>
-        <div class="mt-10 md:mt-0 bg-black md:bg-opacity-30  bg-opacity-40 md:p-6 p-3 md:px-20  shadow-lg text-white grid grid-cols-2 gap-5">
+        <div class="mt-10 md:mt-0 bg-black md:bg-opacity-30  bg-opacity-40 md:p-6 p-3 md:px-20  shadow-lg text-white grid grid-cols-2 lg:gap-5">
             <div class="col-span-1 flex flex-col gap-1">
-                <h1 class="flex gap-2 md:text-[16px] text-[11px]"><i data-lucide="map-pin" class="w-10 h-10 md:w-6 md:h-6"></i> 2nd Floor, CPD Building, Ilawod, Guinobatan, Albay, Philippines</h1>
-                <h1 class="flex gap-2 md:text-[16px] text-[11px]"><i data-lucide="phone-call" class="w-4 h-4 md:w-6 md:h-6 "></i>0954 195 2374</h1>
-                <h1 class="flex gap-2 md:text-[16px] text-[10px]"><img src="{{asset('socials/gmail.svg')}}" alt="Gmail-logo" class="w-4 h-4 md:w-6 md:h-6"> drcareguinobatan@gmail.com</h1>
-                <h1 class="flex gap-2 md:text-[16px] text-[11px]"><img src="{{asset('socials/facebook.svg')}}" alt="Facebook-logo" class="w-4 h-4 md:w-6 md:h-6"> Dr. Care Animal Bite Center-Guinobatan</h1>
+                <div class="flex flex-row gap-2 items-center ">
+                    <i data-lucide="map-pin" class="w-8 h-8 md:w-6 md:h-6"></i>
+                    <h1 class="md:text-[16px] text-[10px] text-wrap">2nd Floor, CPD Building, Ilawod, Guinobatan, Albay, Philippines</h1>
+                </div>
+                <div class="flex flex-row gap-1 items-center ">
+                    <i data-lucide="phone-call" class="w-4 h-4 md:w-6 md:h-6 "></i>
+                    <h1 class="md:text-[16px] text-[10px]">0954 195 2374</h1>
+                </div>
+                <div class="flex flex-row gap-1 items-center ">
+                    <img src="{{asset('socials/gmail.svg')}}" alt="Gmail-logo" class="w-4 h-4 md:w-6 md:h-6">
+                    <h1 class="md:text-[16px] text-[10px]">drcareguinobatan@gmail.com</h1>
+                </div>
+                <div class="flex flex-row gap-1 items-center ">
+                    <img src="{{asset('socials/facebook.svg')}}" alt="Facebook-logo" class="w-4 h-4 md:w-6 md:h-6">
+                    <h1 class="md:text-[16px] text-[10px]"> Dr. Care Animal Bite Center-Guinobatan</h1>
+                </div>
             </div>
+
             <div class="col-span-1 flex flex-col gap-1 opacity-80 ml-5">
                 <h1 class="font-bold md:text-xl text-[14px]">Clinic Hours</h1>
                 <h1 class="dr-care md:text-3xl text-[17px]">Monday to Saturday</h1>
                 <h1 class="font-bold md:text-2xl text-[14px]">8:00 AM - 5:00 PM</h1>
             </div>
         </div>
-
-
     </section>
+
+    <section class="bg-white">
+        <div class="grid grid-cols-2 gap-3 md:p-20 p-6">
+            <div class="md:col-span-1 col-span-2 flex flex-col justify-center items-center p-5 md:px-20 gap-10">
+                <div>
+                    <h1 class="text-5xl font-900 text-[#FF000C]">Why Choose Us</h1>
+                </div>
+                <div class="text-start md:px-16 text-2xl ">
+                    At our Animal Bite Center, we’re here to help you heal and feel better after an unexpected animal encounter. <br>
+                    Our team of experts is ready to provide the best care for you.
+                </div>
+            </div>
+            <div class="md:col-span-1 col-span-2">
+                <div class="grid grid-cols-2 gap-4 ">
+                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl gap-3 border border-gray-100">
+                        <div class="items-center justify-center gap-2 flex bg-red-600 p-5 rounded-full ">
+                            <i data-lucide="syringe" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h1 class="md:text-xl font-bold">Anti-Rabies Vaccine</h1>
+                    </div>
+                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl  gap-3 border border-gray-100">
+                        <div class="items-center justify-center gap-2 flex bg-green-600 p-5 rounded-full ">
+                            <i data-lucide="syringe" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h1 class="md:text-xl font-bold">Pre-Post Exposure Treatment</h1>
+                    </div>
+                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl  gap-3 border border-gray-100">
+                        <div class="items-center justify-center gap-2 flex bg-indigo-600 p-5 rounded-full ">
+                            <i data-lucide="syringe" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h1 class="md:text-xl font-bold">ERIG</h1>
+                    </div>
+                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl  gap-3 border border-gray-100">
+                        <div class="items-center justify-center gap-2 flex bg-gray-600 p-5 rounded-full ">
+                            <i data-lucide="syringe" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h1 class="md:text-xl font-bold">Tetanus Toxoid</h1>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
 </body>
 
+<script>
+    const toggleButton = document.getElementById('menu-toggle');
+    const menu = document.getElementById('navbar-dr-care');
+
+    toggleButton.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('#navbar-dr-care a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                menu.classList.add('hidden');
+            }
+        });
+    });
+</script>
 
 </html>
