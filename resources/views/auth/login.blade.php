@@ -22,21 +22,22 @@
 <body class="bg-gradient-to-r from-red-600 to-gray-800">
 
     <div class="flex flex-col md:flex-row justify-center items-center md:mt-20 mt-6 mb-10">
-        <div class="md:h-[600px] md:w-[22rem] h-[21rem] w-[20rem] shadow-lg bg-[#EB1C26] md:rounded-l-[15px]  p-2 rounded-t-[15px] md:rounded-r-none">
-            <a href="{{ url('/') }} " class="hover:outline-none focus:outline-none">
-                <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 " />
+        <div class="md:h-[600px] md:w-[22rem] h-[16rem] w-[20rem] shadow-lg bg-[#EB1C26] md:rounded-l-[15px]  p-2 rounded-t-[15px] md:rounded-r-none md:overflow-none overflow-hidden">
+            <a href="{{  url('/') }}" class="hover:outline-none focus:outline-none md:overflow-none overflow-hidden">
+                <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
             </a>
         </div>
+
         <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[34rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
 
 
             <div class="flex flex-col justify-center ">
 
                 <div class="flex  justify-between mb-5">
-                    <div class="flex items-center justify-center gap-2 hover:underline underline-offset-4">
+                    <a href="{{url('/')}}" class="flex items-center justify-center gap-2 hover:underline text-red-500  underline-offset-4">
                         <i data-lucide="circle-chevron-left" class="text-red-500"></i>
-                        <a href="{{url('/')}}" class="text-sm text-red-500 ">Return to menu</a>
-                    </div>
+                        <span class="text-sm  ">Return to menu</span>
+                    </a>
                     <div class="flex items-center justify-between gap-3">
                         <div id="datetime" class="md:text-md text-sm text-black font-bold"></div>
                     </div>

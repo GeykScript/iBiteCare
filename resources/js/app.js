@@ -17,6 +17,8 @@ import {
         CircleChevronLeft,
         CalendarClock,
         Syringe,
+        MapPinned,
+        LocateFixed
     } 
      from 'lucide';
 
@@ -30,5 +32,7 @@ createIcons({
     CircleChevronLeft,
     CalendarClock,
     Syringe,
+    MapPinned,
+    LocateFixed
   }
 });
