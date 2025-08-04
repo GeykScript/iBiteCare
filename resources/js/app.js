@@ -2,7 +2,9 @@ import './bootstrap';
 
 import Alpine from 'alpinejs';
 
+
 window.Alpine = Alpine;
+
 
 Alpine.start();
 
@@ -32,7 +34,10 @@ import {
         FileText,
         BriefcaseMedical,
         ChartColumnBig,
-        CircleChevronRight
+        CircleChevronRight,
+        Info,
+        BadgeInfo,
+      
 
     } 
      from 'lucide';
@@ -62,6 +67,10 @@ createIcons({
     FileText,
     BriefcaseMedical,
     ChartColumnBig,
-    CircleChevronRight
+    CircleChevronRight,
+    Info,
+    BadgeInfo,
   }
 });
+
+
