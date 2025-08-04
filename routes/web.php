@@ -40,5 +40,5 @@ Route::post('/clinic/logout', function () {
 Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/dashboard', function () {
         return view('ClinicUser.dashboard');
-    })->name('ClinicUser.dashboard'); // ✅ Add this
+    })->name('ClinicUser.dashboard'); 
 });

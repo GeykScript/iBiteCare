@@ -13,7 +13,12 @@ class ClinicUser extends Model implements Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'account_id',
         'password',
 
+    ];
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 }

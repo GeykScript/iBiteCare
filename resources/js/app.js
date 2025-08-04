@@ -18,7 +18,22 @@ import {
         CalendarClock,
         Syringe,
         MapPinned,
-        LocateFixed
+        LocateFixed,
+        LayoutDashboard,
+        Users,
+        MessageSquareText,
+        NotebookPen,
+        Package,
+        PhilippinePeso,
+        NotepadText,
+        Logs,
+        FileUser,
+        FileBox,
+        FileText,
+        BriefcaseMedical,
+        ChartColumnBig,
+        CircleChevronRight
+
     } 
      from 'lucide';
 
@@ -33,6 +48,20 @@ createIcons({
     CalendarClock,
     Syringe,
     MapPinned,
-    LocateFixed
+    LocateFixed,
+    LayoutDashboard,
+    Users,
+    MessageSquareText,
+    NotebookPen,
+    Package,
+    PhilippinePeso,
+    NotepadText,
+    Logs,
+    FileUser,
+    FileBox,
+    FileText,
+    BriefcaseMedical,
+    ChartColumnBig,
+    CircleChevronRight
   }
 });

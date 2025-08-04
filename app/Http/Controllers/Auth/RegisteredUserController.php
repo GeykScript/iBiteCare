@@ -36,13 +36,10 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        Patient::create([
-            'name' => $request->name,
-        ]);
+     
 
         $user = User::create([
             'name' => $request->name,
-            'patient_id' => Patient::where('name', $request->name)->first()->id,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $table = 'patient_accounts'; // Assuming the User model is used for patients
+    protected $table = 'patient_accounts'; //the User model is used for patients
 
     protected $fillable = [
         'name',

@@ -100,8 +100,8 @@
 </nav>
 
 <body>
-    <section class="bg-section bg-no-repeat bg-center w-full h-screen bg-contain sm:bg-cover">
-        <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center md:h-[80%]  w-full gap-2">
+    <section class="bg-section bg-no-repeat bg-center w-full h-screen bg-contain sm:bg-cover flex flex-col items-center justify-between">
+        <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center h-[80%]   w-full gap-2">
             <div class="flex flex-col md:mt-5 mt-0">
                 <div class="flex gap-5 ml-10">
                     <a href="{{ url('/') }}" class="focus:outline-none hover:outline-none ">
@@ -125,7 +125,9 @@
                 </a>
             </div>
         </div>
-        <div class="mt-10 md:mt-0 bg-black md:bg-opacity-30  bg-opacity-40 md:p-6 p-3 md:px-20  shadow-lg text-white grid grid-cols-2 lg:gap-5">
+
+
+        <div class="md:mt-0 bg-black md:bg-opacity-30  bg-opacity-40 md:p-6 p-3 md:px-20  w-full shadow-lg text-white grid grid-cols-2 lg:gap-5">
             <div class="col-span-1 flex flex-col gap-1">
                 <div class="flex flex-row gap-2 items-center ">
                     <i data-lucide="map-pin" class="w-8 h-8 md:w-6 md:h-6"></i>
