@@ -37,29 +37,38 @@
         font-weight: 800;
 
     }
+
+    .js-hidden {
+        display: none !important;
+    }
 </style>
 
 <body>
     <div class="flex h-screen">
 
         <!-- Sidebar -->
-        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50" id="sidebar">
+        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
             <div class="absolute top-20 right-[-0.6rem]  md:hidden">
                 <button id="closeSidebar" class="text-white text-2xl">
-                    <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-red-600"></i>
+                    <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
                 </button>
             </div>
             <!-- Logo -->
-            <div>
-                <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="w-full">
+            <div class="flex items-center">
+                <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-6 text-md scrollbar-hidden">
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-6 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
                 <ul class="space-y-3">
-                    <li><a href="#" class="block px-4 py-2 rounded bg-gray-800 text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
 
+                    <li class="flex items-center px-2 mb-4 block md:hidden">
+                        <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
+                        <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
+                    </li>
+
+                    <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded bg-gray-800 text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
+                    <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="syringe" class="w-5 h-5"></i>Immunizations</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
@@ -80,10 +89,10 @@
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
-                <a href="#" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
+                <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
-                        <h1 class="text-sm font-bold">{{ Auth::user()->first_name }}</h1>
+                        <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
                         <p class="text-xs">Administrator</p>
                     </div>
                     <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
@@ -97,7 +106,7 @@
             </div>
         </div>
         <!-- Main Content -->
-        <section id="mainContent" class="flex-1 ml-56 h-full  ">
+        <section id="mainContent" class="flex-1  h-full  ">
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
@@ -111,7 +120,7 @@
             </div>
             <!-- content container -->
             <div class="flex flex-col flex-1 overflow-y-auto pt-[60px]">
-                <div class="flex flex-row items-center gap-5 py-8 px-14">
+                <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div>
                         <h1 class="text-2xl md:text-3xl font-900">Dashboard</h1>
@@ -375,106 +384,7 @@
 </body>
 
 <script>
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-    const toggleSidebar = document.getElementById('toggleSidebar');
-    const closeSidebar = document.getElementById('closeSidebar');
 
-    // Overlay for mobile outside-click
-    const overlay = document.createElement('div');
-    overlay.id = 'sidebarOverlay';
-    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-40 hidden';
-    document.body.appendChild(overlay);
-
-    function openSidebar() {
-        sidebar.classList.remove('hidden');
-        overlay.classList.remove('hidden');
-
-        // On mobile, remove left margin
-        if (window.innerWidth < 768) {
-            mainContent.classList.remove('ml-56');
-        }
-    }
-
-    function closeSidebarFunc() {
-        if (window.innerWidth < 768) {
-            sidebar.classList.add('hidden');
-            overlay.classList.add('hidden');
-            mainContent.classList.remove('ml-56');
-        } else {
-            // Toggle on desktop: expand/shrink
-            sidebar.classList.toggle('hidden');
-            mainContent.classList.toggle('ml-56');
-        }
-    }
-
-    toggleSidebar.addEventListener('click', () => {
-        if (window.innerWidth < 768) {
-            openSidebar();
-        } else {
-            closeSidebarFunc();
-        }
-    });
-
-    closeSidebar.addEventListener('click', () => {
-        closeSidebarFunc();
-    });
-
-    overlay.addEventListener('click', () => {
-        closeSidebarFunc();
-    });
-
-    // Reset state on window resize
-    window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) {
-            sidebar.classList.remove('hidden');
-            overlay.classList.add('hidden');
-            mainContent.classList.add('ml-56');
-        } else {
-            sidebar.classList.add('hidden');
-            mainContent.classList.remove('ml-56');
-        }
-    });
-
-    // Init
-    if (window.innerWidth < 768) {
-        sidebar.classList.add('hidden');
-        mainContent.classList.remove('ml-56');
-    }
-
-    function updateDateTime() {
-        const now = new Date();
-
-        // Weekday and Month Names
-        const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-            'August', 'September', 'October', 'November', 'December'
-        ];
-
-        const weekday = weekdays[now.getDay()];
-        const month = months[now.getMonth()];
-        const day = now.getDate();
-        const year = now.getFullYear();
-
-        // Format time
-        let hours = now.getHours();
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        hours = hours % 12 || 12; // Convert 0 to 12
-
-        // Create formatted strings
-        const weekdayString = `${weekday}`;
-        const dateString = `${month} ${day}, ${year}`;
-        const timeString = `${hours}:${minutes} ${ampm}`;
-
-        // Update DOM
-        document.getElementById('datetime').innerHTML = `${dateString} <br> ${weekdayString}, ${timeString}`;
-    }
-
-    // Update immediately and then every second
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
 </script>
 
 

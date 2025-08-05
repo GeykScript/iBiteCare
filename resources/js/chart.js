@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
    const options = {
         series: [{
                 name: "Income",
-                color: "#38d35fff",
+                color: "#31b852ff",
                 data: ["1420", "1620", "1820", "1420", "1650", "2120"],
             },
             {
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const getChartOptions = () => {
   return {
     series: [35.1, 20.5, 5.4],
-    colors: ["#2E3840", "#FF0303", "#2b8be4ff"],
+    colors: ["#21c5bdff", "#FF0303", "#2b8be4ff"],
     chart: {
       height: 250,
       width: "100%",

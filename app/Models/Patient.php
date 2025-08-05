@@ -4,11 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Patient extends Model
 {
     //
-    protected $table = 'patients';
+
+    protected $table = 'registered_patients';
+
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'birthdate',
+        'age',
+        'sex',
+        'contact_number',
+        'address',
+        'registration_date',
     ];
 }

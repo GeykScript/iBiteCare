@@ -29,6 +29,8 @@ Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])->name('
 
 //the exception middle ware issue like dashbaord shoud go back to login (boostrap/app.php)
 use App\Http\Controllers\ClinicUser\DashboardController;
+use App\Http\Controllers\ClinicUser\PatientsController;
+use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -39,4 +41,13 @@ Route::middleware('auth:clinic_user')->group(function () {
         Auth::guard('clinic_user')->logout();
         return redirect()->route('clinic.login');
     })->name('clinic.logout');
+
+
+    Route::get('/clinic/patients', [PatientsController::class, 'index'])
+        ->name('clinic.patients');
+
+    Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
+        ->name('clinic.profile');
+
+
 });
