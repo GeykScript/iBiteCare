@@ -30,7 +30,7 @@ class ClinicUserLoginRequest extends FormRequest
         return [
             'account_id' => ['required', 'string'],
             'password' => ['required', 'string'],
-        ];
+        ];  
     }
 
     public function authenticate(): void

@@ -21,21 +21,8 @@ class ClinicUserAuthController extends Controller
 
         $request->session()->regenerate();
 
-        //return redirect()->intended('/clinic/dashboard');
-        return redirect()->intended(route('ClinicUser.dashboard', absolute: false));
+        return redirect()->intended(route('clinic.dashboard', absolute: false));
     }
-    // public function login(Request $request)
-    // {
-    //     $credentials = $request->only('email', 'password');
 
-    //     if (Auth::guard('clinic_user')->attempt($credentials)) {
-    //         $request->session()->regenerate();
-    //         return redirect()->intended('/clinic/dashboard');
-    //     }
-
-    //     return back()->withErrors([
-    //         'email' => 'The provided credentials do not match our records.',
-    //     ]);
-    // }
 
 }

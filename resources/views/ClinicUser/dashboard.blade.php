@@ -89,13 +89,11 @@
                     <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
                 </a>
                 <div>
-                    <form method="POST" action="{{ route('clinic.logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 flex items-center justify-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i>
-                            Logout
-                        </button>
-                    </form>
+                    <button onclick="document.getElementById('logoutModal').classList.remove('hidden')" class="w-full bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 flex items-center justify-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i>
+                        Logout
+                    </button>
                 </div>
+
             </div>
         </div>
         <!-- Main Content -->
@@ -116,7 +114,7 @@
                 <div class="flex flex-row items-center gap-5 py-8 px-14">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div>
-                        <h1 class="text-2xl font-900">Dashboard</h1>
+                        <h1 class="text-2xl md:text-3xl font-900">Dashboard</h1>
                         <h2 class="ml-3 text-lg font-bold">Hello, {{ Auth::user()->first_name }}!</h2>
                     </div>
                 </div>
@@ -355,10 +353,26 @@
             </div>
         </section>
 
-</body>
-<script>
+        <!-- Modals For Logout -->
+        <x-modal id="logoutModal" title="Confirm Logout">
+            <form method="POST" action="{{ route('clinic.logout') }}">
+                @csrf
+                <p class="mb-4">Are you sure you want to log out?</p>
 
-</script>
+                <div class="flex justify-end gap-2">
+                    <button type="button"
+                        onclick="document.getElementById('logoutModal').classList.add('hidden')"
+                        class="border-2 border-gray-200 px-4 py-2 rounded">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">
+                        Confirm
+                    </button>
+                </div>
+            </form>
+        </x-modal>
+</body>
 
 <script>
     const sidebar = document.getElementById('sidebar');
