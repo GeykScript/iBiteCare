@@ -2,17 +2,18 @@
 import ApexCharts from 'apexcharts';
 
 
+// Bar chart options
 document.addEventListener('DOMContentLoaded', () => {
    const options = {
         series: [{
                 name: "Income",
-                color: "#26a7e2ff",
+                color: "#38d35fff",
                 data: ["1420", "1620", "1820", "1420", "1650", "2120"],
             },
             {
                 name: "Expense",
                 data: ["788", "810", "866", "788", "1100", "1200"],
-                color: "#F05252",
+                color: "#ec2f2fff",
             }
         ],
         chart: {
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             type: "bar",
             width: "100%",
-            height: 300,
+            height: 480,
             toolbar: {
                 show: false,
             }
@@ -104,12 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
+// Function to get chart options for the donut chart
 
 const getChartOptions = () => {
   return {
-    series: [35.1, 23.5, 2.4, 5.4],
-    colors: ["#1C64F2", "#16BDCA", "#FDBA8C", "#E74694"],
+    series: [35.1, 20.5, 5.4],
+    colors: ["#2E3840", "#FF0303", "#2b8be4ff"],
     chart: {
       height: 250,
       width: "100%",
@@ -132,13 +133,13 @@ const getChartOptions = () => {
             total: {
               showAlways: true,
               show: true,
-              label: "Unique visitors",
+              label: "Total Patients ",
               fontFamily: "Inter, sans-serif",
               formatter: function (w) {
                 const sum = w.globals.seriesTotals.reduce((a, b) => {
                   return a + b
                 }, 0)
-                return '$' + sum + 'k'
+                return '₱ ' + sum + 'k'
               },
             },
             value: {
@@ -159,7 +160,7 @@ const getChartOptions = () => {
         top: 0,
       },
     },
-    labels: ["Direct", "Sponsor", "Affiliate", "Email marketing"],
+    labels: ["Anti Rabies", "Booster", "Tetanus Toxiod"],
     dataLabels: {
       enabled: false,
     },
@@ -202,21 +203,21 @@ if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined')
       const checkbox = event.target;
       if (checkbox.checked) {
           switch(checkbox.value) {
-            case 'desktop':
-              chart.updateSeries([15.1, 22.5, 4.4, 8.4]);
+            case 'anti-rabies':
+              chart.updateSeries([15.1, 22.5, 4.4]);
               break;
-            case 'tablet':
-              chart.updateSeries([25.1, 26.5, 1.4, 3.4]);
+            case 'booster':
+              chart.updateSeries([25.1, 26.5, 1.4]);
               break;
-            case 'mobile':
-              chart.updateSeries([45.1, 27.5, 8.4, 2.4]);
+            case 'tetanus':
+              chart.updateSeries([45.1, 27.5, 8.4]);
               break;
             default:
-              chart.updateSeries([55.1, 28.5, 1.4, 5.4]);
+              chart.updateSeries([55.1, 28.5, 1.4]);
           }
 
       } else {
-          chart.updateSeries([35.1, 23.5, 2.4, 5.4]);
+          chart.updateSeries([35.1, 23.5, 2.4]);
       }
   }
 
@@ -224,4 +225,160 @@ if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined')
   checkboxes.forEach((checkbox) => {
       checkbox.addEventListener('change', (event) => handleCheckboxChange(event, chart));
   });
+}
+
+
+
+// line charts
+
+const options = {
+// add data series via arrays, learn more here: https://apexcharts.com/docs/series/
+series: [
+  {
+    name: "Male",
+    data: [1500, 1418, 1456, 1526, 1356, 1256],
+    color: "#1A56DB",
+  },
+  {
+    name: "Female",
+    data: [643, 413, 765, 412, 1423, 1731],
+    color: "#fa1fd5ff",
+  },
+],
+chart: {
+  height: "65%",
+  maxWidth: "100%",
+  type: "area",
+  fontFamily: "Inter, sans-serif",
+  dropShadow: {
+    enabled: false,
+  },
+  toolbar: {
+    show: false,
+  },
+},
+tooltip: {
+  enabled: true,
+  x: {
+    show: false,
+  },
+},
+legend: {
+  show: true
+},
+fill: {
+  type: "gradient",
+  gradient: {
+    opacityFrom: 1,
+    opacityTo: 0,
+    shade: "#1C64F2",
+    gradientToColors: ["#1C64F2"],
+  },
+},
+dataLabels: {
+  enabled: false,
+},
+stroke: {
+  width: 6,
+},
+grid: {
+  show: false,
+  strokeDashArray: 4,
+  padding: {
+    left: 2,
+    right: 2,
+    top: -26
+  },
+},
+xaxis: {
+  categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
+  labels: {
+    show: false,
+  },
+  axisBorder: {
+    show: false,
+  },
+  axisTicks: {
+    show: false,
+  },
+},
+yaxis: {
+  show: false,
+  labels: {
+    formatter: function (value) {
+      return value;
+    }
+  }
+},
+}
+
+if (document.getElementById("legend-chart") && typeof ApexCharts !== 'undefined') {
+const chart = new ApexCharts(document.getElementById("legend-chart"), options);
+chart.render();
+}
+
+
+
+
+const getChartOptionsPie = () => {
+  return {
+    series: [45.9, 23.3, 17.7,13.0],
+    colors: ["#FF0000", "#FF4D4D", "#FF8080", "#FFB3B3"],
+    chart: {
+      height: 280,
+      width: "100%",
+      type: "pie",
+    },
+    stroke: {
+      colors: ["white"],
+      lineCap: "",
+    },
+    plotOptions: {
+      pie: {
+        labels: {
+          show: true,
+        },
+        size: "100%",
+        dataLabels: {
+          offset: -25
+        }
+      },
+    },
+    labels: ["Child(0-12)", "Teenager(13-19)", "Adult(20-59)", "Senior(60+)"],
+    dataLabels: {
+      enabled: true,
+      style: {
+        fontFamily: "Inter, sans-serif",
+      },
+    },
+    legend: {
+      position: "bottom",
+      fontFamily: "Inter, sans-serif",
+    },
+    yaxis: {
+      labels: {
+        formatter: function (value) {
+          return value + "%"
+        },
+      },
+    },
+    xaxis: {
+      labels: {
+        formatter: function (value) {
+          return value  + "%"
+        },
+      },
+      axisTicks: {
+        show: false,
+      },
+      axisBorder: {
+        show: false,
+      },
+    },
+  }
+}
+
+if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
+  const chart = new ApexCharts(document.getElementById("pie-chart"), getChartOptionsPie());
+  chart.render();
 }

@@ -37,7 +37,13 @@ import {
         CircleChevronRight,
         Info,
         BadgeInfo,
-      
+        ChevronRight,
+        ChevronDown,
+        SlidersHorizontal,
+        CircleUser,
+        LogOut,
+        CircleQuestionMark,
+        BadgeQuestionMark
 
     } 
      from 'lucide';
@@ -70,6 +76,14 @@ createIcons({
     CircleChevronRight,
     Info,
     BadgeInfo,
+    ChevronRight,
+    ChevronDown,
+    SlidersHorizontal,
+    CircleUser,
+    LogOut,
+    CircleQuestionMark,
+    BadgeQuestionMark
+
   }
 });
 
