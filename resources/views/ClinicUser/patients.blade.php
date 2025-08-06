@@ -77,7 +77,7 @@
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
+                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -102,7 +102,7 @@
             </div>
         </div>
         <!-- Main Content -->
-        <section id="mainContent" class="flex-1 h-full  ">
+        <section id="mainContent" class="flex-1 ml-0 md:ml-56 h-full  ">
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
@@ -116,17 +116,18 @@
             </div>
             <!-- content container -->
             <div class="flex flex-col flex-1  pt-[60px]">
-                <div class="flex flex-row items-center gap-5 py-8 px-14">
+                <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-900">Registed Patients</h1>
-                        <h2 class="ml-3 text-lg font-bold flex items-center gap-2">Patients <span><i data-lucide="chevron-right" class="w-4 h-4"></i></span> All Patients</h2>
+                        <h1 class="text-lg md:text-3xl font-900">Registed Patients</h1>
+                        <h2 class="ml-3 md:text-xl text-xs font-bold  items-center ">List of all patients currently registered in the clinic
+                        </h2>
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="pl-12 flex items-center md:gap-2 ">
+                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]">Patient Clinic Records</h1>
-                    <i data-lucide="circle-question-mark" class="stroke-white font-900 w-6 h-6 fill-[#FF000D]"></i>
+                    <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i>
                 </div>
                 <!-- Main Content -->
                 <div>
@@ -157,11 +158,5 @@
             </form>
         </x-modal>
 </body>
-
-<script>
-
-</script>
-
-
 
 </html>

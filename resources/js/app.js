@@ -88,8 +88,7 @@ createIcons({
 });
 
 
-
-
+// Sidebar toggle functionality
 const sidebar = document.getElementById('sidebar');
 const mainContent = document.getElementById('mainContent');
 const toggleSidebar = document.getElementById('toggleSidebar');
@@ -109,25 +108,24 @@ function isMobile() {
     return window.innerWidth < 768;
 }
 
-// Open sidebar
+// Open and close sidebar functions
 function openSidebar() {
     sidebar.classList.remove('hidden');
     if (isMobile()) {
         overlay.classList.remove('hidden');
-        mainContent.classList.remove('ml-56');
+        mainContent.classList.remove('md:ml-56');
     } else {
-        mainContent.classList.add('ml-56');
+        mainContent.classList.add('md:ml-56');
     }
 }
 
-// Close sidebar
 function closeSidebarFunc() {
     sidebar.classList.add('hidden');
     overlay.classList.add('hidden');
-    mainContent.classList.remove('ml-56');
+    mainContent.classList.remove('md:ml-56');
 }
 
-// Toggle button click
+// Event listeners for toggling sidebar
 toggleSidebar.addEventListener('click', () => {
     if (sidebar.classList.contains('hidden')) {
         openSidebar();
@@ -136,36 +134,29 @@ toggleSidebar.addEventListener('click', () => {
     }
 });
 
-// Close button click
+// Event listeners for closing sidebar
 closeSidebar.addEventListener('click', closeSidebarFunc);
 overlay.addEventListener('click', closeSidebarFunc);
 
-// Handle window resize
-window.addEventListener('resize', () => {
+// Update sidebar visibility based on screen size
+function updateSidebarState() {
     if (isMobile()) {
         sidebar.classList.add('hidden');
         overlay.classList.add('hidden');
-        mainContent.classList.remove('ml-56');
+        mainContent.classList.remove('md:ml-56');
     } else {
         sidebar.classList.remove('hidden');
         overlay.classList.add('hidden');
-        mainContent.classList.add('ml-56');
+        mainContent.classList.add('md:ml-56');
     }
-});
+}
 
-// Initialize sidebar on page load
-window.addEventListener('load', () => {
-    if (isMobile()) {
-        sidebar.classList.add('hidden');
-        overlay.classList.add('hidden');
-        mainContent.classList.remove('ml-56');
-    } else {
-        sidebar.classList.remove('hidden');
-        overlay.classList.add('hidden');
-        mainContent.classList.add('ml-56');
-    }
-});
+// Initial check for sidebar state
+window.addEventListener('load', updateSidebarState);
+window.addEventListener('resize', updateSidebarState);
 
+
+// Function to display current date and time
     function updateDateTime() {
         const now = new Date();
 

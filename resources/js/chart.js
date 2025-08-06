@@ -106,13 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Function to get chart options for the donut chart
-
 const getChartOptions = () => {
   return {
     series: [35.1, 20.5, 5.4],
     colors: ["#21c5bdff", "#FF0303", "#2b8be4ff"],
     chart: {
-      height: 250,
+      height: 260,
       width: "100%",
       type: "donut",
     },
@@ -151,7 +150,7 @@ const getChartOptions = () => {
               },
             },
           },
-          size: "75%",
+          size: "70%",
         },
       },
     },
@@ -230,7 +229,6 @@ if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined')
 
 
 // line charts
-
 const options = {
 // add data series via arrays, learn more here: https://apexcharts.com/docs/series/
 series: [
@@ -382,3 +380,91 @@ if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
   const chart = new ApexCharts(document.getElementById("pie-chart"), getChartOptionsPie());
   chart.render();
 }
+//---------------------------------------------REPORTS CHARTS---------------------------------------------
+
+ let chart; // declare globally
+
+  const chartDataSets = {
+    "All-All": [4920, 4600, 4700, 5200, 3500, 4800],
+    "Male-All": [4200, 4000, 4400, 4600, 3300, 3900],
+    "Female-All": [5000, 4800, 4900, 5300, 3700, 5100],
+    "Male-0-18": [1200, 1100, 1300, 1250, 950, 1100],
+    "Female-0-18": [1300, 1250, 1400, 1450, 1000, 1350],
+    "Male-19-60": [2000, 1900, 2100, 2200, 1600, 1900],
+    "Female-19-60": [2300, 2200, 2400, 2500, 1800, 2200],
+    "Male-60+": [1000, 1000, 1000, 1150, 750, 900],
+    "Female-60+": [1400, 1350, 1450, 1550, 900, 1600],
+  };
+
+  const getSelectedKey = () => {
+    const gender = document.getElementById("genderSelect").value || "All";
+    const age = document.getElementById("ageSelect").value || "All";
+    return `${gender}-${age}`;
+  };
+
+  const renderChart = (data) => {
+    const options = {
+      chart: {
+        type: "line",
+        height: '100%',
+        width: "100%",
+        fontFamily: "Inter, sans-serif",
+        toolbar: { show: false },
+        dropShadow: { enabled: false },
+      },
+      series: [{
+        name: "Total Accommodated Patients",
+        data: data,
+        color: "#EF4444",
+      }],
+      stroke: { curve: 'smooth', width: 6 },
+      tooltip: {
+        enabled: true,
+        x: { show: false },
+        style: { fontSize: '10px' },
+      },
+      dataLabels: { enabled: false },
+      legend: { show: false },
+      grid: {
+        show: true,
+        strokeDashArray: 4,
+        padding: { left: 0, right: 0, top: -20 },
+      },
+      xaxis: {
+        categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb'],
+        tickPlacement: 'between',
+        tickAmount: 6,
+        labels: {
+          show: true,
+          style: {
+            fontFamily: "Inter, sans-serif",
+            cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+          }
+        },
+        axisBorder: { show: false },
+        axisTicks: { show: false }
+      },
+      yaxis: { show: false }
+    };
+
+    if (chart) {
+      chart.updateOptions(options);
+    } else {
+      chart = new ApexCharts(document.getElementById("line-chart"), options);
+      chart.render();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderChart(chartDataSets["All-All"]);
+
+    document.getElementById("genderSelect").addEventListener("change", () => {
+      const key = getSelectedKey();
+      renderChart(chartDataSets[key] || chartDataSets["All-All"]);
+    });
+
+    document.getElementById("ageSelect").addEventListener("change", () => {
+      const key = getSelectedKey();
+      renderChart(chartDataSets[key] || chartDataSets["All-All"]);
+    });
+  });

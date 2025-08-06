@@ -31,6 +31,7 @@ Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])->name('
 use App\Http\Controllers\ClinicUser\DashboardController;
 use App\Http\Controllers\ClinicUser\PatientsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
+use App\Http\Controllers\ClinicUser\ReportsController;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -48,6 +49,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
         ->name('clinic.profile');
+
+    Route::get('/clinic/reports', [ReportsController::class, 'index'])
+        ->name('clinic.reports');
 
 
 });

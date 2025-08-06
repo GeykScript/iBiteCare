@@ -81,7 +81,7 @@
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
+                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -106,7 +106,7 @@
             </div>
         </div>
         <!-- Main Content -->
-        <section id="mainContent" class="flex-1  h-full  ">
+        <section id="mainContent" class="flex-1 ml-0 md:ml-56 h-full   ">
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
@@ -124,18 +124,18 @@
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div>
                         <h1 class="text-2xl md:text-3xl font-900">Dashboard</h1>
-                        <h2 class="ml-3 text-lg font-bold">Hello, {{ Auth::user()->first_name }}!</h2>
+                        <h2 class="ml-3 text-xl font-bold">Hello, {{ $clinicUser->first_name }}!</h2>
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="pl-12 flex items-center md:gap-2 ">
+                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Overview</h1>
-                    <i data-lucide="circle-question-mark" class="stroke-white font-900 w-6 h-6 fill-[#FF000D]"></i>
+                    <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i>
                 </div>
                 <!-- charts Contents -->
-                <div class="grid grid-cols-7 p-4 ">
+                <div class="grid grid-cols-7 md:p-4 p-2 gap-4 md:gap-2 ">
                     <!-- BAR CHART -->
-                    <div class="col-span-7 md:col-span-2 w-full bg-white  p-2">
+                    <div class="col-span-7 md:col-span-2 w-full bg-white ">
                         <div class="w-full rounded-lg shadow-xl border border-gray-200 p-4">
                             <h1 class="text-lg font-bold text-center p-2">Profit & Breakdown Cost</h1>
                             <div class="flex justify-between border-gray-200 border-b dark:border-gray-700 pb-3 px-2">
@@ -195,7 +195,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <a href="#" class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600  px-3 py-2"> Revenue Report
+                                    <a href="#" class="md:text-sm font-semibold inline-flex items-center rounded-lg text-blue-600  px-3 py-2"> More Details
                                         <i data-lucide="chevron-right" class="w-4 h-4"></i>
                                     </a>
                                 </div>
@@ -203,7 +203,7 @@
                         </div>
                     </div>
                     <!-- div for Three CHART -->
-                    <div class="col-span-7 md:col-span-5 flex flex-col p-2 gap-3 ">
+                    <div class="col-span-7 md:col-span-5 flex flex-col  gap-3 ">
                         <div class="grid grid-cols-4 bg-white rounded-lg shadow-md border border-gray-200 p-4 ">
 
                             <!-- donut chart div -->
@@ -243,7 +243,7 @@
                             </div>
                         </div>
                         <!-- div for two chart -->
-                        <div class="grid grid-cols-4 bg-white  rounded gap-2 ">
+                        <div class="grid grid-cols-4 bg-white  rounded md:gap-2 ">
 
                             <!-- line chart -->
                             <div class="col-span-4 md:col-span-2  rounded-lg shadow-xl border border-gray-200 p-4">
@@ -382,11 +382,4 @@
             </form>
         </x-modal>
 </body>
-
-<script>
-
-</script>
-
-
-
 </html>
