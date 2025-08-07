@@ -6,14 +6,14 @@ import ApexCharts from 'apexcharts';
 document.addEventListener('DOMContentLoaded', () => {
    const options = {
         series: [{
-                name: "Income",
-                color: "#31b852ff",
+                name: "Male",
+                color: "#0ac4fdff",
                 data: ["1420", "1620", "1820", "1420", "1650", "2120"],
             },
             {
-                name: "Expense",
+                name: "Female",
                 data: ["788", "810", "866", "788", "1100", "1200"],
-                color: "#ec2f2fff",
+                color: "#ff014dec",
             }
         ],
         chart: {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             type: "bar",
             width: "100%",
-            height: 480,
+            height: 330,
             toolbar: {
                 show: false,
             }
@@ -105,131 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Function to get chart options for the donut chart
-const getChartOptions = () => {
-  return {
-    series: [35.1, 20.5, 5.4],
-    colors: ["#21c5bdff", "#FF0303", "#2b8be4ff"],
-    chart: {
-      height: 260,
-      width: "100%",
-      type: "donut",
-    },
-    stroke: {
-      colors: ["transparent"],
-      lineCap: "",
-    },
-    plotOptions: {
-      pie: {
-        donut: {
-          labels: {
-            show: true,
-            name: {
-              show: true,
-              fontFamily: "Inter, sans-serif",
-              offsetY: 20,
-            },
-            total: {
-              showAlways: true,
-              show: true,
-              label: "Total Patients ",
-              fontFamily: "Inter, sans-serif",
-              formatter: function (w) {
-                const sum = w.globals.seriesTotals.reduce((a, b) => {
-                  return a + b
-                }, 0)
-                return '₱ ' + sum + 'k'
-              },
-            },
-            value: {
-              show: true,
-              fontFamily: "Inter, sans-serif",
-              offsetY: -20,
-              formatter: function (value) {
-                return value + "k"
-              },
-            },
-          },
-          size: "70%",
-        },
-      },
-    },
-    grid: {
-      padding: {
-        top: 0,
-      },
-    },
-    labels: ["Anti Rabies", "Booster", "Tetanus Toxiod"],
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      position: "bottom",
-      fontFamily: "Inter, sans-serif",
-    },
-    yaxis: {
-      labels: {
-        formatter: function (value) {
-          return value + "k"
-        },
-      },
-    },
-    xaxis: {
-      labels: {
-        formatter: function (value) {
-          return value  + "k"
-        },
-      },
-      axisTicks: {
-        show: false,
-      },
-      axisBorder: {
-        show: false,
-      },
-    },
-  }
-}
-
-if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined') {
-  const chart = new ApexCharts(document.getElementById("donut-chart"), getChartOptions());
-  chart.render();
-
-  // Get all the checkboxes by their class name
-  const checkboxes = document.querySelectorAll('#devices input[type="checkbox"]');
-
-  // Function to handle the checkbox change event
-  function handleCheckboxChange(event, chart) {
-      const checkbox = event.target;
-      if (checkbox.checked) {
-          switch(checkbox.value) {
-            case 'anti-rabies':
-              chart.updateSeries([15.1, 22.5, 4.4]);
-              break;
-            case 'booster':
-              chart.updateSeries([25.1, 26.5, 1.4]);
-              break;
-            case 'tetanus':
-              chart.updateSeries([45.1, 27.5, 8.4]);
-              break;
-            default:
-              chart.updateSeries([55.1, 28.5, 1.4]);
-          }
-
-      } else {
-          chart.updateSeries([35.1, 23.5, 2.4]);
-      }
-  }
-
-  // Attach the event listener to each checkbox
-  checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener('change', (event) => handleCheckboxChange(event, chart));
-  });
-}
-
 
 
 // line charts
-const options = {
+const LineChartoptions = {
 // add data series via arrays, learn more here: https://apexcharts.com/docs/series/
 series: [
   {
@@ -244,7 +123,7 @@ series: [
   },
 ],
 chart: {
-  height: "65%",
+  height: "85%",
   maxWidth: "100%",
   type: "area",
   fontFamily: "Inter, sans-serif",
@@ -311,7 +190,7 @@ yaxis: {
 }
 
 if (document.getElementById("legend-chart") && typeof ApexCharts !== 'undefined') {
-const chart = new ApexCharts(document.getElementById("legend-chart"), options);
+const chart = new ApexCharts(document.getElementById("legend-chart"), LineChartoptions);
 chart.render();
 }
 
@@ -323,7 +202,7 @@ const getChartOptionsPie = () => {
     series: [45.9, 23.3, 17.7,13.0],
     colors: ["#FF0000", "#FF4D4D", "#FF8080", "#FFB3B3"],
     chart: {
-      height: 280,
+      height: 260,
       width: "100%",
       type: "pie",
     },
@@ -382,89 +261,103 @@ if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
 }
 //---------------------------------------------REPORTS CHARTS---------------------------------------------
 
- let chart; // declare globally
 
-  const chartDataSets = {
-    "All-All": [4920, 4600, 4700, 5200, 3500, 4800],
-    "Male-All": [4200, 4000, 4400, 4600, 3300, 3900],
-    "Female-All": [5000, 4800, 4900, 5300, 3700, 5100],
-    "Male-0-18": [1200, 1100, 1300, 1250, 950, 1100],
-    "Female-0-18": [1300, 1250, 1400, 1450, 1000, 1350],
-    "Male-19-60": [2000, 1900, 2100, 2200, 1600, 1900],
-    "Female-19-60": [2300, 2200, 2400, 2500, 1800, 2200],
-    "Male-60+": [1000, 1000, 1000, 1150, 750, 900],
-    "Female-60+": [1400, 1350, 1450, 1550, 900, 1600],
-  };
 
-  const getSelectedKey = () => {
-    const gender = document.getElementById("genderSelect").value || "All";
-    const age = document.getElementById("ageSelect").value || "All";
-    return `${gender}-${age}`;
-  };
+const ColumnChartoptions = {
+  colors: ["#bce91cff"],
+  series: [
+    {
+      name: "Sales",
+      color: "#1ac3daef",
+      data: [
+        { x: "Jan", y: 231 },
+        { x: "Feb", y: 122 },
+        { x: "Mar", y: 63 },
+        { x: "Apr", y: 421 },
+        { x: "May", y: 122 },
+        { x: "Jun", y: 323 },
 
-  const renderChart = (data) => {
-    const options = {
-      chart: {
-        type: "line",
-        height: '100%',
-        width: "100%",
+      ],
+    },
+  ],
+  chart: {
+    type: "bar",
+    height: "420px",
+    fontFamily: "Inter, sans-serif",
+    toolbar: {
+      show: false,
+    },
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: "80%",
+      borderRadiusApplication: "end",
+      borderRadius: 8,
+    },
+  },
+  tooltip: {
+    shared: true,
+    intersect: false,
+    style: {
+      fontFamily: "Inter, sans-serif",
+    },
+  },
+  states: {
+    hover: {
+      filter: {
+        type: "darken",
+        value: 1,
+      },
+    },
+  },
+  stroke: {
+    show: true,
+    width: 0,
+    colors: ["transparent"],
+  },
+  grid: {
+    show: false,
+    strokeDashArray: 4,
+    padding: {
+      left: 2,
+      right: 2,
+      top: -14
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  legend: {
+    show: false,
+  },
+  xaxis: {
+    floating: false,
+    labels: {
+      show: true,
+      style: {
         fontFamily: "Inter, sans-serif",
-        toolbar: { show: false },
-        dropShadow: { enabled: false },
-      },
-      series: [{
-        name: "Total Accommodated Patients",
-        data: data,
-        color: "#EF4444",
-      }],
-      stroke: { curve: 'smooth', width: 6 },
-      tooltip: {
-        enabled: true,
-        x: { show: false },
-        style: { fontSize: '10px' },
-      },
-      dataLabels: { enabled: false },
-      legend: { show: false },
-      grid: {
-        show: true,
-        strokeDashArray: 4,
-        padding: { left: 0, right: 0, top: -20 },
-      },
-      xaxis: {
-        categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb'],
-        tickPlacement: 'between',
-        tickAmount: 6,
-        labels: {
-          show: true,
-          style: {
-            fontFamily: "Inter, sans-serif",
-            cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
-          }
-        },
-        axisBorder: { show: false },
-        axisTicks: { show: false }
-      },
-      yaxis: { show: false }
-    };
+        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+      }
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+  fill: {
+    opacity: 1,
+  },
+}
 
-    if (chart) {
-      chart.updateOptions(options);
-    } else {
-      chart = new ApexCharts(document.getElementById("line-chart"), options);
-      chart.render();
-    }
-  };
+if(document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
+  const chart = new ApexCharts(document.getElementById("column-chart"), ColumnChartoptions);
+  chart.render();
+}
 
-  document.addEventListener("DOMContentLoaded", () => {
-    renderChart(chartDataSets["All-All"]);
 
-    document.getElementById("genderSelect").addEventListener("change", () => {
-      const key = getSelectedKey();
-      renderChart(chartDataSets[key] || chartDataSets["All-All"]);
-    });
-
-    document.getElementById("ageSelect").addEventListener("change", () => {
-      const key = getSelectedKey();
-      renderChart(chartDataSets[key] || chartDataSets["All-All"]);
-    });
-  });

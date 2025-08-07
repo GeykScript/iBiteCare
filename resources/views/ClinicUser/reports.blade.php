@@ -129,66 +129,140 @@
                     <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-12 p-4 ">
-                    <div class="col-span-4">
-                        <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200 p-4">
-                            <h2 class="text-lg font-semibold mb-4">Patient Report</h2>
-
-                            <!-- Filters -->
-                            <div class="flex justify-between items-center mb-4 space-x-2">
-                                <select id="genderSelect" class="border rounded px-2 py-1 text-sm">
-                                    <option value="All">Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                <div class="grid grid-cols-12 md:p-4 p-2 gap-2">
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 p-2 md:p-6">
+                            <h1 class="text-lg font-900 pb-4">Patients Summary</h1>
+                            <div class="flex justify-between items-center mb-4 md:gap-4 gap-2">
+                                <select id="serviceFilter" class="border rounded w-full  p-1 text-sm">
+                                    <option value="">Service</option>
+                                    <option value="">Anti-Rabies</option>
+                                    <option value="">Booster</option>
+                                    <option value="">Tetanus Toxiod</option>
                                 </select>
 
-                                <select id="ageSelect" class="border rounded px-2 py-1 text-sm">
-                                    <option value="All">Age</option>
-                                    <option value="0-18">0-18</option>
-                                    <option value="19-60">19-60</option>
-                                    <option value="60+">60+</option>
+                                <select id="ageFilter" class="border rounded p-1 w-full text-sm">
+                                    <option value="all">Age</option>
+                                    <option value="0-17">0-17</option>
+                                    <option value="18-64">18-64</option>
+                                    <option value="65+">65+</option>
                                 </select>
-                                <input type="date" class="border rounded px-2 py-1 text-sm" />
                             </div>
-
-                            <!-- Total Patients Info -->
-                            <div class="flex items-center mb-5">
-                                <div class="bg-red-100 text-red-500 rounded-full p-2 mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 11c0-1.105-.895-2-2-2s-2 .895-2 2 .895 2 2 2 2-.895 2-2zm0 0c0 1.105.895 2 2 2s2-.895 2-2-.895-2-2-2-2 .895-2 2z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M18 20H6a2 2 0 01-2-2v-5.5a1.5 1.5 0 013 0V18h10v-5.5a1.5 1.5 0 013 0V18a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-sm">Total Accommodated Patients</p>
-                                    <h3 class="text-2xl font-bold text-red-500">5,020.00</h3>
+                            <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
+                                        <i data-lucide="users" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-500 font-bold">Accomodated Patients</p>
+                                        <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">5,020</h5>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
+                                    </div>
                                 </div>
                             </div>
-
-                            <!-- Chart -->
-                            <div id="line-chart" ></div>
-
-                            <!-- Buttons -->
-                            <div class="flex items-center justify-between mt-4">
-                                <div class="space-x-2">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-sm">
-                                        Excel
-                                    </button>
-                                    <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">
-                                        PDF
-                                    </button>
+                            <div class="grid grid-cols-2 pb-3">
+                                <dl>
+                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</dt>
+                                    <dd class="leading-none text-md font-bold text-green-500 text-indigo-500">23,635</dd>
+                                </dl>
+                                <dl>
+                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</dt>
+                                    <dd class="leading-none text-md font-bold text-red-600 text-pink-500">18,230</dd>
+                                </dl>
+                            </div>
+                            <div id="bar-chart"></div>
+                            <div class="grid grid-cols-2 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5 pt-5">
+                                <div class="col-span-1">
+                                    <a href="#" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
+                                        View Details
+                                    </a>
                                 </div>
-                                <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                                    More Details
-                                </button>
+                                <div class="col-span-1">
+                                    <select id="filter" class="border rounded w-full p-1 text-sm ">
+                                        <option value="today">Today</option>
+                                        <option value="yesterday">Yesterday</option>
+                                        <option value="lastWeek">Last Week</option>
+                                        <option value="lastMonth">Last Month</option>
+                                        <option value="lastYear">Last Year</option>
+                                    </select>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-4"></div>
-                    <div class="col-span-4"></div>
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6">
+                            <h1 class="text-lg font-900 pb-8 px-2"> Clinic Revenue Overview</h1>
+                            <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-full bg-[#1ac3daef] flex items-center justify-center me-3">
+                                        <i data-lucide="philippine-peso" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">₱ 5,020</h5>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Revenue</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2">
+                                <dl class="flex items-center">
+                                    <dt class="text-gray-500 text-sm font-normal me-1">Sales:</dt>
+                                    <dd class="text-gray-900 text-sm font-semibold">₱ 3,232</dd>
+                                </dl>
+                                <select id="timeFilter" class="border rounded w-full p-1 text-sm ">
+                                    <option value="today">Today</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="lastWeek">Last Week</option>
+                                    <option value="lastMonth">Last Month</option>
+                                    <option value="lastYear">Last Year</option>
+                                </select>
+                            </div>
+
+                            <div id="column-chart"></div>
+                            <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+                                <div class="flex justify-between items-center pt-5">
+                                    <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <i data-lucide="file-text" class="w-4 h-4 me-2"></i>
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6">
+                            <h1 class="text-lg font-900 pb-8 px-2">Inventory Overview</h1>
+                            <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center me-3">
+                                        <i data-lucide="package" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="leading-none text-xl font-900 text-gray-900  pb-1">Items Status</h5>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Vaccines, Rigs, Supplies, Equipments</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <livewire:inventory-table />
+                            </div>
+
+
+
+                            <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+                                <div class="flex justify-between items-center pt-5">
+                                    <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <i data-lucide="file-text" class="w-4 h-4 me-2"></i>
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
 

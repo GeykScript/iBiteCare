@@ -132,124 +132,81 @@
                     <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Overview</h1>
                     <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i>
                 </div>
-                <!-- charts Contents -->
+                <!-- Main content grid -->
                 <div class="grid grid-cols-7 md:p-4 p-2 gap-4 md:gap-2 ">
-                    <!-- BAR CHART -->
+                    <!-- div for First CHART -->
                     <div class="col-span-7 md:col-span-2 w-full bg-white ">
-                        <div class="w-full rounded-lg shadow-xl border border-gray-200 p-4">
-                            <h1 class="text-lg font-bold text-center p-2">Profit & Breakdown Cost</h1>
-                            <div class="flex justify-between border-gray-200 border-b dark:border-gray-700 pb-3 px-2">
-                                <div>
-                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Profit</dt>
-                                    <dd class="leading-none text-2xl font-900 text-gray-900 ">₱ 5,405</dd>
+                        <div class="flex flex-col gap-4">
+                            <div class="w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 p-2 md:p-6">
+                                <h1 class="text-lg font-900 pb-4">Patients Summary</h1>
+                                <div class="flex justify-between items-center mb-4 md:gap-4 gap-2">
+                                    <select id="serviceFilter" class="border rounded w-full  p-1 text-sm">
+                                        <option value="">Service</option>
+                                        <option value="">Anti-Rabies</option>
+                                        <option value="">Booster</option>
+                                        <option value="">Tetanus Toxiod</option>
+                                    </select>
+                                    <select id="ageFilter" class="border rounded p-1 w-full text-sm">
+                                        <option value="all">Age</option>
+                                        <option value="0-17">0-17</option>
+                                        <option value="18-64">18-64</option>
+                                        <option value="65+">65+</option>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="grid grid-cols-2 py-3">
-                                <dl>
-                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Income</dt>
-                                    <dd class="leading-none text-md font-bold text-green-500 dark:text-green-400">₱ 23,635</dd>
-                                </dl>
-                                <dl>
-                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Expense</dt>
-                                    <dd class="leading-none text-md font-bold text-red-600 dark:text-red-500">₱ 18,230</dd>
-                                </dl>
-                            </div>
-                            <!-- bar chart Div-->
-                            <div id="bar-chart"></div>
-                            <!-- chart options -->
-                            <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                                <div class="flex justify-between items-center pt-2">
-                                    <!-- Button -->
-                                    <button
-                                        id="dropdownDefaultButton"
-                                        data-dropdown-toggle="lastDaysdropdown"
-                                        data-dropdown-placement="bottom"
-                                        class="text-sm font-medium text-gray-500 dark:text-gray-400 text-center inline-flex items-center "
-                                        type="button">
-                                        Last 6 months
-                                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                                    </button>
-                                    <!-- Dropdown menu -->
-                                    <div id="lastDaysdropdown" class=" hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                            <li>
-                                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 7 days</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 30 days</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 90 days</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 6 months</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last year</a>
-                                            </li>
-                                        </ul>
+                                <div class="flex justify-between  pb-4 mb-2 border-b border-gray-200 dark:border-gray-700">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
+                                            <i data-lucide="users" class="w-6 h-6 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500 font-bold">Accomodated Patients</p>
+                                            <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">5,020</h5>
+                                            <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
+                                        </div>
                                     </div>
-                                    <a href="#" class="md:text-sm font-semibold inline-flex items-center rounded-lg text-blue-600  px-3 py-2"> More Details
-                                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                    </a>
+                                </div>
+                                <div class="grid grid-cols-2 ">
+                                    <dl>
+                                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</dt>
+                                        <dd class="leading-none text-md font-bold text-green-500 text-indigo-500">23,635</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</dt>
+                                        <dd class="leading-none text-md font-bold text-red-600 text-pink-500">18,230</dd>
+                                    </dl>
+                                </div>
+                                <div id="bar-chart"></div>
+                                <div class="grid grid-cols-2 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5 pt-5">
+                                    <div class="col-span-1">
+                                        <a href="#" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
+                                            View Details
+                                        </a>
+                                    </div>
+                                    <div class="col-span-1">
+                                        <select id="filter" class="border rounded w-full p-1 text-sm ">
+                                            <option value="today">Today</option>
+                                            <option value="yesterday">Yesterday</option>
+                                            <option value="lastWeek">Last Week</option>
+                                            <option value="lastMonth">Last Month</option>
+                                            <option value="lastYear">Last Year</option>
+                                        </select>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- div for Three CHART -->
                     <div class="col-span-7 md:col-span-5 flex flex-col  gap-3 ">
-                        <div class="grid grid-cols-4 bg-white rounded-lg shadow-md border border-gray-200 p-4 ">
 
-                            <!-- donut chart div -->
-                            <div class="col-span-4 md:col-span-2" id="donut-chart"></div>
-                            <!-- chart options -->
-                            <div class="col-span-4 md:col-span-2 flex flex-col gap-16 p-3">
-                                <div class="flex flex-col gap-4">
-                                    <h1 class="text-xl font-bold py-6">Patients Summary</h1>
-                                    <div class="flex justify-start items-start">
-                                        <h5 class="text-md font-bold leading-none text-black pe-1">Total Accomodated Patients</h5>
-                                    </div>
-                                    <div class="flex flex-col md:flex-row" id="devices">
-                                        <div class="flex items-center me-4">
-                                            <input id="anti-rabies" type="checkbox" value="anti-rabies" class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
-                                            <label for="anti-rabies" class="ms-2 text-sm font-medium text-gray-900 ">Anti Rabies</label>
-                                        </div>
-                                        <div class="flex items-center me-4">
-                                            <input id="booster" type="checkbox" value="booster" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
-                                            <label for="booster" class="ms-2 text-sm font-medium text-gray-900 ">Booster</label>
-                                        </div>
-                                        <div class="flex items-center me-4">
-                                            <input id="tetanus" type="checkbox" value="tetanus" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
-                                            <label for="tetanus" class="ms-2 text-sm font-medium text-gray-900 ">Tetanus Toxoid</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-1 flex border-gray-400 border-t ">
-                                    <div class="flex items-end justify-end">
-                                        <a
-                                            href="#"
-                                            class="uppercase text-sm font-semibold inline-flex items-end rounded-lg text-blue-600  px-3 py-2">
-                                            View Patient Reports
-                                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <!-- div for two chart -->
                         <div class="grid grid-cols-4 bg-white  rounded md:gap-2 ">
-
                             <!-- line chart -->
-                            <div class="col-span-4 md:col-span-2  rounded-lg shadow-xl border border-gray-200 p-4">
-                                <div class="w-full bg-white  shadow-sm md:px-4  ">
-                                    <h1 class="text-lg font-bold  p-2">Patient Gender Demographics</h1>
-                                    <div class="grid grid-cols-2 py-3">
+                            <div class="col-span-4 md:col-span-2  rounded-lg shadow-xl border border-gray-200 p-2 md:p-4">
+                                <div class="w-full bg-white md:px-4  ">
+                                    <h1 class="text-lg font-900  p-2">Patient Gender & Age Demographics</h1>
+                                    <div class="grid grid-cols-2 ">
                                         <dl>
                                             <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</dt>
                                             <dd class="leading-none text-md font-bold text-green-500 text-indigo-500">23,635</dd>
@@ -261,105 +218,64 @@
                                     </div>
                                     <!-- legend or line chart div -->
                                     <div id="legend-chart"></div>
+                                </div>
+                                <!-- pie chart div  -->
+                                <div class="w-full bg-white md:px-4  border-t border-gray-200 mt-2">
+                                    <div class="py-3" id="pie-chart"></div>
                                     <!-- chart options -->
-                                    <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-5">
-                                        <div class="flex justify-between items-center pt-4">
-                                            <!-- Button -->
-                                            <button
-                                                id="dropdownDefaultButton"
-                                                data-dropdown-toggle="lastDaysdropdown"
-                                                data-dropdown-placement="bottom"
-                                                class="text-sm font-medium text-gray-500 text-center inline-flex items-center "
-                                                type="button">
-                                                Last 7 days
-                                                <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                                            </button>
-                                            <!-- Dropdown menu -->
-                                            <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 7 days</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 30 days</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 90 days</a>
-                                                    </li>
-                                                </ul>
+                                        <div class="grid grid-cols-2 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5 pt-5">
+                                            <div class="col-span-1">
+                                                <a href="#" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
+                                                    View Details
+                                                </a>
                                             </div>
-                                            <a
-                                                href="#"
-                                                class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600  px-3 py-2">
-                                                More Details
-                                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                            </a>
-                                        </div>
+                                            <div class="col-span-1">
+                                                <select id="filter" class="border rounded w-full p-1 text-sm ">
+                                                    <option value="today">Today</option>
+                                                    <option value="yesterday">Yesterday</option>
+                                                    <option value="lastWeek">Last Week</option>
+                                                    <option value="lastMonth">Last Month</option>
+                                                    <option value="lastYear">Last Year</option>
+                                                </select>
+
+                                            </div>
                                     </div>
                                 </div>
                             </div>
 
-
-                            <!-- pie chart -->
-                            <div class="col-span-4 md:col-span-2 rounded-lg shadow-xl border border-gray-200 p-4">
-                                <div class="w-full bg-white  ">
-                                    <h1 class="text-lg font-bold p-2">Patient Gender Demographics</h1>
-                                    <!-- pie chart div  -->
-                                    <div class="py-3" id="pie-chart"></div>
-                                    <!-- chart options -->
-                                    <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                                        <div class="flex justify-between items-center pt-4">
-                                            <!-- Button -->
-                                            <button
-                                                id="dropdownDefaultButton"
-                                                data-dropdown-toggle="lastDaysdropdown"
-                                                data-dropdown-placement="bottom"
-                                                class="text-sm font-medium text-gray-500  text-center inline-flex items-center"
-                                                type="button">
-                                                Last 7 days
-                                                <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                                                </svg>
-                                            </button>
-                                            <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 7 days</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 30 days</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 90 days</a>
-                                                    </li>
-                                                </ul>
+                            <!-- inventory -->
+                            <div class="col-span-4 md:col-span-2 rounded-lg shadow-xl border border-gray-200 p-2 md:p-6">
+                                <div class="w-full bg-white   p-0 md:p-2">
+                                    <div class="flex justify-between pb-6 pt-2 mb-4 border-b border-gray-200 dark:border-gray-700">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center ">
+                                                <i data-lucide="package" class="w-6 h-6  text-white"></i>
                                             </div>
-                                            <a
-                                                href="#"
-                                                class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700  px-3 py-2">
-                                                More Details
-                                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                            <div>
+                                                <h5 class="leading-none md:text-xl font-900 text-gray-900  pb-1">Inventory Items Status</h5>
+                                                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Vaccines, Rigs, Supplies, Equipments</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <!-- inventory component livewire> -->
+                                        <livewire:inventory-table />
+                                    </div>
+                                    <div class="grid grid-cols-1 items-center border-gray-200 border-t mt-2 dark:border-gray-700 justify-between">
+                                        <div class="flex justify-between items-center pt-5">
+                                            <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <i data-lucide="file-text" class="w-4 h-4 me-2"></i>
+                                                View Details
                                             </a>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
 
         <!-- Modals For Logout -->
@@ -382,4 +298,5 @@
             </form>
         </x-modal>
 </body>
+
 </html>

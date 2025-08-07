@@ -131,7 +131,7 @@
                 </div>
                 <!-- Main Content -->
                 <div>
-                    <!-- // Main content goes here -->
+
 
                 </div>
 
@@ -157,6 +157,10 @@
                 </div>
             </form>
         </x-modal>
+
 </body>
+<script>
+
+</script>
 
 </html>
