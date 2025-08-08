@@ -1,8 +1,8 @@
 import './bootstrap';
-import Alpine from 'alpinejs';
+// import Alpine from 'alpinejs';
 
-window.Alpine = Alpine;
-Alpine.start();
+// window.Alpine = Alpine;
+// Alpine.start();
 
 
 // Recommended way, to include only the icons you need.

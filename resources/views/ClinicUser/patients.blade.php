@@ -14,8 +14,6 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @livewireStyles
-    @livewireScripts
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js'])
 
 
@@ -135,11 +133,10 @@
                     <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i>
                 </div>
                 <!-- Main Content -->
-                <div>
+                <div class="p-6 flex flex-col">
                     <livewire:patients-table />
-
-
                 </div>
+
 
             </div>
         </section>
@@ -163,6 +160,7 @@
                 </div>
             </form>
         </x-modal>
+        @livewireScripts
 
 </body>
 <script>

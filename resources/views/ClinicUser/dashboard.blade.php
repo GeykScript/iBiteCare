@@ -165,7 +165,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-2 ">
+                                <div class="grid grid-cols-2 pb-3">
                                     <dl>
                                         <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</dt>
                                         <dd class="leading-none text-md font-bold text-green-500 text-indigo-500">23,635</dd>

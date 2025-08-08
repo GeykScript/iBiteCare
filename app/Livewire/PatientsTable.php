@@ -2,44 +2,36 @@
 
 namespace App\Livewire;
 
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Component;
 use App\Models\Patient;
+use Livewire\WithPagination;
 
-class PatientsTable extends DataTableComponent
+class PatientsTable extends Component
 {
-    protected $model = Patient::class;
+    use WithPagination;
+    public $search = '';
+    public $perPage = 3;
 
-    public function configure(): void
-    {
-        $this->setPrimaryKey('id');
+    public $sortBy = 'created_at';
+    public $sortDirection = 'DESC';
+
+    public function setSortBy($sortByField){
+        if($this->sortBy === $sortByField) {
+            $this->sortDirection = $this->sortDirection === 'ASC' ? 'DESC' : 'ASC';
+            return;
+        }
+        $this->sortBy = $sortByField;
+        $this->sortDirection = 'DESC';
     }
 
-    public function columns(): array
+    public function render()
     {
-        return [
-            Column::make("Id", "id")
-                ->sortable(),
-            Column::make("First name", "first_name")
-                ->sortable(),
-            Column::make("Last name", "last_name")
-                ->sortable(),
-            Column::make("Birthdate", "birthdate")
-                ->sortable(),
-            Column::make("Age", "age")
-                ->sortable(),
-            Column::make("Sex", "sex")
-                ->sortable(),
-            Column::make("Contact number", "contact_number")
-                ->sortable(),
-            Column::make("Address", "address")
-                ->sortable(),
-            Column::make("Registration date", "registration_date")
-                ->sortable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
-                ->sortable(),
-        ];
+        return view('livewire.patients-table',
+         [
+            'patients' => Patient::search($this->search)
+            ->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate($this->perPage)
+        ]);
+
     }
 }
