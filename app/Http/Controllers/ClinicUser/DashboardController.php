@@ -13,9 +13,7 @@ class DashboardController extends Controller
 
         $clinicUser = Auth::guard('clinic_user')->user();
 
-        if (!$clinicUser) {
-            return redirect()->route('clinic.login')->with('error', 'You must be logged in to access the dashboard.');
-        }
+       
 
         return view('ClinicUser.dashboard', compact('clinicUser'));
     }
