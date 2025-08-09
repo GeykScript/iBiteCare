@@ -5,13 +5,13 @@
             <div class="flex ">
                 <div class="flex gap-4 items-center ">
                     <select
-                            wire:model.livewire="perPage"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-16 p-2.5 ">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
+                        wire:model.livewire="perPage"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-16 p-2.5 ">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
                     </select>
                     <label class="text-sm font-medium text-gray-900 md:block hidden">entries per page</label>
                 </div>
@@ -33,18 +33,23 @@
     </div>
     <!-- table with overflow -->
     <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">   
             <thead class="text-md text-white  bg-gray-800 ">
                 <tr class="px-4">
-                    <th scope="col" class="px-4 py-3 rounded-l-lg" wire:click="setSortBy('id')">ID</th>
-                    <th scope="col" class="px-4 py-3" wire:click="setSortBy('first_name')">First Name</th>
-                    <th scope="col" class="px-4 py-3" wire:click="setSortBy('last_name')">Last Name</th>
-                    <th scope="col" class="hidden md:block px-4 py-3" wire:click="setSortBy('birthdate')">Birthdate</th>
-                    <th scope="col" class="px-4 py-3" wire:click="setSortBy('age')">Age</th>
-                    <th scope="col" class="px-4 py-3" wire:click="setSortBy('sex')">Sex</th>
+                    <th scope="col" class="px-4 py-3 rounded-l-lg hover:cursor-pointer" wire:click="setSortBy('id')">ID</th>
+                    <th scope="col" class="px-4 py-3 hover:cursor-pointer" wire:click="setSortBy('first_name')">First Name</th>
+                    <th scope="col" class="px-4 py-3 hover:cursor-pointer" wire:click="setSortBy('last_name')">Last Name</th>
+                    <th scope="col" class="hidden md:block px-4 py-3 hover:cursor-pointer" wire:click="setSortBy('birthdate')">Birthdate</th>
+                    <th scope="col" class="px-4 py-3 hover:cursor-pointer" wire:click="setSortBy('age')">Age</th>
+                    <th scope="col" class="px-4 py-3 hover:cursor-pointer" wire:click="toggleGenderFilter">
+                        Sex
+                        @if($gender)
+                        ({{ $gender }})
+                        @endif
+                    </th>
                     <th scope="col" class="px-4 py-3">Contact#</th>
-                    <th scope="col" class="px-4 py-3" wire:click="setSortBy('address')">Address</th>
-                    <th scope="col" class="px-4 py-3" wire:click="setSortBy('registration_date')">Registration Date</th>
+                    <th scope="col" class="px-4 py-3 hover:cursor-pointer" wire:click="setSortBy('address')">Address</th>
+                    <th scope="col" class="px-4 py-3 hover:cursor-pointer" wire:click="setSortBy('registration_date')">Registration Date</th>
                     <th scope="col" class="px-4 py-3">Profile</th>
                     <th scope="col" class="px-4 py-3 rounded-r-lg">Transactions</th>
                 </tr>
@@ -71,11 +76,11 @@
                     <td class="px-4 py-3 font-medium text-gray-900">{{ $patient->registration_date }}</td>
                     <td class="px-4 py-3  ">
                         <a href="#" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold">
-                            Details<i data-lucide="file-text" class="w-4 h-4" style="stroke-width: 2.5;"></i></a>
+                            Details <img src="{{asset('images/file-text.svg')}}" alt="Profile Details" ></a>
                     </td>
                     <td class="px-4 py-3">
                         <a href="#" class="text-red-500 flex items-center justify-center gap-1 font-semibold">
-                            Manage<i data-lucide="align-justify" class="w-4 h-4" style="stroke-width: 2.5;"></i></a>
+                            Manage <img src="{{asset('images/align-justify.svg')}}" alt="Manage Transactions" ></a>
                     </td>
                 </tr>
                 @endforeach
