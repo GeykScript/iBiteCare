@@ -44,7 +44,6 @@
 
 <body>
     <div class="flex h-screen">
-
         <!-- Sidebar -->
         <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
             <div class="absolute top-20 right-[-0.6rem]  md:hidden">
@@ -101,7 +100,6 @@
                         Logout
                     </button>
                 </div>
-
             </div>
         </div>
         <!-- Main Content -->
@@ -122,22 +120,26 @@
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div>
-                        <h1 class="text-lg md:text-3xl font-900">Registed Patients</h1>
-                        <h2 class="ml-3 md:text-xl text-xs font-bold  items-center ">List of all patients currently registered in the clinic
-                        </h2>
+                        <h1 class="text-xl md:text-3xl font-900">Patient Clinic Records</h1>
                     </div>
                 </div>
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
-                    <h1 class="md:text-2xl font-900 text-[#FF000D]">Patient Clinic Records</h1>
-                    <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i>
+                    <h1 class="md:text-2xl font-900 text-[#FF000D]"> Registed Patients</h1>
+                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
                 </div>
+                <div class="md:pl-12 pl-6">
+                    <h1 class="md:text-lg text-gray-800">All individuals who have been officially registered to receive care at the clinic.</h1>
+                </div>
+
                 <!-- Main Content -->
-                <div class="p-6 flex flex-col">
+                <div class="grid grid-cols-4 p-4">
+                    <div class="col-span-4 md:col-span-4 flex justify-end px-4">
+                        <button class="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
+                    </div>
+                    <!-- livewire/patient-table.php -->
                     <livewire:patients-table />
                 </div>
-
-
             </div>
         </section>
 

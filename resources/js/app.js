@@ -40,8 +40,10 @@ import {
         CircleUser,
         LogOut,
         CircleQuestionMark,
-        BadgeQuestionMark
-
+        BadgeQuestionMark,
+        Search,
+        Plus,
+        AlignJustify
     } 
      from 'lucide';
 
@@ -79,8 +81,10 @@ createIcons({
     CircleUser,
     LogOut,
     CircleQuestionMark,
-    BadgeQuestionMark
-
+    BadgeQuestionMark,
+    Search,
+    Plus,
+    AlignJustify
   }
 });
 
