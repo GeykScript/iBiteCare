@@ -134,8 +134,8 @@
 
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4">
-                    <div class="col-span-4 md:col-span-4 flex justify-end px-4">
-                        <button class="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
+                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
+                        <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
                     </div>
                     <!-- livewire/patient-table.php -->
                     <livewire:patients-table />
