@@ -15,6 +15,7 @@
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js'])
+    @livewireStyles
 
 
 
@@ -66,7 +67,7 @@
 
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
-                    <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-800 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
+                    <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="syringe" class="w-5 h-5"></i>Immunizations</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
@@ -131,7 +132,6 @@
                 <div class="md:pl-12 pl-6">
                     <h1 class="md:text-lg text-gray-800">All individuals who have been officially registered to receive care at the clinic.</h1>
                 </div>
-
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4">
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">

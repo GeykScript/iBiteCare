@@ -11,13 +11,19 @@ class PatientsTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 3;
+    public $perPage = 10;
 
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
 
     public $genderFilter = null; // null = all, 'Male' = male only, 'Female' = female only
     public $gender = '';
+
+
+public function updatedPerPage()
+{
+    $this->resetPage();
+}
 
     public function setSortBy($sortByField)
     {
@@ -44,6 +50,7 @@ class PatientsTable extends Component
         }
         $this->resetPage();
     }
+
 
     public function render()
     {
