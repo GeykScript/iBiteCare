@@ -89,7 +89,7 @@
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
                         <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
-                        <p class="text-xs">Administrator</p>
+                        <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
                     </div>
                     <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
                 </a>
@@ -130,9 +130,39 @@
 
                 </div>
                 <!-- Main Content -->
-                <div>
-                    <!-- // Main content goes here -->
-                  
+                <div class="flex flex-col items-center justify-center px-4 ">
+                    <h1 class="p-4 text-xl font-900 text-[#FF000C]">Account Information</h1>
+                    <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white border border-gray-200 shadow-lg rounded-lg">
+                        <div class="flex md:gap-6 gap-2 items-center">
+                            <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="square-user"></i>
+                            <div class="px-3">
+                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->first_name}} {{$clinicUser->middle_initial}} {{$clinicUser->last_name}} </h1>
+                                <p class="md:text-md text-sm text-gray-600">Name</p>
+                            </div>
+                        </div>
+                        <div class="flex md:gap-6 gap-2 items-center">
+                            <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="mail"></i>
+                            <div class="px-3">
+                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->account_id}} </h1>
+                                <p class="md:text-md text-sm text-gray-600">Account ID</p>
+                            </div>
+                        </div>
+                        <div class="flex md:gap-6 gap-2 items-center">
+                            <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="lock-keyhole"></i>
+                            <div class="flex flex-col w-full">
+                                <div class="flex justify-between items-center">
+                                    <input type="password" id="defaultPassword" class="w-full border-none rounded md:text-xl text-md font-bold" value="{{$clinicUser->default_password}}" readonly>
+                                    <button type="button" id="togglePassword" class="ml-2">
+                                        <i data-lucide="eye" class="hidden"></i>
+                                        <i data-lucide="eye-off"></i>
+                                    </button>
+                                </div>
+                                <p class="md:text-md text-sm text-gray-600 px-3">Default Password</p>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
 
             </div>
@@ -159,7 +189,23 @@
         </x-modal>
 </body>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const passwordField = document.getElementById("defaultPassword");
+        const toggleBtn = document.getElementById("togglePassword");
+        const eyeIcon = toggleBtn.querySelector('[data-lucide="eye"]');
+        const eyeOffIcon = toggleBtn.querySelector('[data-lucide="eye-off"]');
 
+        toggleBtn.addEventListener("click", function() {
+            const isHidden = passwordField.type === "password";
+            passwordField.type = isHidden ? "text" : "password";
 
+            // Toggle which icon is shown
+            eyeIcon.classList.toggle("hidden", !isHidden);
+            eyeOffIcon.classList.toggle("hidden", isHidden);
+        });
+
+    });
+</script>
 
 </html>

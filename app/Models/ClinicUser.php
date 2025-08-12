@@ -12,6 +12,7 @@ class ClinicUser extends Model implements Authenticatable
     protected $table = 'users';
     protected $fillable = [
         'name',
+        'role',
         'email',
         'account_id',
         'password',
@@ -21,4 +22,10 @@ class ClinicUser extends Model implements Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function UserRole(){
+        return $this->belongsTo(UserRole::class, 'role', 'id');
+    }
+    
+
 }

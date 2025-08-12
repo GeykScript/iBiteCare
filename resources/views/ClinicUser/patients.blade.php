@@ -92,7 +92,7 @@
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
                         <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
-                        <p class="text-xs">Administrator</p>
+                        <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
                     </div>
                     <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
                 </a>

@@ -43,7 +43,12 @@ import {
         BadgeQuestionMark,
         Search,
         Plus,
-        AlignJustify
+        AlignJustify,
+        IdCard,
+        SquareUser,     
+        LockKeyhole,
+        Eye,
+        EyeOff
     } 
      from 'lucide';
 
@@ -84,9 +89,14 @@ createIcons({
     BadgeQuestionMark,
     Search,
     Plus,
-    AlignJustify
+    AlignJustify,
+    IdCard,
+    SquareUser,
+    LockKeyhole,
+    Eye,
+    EyeOff
   }
-});
+}); 
 
 
 // Sidebar toggle functionality
