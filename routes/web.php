@@ -21,24 +21,37 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-// Staff/Admin Auth (default)
-
-// Patient Auth
+// Clinic User Authentication Routes
 use App\Http\Controllers\Auth\ClinicUser\ClinicUserAuthController;
 
 Route::get('/clinic/login', [ClinicUserAuthController::class, 'showLoginForm'])->name('clinic.login');
 Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])->name('clinic.login.store');
 
-// Route::post('/clinic/login', [ClinicUserAuthController::class, 'login']);
-
-Route::post('/clinic/logout', function () {
-    Auth::guard('clinic_user')->logout();
-    return redirect()->route('clinic.login'); // Redirect to your admin login view
-})->name('clinic.logout');
-
+//the exception middle ware issue like dashbaord shoud go back to login (boostrap/app.php)
+use App\Http\Controllers\ClinicUser\DashboardController;
+use App\Http\Controllers\ClinicUser\PatientsController;
+use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
+use App\Http\Controllers\ClinicUser\ReportsController;
 
 Route::middleware('auth:clinic_user')->group(function () {
-    Route::get('/clinic/dashboard', function () {
-        return view('ClinicUser.dashboard');
-    })->name('ClinicUser.dashboard'); // ✅ Add this
+    
+    Route::get('/clinic/dashboard', [DashboardController::class, 'index'])
+        ->name('clinic.dashboard');
+
+    Route::post('/clinic/logout', function () {
+        Auth::guard('clinic_user')->logout();
+        return redirect()->route('clinic.login');
+    })->name('clinic.logout');
+
+
+    Route::get('/clinic/patients', [PatientsController::class, 'index'])
+        ->name('clinic.patients');
+
+    Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
+        ->name('clinic.profile');
+
+    Route::get('/clinic/reports', [ReportsController::class, 'index'])
+        ->name('clinic.reports');
+
+
 });

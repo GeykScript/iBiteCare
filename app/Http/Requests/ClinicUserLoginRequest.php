@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Hash;
+use App\Models\ClinicUser;
 class ClinicUserLoginRequest extends FormRequest
 {
     /**
@@ -27,25 +28,44 @@ class ClinicUserLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'account_id' => ['required', 'string'],
             'password' => ['required', 'string'],
-        ];
+        ];  
     }
 
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::guard('clinic_user')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $accountId = $this->input('account_id');
+        $password = $this->input('password');
+
+        // 1. Try to find the user by account_id
+        $clinic_user = ClinicUser::where('account_id', $accountId)->first();
+
+        if (! $clinic_user) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'account_id' => 'This account ID is not registered.',
             ]);
         }
 
+        // 2. If found, check password manually
+        if (! Hash::check($password, $clinic_user->password)) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'password' => 'Incorrect password.',
+            ]);
+        }
+
+        // 3. If both are valid, log in
+        Auth::guard('clinic_user')->login($clinic_user, $this->boolean('remember'));
+
         RateLimiter::clear($this->throttleKey());
     }
+
 
     public function ensureIsNotRateLimited(): void
     {
@@ -58,7 +78,7 @@ class ClinicUserLoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'account_id' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -66,6 +86,6 @@ class ClinicUserLoginRequest extends FormRequest
     }
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
+        return Str::transliterate(Str::lower($this->string('account_id')) . '|' . $this->ip());
     }
 }

@@ -105,6 +105,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'clinic_users' => [
+            'provider' => 'clinic_users',
+            'table' => env('AUTH_CLINIC_USER_PASSWORD_RESET_TOKEN_TABLE', 'clinic_user_password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
 
     /*
