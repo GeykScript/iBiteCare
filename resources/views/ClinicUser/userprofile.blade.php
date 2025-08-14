@@ -125,47 +125,77 @@
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="flex items-center md:gap-2 md:px-20 px-2">
-                    <h2 class="md:ml-3 md:text-lg text-md p-4">To enhance the security of your account, it is important to change the default password immediately after your first login. We also strongly recommend setting up security questions to help you recover your account in case you forget your password.</h2>
-
+                <div class="flex items-center md:px-20 px-2">
+                    <h2 class="md:ml-3 md:px-20 md:text-lg text-sm p-4">For your security, change your default password after your first login and set up security questions to help recover your account if needed.</h2>
                 </div>
-                <!-- Main Content -->
-                <div class="flex flex-col items-center justify-center px-4 ">
-                    <h1 class="p-4 text-xl font-900 text-[#FF000C]">Account Information</h1>
+            </div>
+            <!-- Main Content -->
+            <div class="h-screen ">
+                <div class="flex flex-col items-center justify-center px-4 gap-2 pb-10 ">
+                    <div class="md:w-1/2 w-full">
+                        <h1 class="p-4 text-xl font-900 text-[#FF000C]">Account Information</h1>
+                    </div>
                     <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white border border-gray-200 shadow-lg rounded-lg">
-                        <div class="flex md:gap-6 gap-2 items-center">
-                            <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="square-user"></i>
-                            <div class="px-3">
+                        <div class="flex grid grid-cols-12 ">
+                            <div class="col-span-1 flex items-center justify-center">
+                                <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="square-user"></i>
+                            </div>
+                            <div class="col-span-11  px-3 md:px-5 py-1">
                                 <h1 class="md:text-xl text-md font-bold">{{$clinicUser->first_name}} {{$clinicUser->middle_initial}} {{$clinicUser->last_name}} </h1>
-                                <p class="md:text-md text-sm text-gray-600">Name</p>
+                                <p class="md:text-sm text-xs text-gray-600">Name</p>
                             </div>
                         </div>
-                        <div class="flex md:gap-6 gap-2 items-center">
-                            <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="mail"></i>
-                            <div class="px-3">
-                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->account_id}} </h1>
-                                <p class="md:text-md text-sm text-gray-600">Account ID</p>
+                        <div class="flex grid grid-cols-12 ">
+                            <div class="col-span-1 flex items-center justify-center">
+                                <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="mail"></i>
+                            </div>
+                            <div class="col-span-11  px-3 md:px-5  py-1">
+                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->email}} </h1>
+                                <p class="md:text-sm text-xs  text-gray-600">Email</p>
                             </div>
                         </div>
-                        <div class="flex md:gap-6 gap-2 items-center">
-                            <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="lock-keyhole"></i>
-                            <div class="flex flex-col w-full">
-                                <div class="flex justify-between items-center">
-                                    <input type="password" id="defaultPassword" class="w-full border-none rounded md:text-xl text-md font-bold" value="{{$clinicUser->default_password}}" readonly>
+                        <div class="flex grid grid-cols-12 ">
+                            <div class="col-span-1 flex items-center justify-center">
+                                <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="phone-call"></i>
+                            </div>
+                            <div class="col-span-11  px-3 md:px-5  py-1">
+                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->info->contact_number}} </h1>
+                                <p class="md:text-sm text-xs  text-gray-600">Phone Number</p>
+                            </div>
+                        </div>
+                        <div class="flex grid grid-cols-12 ">
+                            <div class="col-span-1 flex items-center justify-center">
+                                <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="lock-keyhole"></i>
+                            </div>
+                            <div class="col-span-11 px-3 md:px-5  py-1 ">
+                                <div class="flex justify-between">
+                                    <input type="password" id="defaultPassword" class="w-full border-none rounded md:text-xl text-sm p-0 font-bold focus:outline-none focus:ring-0" value="{{$clinicUser->default_password}}" readonly>
                                     <button type="button" id="togglePassword" class="ml-2">
-                                        <i data-lucide="eye" class="hidden"></i>
-                                        <i data-lucide="eye-off"></i>
+                                        <i data-lucide="eye" class="hidden md:w-6 md:h-6 w-4 h-4"></i>
+                                        <i data-lucide="eye-off" class="md:w-6 md:h-6 w-4 h-4"></i>
                                     </button>
                                 </div>
-                                <p class="md:text-md text-sm text-gray-600 px-3">Default Password</p>
+                                <div>
+                                    <p class="text-xs md:text-sm text-gray-600">Default Password</p>
+                                </div>
                             </div>
                         </div>
+                        <div class="flex items-center justify-end">
+                            <a href="#" class="flex gap-1  text-xs items-center text-sky-500 font-900">More Details <i data-lucide="info" class="w-4 h-4 fill-sky-500 stroke-white"></i></a>
+                        </div>
                     </div>
-
-
+                    <div class="md:w-1/2 w-full p-4">
+                        <h1 class="text-xl font-900 text-[#FF000C]">Update Password</h1>
+                        <p class="text-sm text-gray-600">
+                            Ensure your account is using a long, random password to stay secure.
+                        </p>
+                    </div>
+                    <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white border border-gray-200 shadow-lg rounded-lg">
+                        @include('ClinicUser.profile.update-password-form')
+                    </div>
                 </div>
-
             </div>
+
         </section>
 
         <!-- Modals For Logout -->
