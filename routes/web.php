@@ -33,6 +33,9 @@ use App\Http\Controllers\ClinicUser\PatientsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 use App\Http\Controllers\ClinicUser\ReportsController;
 use App\Http\Controllers\Auth\ClinicUser\PasswordController;
+use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
+use App\Http\Controllers\ClinicUser\ForgotPasswordController;
+use App\Http\Controllers\ClinicUser\UpdatePasswordController;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -56,4 +59,24 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/password', [PasswordController::class, 'update'])
         ->name('clinic.password.update');
-});
+
+}); 
+
+Route::get('/clinic/two-factor/{id}', [TwoFactorAuthenticationController::class, 'index'])
+    ->name('clinic.two-factor');
+
+Route::post('/clinic/two-factor/send', [TwoFactorAuthenticationController::class, 'send_code'])
+    ->name('clinic.two-factor.send_code');
+
+Route::post('/clinic/two-factor/verify', [TwoFactorAuthenticationController::class, 'verify'])
+    ->name('clinic.two-factor.verify');
+
+Route::get('/clinic/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('clinic.forgot-password');
+
+
+Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'updatePasswordForm'])
+    ->name('clinic.update-password');
+    
+Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
+    ->name('clinic.update-password.update');

@@ -20,7 +20,9 @@ class PasswordController extends Controller
 
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password:clinic_user'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
+            'password' => ['required', 'confirmed',
+                Password::min(8)->letters()->mixedCase()->numbers()->symbols(),
+            ],
         ]);
 
         ClinicUser::where('id', $clinicUser->id)

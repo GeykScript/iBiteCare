@@ -28,6 +28,8 @@
                 </a>
             </div>
             <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[30rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
+
+
                 <div class="flex flex-col justify-center ">
 
                     <!--Form-->
@@ -35,49 +37,39 @@
                         <div id="datetime" class="md:text-md text-sm text-black font-bold"></div>
                     </div>
                     <!-- Session Status -->
-                    <x-auth-session-status class="mb-4 bg-green-100 p-3 rounded-md" :status="session('status')" />
+                    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-
-                    <form method="POST" action="{{ route('clinic.login') }}" class="mt-5">
+                    <form method="POST" action="{{ route('clinic.two-factor.verify') }}" class="mt-5">
                         @csrf
 
-                        <!-- account-id -->
-                        <h1 class="text-center text-xl font-bold text-black">Login Clinic Account</h1>
-                        <div class="mt-6">
-                            <x-input-label for="account_id" :value="__('Account ID')" />
-                            <x-text-input id="account_id" class="block mt-1 w-full" type="text" name="account_id" :value="old('account_id')" required autofocus autocomplete="username" />
-                            <x-input-error :messages="$errors->get('account_id')" class="bg-red-200 px-4 py-2 mt-2 rouned-sm" />
-                        </div>
+                        <!-- Email Address -->
+                        <input type="hidden" name="account_id" value="{{ $clinicUser->account_id }}">
 
-                        <!-- Password -->
+                        <h1 class="text-center text-xl font-bold text-black">Two-Factor Authentication</h1>
+                        <p class="text-sm mt-6">We’ve sent a 6-digit verification code to your registered email. Enter the code below to confirm your identity.</p>
+
                         <div class="mt-4">
-                            <x-input-label for="password" :value="__('Password')" />
+                            <x-input-label for="code" :value="__('Verification Code')" />
+                            <x-input-error :messages="$errors->get('code')" class="bg-red-200 px-4 py-2 mt-5 rounded-sm" />
 
-                            <x-text-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+                            <div class="flex justify-center gap-2 mt-5">
+                                @for ($i = 0; $i < 6; $i++)
+                                    <input
+                                    type="text"
+                                    maxlength="1"
+                                    name="code[]"
+                                    class="w-12 h-14 text-center border-b-2 border-gray-400 focus:border-sky-500 focus:outline-none text-2xl rounded"
+                                    oninput="moveToNext(this)"
+                                    onkeydown="moveToPrev(event, this)">
+                                    @endfor
+                            </div>
 
-                            <x-input-error :messages="$errors->get('password')" class="bg-red-200 px-4 py-2 mt-2 rounded-sm" />
+                            <input type="hidden" name="code" id="code">
                         </div>
 
-                        <!-- Remember Me -->
-                        <div class="block mt-4">
-                            <label for="remember_me" class="inline-flex items-center">
-                                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-red-600 shadow-sm focus:ring-red-500" name="remember">
-                                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                            </label>
-                        </div>
-
-                        <div class="flex items-center justify-end mt-4">
-                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none " href="{{ route('clinic.forgot-password') }}">
-                                {{ __('Forgot your password?') }}
-                            </a>
-
-                        </div>
-                        <div class="mt-4">
+                        <div class="mt-5">
                             <x-primary-button class="w-full justify-center bg-red-600 hover:bg-red-700 focus:bg-red-700">
-                                {{ __('Log in') }}
+                                {{ __('Verify') }}
                             </x-primary-button>
                         </div>
                     </form>
@@ -93,6 +85,27 @@
 
 </body>
 <script>
+    function moveToNext(el) {
+        if (el.value.length === 1 && el.nextElementSibling) {
+            el.nextElementSibling.focus();
+        }
+        updateCode();
+    }
+
+    function moveToPrev(event, el) {
+        if (event.key === "Backspace" && el.value === "" && el.previousElementSibling) {
+            el.previousElementSibling.focus();
+        }
+        updateCode();
+    }
+
+    function updateCode() {
+        let codeInputs = document.querySelectorAll("input[name='code[]']");
+        let code = "";
+        codeInputs.forEach(input => code += input.value);
+        document.getElementById("code").value = code;
+    }
+
     function updateDateTime() {
         const now = new Date();
 

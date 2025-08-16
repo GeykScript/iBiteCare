@@ -20,7 +20,7 @@
 
 
 <body class="bg-gradient-to-r from-red-600 to-gray-800">
-    <section class="flex flex-col items-center justify-center h-screen">
+    <section class="flex flex-col items-center justify-center md:h-screen">
 
     <div class="flex flex-col md:flex-row justify-center items-center md:mt-20 mt-6 mb-10">
         <div class="md:h-[600px] md:w-[22rem] h-[16rem] w-[20rem] shadow-lg bg-[#EB1C26] md:rounded-l-[15px]  p-2 rounded-t-[15px] md:rounded-r-none md:overflow-none overflow-hidden">
@@ -28,6 +28,8 @@
                 <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
             </a>
         </div>
+
+        
 
         <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[34rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
 

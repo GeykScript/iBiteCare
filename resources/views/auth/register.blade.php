@@ -20,7 +20,7 @@
 
 
 <body class="bg-gradient-to-r from-red-600 to-gray-800">
-    <section class="flex flex-col items-center justify-center h-screen">
+    <section class="flex flex-col items-center justify-center md:h-screen">
     <div class="flex flex-col md:flex-row justify-center items-center md:mt-12 mt-6 mb-10">
         <div class="md:h-[640px] md:w-[22rem] h-[16rem] w-[20rem] shadow-lg bg-[#EB1C26] md:rounded-l-[15px]  p-2 md:py-12 rounded-t-[15px] md:rounded-r-none md:overflow-none overflow-hidden">
             <a href="{{  url('/') }}" class="hover:outline-none focus:outline-none md:overflow-none overflow-hidden">
