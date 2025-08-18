@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 name: "Female",
                 data: ["788", "810", "866", "788", "1100", "1200"],
-                color: "#ff014dec",
+                color: "#ff0a70ec",
             }
         ],
         chart: {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             type: "bar",
             width: "100%",
-            height: 330,
+            height: 345,
             toolbar: {
                 show: false,
             }
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shared: true,
             intersect: false,
             formatter: function(value) {
-                return "₱ " + value
+                return value
             }
         },
         xaxis: {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
                 },
                 formatter: function(value) {
-                    return "₱ " + value
+                    return  value
                 }
             },
             categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],

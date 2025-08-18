@@ -27,7 +27,7 @@
                     <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
                 </a>
             </div>
-            <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[30rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
+            <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[32rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
                 <div class="flex flex-col justify-center ">
 
                     <!--Form-->

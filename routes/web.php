@@ -36,6 +36,8 @@ use App\Http\Controllers\Auth\ClinicUser\PasswordController;
 use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
 use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
+use App\Http\Controllers\ClinicUser\ClinicUsersController;
+
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -59,6 +61,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/password', [PasswordController::class, 'update'])
         ->name('clinic.password.update');
+
+    Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
+        ->name('clinic.user-accounts');
 
 }); 
 
