@@ -133,7 +133,7 @@
                     <h1 class="md:text-lg text-gray-800">All individuals who have been officially registered to receive care at the clinic.</h1>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 p-4">
+                <div class="grid grid-cols-4 p-4  md:px-10">
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
                         <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
                     </div>

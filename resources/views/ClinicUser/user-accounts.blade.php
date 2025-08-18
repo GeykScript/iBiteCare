@@ -125,13 +125,16 @@
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="flex items-center md:px-20 px-2">
-                    <h2 class="md:ml-3 md:px-20 md:text-lg text-sm p-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui molestiae eum totam doloremque odit, eos provident ipsa dolore neque. Nisi vitae eaque rem eius harum quia quos minima blanditiis vel!</h2>
+                <div class="grid grid-cols-4 p-4 md:px-20">
+                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
+                        <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none font-bold"><i data-lucide="plus" class="w-5 h-5 stroke-[2]"></i>New User Account</button>
+                    </div>
+                    <livewire:clinic-users-table />
                 </div>
             </div>
             <!-- Main Content -->
             <div class="h-screen ">
-            
+
             </div>
 
         </section>

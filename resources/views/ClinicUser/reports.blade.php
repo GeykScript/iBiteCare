@@ -132,15 +132,26 @@
                 <div class="grid grid-cols-12 md:p-4 p-2 gap-2">
                     <div class="col-span-12 md:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 p-2 md:p-6">
-                            <h1 class="text-lg font-900 pb-4">Patients Summary</h1>
-                            <div class="flex justify-between items-center mb-4 md:gap-4 gap-2">
+                            <div class="flex items-center gap-2 p-2">
+                                <div>
+                                    <h5 class="leading-none md:text-xl font-900 text-gray-900  pb-1"> Patient Summary</h5>
+                                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Comprehensive view of patient records and activities</p>
+                                </div>
+                            </div>
+                            <div class="flex  justify-evenly items-center mb-4 mt-2 md:gap-4 gap-2 px-6">
+                                <select id="filter" class="border rounded w-full p-1 text-sm ">
+                                    <option value="today">Today</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="lastWeek">Last Week</option>
+                                    <option value="lastMonth">Last Month</option>
+                                    <option value="lastYear">Last Year</option>
+                                </select>
                                 <select id="serviceFilter" class="border rounded w-full  p-1 text-sm">
                                     <option value="">Service</option>
                                     <option value="">Anti-Rabies</option>
                                     <option value="">Booster</option>
                                     <option value="">Tetanus Toxiod</option>
                                 </select>
-
                                 <select id="ageFilter" class="border rounded p-1 w-full text-sm">
                                     <option value="all">Age</option>
                                     <option value="0-17">0-17</option>
@@ -148,46 +159,35 @@
                                     <option value="65+">65+</option>
                                 </select>
                             </div>
-                            <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center">
-                                    <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
-                                        <i data-lucide="users" class="w-6 h-6 text-white"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-gray-500 font-bold">Accomodated Patients</p>
-                                        <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">5,020</h5>
-                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
-                                    </div>
+                            <div class="flex items-center px-4 py-2">
+                                <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
+                                    <i data-lucide="users" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 font-bold">Accomodated Patients</p>
+                                    <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">5,020</h5>
+                                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-2 pb-3">
-                                <dl>
-                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</dt>
-                                    <dd class="leading-none text-md font-bold text-green-500 text-indigo-500">23,635</dd>
-                                </dl>
-                                <dl>
-                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</dt>
-                                    <dd class="leading-none text-md font-bold text-red-600 text-pink-500">18,230</dd>
-                                </dl>
+                            <div class="flex items-center justify-evenly">
+                                <div>
+                                    <h1 class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</h1>
+                                    <h1 class="leading-none text-md font-bold text-green-500 text-sky-500">23,635</h1>
+                                </div>
+                                <div>
+                                    <h1 class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</h1>
+                                    <h1 class="leading-none text-md font-bold text-red-600 text-[#ff0a70ec]">18,230</h1>
+                                </div>
                             </div>
                             <div id="bar-chart"></div>
-                            <div class="grid grid-cols-2 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5 pt-5">
-                                <div class="col-span-1">
-                                    <a href="#" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <div class="grid grid-cols-2  border-gray-200 border-t">
+                                <div class="col-span-2 mt-2 flex items-end justify-end">
+                                    <a href="{{ route('clinic.patients') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
                                         View Details
                                     </a>
                                 </div>
-                                <div class="col-span-1">
-                                    <select id="filter" class="border rounded w-full p-1 text-sm ">
-                                        <option value="today">Today</option>
-                                        <option value="yesterday">Yesterday</option>
-                                        <option value="lastWeek">Last Week</option>
-                                        <option value="lastMonth">Last Month</option>
-                                        <option value="lastYear">Last Year</option>
-                                    </select>
 
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                     <div class="col-span-12 md:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6">
                             <h1 class="text-lg font-900 pb-8 px-2">Inventory Overview</h1>
-                            <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between pb-4 mb-3 border-b border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center">
                                     <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center me-3">
                                         <i data-lucide="package" class="w-6 h-6 text-white"></i>

@@ -59,23 +59,23 @@
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
             <thead class="text-md text-white  bg-gray-800 ">
                 <tr class="px-4">
-                    <th scope="col" class="px-2 py-4 text-center rounded-l-lg hover:cursor-pointer" wire:click="setSortBy('id')">ID</th>
-                    <th scope="col" class="px-2 py-4 text-center hover:cursor-pointer" wire:click="setSortBy('last_name')">Last Name</th>
-                    <th scope="col" class="px-2 py-4 text-center hover:cursor-pointer" wire:click="setSortBy('first_name')">First Name</th>
-                    <th scope="col" class="px-2 py-4 text-center ">M.I</th>
-                    <th scope="col" class="px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('birthdate')">Birthdate</th>
-                    <th scope="col" class="px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('age')">Age</th>
-                    <th scope="col" class="px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="toggleGenderFilter">
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center rounded-l-lg hover:cursor-pointer" wire:click="setSortBy('id')">ID</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hover:cursor-pointer" wire:click="setSortBy('last_name')">Last Name</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hover:cursor-pointer" wire:click="setSortBy('first_name')">First Name</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center ">M.I</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('birthdate')">Birthdate</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('age')">Age</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="toggleGenderFilter">
                         Sex
                         @if($gender)
                         ({{ $gender }})
                         @endif
                     </th>
-                    <th scope="col" class="px-2 py-4 text-center hidden md:table-cell">Contact#</th>
-                    <th scope="col" class="px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('address')">Address</th>
-                    <th scope="col" class="px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('registration_date')">Registration Date</th>
-                    <th scope="col" class="px-2 py-4 text-center">Profile</th>
-                    <th scope="col" class="px-2 py-4 text-center rounded-r-lg">Transactions</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hidden md:table-cell">Contact#</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('address')">Address</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('registration_date')">Registration Date</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center">Profile</th>
+                    <th scope="col" class="px-6 md:px-4 py-4 text-center rounded-r-lg">Transactions</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,19 +89,19 @@
                 @else
                 @foreach ($patients as $patient)
                 <tr wire:key="{{ $patient->id }}" class="border-b dark:border-gray-700">
-                    <td class="px-2 py-4 text-center font-medium text-gray-900">{{ $patient->id }}</td>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900">{{ $patient->last_name }}</td>
-                    <th class="px-2 py-4 text-center font-medium text-gray-900 whitespace-nowrap"> {{ $patient->first_name }}</th>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900">{{ $patient->middle_initial }}</td>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->birthdate }}</td>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->age }}</td>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->sex }}</td>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->contact_number }}</td>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900">{{ $patient->id }}</td>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900">{{ $patient->last_name }}</td>
+                    <th class="px-6 md:px-4 py-4 text-center font-medium text-gray-900 whitespace-nowrap"> {{ $patient->first_name }}</th>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900">{{ $patient->middle_initial }}</td>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->birthdate }}</td>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->age }}</td>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->sex }}</td>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->contact_number }}</td>
                     <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->registration_date }}</td>
-                    <td class="px-2 py-4 text-center font-medium text-gray-900">
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->registration_date }}</td>
+                    <td class="px-6 md:px-4 py-4 text-center font-medium text-gray-900">
                         <a href="#" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold">
-                            Details <img src="{{asset('images/file-text.svg')}}" alt="Profile Details"></a>
+                            View <img src="{{asset('images/file-text.svg')}}" alt="Profile Details"></a>
                     </td>
                     <td class="px-2 py-4 text-center font-medium text-gray-900">
                         <a href="#" class="text-red-500 flex items-center justify-center gap-1 font-semibold">

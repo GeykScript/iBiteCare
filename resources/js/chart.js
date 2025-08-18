@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             type: "bar",
             width: "100%",
-            height: 345,
+            height: 352,
             toolbar: {
                 show: false,
             }

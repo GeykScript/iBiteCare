@@ -254,7 +254,7 @@
                                         </p>
                                     </div>
                                     <!-- Scrollable container -->
-                                    <div class="overflow-y-auto max-h-[14.5rem] pr-2 mb-4 scrollbar-hidden ">
+                                    <div class="overflow-y-auto max-h-[14.5rem]  mb-4 scrollbar-hidden px-2 ">
                                         <div class="flex justify-between px-2 mt-2">
                                             <div class="flex items-center">
                                                 <div class="flex items-center justify-center">

@@ -15,6 +15,8 @@ class ClinicUsersController extends Controller
 
         $clinicUser = Auth::guard('clinic_user')->user();
 
-        return view('ClinicUser.user-accounts',compact('clinicUser'));
+        $clinic_users = ClinicUser::all();
+
+        return view('ClinicUser.user-accounts',compact('clinicUser','clinic_users'));
     }
 }
