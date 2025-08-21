@@ -13,7 +13,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js', 'resources/js/address.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js', 'resources/js/address.js','resources/js/datetime.js'])
 
     @endif
 </head>
@@ -130,7 +130,7 @@
                             onclick="document.getElementById('newClinicUserModal').showModal()"
                             class=" bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none font-bold"><i data-lucide="plus" class="w-5 h-5 stroke-[2]"></i>New User Account</button>
                     </div>
-                    
+
                     <!-- New Clinic User Modal -->
                     <dialog id="newClinicUserModal" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
                         <div class="w-full flex justify-end mb-5">
