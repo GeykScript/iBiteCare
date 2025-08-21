@@ -64,6 +64,11 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
         ->name('clinic.user-accounts');
+    // routes/web.php
+    Route::get('/clinic-users/generate-id', [ClinicUsersController::class, 'generateId'])
+        ->name('clinic-users.generateId');
+    Route::post('/clinic-users/create', [ClinicUsersController::class, 'createUserAccount'])
+        ->name('clinic.users.create');
 
 }); 
 

@@ -4,7 +4,6 @@ import './bootstrap';
 // window.Alpine = Alpine;
 // Alpine.start();
 
-
 // Recommended way, to include only the icons you need.
 import {
      createIcons, 
@@ -48,7 +47,9 @@ import {
         SquareUser,     
         LockKeyhole,
         Eye,
-        EyeOff
+        EyeOff,
+        X,
+        Check
     } 
      from 'lucide';
 
@@ -94,7 +95,9 @@ createIcons({
     SquareUser,
     LockKeyhole,
     Eye,
-    EyeOff
+    EyeOff,
+    X,
+    Check
   }
 }); 
 

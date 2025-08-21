@@ -82,13 +82,13 @@
                 @foreach ($clinic_users as $clinic_user)
                 <tr wire:key="{{ $clinic_user->id }}" class="border-b dark:border-gray-700">
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->id }}</td>
-                    <td class="md:px-2 px-0 py-4 text-center font-medium text-gray-900">{{ $clinic_user->account_id }}</td>
+                    <td class="md:px-2 px-0 py-4 text-center font-medium text-gray-900">{{ $clinic_user->account_id }}</td> 
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->UserRole->role_name }}</td>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->last_name }}</td>
                     <th class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 whitespace-nowrap"> {{ $clinic_user->first_name }}</th>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->middle_initial }}</td>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $clinic_user->email }}</td>
-                    <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $clinic_user->info->contact_number }}</td>
+                    <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $clinic_user->info?->contact_number }}</td>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 flex items-center gap-2 justify-center">
                         <a href="#" class="text-blue-500 flex md:flex-col items-center  justify-center gap-1 font-semibold">
                             <img src="{{asset('images/view.svg')}}" alt="Profile Details"></a>
@@ -104,6 +104,5 @@
     <!-- table pagination -->
     <div class=" px-3">
         {{ $clinic_users->appends(['perPage' => $perPage])->links() }}
-
     </div>
 </div>

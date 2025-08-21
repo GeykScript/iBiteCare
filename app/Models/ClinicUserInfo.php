@@ -11,13 +11,11 @@ class ClinicUserInfo extends Model
     protected $fillable = [
         'user_id',
         'role_id',
-        'first_name',
-        'last_name',
-        'personal_email',
         'contact_number',
         'address',
         'gender',
         'birthdate',
+        'age',
     ];
 
     public function UserRole()

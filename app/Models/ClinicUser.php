@@ -15,11 +15,15 @@ class ClinicUser extends Model implements Authenticatable
     use \Illuminate\Auth\Authenticatable;
     protected $table = 'users';
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'middle_initial',
+        'suffix',
         'role',
         'email',
         'account_id',
         'password',
+        'default_password',
 
     ];
     protected $hidden = [
@@ -31,7 +35,7 @@ class ClinicUser extends Model implements Authenticatable
         return $this->belongsTo(ClinicUserRole::class, 'role', 'id');
     }   
     public function info()
-    {
+    {   
         return $this->hasOne(ClinicUserInfo::class, 'user_id', 'id');
     }
 
