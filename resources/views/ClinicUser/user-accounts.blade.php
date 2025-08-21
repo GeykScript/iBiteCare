@@ -79,7 +79,7 @@
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
+                    <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
                 </ul>
             </nav>
@@ -137,8 +137,9 @@
                             <button onclick="document.getElementById('newClinicUserModal').close()"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
-                        <form action="{{route('clinic.users.create')}}" method="POST">
+                        <form action="{{route('clinic.users.create')}}" method="POST" id="create_account_form">
                             @csrf
+                            <span class="error text-red-500 text-sm"></span>
 
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
                                 <div class="col-span-12 flex flex-col items-center justify-center">
@@ -149,11 +150,11 @@
 
                                 <div class="col-span-12 flex flex-col gap-2 mt-3">
                                     <p>Select the role for the new user</p>
-                                    <label for="address" class="text-md font-bold text-gray-800">Clinic Role:</label>
+                                    <label for="address" class="text-md font-bold text-gray-800">Clinic Role: <span class="text-red-500" id="role-error">*</span></label>
                                     <div class="flex gap-7 md:px-6">
 
                                         <label class="flex items-center space-x-2">
-                                            <input type="radio" name="role" value="1" class=" text-red-500 focus:ring-red-500">
+                                            <input type="radio" name="role" value="1" class=" text-red-500 focus:ring-red-500" required>
                                             <span>Admin</span>
                                         </label>
                                         <label class="flex items-center space-x-2">
@@ -171,19 +172,19 @@
                                 <div class="col-span-12 mt-4 ">
                                     <div class="grid grid-cols-5 gap-4">
                                         <div class="col-span-5 md:col-span-2">
-                                            <label for="account_id" class="text-sm font-semibold">Account ID</label>
+                                            <label for="account_id" class="text-sm font-semibold">Account ID: <span class="text-red-500" id="account-id-error">*</span></label>
                                             @php
                                             $generated_id = " ";
                                             @endphp
-                                            <input type="text" id="account_id" name="account_id" value="{{ $generated_id }}" class=" w-full p-3 px-4 border border-gray-100 rounded-lg bg-gray-100 focus:outline-none focus:ring-0 focus:border-gray-100" readonly required>
+                                            <input type="text" id="account_id" name="account_id" value="{{ $generated_id }}" class=" w-full p-3 px-4 border border-gray-100 rounded-lg bg-gray-100 focus:outline-none focus:ring-0 focus:border-gray-100" readonly>
                                         </div>
                                         <div class="col-span-5 md:col-span-2">
-                                            <label for="default_password" class=" text-sm font-semibold">Default Password</label>
+                                            <label for="default_password" class=" text-sm font-semibold">Default Password: <span class="text-red-500" id="default-password-error">*</span></label>
                                             @php
                                             $default_password = " ";
                                             @endphp
-                                            <input type="text" name="default_password" id="default_password" placeholder="Default Password" value="{{ $default_password }}" class=" w-full p-3 px-4 border border-gray-100 rounded-lg bg-gray-100 focus:outline-none focus:ring-0 focus:border-gray-100" readonly required>
-                                            <input type="password" name="password" id="password" hidden placeholder="Password" value="{{$default_password}}" class="w-full p-2 border border-gray-300 rounded-lg mt-4" required>
+                                            <input type="text" name="default_password" id="default_password" placeholder="Default Password" value="{{ $default_password }}" class=" w-full p-3 px-4 border border-gray-100 rounded-lg bg-gray-100 focus:outline-none focus:ring-0 focus:border-gray-100" readonly>
+                                            <input type="password" name="password" id="password" placeholder="Password" value="{{$default_password}}" class="w-full p-2 border border-gray-300 rounded-lg mt-4" hidden>
                                         </div>
                                         <div class="col-span-5 md:col-span-1 flex items-end justify-start">
                                             <button type="button"
@@ -206,36 +207,65 @@
                                 </div>
 
                                 <div class="col-span-12 grid grid-cols-12 gap-2">
+                                    <!-- FIRST NAME -->
                                     <div class="col-span-12 md:col-span-5">
-                                        <input type="text" name="first_name" placeholder="First Name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
+                                        <label for="first_name" class="text-sm font-semibold">First Name: <span class="text-red-500" id="first-name-error">*</span></label>
+                                        <input type="text" id="first_name" name="first_name"
+                                            placeholder="First Name"
+                                            pattern="[A-Z\s]+"
+                                            oninput="this.value = this.value.toUpperCase()"
+                                            title="Only  letters are allowed"
+                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
                                     </div>
+
+                                    <!-- LAST NAME -->
                                     <div class="col-span-12 md:col-span-5">
-                                        <input type="text" name="last_name" placeholder="Last Name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
-
+                                        <label for="last_name" class="text-sm font-semibold">Last Name: <span class="text-red-500" id="last-name-error">*</span></label>
+                                        <input type="text" id="last_name" name="last_name" placeholder="Last Name"
+                                            pattern="[A-Z]+"
+                                            oninput="this.value = this.value.toUpperCase()"
+                                            title="Only letters are allowed"
+                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
                                     </div>
-                                    <div class="col-span-6 md:col-span-1">
-                                        <input type="text" name="middle_initial" placeholder="M.I" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
 
-                                    </div>
+                                    <!-- MIDDLE INITIAL -->
                                     <div class="col-span-6 md:col-span-1">
-                                        <input type="text" name="suffix" placeholder="Suffix" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
+                                        <label for="middle_initial" class="text-sm font-semibold">M.I <span class="text-red-500" id="middle-initial-error">*</span></label>
+                                        <input type="text" id="middle_initial" name="middle_initial" placeholder="M.I" maxlength="3"
+                                            pattern="[A-Z]\."
+                                            oninput="this.value = this.value.toUpperCase()"
+                                            title="Only one letter followed by a period is allowed (e.g., M.)"
+                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
+                                    </div>
+
+                                    <!-- SUFFIX -->
+                                    <div class="col-span-6 md:col-span-1">
+                                        <label for="suffix" class="text-sm font-semibold">Suffix: </label>
+                                        <input type="text" id="suffix" name="suffix" placeholder="E.g., Jr."
+                                            pattern="[A-Za-z]{1,5}"
+                                            maxlength="5"
+                                            title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
+                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                 </div>
 
                                 <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
+                                    <!-- date of birth  -->
                                     <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
-                                        <label for="date_of_birth" class=" text-sm font-bold text-gray-800">Date of Birth</label>
-                                        <input type="date" name="date_of_birth" id="date_of_birth" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
+                                        <label for="date_of_birth" class=" text-sm font-bold text-gray-800">Date of Birth <span class="text-red-500" id="date-of-birth-error">*</span></label>
+                                        <input type="date" name="date_of_birth" id="date_of_birth" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
+                                    <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
-                                        <input type="number" name="age" placeholder="Age" id="age" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
+                                        <label for="age" class=" text-sm font-bold text-gray-800">Age </label>
+                                        <input type="number" name="age" placeholder="Age" id="age" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly>
                                     </div>
+                                    <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <label class=" text-sm font-bold text-gray-800">Gender</label>
+                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
                                         <div class="flex gap-5 items-center">
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" name="gender" value="male" class=" text-sky-500 focus:ring-sky-500">
+                                                <input type="radio" name="gender" value="male" class=" text-sky-500 focus:ring-sky-500" required>
                                                 <span>Male</span>
                                             </label>
                                             <label class="flex items-center space-x-2">
@@ -249,20 +279,24 @@
                                 <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
-                                            <label for="email" class=" text-sm font-bold text-gray-800">Personal Email</label>
+                                            <label for="email" class=" text-sm font-bold text-gray-800">Personal Email <span class="text-red-500" id="email-error">*</span></label>
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="email" placeholder="example@gmail.com" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
+                                            <input type="email" name="email" placeholder="example@gmail.com"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
-                                            <label for="contact_number" class=" text-sm font-bold text-gray-800"> Phone Number</label>
+                                            <label for="contact_number" class=" text-sm font-bold text-gray-800"> Phone Number <span class="text-red-500" id="contact-number-error">*</span></label>
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="phone-call"></i>
-                                            <input type="tel" name="contact_number" placeholder="e.g 09xxxxxxxxx" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
+                                            <input type="tel" id="contact_number" name="contact_number"
+                                                placeholder="e.g. 09xx xxx xxxx"
+                                                maxlength="13"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
                                 </div>
@@ -276,7 +310,7 @@
                                 <div class="col-span-12 grid grid-cols-12 gap-2">
                                     <div class="col-span-12 md:col-span-4">
                                         <div class="mb-3 relative">
-                                            <label for="region_btn" class="text-sm mb-2 font-semibold">Region</label>
+                                            <label for="region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-500" id="region-error">*</span></label>
                                             <button id="region_btn" type="button"
                                                 class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center">
                                                 <span id="region_selected">Select Region</span>
@@ -288,7 +322,7 @@
                                     </div>
                                     <div class="col-span-12 md:col-span-4">
                                         <div class="mb-3 relative">
-                                            <label for="province_btn" class="text-sm mb-2 font-semibold">Province</label>
+                                            <label for="province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-500" id="province-error">*</span></label>
                                             <button id="province_btn" type="button"
                                                 class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
                                                 <span id="province_selected">Select Province</span>
@@ -300,7 +334,7 @@
                                     </div>
                                     <div class="col-span-12 md:col-span-4">
                                         <div class="mb-3 relative">
-                                            <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality</label>
+                                            <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-500" id="city-error">*</span></label>
                                             <button id="city_btn" type="button"
                                                 class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
                                                 <span id="city_selected">Select City</span>
@@ -313,7 +347,7 @@
                                     <div class="col-span-12 md:col-span-12">
                                         <div class="grid grid-cols-4 gap-4">
                                             <div class="col-span-4 md:col-span-2 mb-3 relative">
-                                                <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay</label>
+                                                <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-500" id="barangay-error">*</span></label>
                                                 <button id="barangay_btn" type="button"
                                                     class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
                                                     <span id="barangay_selected">Select Barangay</span>
@@ -323,8 +357,8 @@
                                                 <input type="hidden" name="barangay" id="barangay_input">
                                             </div>
                                             <div class="col-span-4 md:col-span-2 ">
-                                                <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No.</label>
-                                                <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" required>
+                                                <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
+                                                <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                             </div>
                                         </div>
                                     </div>
@@ -397,23 +431,6 @@
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const passwordField = document.getElementById("defaultPassword");
-        const toggleBtn = document.getElementById("togglePassword");
-        const eyeIcon = toggleBtn.querySelector('[data-lucide="eye"]');
-        const eyeOffIcon = toggleBtn.querySelector('[data-lucide="eye-off"]');
-
-        toggleBtn.addEventListener("click", function() {
-            const isHidden = passwordField.type === "password";
-            passwordField.type = isHidden ? "text" : "password";
-
-            // Toggle which icon is shown
-            eyeIcon.classList.toggle("hidden", !isHidden);
-            eyeOffIcon.classList.toggle("hidden", isHidden);
-        });
-
-    });
-
     async function regenerateAccountId() {
         let response = await fetch("/clinic-users/generate-id");
         let data = await response.json();
@@ -421,6 +438,114 @@
         document.getElementById("default_password").value = data.default_password;
         document.getElementById("password").value = data.default_password;
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const date_of_birth = document.getElementById("date_of_birth");
+        const age = document.getElementById("age");
+
+        date_of_birth.addEventListener("change", function() {
+            const birthdate = new Date(date_of_birth.value);
+            const today = new Date();
+            let calculatedAge = today.getFullYear() - birthdate.getFullYear();
+            const monthDifference = today.getMonth() - birthdate.getMonth();
+
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthdate.getDate())) {
+                calculatedAge--;
+            }
+
+            age.value = calculatedAge;
+        });
+    });
+
+    document.getElementById("contact_number").addEventListener("input", function(e) {
+        let value = e.target.value.replace(/\D/g, ""); // remove all non-digits
+        if (value.length > 4 && value.length <= 7) {
+            value = value.replace(/(\d{4})(\d+)/, "$1 $2");
+        } else if (value.length > 7) {
+            value = value.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3");
+        }
+        e.target.value = value;
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let fields = [
+            { name: "region",label: "region-error",btn: "region_btn"},
+            { name: "province", label: "province-error",btn: "province_btn"},
+            { name: "city",label: "city-error",btn: "city_btn"},
+            { name: "barangay",label: "barangay-error",btn: "barangay_btn"},
+            { name: "description",label: "description-error"},
+            { name: "account_id",label: "account-id-error"},
+            { name: "default_password",label: "default-password-error"},
+            { name: "first_name", label: "first-name-error"},
+            { name: "last_name",label: "last-name-error"},
+            { name: "middle_name",label: "middle-name-error"},
+            { name: "date_of_birth", label: "date-of-birth-error"},
+            { name: "email", label: "email-error"},
+            { name: "contact_number",label: "contact-number-error"}
+        ];
+
+        function markInvalid(input, label, btn) {
+            label.style.color = "red";
+            if (input) input.classList.add("border-red-500");
+            if (btn) btn.classList.add("border-red-500");
+        }
+
+        function clearInvalid(input, label, btn) {
+            label.style.color = "";
+            if (input) input.classList.remove("border-red-500");
+            if (btn) btn.classList.remove("border-red-500");
+        }
+
+        // Run validation on submit
+        document.getElementById("create_account_form").addEventListener("submit", function(e) {
+            let isValid = true;
+
+            fields.forEach(function(f) {
+                let input = document.querySelector(`[name="${f.name}"]`);
+                let label = document.getElementById(f.label);
+                let btn = f.btn ? document.getElementById(f.btn) : null;
+
+                if (input) {
+                    clearInvalid(input, label, btn); // reset first
+
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        markInvalid(input, label, btn);
+                    }
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        // Real-time validation
+        fields.forEach(function(f) {
+            let input = document.querySelector(`[name="${f.name}"]`);
+            let label = document.getElementById(f.label);
+            let btn = f.btn ? document.getElementById(f.btn) : null;
+
+            if (input) {
+                let checkAndClear = function() {
+                    if (input.value.trim()) {
+                        clearInvalid(input, label, btn);
+                    }
+                };
+
+                input.addEventListener("input", checkAndClear);
+                input.addEventListener("blur", checkAndClear); // also on leaving field
+
+                // For dynamically updated hidden fields (like region/province)
+                let observer = new MutationObserver(checkAndClear);
+                observer.observe(input, {
+                    attributes: true,
+                    attributeFilter: ["value"]
+                });
+            }
+        });
+    });
 </script>
 
 </html>

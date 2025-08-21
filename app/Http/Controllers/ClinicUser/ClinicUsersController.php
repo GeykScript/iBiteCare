@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ClinicUser;
 use App\Models\ClinicUserInfo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 
 
@@ -72,16 +73,31 @@ class ClinicUsersController extends Controller
             'description'     => 'nullable|string|max:500',
         ]);
 
+
+        $suffix = null;
+        if ($request->suffix) {
+            $suffix = strtoupper($request->suffix); // convert first
+            if (in_array($suffix, ['JR', 'SR'])) {
+                $suffix = Str::ucfirst(Str::lower($suffix)) . '.'; // Jr. / Sr.
+            } elseif (preg_match('/^[IVX]+$/', $suffix)) {
+                // Roman numerals: II, III, IV, etc.
+                $suffix = $suffix;
+            } else {
+                // Default: capitalize first letter
+                $suffix = Str::ucfirst(Str::lower($suffix));
+            }
+        }
+
         $address = $request->barangay . ', ' .$request->city . ', ' . $request->province . ', ' . $request->description;
 
 
         $user = ClinicUser::create([
             'account_id'      => $request->account_id,
             'role'            => $request->role,
-            'first_name'      => $request->first_name,
-            'last_name'       => $request->last_name,
-            'middle_initial'  => $request->middle_initial,
-            'suffix'          => $request->suffix,
+            'first_name'       => Str::ucfirst(Str::lower($request->first_name)),
+            'last_name'        => Str::ucfirst(Str::lower($request->last_name)), 
+            'middle_initial'   => Str::upper($request->middle_initial),            
+            'suffix'           => $suffix, 
             'email'           => $request->email,
             'password'        => bcrypt($request->password),
             'default_password' => $request->default_password,

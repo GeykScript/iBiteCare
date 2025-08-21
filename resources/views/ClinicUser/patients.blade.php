@@ -165,8 +165,6 @@
         @livewireScripts
 
 </body>
-<script>
 
-</script>
 
 </html>

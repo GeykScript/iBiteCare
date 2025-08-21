@@ -108,36 +108,6 @@
     </section>
 
 </body>
-<script>
-    function updateDateTime() {
-        const now = new Date();
 
-        // Format date
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        const month = months[now.getMonth()];
-        const day = now.getDate();
-        const year = now.getFullYear();
-
-        // Format time
-        let hours = now.getHours();
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        hours = hours % 12;
-        hours = hours ? hours : 12; // Convert 0 to 12
-
-        // Create formatted strings
-        const dateString = `${month} ${day}, ${year}`;
-        const timeString = `${hours}:${minutes} ${ampm}`;
-
-        // Update DOM
-        document.getElementById('datetime').innerHTML = `${dateString} <br> ${timeString}`;
-    }
-
-    // Update immediately and then every second
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-</script>
-<!-- Footer -->
 
 </html>
