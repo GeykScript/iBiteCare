@@ -2,3 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+        .scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+        }
+    
+        .scrollbar-hidden {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+    
+        .font-900 {
+            font-family: 'Geologica', sans-serif;
+            font-weight: 800;
+    
+        }
+
+   

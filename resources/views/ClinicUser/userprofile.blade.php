@@ -20,24 +20,6 @@
 </head>
 
 
-<style>
-    .scrollbar-hidden::-webkit-scrollbar {
-        display: none;
-    }
-
-    .scrollbar-hidden {
-        -ms-overflow-style: none;
-        /* IE and Edge */
-        scrollbar-width: none;
-        /* Firefox */
-    }
-
-    .font-900 {
-        font-family: 'Geologica', sans-serif;
-        font-weight: 800;
-
-    }
-</style>
 
 <body>
     <div class="flex h-screen">

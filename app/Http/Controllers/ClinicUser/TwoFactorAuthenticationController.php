@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\ClinicUser;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
+use App\Mail\TwofactorCodeMail;
+
 
 class TwoFactorAuthenticationController extends Controller
 {
@@ -40,11 +42,13 @@ class TwoFactorAuthenticationController extends Controller
                 ->update(['two_factor_code' => Crypt::encryptString($verificationCode)]);
 
 
-            Mail::raw("Your verification code is: $verificationCode", function ($message) use ($clinicUser) {
-                $message->to($clinicUser->email);
-                $message->subject('Two-Factor Authentication Code');
-            });
-            
+            Mail::to($clinicUser->email)->send(new TwofactorCodeMail($verificationCode));
+
+            // Mail::raw("Your verification code is: $verificationCode", function ($message) use ($clinicUser) {
+            //     $message->to($clinicUser->email);
+            //     $message->subject('Two-Factor Authentication Code');
+            // });
+
             $encryptedId = Crypt::encryptString($clinicUser->id);
 
             return redirect()->route('clinic.two-factor', ['id' => $encryptedId]);

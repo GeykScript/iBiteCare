@@ -70,6 +70,8 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::post('/clinic-users/create', [ClinicUsersController::class, 'createUserAccount'])
         ->name('clinic.users.create');
 
+        
+
 }); 
 
 Route::get('/clinic/two-factor/{id}', [TwoFactorAuthenticationController::class, 'index'])
@@ -90,3 +92,20 @@ Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'up
     
 Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('clinic.update-password.update');
+
+
+
+
+// Route::get('/preview-email', function () {
+//     return new \App\Mail\TwofactorCodeMail(123456);
+// });
+
+// Route::get('/preview-clinic-user-account-email', function () {
+//     $user_account = (object) [
+//         'account_id' => 'DrCare-2023-0001-0001',
+//         'email' => 'user@example.com'
+//     ];
+//     $user_default_password = 'DrCareABC-2023-0001-0001';
+
+//     return new \App\Mail\ClinicUserAccountMail($user_account, $user_default_password);
+// });

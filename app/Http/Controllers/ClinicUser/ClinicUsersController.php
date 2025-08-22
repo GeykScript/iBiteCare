@@ -8,6 +8,8 @@ use App\Models\ClinicUser;
 use App\Models\ClinicUserInfo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ClinicUserAccountMail;
 
 
 
@@ -74,6 +76,7 @@ class ClinicUsersController extends Controller
         ]);
 
 
+
         $suffix = null;
         if ($request->suffix) {
             $suffix = strtoupper($request->suffix); // convert first
@@ -103,6 +106,8 @@ class ClinicUsersController extends Controller
             'default_password' => $request->default_password,
         ]);
 
+ 
+
         // 2. Create user info record
         ClinicUserInfo::create([
             'user_id'        => $user->id,
@@ -114,6 +119,10 @@ class ClinicUsersController extends Controller
             'age'            => $request->age,
         ]);
 
+        $user_account = ClinicUser::where('account_id', $request->account_id)->first();
+        $user_default_password = $user_account->default_password;
+
+        Mail::to($user->email)->send(new ClinicUserAccountMail($user_account, $user_default_password));
 
         return redirect()->route('clinic.user-accounts')->with('success', 'User account created successfully!');
     }
