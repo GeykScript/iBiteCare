@@ -41,7 +41,7 @@ public function updatedPerPage()
             $this->genderFilter = 'Male';
             $this->gender = 'M';
 
-        } elseif ($this->genderFilter === 'Male') {
+        } elseif ($this->genderFilter === 'Male') { 
             $this->genderFilter = 'Female';
             $this->gender = 'F';
         } else {

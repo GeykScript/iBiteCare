@@ -13,23 +13,21 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/datetime.js'])
 
     @endif
 </head>
 
 
 <body class="bg-gradient-to-r from-red-600 to-gray-800">
-    <section class="flex flex-col items-center justify-center h-screen">
-        <div class="flex flex-col md:flex-row justify-center items-center md:mt-20 mt-6 mb-10">
+    <section class="flex items-center justify-center md:h-screen mb-5 mt-5 md:mb-0 md:mt-0">
+        <div class="flex flex-col md:flex-row justify-center items-center ">
             <div class="md:h-[600px] md:w-[22rem] h-[16rem] w-[20rem] shadow-lg bg-[#EB1C26] md:rounded-l-[15px]  p-2 rounded-t-[15px] md:rounded-r-none md:overflow-none overflow-hidden">
                 <a href="{{ route('clinic.login') }}" class="hover:outline-none focus:outline-none md:overflow-none overflow-hidden">
                     <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
                 </a>
             </div>
-            <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[30rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
-
-
+            <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[32rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
                 <div class="flex flex-col justify-center ">
 
                     <!--Form-->
@@ -37,29 +35,30 @@
                         <div id="datetime" class="md:text-md text-sm text-black font-bold"></div>
                     </div>
                     <!-- Session Status -->
-                    <x-auth-session-status class="mb-4" :status="session('status')" />
+                    <x-auth-session-status class="mb-4 bg-green-100 p-3 rounded-md" :status="session('status')" />
+
 
                     <form method="POST" action="{{ route('clinic.login') }}" class="mt-5">
                         @csrf
 
-                        <!-- Email Address -->
+                        <!-- account-id -->
                         <h1 class="text-center text-xl font-bold text-black">Login Clinic Account</h1>
                         <div class="mt-6">
                             <x-input-label for="account_id" :value="__('Account ID')" />
                             <x-text-input id="account_id" class="block mt-1 w-full" type="text" name="account_id" :value="old('account_id')" required autofocus autocomplete="username" />
-                            <x-input-error :messages="$errors->get('account_id')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('account_id')" class="bg-red-200 px-4 py-2 mt-2 rouned-sm" />
                         </div>
 
                         <!-- Password -->
                         <div class="mt-4">
                             <x-input-label for="password" :value="__('Password')" />
 
-                            <x-text-input id="password" class="block mt-1 w-full"
+                            <x-text-input id="password" class="block mt-1 w-full"   
                                 type="password"
                                 name="password"
                                 required autocomplete="current-password" />
 
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('password')" class="bg-red-200 px-4 py-2 mt-2 rounded-sm" />
                         </div>
 
                         <!-- Remember Me -->
@@ -71,11 +70,9 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            @if (Route::has('password.request'))
-                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none " href="{{ route('clinic.forgot-password') }}">
                                 {{ __('Forgot your password?') }}
                             </a>
-                            @endif
 
                         </div>
                         <div class="mt-4">
@@ -95,36 +92,7 @@
 
 
 </body>
-<script>
-    function updateDateTime() {
-        const now = new Date();
 
-        // Format date
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        const month = months[now.getMonth()];
-        const day = now.getDate();
-        const year = now.getFullYear();
-
-        // Format time
-        let hours = now.getHours();
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        hours = hours % 12;
-        hours = hours ? hours : 12; // Convert 0 to 12
-
-        // Create formatted strings
-        const dateString = `${month} ${day}, ${year}`;
-        const timeString = `${hours}:${minutes} ${ampm}`;
-
-        // Update DOM
-        document.getElementById('datetime').innerHTML = `${dateString} <br> ${timeString}`;
-    }
-
-    // Update immediately and then every second
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-</script>
 <!-- Footer -->
 
 </html>

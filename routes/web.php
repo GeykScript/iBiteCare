@@ -32,6 +32,12 @@ use App\Http\Controllers\ClinicUser\DashboardController;
 use App\Http\Controllers\ClinicUser\PatientsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 use App\Http\Controllers\ClinicUser\ReportsController;
+use App\Http\Controllers\Auth\ClinicUser\PasswordController;
+use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
+use App\Http\Controllers\ClinicUser\ForgotPasswordController;
+use App\Http\Controllers\ClinicUser\UpdatePasswordController;
+use App\Http\Controllers\ClinicUser\ClinicUsersController;
+
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -53,5 +59,53 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
 
+    Route::put('/clinic/password', [PasswordController::class, 'update'])
+        ->name('clinic.password.update');
 
-});
+    Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
+        ->name('clinic.user-accounts');
+    // routes/web.php
+    Route::get('/clinic-users/generate-id', [ClinicUsersController::class, 'generateId'])
+        ->name('clinic-users.generateId');
+    Route::post('/clinic-users/create', [ClinicUsersController::class, 'createUserAccount'])
+        ->name('clinic.users.create');
+
+        
+
+}); 
+
+Route::get('/clinic/two-factor/{id}', [TwoFactorAuthenticationController::class, 'index'])
+    ->name('clinic.two-factor');
+
+Route::post('/clinic/two-factor/send', [TwoFactorAuthenticationController::class, 'send_code'])
+    ->name('clinic.two-factor.send_code');
+
+Route::post('/clinic/two-factor/verify', [TwoFactorAuthenticationController::class, 'verify'])
+    ->name('clinic.two-factor.verify');
+
+Route::get('/clinic/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('clinic.forgot-password');
+
+
+Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'updatePasswordForm'])
+    ->name('clinic.update-password');
+    
+Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
+    ->name('clinic.update-password.update');
+
+
+
+
+// Route::get('/preview-email', function () {
+//     return new \App\Mail\TwofactorCodeMail(123456);
+// });
+
+// Route::get('/preview-clinic-user-account-email', function () {
+//     $user_account = (object) [
+//         'account_id' => 'DrCare-2023-0001-0001',
+//         'email' => 'user@example.com'
+//     ];
+//     $user_default_password = 'DrCareABC-2023-0001-0001';
+
+//     return new \App\Mail\ClinicUserAccountMail($user_account, $user_default_password);
+// });

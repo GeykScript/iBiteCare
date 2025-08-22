@@ -20,10 +20,6 @@ class PatientsController extends Controller
         $patients = Patient::all();
 
         return view('ClinicUser.patients', compact('clinicUser', 'patients'));
-
-
-
-
     }
 }
 

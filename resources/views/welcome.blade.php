@@ -50,7 +50,7 @@
         <!-- Logo & Brand -->
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse hover:outline-none focus:outline-none">
             <img src="{{ asset('drcare_logo.png') }}" class="h-10 w-10" alt="Dr.Care Logo" />
-            <span class="font-900 text-2xl font-bold text-[#FF000D] whitespace-nowrap">Dr.Care</span>
+            <span class="font-900 text-2xl text-[#FF000D] whitespace-nowrap">Dr.Care</span>
         </a>
 
         <!-- Login/Register & Toggle -->

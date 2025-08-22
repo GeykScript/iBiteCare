@@ -14,34 +14,12 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js'])
 
     @endif
 </head>
 
 
-<style>
-    .scrollbar-hidden::-webkit-scrollbar {
-        display: none;
-    }
-
-    .scrollbar-hidden {
-        -ms-overflow-style: none;
-        /* IE and Edge */
-        scrollbar-width: none;
-        /* Firefox */
-    }
-
-    .font-900 {
-        font-family: 'Geologica', sans-serif;
-        font-weight: 800;
-
-    }
-
-    .js-hidden {
-        display: none !important;
-    }
-</style>
 
 <body>
     <div class="flex h-screen">
@@ -84,7 +62,7 @@
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
+                    <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
                 </ul>
             </nav>
@@ -93,7 +71,7 @@
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
                         <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
-                        <p class="text-xs">Administrator</p>
+                        <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
                     </div>
                     <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
                 </a>
@@ -136,13 +114,25 @@
                     </h1>
                 </div>
                 <!-- Main content grid -->
-                <div class="grid grid-cols-6 md:p-4 p-2 gap-4 md:gap-2 ">
+                <div class="grid grid-cols-7 md:p-4 p-2 gap-4 md:gap-2 ">
                     <!-- div for First CHART -->
-                    <div class="col-span-6 md:col-span-2 w-full bg-white ">
+                    <div class="col-span-7 md:col-span-3 w-full bg-white ">
                         <div class="flex flex-col gap-4">
                             <div class="w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 p-2 md:p-6">
-                                <h1 class="text-lg font-900 pb-4">Patients Summary</h1>
-                                <div class="flex justify-between items-center mb-4 md:gap-4 gap-2">
+                                <div class="flex items-center gap-2 p-2">
+                                    <div>
+                                        <h5 class="leading-none md:text-xl font-900 text-gray-900  pb-1"> Patient Summary</h5>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Comprehensive view of patient records and activities</p>
+                                    </div>
+                                </div>
+                                <div class="flex  justify-evenly items-center mb-4 mt-2 md:gap-4 gap-2 px-6">
+                                    <select id="filter" class="border rounded w-full p-1 text-sm ">
+                                        <option value="today">Today</option>
+                                        <option value="yesterday">Yesterday</option>
+                                        <option value="lastWeek">Last Week</option>
+                                        <option value="lastMonth">Last Month</option>
+                                        <option value="lastYear">Last Year</option>
+                                    </select>
                                     <select id="serviceFilter" class="border rounded w-full  p-1 text-sm">
                                         <option value="">Service</option>
                                         <option value="">Anti-Rabies</option>
@@ -156,100 +146,252 @@
                                         <option value="65+">65+</option>
                                     </select>
                                 </div>
-                                <div class="flex justify-between  pb-4 mb-2 border-b border-gray-200 dark:border-gray-700">
-                                    <div class="flex items-center">
-                                        <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
-                                            <i data-lucide="users" class="w-6 h-6 text-white"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-gray-500 font-bold">Accomodated Patients</p>
-                                            <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">5,020</h5>
-                                            <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
-                                        </div>
+                                <div class="flex items-center px-4 py-2">
+                                    <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
+                                        <i data-lucide="users" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-500 font-bold">Accomodated Patients</p>
+                                        <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">5,020</h5>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-2 pb-3">
-                                    <dl>
-                                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</dt>
-                                        <dd class="leading-none text-md font-bold text-green-500 text-indigo-500">23,635</dd>
-                                    </dl>
-                                    <dl>
-                                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</dt>
-                                        <dd class="leading-none text-md font-bold text-red-600 text-pink-500">18,230</dd>
-                                    </dl>
+                                <div class="flex items-center justify-evenly">
+                                    <div>
+                                        <h1 class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</h1>
+                                        <h1 class="leading-none text-md font-bold text-green-500 text-sky-500">23,635</h1>
+                                    </div>
+                                    <div>
+                                        <h1 class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</h1>
+                                        <h1 class="leading-none text-md font-bold text-red-600 text-[#ff0a70ec]">18,230</h1>
+                                    </div>
                                 </div>
                                 <div id="bar-chart"></div>
-                                <div class="grid grid-cols-2 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5 pt-5">
-                                    <div class="col-span-1">
-                                        <a href="#" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <div class="grid grid-cols-2  border-gray-200 border-t">
+                                    <div class="col-span-2 mt-2 flex items-end justify-end">
+                                        <a href="{{ route('clinic.patients') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
                                             View Details
                                         </a>
                                     </div>
-                                    <div class="col-span-1">
-                                        <select id="filter" class="border rounded w-full p-1 text-sm ">
-                                            <option value="today">Today</option>
-                                            <option value="yesterday">Yesterday</option>
-                                            <option value="lastWeek">Last Week</option>
-                                            <option value="lastMonth">Last Month</option>
-                                            <option value="lastYear">Last Year</option>
-                                        </select>
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- div for Three CHART -->
-                    <div class="col-span-6 md:col-span-4 flex flex-col  gap-3 ">
+                    <div class="col-span-7 md:col-span-4 flex flex-col  gap-3 ">
 
                         <!-- div for two chart -->
-                        <div class="grid grid-cols-4 bg-white  rounded md:gap-2 ">
-                            <!-- line chart -->
-                            <div class="col-span-4 md:col-span-2  rounded-lg shadow-xl border border-gray-200 p-2 md:p-4">
-                                <div class="w-full bg-white md:px-4  ">
-                                    <h1 class="text-md font-900  p-2">Patient Gender & Age Demographics</h1>
-                                    <div class="grid grid-cols-2 pt-3">
-                                        <dl>
-                                            <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</dt>
-                                            <dd class="leading-none text-md font-bold text-green-500 text-indigo-500">23,635</dd>
-                                        </dl>
-                                        <dl>
-                                            <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</dt>
-                                            <dd class="leading-none text-md font-bold text-red-600 text-pink-500">18,230</dd>
-                                        </dl>
+                        <div class="grid grid-cols-5 bg-white  rounded md:gap-2 gap-4 ">
+                            <div class="col-span-5 md:col-span-2 flex flex-col ">
+                                <div class="flex flex-col rounded-lg border border-gray-100 gap-2">
+                                    <div class="p-8">
+                                        <h5 class="leading-none md:text-lg font-900 text-gray-900  pb-1">Daily Clinic Overview</h5>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400"> Summary of today’s transactions and appointments</p>
                                     </div>
-                                    <!-- legend or line chart div -->
-                                    <div id="legend-chart"></div>
-                                </div>
-                                <!-- pie chart div  -->
-                                <div class="w-full bg-white md:px-4  border-t border-gray-200 mt-2">
-                                    <div class="py-3" id="pie-chart"></div>
-                                    <!-- chart options -->
-                                    <div class="grid grid-cols-2 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5 pt-5">
-                                        <div class="col-span-1">
-                                            <a href="#" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
-                                                View Details
-                                            </a>
+                                    <div class="w-full bg-white px-2  rounded">
+                                        <div class="flex justify-between gap-5 py-4 px-3 shadow-lg">
+                                            <div class="flex gap-3">
+                                                <div class="flex items-center justfy-center ">
+                                                    <i data-lucide="file-text" class="w-8 h-8 md:me-2"></i>
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <h1 class="font-bold">Transactions</h1>
+                                                    <a href="#" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center  bg-sky-400 rounded-full w-12 h-12">
+                                                <h1 class="text-white font-bold">5</h1>
+                                            </div>
                                         </div>
-                                        <div class="col-span-1">
-                                            <select id="filter" class="border rounded w-full p-1 text-sm ">
-                                                <option value="today">Today</option>
-                                                <option value="yesterday">Yesterday</option>
-                                                <option value="lastWeek">Last Week</option>
-                                                <option value="lastMonth">Last Month</option>
-                                                <option value="lastYear">Last Year</option>
-                                            </select>
+                                    </div>
+                                    <div class="w-full bg-white px-2 rounded mb-2 ">
+                                        <div class="flex justify-between gap-5 py-4 px-3 shadow-lg">
+                                            <div class="flex gap-3">
+                                                <div class="flex items-center justfy-center ">
+                                                    <i data-lucide="notebook-pen" class="w-8 h-8 md:me-2"></i>
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <h1 class="font-bold">Appointments</h1>
+                                                    <a href="#" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center  bg-gray-400 rounded-full w-12 h-12">
+                                                <h1 class="text-white font-bold">5</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- recent patient div  -->
+                                <div class="w-full h-full bg-white  mt-2 rounded-lg shadow-xl border border-gray-200 p-2 ">
+                                    <div class="p-4 mt-2">
+                                        <h5 class="leading-none md:text-lg font-900 text-gray-900  pb-1">Recent Clinic Patients</h5>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400"> See who recently visited and received care at the clinic
+                                        </p>
+                                    </div>
+                                    <!-- Scrollable container -->
+                                    <div class="overflow-y-auto max-h-[14.5rem]  mb-4 scrollbar-hidden px-2 ">
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between px-2 mt-2">
+                                            <div class="flex items-center">
+                                                <div class="flex items-center justify-center">
+                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center text-sky-600">
+                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+
                             <!-- inventory -->
-                            <div class="col-span-4 md:col-span-2 rounded-lg shadow-xl border border-gray-200 p-2 md:p-6">
+                            <div class="col-span-5 md:col-span-3 rounded-lg shadow-xl border border-gray-200 p-2 md:p-6">
                                 <div class="w-full bg-white   p-0 md:p-2">
-                                    <div class="flex justify-between pb-6 pt-2 mb-4 border-b border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between pb-6  mt-5 mb:mt-0 mb-4 border-b border-gray-200 dark:border-gray-700">
                                         <div class="flex items-center gap-2">
                                             <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center ">
                                                 <i data-lucide="package" class="w-6 h-6  text-white"></i>
@@ -275,6 +417,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
         </section>

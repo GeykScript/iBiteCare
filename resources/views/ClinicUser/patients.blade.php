@@ -14,7 +14,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js'])
     @livewireStyles
 
 
@@ -24,24 +24,6 @@
 </head>
 
 
-<style>
-    .scrollbar-hidden::-webkit-scrollbar {
-        display: none;
-    }
-
-    .scrollbar-hidden {
-        -ms-overflow-style: none;
-        /* IE and Edge */
-        scrollbar-width: none;
-        /* Firefox */
-    }
-
-    .font-900 {
-        font-family: 'Geologica', sans-serif;
-        font-weight: 800;
-
-    }
-</style>
 
 <body>
     <div class="flex h-screen">
@@ -83,7 +65,7 @@
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
+                    <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
                 </ul>
             </nav>
@@ -92,7 +74,7 @@
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
                         <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
-                        <p class="text-xs">Administrator</p>
+                        <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
                     </div>
                     <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
                 </a>
@@ -133,7 +115,7 @@
                     <h1 class="md:text-lg text-gray-800">All individuals who have been officially registered to receive care at the clinic.</h1>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 p-4">
+                <div class="grid grid-cols-4 p-4  md:px-10">
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
                         <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
                     </div>
@@ -165,8 +147,6 @@
         @livewireScripts
 
 </body>
-<script>
 
-</script>
 
 </html>
