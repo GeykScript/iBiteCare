@@ -2,10 +2,10 @@ import { regions, provinces, cities, barangays } from "select-philippines-addres
 
 document.addEventListener("DOMContentLoaded", () => {
     const dropdowns = [
-        { btn: "region_btn", list: "region", selected: "region_selected", input: "region_input" },
-        { btn: "province_btn", list: "province", selected: "province_selected", input: "province_input" },
-        { btn: "city_btn", list: "city", selected: "city_selected", input: "city_input" },
-        { btn: "barangay_btn", list: "barangay", selected: "barangay_selected", input: "barangay_input" },
+        { btn: "update-region_btn", list: "update-region", selected: "update-region_selected", input: "update_region_input" },
+        { btn: "update-province_btn", list: "update-province", selected: "update-province_selected", input: "update_province_input" },
+        { btn: "update-city_btn", list: "update-city", selected: "update-city_selected", input: "update_city_input" },
+        { btn: "update-barangay_btn", list: "update-barangay", selected: "update-barangay_selected", input: "update_barangay_input" },
     ];
 
     function toggleList(btn, list) {
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             listElement.appendChild(li);
         });
-    }
+    }   
 
     dropdowns.forEach(dd => {
         const btn = document.getElementById(dd.btn);
@@ -35,66 +35,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load Regions
     regions().then(data => {
-        renderList("region", data, handleRegionSelect);
+        // Render regions in the update form dropdown
+        renderList("update-region", data, handleRegionSelect);
 
-        //  Automatically select Region V (Bicol Region)
-        const region5 = data.find(r => r.region_code === "05"); // Region V
-        if (region5) {
-            handleRegionSelect(region5);
-        }
+        // Automatically select Region V (Bicol Region)
+        // const region5 = data.find(r => r.region_code === "05"); // Region V
+        // if (region5) {
+        //     handleRegionSelect(region5);
+        // }
     });
 
     // ---------------- Handlers ----------------
     function handleRegionSelect(region) {
-        document.getElementById("region_selected").textContent = region.region_name;
-        document.getElementById("region_input").value = region.region_name;
+        document.getElementById("update-region_selected").textContent = region.region_name;
+        document.getElementById("update_region_input").value = region.region_name;
 
         resetDropdown("province");
         resetDropdown("city");
         resetDropdown("barangay");
-        enableButton("province_btn");
+        enableButton("update-province_btn");
 
         provinces(region.region_code).then(provData => {
-            renderList("province", provData, handleProvinceSelect);
+            renderList("update-province", provData, handleProvinceSelect);
         });
     }
 
     function handleProvinceSelect(province) {
-        document.getElementById("province_selected").textContent = province.province_name;
-        document.getElementById("province_input").value = province.province_name;
+        document.getElementById("update-province_selected").textContent = province.province_name;
+        document.getElementById("update_province_input").value = province.province_name;
 
         resetDropdown("city");
         resetDropdown("barangay");
-        enableButton("city_btn");
+        enableButton("update-city_btn");
 
         cities(province.province_code).then(cityData => {
-            renderList("city", cityData, handleCitySelect);
+            renderList("update-city", cityData, handleCitySelect);
         });
     }
 
     function handleCitySelect(city) {
-        document.getElementById("city_selected").textContent = city.city_name;
-        document.getElementById("city_input").value = city.city_name;
+        document.getElementById("update-city_selected").textContent = city.city_name;
+        document.getElementById("update_city_input").value = city.city_name;
 
         resetDropdown("barangay");
-        enableButton("barangay_btn");
+        enableButton("update-barangay_btn");
 
         barangays(city.city_code).then(brgyData => {
-            renderList("barangay", brgyData, handleBarangaySelect);
+            renderList("update-barangay", brgyData, handleBarangaySelect);
         });
     }
 
     function handleBarangaySelect(barangay) {
-        document.getElementById("barangay_selected").textContent = barangay.brgy_name;
-        document.getElementById("barangay_input").value = barangay.brgy_name;
+        document.getElementById("update-barangay_selected").textContent = barangay.brgy_name;
+        document.getElementById("update_barangay_input").value = barangay.brgy_name;
     }
 
     // ---------------- Helpers ----------------
     function resetDropdown(type) {
-        document.getElementById(`${type}_selected`).textContent = `Select ${capitalize(type)}`;
-        document.getElementById(`${type}_input`).value = "";
-        document.getElementById(type).innerHTML = "";
-        disableButton(`${type}_btn`);
+        document.getElementById(`update-${type}_selected`).textContent = `Select ${capitalize(type)}`;
+        document.getElementById(`update_${type}_input`).value = "";
+        document.getElementById(`update-${type}`).innerHTML = "";
+        disableButton(`update-${type}_btn`);
     }
 
     function enableButton(id) {
@@ -111,8 +112,3 @@ document.addEventListener("DOMContentLoaded", () => {
         return word.charAt(0).toUpperCase() + word.slice(1);
     }
 });
-
-
-
-
-
