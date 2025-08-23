@@ -13,7 +13,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js', 'resources/js/address.js','resources/js/datetime.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js', 'resources/js/address.js', 'resources/js/address2.js', 'resources/js/datetime.js'])
 
     @endif
 </head>
@@ -177,7 +177,7 @@
 
                                         <!-- Generate button  -->
                                         <div class="col-span-5 md:col-span-1 flex items-end justify-start">
-                                            <button type="button"  onclick="regenerateAccountId()" class="w-full px-4 p-4 bg-sky-500 text-white rounded-lg text-sm"> Generate </button>
+                                            <button type="button" onclick="regenerateAccountId()" class="w-full px-4 p-4 bg-sky-500 text-white rounded-lg text-sm"> Generate </button>
                                         </div>
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
                                                 {{ $errors->first('first_name') }}
                                                 @endif
                                                 *</span>
-                                            </label>
+                                        </label>
                                         <input type="text" id="first_name" name="first_name"
                                             placeholder="First Name"
                                             pattern="[A-Z\s]+"
@@ -259,25 +259,25 @@
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                 </div>
-                                        
+
                                 <!-- date of birth, age , gender div  -->
                                 <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
                                     <!-- date of birth  -->
                                     <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
-                                        <label for="date_of_birth" class=" text-sm font-bold text-gray-800">Date of Birth 
+                                        <label for="date_of_birth" class=" text-sm font-bold text-gray-800">Date of Birth
                                             <span class="text-red-500" id="date-of-birth-error">
                                                 @if ($errors->has('date_of_birth'))
                                                 {{ $errors->first('date_of_birth') }}
                                                 @endif
                                                 *</span>
-                                         </label>
-                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth') }}" 
+                                        </label>
+                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth') }}"
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
                                         <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
-                                        <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age') }}" 
+                                        <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age') }}"
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly>
                                     </div>
                                     <!-- gender  -->
@@ -299,7 +299,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- email div and contact number  -->
                                 <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
                                     <!-- email  -->
@@ -308,7 +308,7 @@
                                             <label for="email" class=" text-sm font-bold text-gray-800">Personal Email
                                                 <span class="text-red-500" id="email-error">
                                                     @if ($errors->has('email'))
-                                                        {{ $errors->first('email') }}
+                                                    {{ $errors->first('email') }}
                                                     @endif
                                                     *</span>
                                             </label>
@@ -323,10 +323,10 @@
                                     <!-- phone number  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
-                                            <label for="contact_number" class=" text-sm font-bold text-gray-800"> Phone Number 
+                                            <label for="contact_number" class=" text-sm font-bold text-gray-800"> Phone Number
                                                 <span class="text-red-500" id="contact-number-error">
                                                     @if ($errors->has('contact_number'))
-                                                        {{ $errors->first('contact_number') }}
+                                                    {{ $errors->first('contact_number') }}
                                                     @endif
                                                     *</span>
                                             </label>
@@ -349,7 +349,7 @@
                                 <div class="col-span-12 p-2 ">
                                     <label for="address" class="text-xl font-bold text-gray-800">Address</label>
                                 </div>
-                                
+
                                 <!-- region, province, city, barangay, purok div  -->
                                 <div class="col-span-12 grid grid-cols-12 gap-2">
                                     <!-- region  -->
@@ -491,13 +491,15 @@
 
 
 <!-- js code to auto open modal if there is error -->
-    @if ($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('newClinicUserModal').showModal();
-        });
-    </script>
-    @endif
+@if ($errors->any())
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('newClinicUserModal').showModal();
+    });
+</script>
+@endif
+
+
 
 
 <script>
@@ -656,6 +658,104 @@
                     attributeFilter: ["value"]
                 });
             }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let fields = [{
+                name: "update_region",
+                label: "update-region-error",
+                btn: "update-region_btn"
+            },
+            {
+                name: "update_province",
+                label: "update-province-error",
+                btn: "update-province_btn"
+            },
+            {
+                name: "update_city",
+                label: "update-city-error",
+                btn: "update-city_btn"
+            },
+            {
+                name: "update_barangay",
+                label: "update-barangay-error",
+                btn: "update-barangay_btn"
+            },
+            {
+                name: "update_description",
+                label: "update-description-error"
+            },
+            {
+                name: "update_first_name",
+                label: "update-first-name-error"
+            },
+            {
+                name: "update_last_name",
+                label: "update-last-name-error"
+            },
+            {
+                name: "update_middle_name",
+                label: "update-middle-name-error"
+            },
+            {
+                name: "update-email",
+                label: "update-email-error"
+            },
+            {
+                name: "update_contact_number",
+                label: "update-contact-number-error"
+            }
+        ];
+
+        function markInvalid(input, label, btn) {
+            if (label) label.style.color = "red";
+            if (input) input.classList.add("border-red-500");
+            if (btn) btn.classList.add("border-red-500");
+        }
+
+        function clearInvalid(input, label, btn) {
+            if (label) label.style.color = "";
+            if (input) input.classList.remove("border-red-500");
+            if (btn) btn.classList.remove("border-red-500");
+        }
+
+        document.getElementById("updateProfileForm").addEventListener("submit", function(e) {
+            let isValid = true;
+
+            // Handle btn fields first
+            let btnFields = fields.filter(f => f.btn);
+            let anyBtnHasValue = btnFields.some(f => {
+                let input = document.querySelector(`[name="${f.name}"]`);
+                return input && input.value.trim() !== "";
+            });
+
+            btnFields.forEach(f => {
+                let input = document.querySelector(`[name="${f.name}"]`);
+                let label = document.getElementById(f.label);
+                let btn = document.getElementById(f.btn);
+
+                if (anyBtnHasValue && input && input.value.trim() === "") {
+                    markInvalid(input, label, btn);
+                    isValid = false;
+                } else {
+                    clearInvalid(input, label, btn);
+                }
+            });
+
+            // Handle fields without btn
+            fields.filter(f => !f.btn).forEach(f => {
+                let input = document.querySelector(`[name="${f.name}"]`);
+                let label = document.getElementById(f.label);
+                if (input && input.value.trim() === "") {
+                    markInvalid(input, label, null);
+                    isValid = false;
+                } else {
+                    clearInvalid(input, label, null);
+                }
+            });
+
+            if (!isValid) e.preventDefault();
         });
     });
 </script>

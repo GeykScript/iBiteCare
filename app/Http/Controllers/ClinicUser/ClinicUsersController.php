@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ClinicUserAccountMail;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -21,6 +22,7 @@ class ClinicUsersController extends Controller
 
         $clinic_users = ClinicUser::all();
         [$generated_id, $default_password] = $this->generateUniqueIdAndPassword();
+        
 
         return view('ClinicUser.user-accounts', compact('clinicUser', 'clinic_users', 'generated_id', 'default_password'));
     }
@@ -131,5 +133,93 @@ class ClinicUsersController extends Controller
         Mail::to($user->email)->send(new ClinicUserAccountMail($user_account, $user_default_password));
 
         return redirect()->route('clinic.user-accounts')->with('success', 'User account created successfully!');
+    }
+
+
+
+    public function updateClinicUserInfo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'update_first_name'      => 'required|string|max:255',
+            'update_last_name'       => 'required|string|max:255',
+            'update_middle_initial'  => 'nullable|string|max:10',
+            'update_suffix'          => 'nullable|string|max:50',
+            'update_email'           => 'required|email|max:255|unique:users,email,' . $request->id,
+            'update_contact_number'  => 'required|string|max:20',
+            'update_province'        => 'nullable|string|max:255',
+            'update_city'            => 'nullable|string|max:255',
+            'update_barangay'        => 'nullable|string|max:255',
+            'update_description'     => 'nullable|string|max:500',
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->with('update_errors', $validator->errors())
+                ->withInput();
+        }
+
+        // Handle suffix formatting
+        $suffix = null;
+        if ($request->update_suffix) {
+            $suffix = strtoupper($request->update_suffix);
+            if (in_array($suffix, ['JR', 'SR'])) {
+                $suffix = Str::ucfirst(Str::lower($suffix)) . '.'; // Jr. / Sr.
+            } elseif (preg_match('/^[IVX]+$/', $suffix)) {
+                $suffix = $suffix;
+            } else {
+                $suffix = Str::ucfirst(Str::lower($suffix));
+            }
+        }
+
+        $clinic_user = ClinicUser::findOrFail($request->id);    
+
+
+
+        // Format new values
+        $newUserData = [
+            'first_name'      => Str::title(Str::lower($request->update_first_name)),
+            'last_name'       => Str::title(Str::lower($request->update_last_name)),
+            'middle_initial'  => Str::upper($request->update_middle_initial),
+            'suffix'          => $suffix,
+            'email'           => $request->update_email,
+        ];
+
+        // Old user data
+        $oldUserData = $clinic_user->only(array_keys($newUserData));
+
+        // Build address
+        if (
+            empty($request->update_barangay) &&
+            empty($request->update_city) &&
+            empty($request->update_province) &&
+            empty($request->update_description)
+        ) {
+            $address = ClinicUserInfo::where('user_id', $clinic_user->id)->value('address');
+        } else {
+            $address = $request->update_barangay . ', ' .
+                $request->update_city . ', ' .
+                $request->update_province . ', ' .
+                $request->update_description;
+        }
+
+        $clinicUserInfo = ClinicUserInfo::where('user_id', $clinic_user->id)->first();
+        $newInfoData = [
+            'contact_number' => $request->update_contact_number,
+            'address'        => $address,
+        ];
+        $oldInfoData = $clinicUserInfo->only(array_keys($newInfoData));
+
+        // Check if any changes exist
+        if ($oldUserData == $newUserData && $oldInfoData == $newInfoData) {
+            return redirect()->route('clinic.user-accounts')->with('update-success', 'No changes made.');
+        }
+
+        // Perform updates
+        $clinic_user->update($newUserData);
+        $clinicUserInfo->update($newInfoData);
+
+        return redirect()->route('clinic.user-accounts')->with('update-success', 'User account updated successfully!');
     }
 }

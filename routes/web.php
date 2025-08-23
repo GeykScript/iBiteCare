@@ -83,6 +83,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
         ->name('clinic.user-accounts');
+
+    Route::put('/clinic-users/update', [ClinicUsersController::class, 'updateClinicUserInfo'])
+        ->name('clinic.users.update');
     //-----------------END-----------------------//
 
 

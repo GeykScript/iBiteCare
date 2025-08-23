@@ -5,7 +5,7 @@ import './bootstrap';
 import {
      createIcons, 
         Menu,
-        MapPin, 
+        MapPin,
         PhoneCall,
         Mail,
         House,
@@ -165,6 +165,5 @@ function updateSidebarState() {
 // Initial check for sidebar state
 window.addEventListener('load', updateSidebarState);
 window.addEventListener('resize', updateSidebarState);
-
 
 
