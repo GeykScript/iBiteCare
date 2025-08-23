@@ -122,7 +122,6 @@
                         <!-- create new user form  -->
                         <form action="{{route('clinic.users.create')}}" method="POST" id="create_account_form">
                             @csrf
-                            <span class="error text-red-500 text-sm"></span>
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
                                 <div class="col-span-12 flex flex-col items-center justify-center">
                                     <h1 class="font-900 md:text-2xl text-xl">Create User Account</h1>
@@ -435,6 +434,8 @@
                             </div>
                         </form>
                     </dialog>
+
+
 
                     <!-- clinic user table component  -->
                     <livewire:clinic-users-table />

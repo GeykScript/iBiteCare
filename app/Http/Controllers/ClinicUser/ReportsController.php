@@ -18,8 +18,7 @@ class ReportsController extends Controller
             return redirect()->route('clinic.login')->with('error', 'You must be logged in to access the dashboard.');
         }
 
-        
-
+    
         return view('ClinicUser.reports', compact('clinicUser'));
     }
 }

@@ -23,9 +23,13 @@ require __DIR__.'/auth.php';
 
 // Clinic User Authentication Routes
 use App\Http\Controllers\Auth\ClinicUser\ClinicUserAuthController;
-
-Route::get('/clinic/login', [ClinicUserAuthController::class, 'showLoginForm'])->name('clinic.login');
-Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])->name('clinic.login.store');
+// Guest-only routes
+Route::middleware('guest.clinic')->group(function () {
+    Route::get('/clinic/login', [ClinicUserAuthController::class, 'showLoginForm'])
+        ->name('clinic.login');
+    Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])
+        ->name('clinic.login.store');
+}); 
 
 //the exception middle ware issue like dashbaord shoud go back to login (boostrap/app.php)
 use App\Http\Controllers\ClinicUser\DashboardController;
@@ -53,27 +57,38 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/patients', [PatientsController::class, 'index'])
         ->name('clinic.patients');
 
-    Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
-        ->name('clinic.profile');
+ 
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
 
+
+    //CLINIC USER PROFILES PAGES
+    Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
+        ->name('clinic.profile');
+
+    Route::put('/clinic/profile/update', [ClinicUserProfileController::class, 'updateUserProfileAccount'])
+        ->name('clinic.user-profile.update');
+
     Route::put('/clinic/password', [PasswordController::class, 'update'])
         ->name('clinic.password.update');
-
-    Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
-        ->name('clinic.user-accounts');
-    // routes/web.php
-    Route::get('/clinic-users/generate-id', [ClinicUsersController::class, 'generateId'])
-        ->name('clinic-users.generateId');
+    //----------------END-----------------------//
+        
+    // CLINIC USER ACCOUNTS ---------------------------
     Route::post('/clinic-users/create', [ClinicUsersController::class, 'createUserAccount'])
         ->name('clinic.users.create');
 
-        
+    Route::get('/clinic-users/generate-id', [ClinicUsersController::class, 'generateId'])
+        ->name('clinic-users.generateId');
+
+    Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
+        ->name('clinic.user-accounts');
+    //-----------------END-----------------------//
+
+
 
 }); 
-
+//---------CLINIC LOGIN FORGOT PASSOWORD --------------------------
 Route::get('/clinic/two-factor/{id}', [TwoFactorAuthenticationController::class, 'index'])
     ->name('clinic.two-factor');
 
@@ -92,6 +107,7 @@ Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'up
     
 Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('clinic.update-password.update');
+//--------------------------END----------------------------------------------//
 
 
 

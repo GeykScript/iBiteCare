@@ -7,8 +7,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 
-
-
 class ClinicUser extends Model implements Authenticatable
 {
     //

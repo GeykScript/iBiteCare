@@ -1,18 +1,4 @@
 <section>
-
-
-    @if (session('status') === 'password-updated')
-    <div class="bg-green-200 p-4 rounded-md">
-        <p
-            x-data="{ show: true }"
-            x-show="show"
-            x-transition
-            x-init="setTimeout(() => show = false, 2000)"
-            class="text-sm text-green-500 font-bold">{{ __('Your password has been updated successfully.') }}</p>
-    </div>
-    @endif
-
-
     <form method="post" action="{{ route('clinic.password.update') }}" class="mt-6 space-y-4">
         @csrf
         @method('put')

@@ -16,7 +16,14 @@ class ClinicUsersTable extends Component
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
 
+    public $selectedUser = null;
 
+    public function showUser($id)
+    {
+        $this->selectedUser = ClinicUser::find($id);
+        $this->dispatch('show-profile-modal')->self(); // fires immediately, no wait
+        $this->dispatch('update-profile-modal')->self(); // fires immediately, no wait
+    }
 
     public function updatedPerPage()
     {

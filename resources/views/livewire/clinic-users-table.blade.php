@@ -82,7 +82,7 @@
                 @foreach ($clinic_users as $clinic_user)
                 <tr wire:key="{{ $clinic_user->id }}" class="border-b dark:border-gray-700">
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->id }}</td>
-                    <td class="md:px-2 px-0 py-4 text-center font-medium text-gray-900">{{ $clinic_user->account_id }}</td> 
+                    <td class="md:px-2 px-0 py-4 text-center font-medium text-gray-900">{{ $clinic_user->account_id }}</td>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->UserRole->role_name }}</td>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->last_name }}</td>
                     <th class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 whitespace-nowrap"> {{ $clinic_user->first_name }}</th>
@@ -90,10 +90,22 @@
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $clinic_user->email }}</td>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $clinic_user->info?->contact_number }}</td>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 flex items-center gap-2 justify-center">
-                        <a href="#" class="text-blue-500 flex md:flex-col items-center  justify-center gap-1 font-semibold">
-                            <img src="{{asset('images/view.svg')}}" alt="Profile Details"></a>
-                        <a href="#" class="text-red-500 flex items-center justify-center gap-1 font-semibold">
-                            <img src="{{asset('images/square-pen.svg')}}" alt="Manage Transactions"></a>
+                        <button
+                            @click="$dispatch('show-profile-modal', { 
+                                name: '{{ $clinic_user->first_name }}', 
+                                email: '{{ $clinic_user->email }}',
+                                id: '{{ $clinic_user->id }}'
+                            })"
+                            class="text-blue-500 flex items-center justify-center gap-1 font-semibold">
+                            <img src="{{ asset('images/view.svg') }}" alt="Profile Details">
+                        </button>
+
+                        <button
+                            @click="$dispatch('update-profile-modal', { 
+                                id: '{{ $clinic_user->id }}'
+                            })"
+                            class="text-red-500 flex items-center justify-center gap-1 font-semibold">
+                            <img src="{{asset('images/square-pen.svg')}}" alt="Manage Transactions"></button>
                     </td>
                 </tr>
                 @endforeach
@@ -101,6 +113,48 @@
             </tbody>
         </table>
     </div>
+    <!-- Modal -->
+    <div x-data="{ open: false, user: {} }"
+        x-on:show-profile-modal.window="user = $event.detail; open = true"
+        x-show="open"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+        style="display: none">
+        <div class="absolute inset-0 bg-black/60" @click="open = false"></div>
+
+        <div class="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-5xl z-10">
+            <h2 class="text-xl font-bold" x-text="user.name"></h2>
+            <p>Email: <span x-text="user.email"></span></p>
+            <p>Phone: <span x-text="user.phone"></span></p>
+            <input type="text" :value="user.id" readonly class="border rounded p-2 w-full bg-gray-100">
+
+            <button @click="open = false"
+                class="mt-4 px-4 py-2 bg-gray-500 text-white rounded">
+                Close
+            </button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div x-data="{ open: false, user: {} }"
+        x-on:update-profile-modal.window="user = $event.detail; open = true"
+        x-show="open"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+        style="display: none">
+        <div class="absolute inset-0 bg-black/60" @click="open = false"></div>
+
+        <div class="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-5xl z-10">
+            <h2 class="text-xl font-bold" x-text="user.name"></h2>
+            <input type="text" :value="user.id" readonly class="border rounded p-2 w-full bg-gray-100">
+
+            <button @click="open = false"
+                class="mt-4 px-4 py-2 bg-gray-500 text-white rounded">
+                Close
+            </button>
+        </div>
+    </div>
+
+
+
+
     <!-- table pagination -->
     <div class=" px-3">
         {{ $clinic_users->appends(['perPage' => $perPage])->links() }}

@@ -1,14 +1,11 @@
 import './bootstrap';
-// import Alpine from 'alpinejs';
 
-// window.Alpine = Alpine;
-// Alpine.start();
 
 // Recommended way, to include only the icons you need.
 import {
      createIcons, 
         Menu,
-        MapPin,
+        MapPin, 
         PhoneCall,
         Mail,
         House,
@@ -49,7 +46,7 @@ import {
         Eye,
         EyeOff,
         X,
-        Check
+        Check,
     } 
      from 'lucide';
 
@@ -171,6 +168,3 @@ window.addEventListener('resize', updateSidebarState);
 
 
 
-
-
-    
