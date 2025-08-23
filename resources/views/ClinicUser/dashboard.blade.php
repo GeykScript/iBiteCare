@@ -202,7 +202,7 @@
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-center  bg-sky-400 rounded-full w-12 h-12">
-                                                <h1 class="text-white font-bold">5</h1>
+                                                <h1 class="text-white font-bold">{{ $today_clinic_transactions }}</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -233,160 +233,28 @@
                                     </div>
                                     <!-- Scrollable container -->
                                     <div class="overflow-y-auto max-h-[14.5rem]  mb-4 scrollbar-hidden px-2 ">
+
+                                        @foreach ($clinic_transactions as $transaction)
                                         <div class="flex justify-between px-2 mt-2">
                                             <div class="flex items-center">
                                                 <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
+                                                    <i data-lucide="circle-user" class="w-6 h-6 text-gray-500"></i>
                                                 </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
+                                                <div class="ml-2 flex flex-col gap-1">
+                                                    <h1 class="text-sm font-bold text-gray-900">{{ $transaction->Patient->first_name }} {{ $transaction->Patient->last_name }}</h1>
+                                                    <p class="text-xs font-semibold text-gray-500">{{ $transaction->Service->name }}</p>
+                                                    <p class="text-xs font-normal text-gray-500">Visited on: {{ $transaction->getDateOnlyAttribute() }}</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
+                                                <a href="#" class="text-xs flex hover:text-sky-800"> <i data-lucide="chevron-right" class="w-4 h-4 "></i>
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between px-2 mt-2">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center justify-center">
-                                                    <i data-lucide="circle-user" class="w-5 h-5 text-gray-500"></i>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <h1 class="text-sm font-bold text-gray-900">John Doe</h1>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: 2023-10-01</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-center text-sky-600">
-                                                <a href="#" class="text-xs flex hover:text-sky-800">Details <i data-lucide="chevron-right" class="w-4 h-4 "></i>
-                                                </a>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- inventory -->
                             <div class="col-span-5 md:col-span-3 rounded-lg shadow-xl border border-gray-200 p-2 md:p-6">

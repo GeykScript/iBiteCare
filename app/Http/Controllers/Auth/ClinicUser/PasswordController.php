@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ClinicUser;
 
 
-//clinic user update password controller
+//clinic user profile update password controller
 class PasswordController extends Controller
 {
     public function update(Request $request): RedirectResponse

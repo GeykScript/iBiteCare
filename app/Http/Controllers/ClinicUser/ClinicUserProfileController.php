@@ -5,6 +5,9 @@ namespace App\Http\Controllers\ClinicUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Models\ClinicUser;
+use App\Models\ClinicUserInfo;
 
 class ClinicUserProfileController extends Controller
 {
@@ -13,10 +16,84 @@ class ClinicUserProfileController extends Controller
     {
         $clinicUser = Auth::guard('clinic_user')->user();
 
-        if (!$clinicUser) {
-            return redirect()->route('clinic.login')->with('error', 'You must be logged in to access your profile.');
+        return view('ClinicUser.userprofile', compact('clinicUser'));
+    }
+
+
+    public function updateUserProfileAccount(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'first_name'      => 'required|string|max:255',
+            'last_name'       => 'required|string|max:255',
+            'middle_initial'  => 'nullable|string|max:10',
+            'suffix'          => 'nullable|string|max:50',
+            'email'           => 'required|email|max:255|unique:users,email,' . $request->id,
+            'contact_number'  => 'required|string|max:20',
+            'province'        => 'nullable|string|max:255',
+            'city'            => 'nullable|string|max:255',
+            'barangay'        => 'nullable|string|max:255',
+            'description'     => 'nullable|string|max:500',
+        ]);
+
+        // Handle suffix formatting
+        $suffix = null;
+        if ($request->suffix) {
+            $suffix = strtoupper($request->suffix);
+            if (in_array($suffix, ['JR', 'SR'])) {
+                $suffix = Str::ucfirst(Str::lower($suffix)) . '.'; // Jr. / Sr.
+            } elseif (preg_match('/^[IVX]+$/', $suffix)) {
+                $suffix = $suffix;
+            } else {
+                $suffix = Str::ucfirst(Str::lower($suffix));
+            }
         }
 
-        return view('ClinicUser.userprofile', compact('clinicUser'));
+        $clinic_user = ClinicUser::findOrFail($request->id);
+
+        // Format new values
+        $newUserData = [
+            'first_name'      => Str::title(Str::lower($request->first_name)),
+            'last_name'       => Str::title(Str::lower($request->last_name)),
+            'middle_initial'  => Str::upper($request->middle_initial),
+            'suffix'          => $suffix,
+            'email'           => $request->email,
+        ];
+
+        // Old user data
+        $oldUserData = $clinic_user->only(array_keys($newUserData));
+
+        // Build address
+        if (
+            empty($request->barangay) &&
+            empty($request->city) &&
+            empty($request->province) &&
+            empty($request->description)
+        ) {
+            $address = ClinicUserInfo::where('user_id', $clinic_user->id)->value('address');
+        } else {
+            $address = $request->barangay . ', ' .
+                $request->city . ', ' .
+                $request->province . ', ' .
+                $request->description;
+        }
+
+        $clinicUserInfo = ClinicUserInfo::where('user_id', $clinic_user->id)->first();
+        $newInfoData = [
+            'contact_number' => $request->contact_number,
+            'address'        => $address,
+        ];
+        $oldInfoData = $clinicUserInfo->only(array_keys($newInfoData));
+
+        // Check if any changes exist
+        if ($oldUserData == $newUserData && $oldInfoData == $newInfoData) {
+            return redirect()->route('clinic.profile')->with('profile-success', 'No changes made.');
+        }
+
+        // Perform updates
+        $clinic_user->update($newUserData);
+        $clinicUserInfo->update($newInfoData);
+
+        return redirect()->route('clinic.profile')->with('profile-success', 'User account updated successfully!');
     }
 }

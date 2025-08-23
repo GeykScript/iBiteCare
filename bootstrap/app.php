@@ -12,8 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class, 
-        ]);
+            'auth' => \App\Http\Middleware\Authenticate::class,
+        'guest.clinic' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+    ]);
     })
 
     ->withExceptions(function (Exceptions $exceptions) {

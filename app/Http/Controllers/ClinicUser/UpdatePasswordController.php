@@ -8,6 +8,7 @@ use App\Models\ClinicUser;
 use Illuminate\Support\Facades\Crypt;
 
 
+// Update Password Controller for forgot password
 class UpdatePasswordController extends Controller
 {
     // Show the update password form

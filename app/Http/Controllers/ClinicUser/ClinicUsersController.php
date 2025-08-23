@@ -25,6 +25,8 @@ class ClinicUsersController extends Controller
         return view('ClinicUser.user-accounts', compact('clinicUser', 'clinic_users', 'generated_id', 'default_password'));
     }
 
+
+    // function to generate unique password
     private function generateUniqueIdAndPassword()
     {
         do {
@@ -41,6 +43,8 @@ class ClinicUsersController extends Controller
         return [$id, $default_password];
     }
 
+
+        // pass the value to the frontend using json
     public function generateId()
     {
         [$id, $default_password] = $this->generateUniqueIdAndPassword();
@@ -53,6 +57,7 @@ class ClinicUsersController extends Controller
 
 
 
+//function to create user account
     public function createUserAccount(Request $request)
     {
         $request->validate([
@@ -97,8 +102,8 @@ class ClinicUsersController extends Controller
         $user = ClinicUser::create([
             'account_id'      => $request->account_id,
             'role'            => $request->role,
-            'first_name'       => Str::ucfirst(Str::lower($request->first_name)),
-            'last_name'        => Str::ucfirst(Str::lower($request->last_name)), 
+            'first_name' => Str::title(Str::lower($request->first_name)),
+            'last_name'        => Str::title(Str::lower($request->last_name)), 
             'middle_initial'   => Str::upper($request->middle_initial),            
             'suffix'           => $suffix, 
             'email'           => $request->email,
@@ -122,6 +127,7 @@ class ClinicUsersController extends Controller
         $user_account = ClinicUser::where('account_id', $request->account_id)->first();
         $user_default_password = $user_account->default_password;
 
+        //mail the defualt user account and password
         Mail::to($user->email)->send(new ClinicUserAccountMail($user_account, $user_default_password));
 
         return redirect()->route('clinic.user-accounts')->with('success', 'User account created successfully!');
