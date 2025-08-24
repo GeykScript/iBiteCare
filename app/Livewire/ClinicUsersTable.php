@@ -12,9 +12,9 @@ class ClinicUsersTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 2;
+    public $perPage = 5;
     public $sortBy = 'created_at';
-    public $sortDirection = 'DESC';
+    public $sortDirection = 'ASC';
 
     public $selectedUser = null;
 

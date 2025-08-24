@@ -12,7 +12,13 @@ class ClinicUserAuthController extends Controller
 {
     public function showLoginForm()
     {
+     
         return view('auth.ClinicUser.clinic_user-login');
+
+        if (Auth::guard('clinic_user')->check()) {
+            // User is already logged in, redirect straight to dashboard
+            return redirect()->route('clinic.dashboard');
+        }
     }
 
     public function store(ClinicUserLoginRequest $request): RedirectResponse

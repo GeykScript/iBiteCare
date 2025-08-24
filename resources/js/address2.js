@@ -1,6 +1,7 @@
+
 import { regions, provinces, cities, barangays } from "select-philippines-address";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("click", () => {
     const dropdowns = [
         { btn: "update-region_btn", list: "update-region", selected: "update-region_selected", input: "update_region_input" },
         { btn: "update-province_btn", list: "update-province", selected: "update-province_selected", input: "update_province_input" },
@@ -11,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function toggleList(btn, list) {
         document.getElementById(list).classList.toggle("hidden");
     }
-
+    
     function renderList(listId, items, onClick) {
         const listElement = document.getElementById(listId);
         listElement.innerHTML = "";

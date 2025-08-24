@@ -151,12 +151,26 @@ class ClinicUsersController extends Controller
             'update_city'            => 'nullable|string|max:255',
             'update_barangay'        => 'nullable|string|max:255',
             'update_description'     => 'nullable|string|max:500',
+        ], [], [
+            //  Custom attribute names here
+            'update_first_name'     => 'first name',    
+            'update_last_name'      => 'last name',
+            'update_middle_initial' => 'middle initial',    
+            'update_suffix'         => 'suffix',
+            'update_email'          => 'email',
+            'update_contact_number' => 'contact number',
+            'update_province'       => 'province',
+            'update_city'           => 'city',
+            'update_barangay'       => 'barangay',
+            'update_description'    => 'description',
         ]);
+
 
         // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()
                 ->with('update_errors', $validator->errors())
+                ->with('update_error_id', $request->id) // or however you identify the user
                 ->withInput();
         }
 

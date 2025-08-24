@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
         renderList("region", data, handleRegionSelect);
 
         //  Automatically select Region V (Bicol Region)
-        const region5 = data.find(r => r.region_code === "05"); // Region V
-        if (region5) {
-            handleRegionSelect(region5);
-        }
+        // const region5 = data.find(r => r.region_code === "05"); // Region V
+        // if (region5) {
+        //     handleRegionSelect(region5);
+        // }
     });
 
     // ---------------- Handlers ----------------
