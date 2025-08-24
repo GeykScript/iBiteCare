@@ -45,7 +45,7 @@ class ClinicUserProfileController extends Controller
             } elseif (preg_match('/^[IVX]+$/', $suffix)) {
                 $suffix = $suffix;
             } else {
-                $suffix = Str::ucfirst(Str::lower($suffix));
+                $suffix = Str::ucfirst(Str::lower($suffix));    
             }
         }
 

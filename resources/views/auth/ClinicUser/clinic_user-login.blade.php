@@ -42,7 +42,7 @@
                         @csrf
 
                         <!-- account-id -->
-                        <h1 class="text-center text-xl font-bold text-black">Login Clinic Account</h1>
+                        <h1 class="items-center justify-center gap-2 text-xl font-bold text-black flex"><img src="{{asset('drcare_logo.png')}}" alt="Dr.Care logo" class="w-8 h-8">Login Clinic Account</h1>
                         <div class="mt-6">
                             <x-input-label for="account_id" :value="__('Account ID')" />
                             <x-text-input id="account_id" class="block mt-1 w-full" type="text" name="account_id" :value="old('account_id')" required autofocus autocomplete="username" />
@@ -53,7 +53,7 @@
                         <div class="mt-4">
                             <x-input-label for="password" :value="__('Password')" />
 
-                            <x-text-input id="password" class="block mt-1 w-full"   
+                            <x-text-input id="password" class="block mt-1 w-full"
                                 type="password"
                                 name="password"
                                 required autocomplete="current-password" />

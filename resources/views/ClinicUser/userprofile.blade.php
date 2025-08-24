@@ -130,6 +130,7 @@
                     </div>
                     @endif
 
+                    <!-- card area  -->
                     <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white border border-gray-200 shadow-lg rounded-lg">
                         <div class="flex grid grid-cols-12 ">
                             <div class="col-span-1 flex items-center justify-center">
@@ -191,13 +192,12 @@
                         </div>
                     </div>
 
-
+                    <!-- update user profile modal -->
                     <dialog id="user-profile-info" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
                         <!-- close modal button  -->
                         <div class="w-full flex justify-end mb-5 md:mb-2">
-                            <button onclick="document.getElementById('user-profile-info').close()"><i data-lucide="x" class="w-5 h-5"></i></button>
+                            <button onclick="document.getElementById('user-profile-info').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
-
                         <!-- update  user profile info  form  -->
                         <form action="{{ route('clinic.user-profile.update') }}" method="POST" id="update-user-profile-info">
                             @csrf
@@ -206,7 +206,6 @@
                             <input type="text" name="id" value="{{ $clinicUser->id }}" hidden>
 
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
-
                                 <div class="col-span-12 flex items-center justify-center">
                                     <div class="flex items-center justify-center gap-4 ">
                                         <i data-lucide="circle-user" class="w-12 h-12 text-sky-500"></i>
@@ -216,13 +215,10 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="col-span-12 px-4 flex gap-2 items-center px-2 mt-5">
                                     <p class="text-md font-semibold">Account ID:</p>
                                     <h1 class="text-md font-medium text-gray-700">{{ $clinicUser->account_id }}</h1>
                                 </div>
-
                                 <div class="col-span-12 px-4 flex items-center gap-3">
                                     <h1 class="font-semibold text-md">Clinic Role: </h1>
                                     <div class="bg-sky-200 py-2 px-6 rounded">
@@ -231,59 +227,69 @@
                                 </div>
                                 <!-- divider border  -->
                                 <div class="col-span-12 border-2 border-gray-100 my-2"></div>
-
-
                                 <div class="col-span-12">
                                     <h1 class="font-semibold text-xl">Personal Information</h1>
                                 </div>
-
                                 <!-- fname. lname , initial div  -->
                                 <div class="col-span-12 grid grid-cols-12 gap-2">
-
                                     <!-- FIRST NAME -->
                                     <div class="col-span-12 md:col-span-5">
-                                        <label for="first_name" class="text-sm font-semibold">First Name:
-                                            <span class="text-red-500" id="first-name-error">
-                                                @if ($errors->has('first_name'))
+                                        @if ($errors->has('first_name'))
+                                        <label for="first_name" class="text-sm font-semibold flex justify-between items-center w-full">First Name:
+                                            <span class="text-red-500 text-xs" id="first-name-error">
                                                 {{ $errors->first('first_name') }}
-                                                @endif
                                                 *</span>
                                         </label>
+                                        @else
+                                        <label for="first_name" class="text-sm font-semibold ">First Name:
+                                            <span class="text-red-500 text-xs" id="first-name-error">*</span>
+                                        </label>
+                                        @endif
                                         <input type="text" id="first_name" name="first_name"
                                             placeholder="First Name"
                                             value="{{ ( $clinicUser->first_name) }}"
-                                            class="w-full p-2 border border-gray-300 rounded-lg bg-gray-100 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
+                                            class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
                                     </div>
 
                                     <!-- LAST NAME -->
                                     <div class="col-span-12 md:col-span-5">
-                                        <label for="last_name" class="text-sm font-semibold">Last Name:
-                                            <span class="text-red-500" id="last-name-error">
-                                                @if ($errors->has('last_name'))
+                                        @if ($errors->has('last_name'))
+                                        <label for="last_name" class="text-sm font-semibold flex justify-between items-center w-full">Last Name:
+                                            <span class="text-red-500 text-xs" id="last-name-error">
                                                 {{ $errors->first('last_name') }}
-                                                @endif
                                                 *</span>
                                         </label>
+                                        @else
+                                        <label for="last_name" class="text-sm font-semibold ">Last Name:
+                                            <span class="text-red-500 text-xs" id="last-name-error">*</span>
+                                        </label>
+                                        @endif
+
                                         <input type="text" id="last_name" name="last_name" placeholder="Last Name"
                                             value="{{ ( $clinicUser->last_name) }}"
-                                            class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-100 focus:bg-white  focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
+                                            class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:bg-white  focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
                                     </div>
 
                                     <!-- MIDDLE INITIAL -->
                                     <div class="col-span-6 md:col-span-1">
-                                        <label for="middle_initial" class="text-sm font-semibold">M.I
-                                            <span class="text-red-500" id="middle-initial-error">
-                                                @if ($errors->has('middle_initial'))
+                                        @if ($errors->has('middle_initial'))
+                                        <label for="middle_initial" class="text-sm font-semibold flex justify-between items-center w-full">M.I:
+                                            <span class="text-red-500 text-xs" id="middle-initial-error">
                                                 {{ $errors->first('middle_initial') }}
-                                                @endif
                                                 *</span>
                                         </label>
+                                        @else
+                                        <label for="middle_initial" class="text-sm font-semibold ">M.I:
+                                            <span class="text-red-500 text-xs" id="middle-initial-error">*</span>
+                                        </label>
+                                        @endif
+
                                         <input type="text" id="middle_initial" name="middle_initial" placeholder="M.I" maxlength="3"
                                             pattern="[A-Z]\."
                                             oninput="this.value = this.value.toUpperCase()"
                                             title="Only one letter followed by a period is allowed (e.g., M.)"
                                             value="{{ old('middle_initial', $clinicUser->middle_initial) }}"
-                                            class="w-full p-2 border border-gray-300 bg-gray-100 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
                                     </div>
 
                                     <!-- SUFFIX -->
@@ -294,7 +300,7 @@
                                             maxlength="5"
                                             title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
                                             value="{{ old('suffix', $clinicUser->suffix) }}"
-                                            class="w-full p-2 border border-gray-300 bg-gray-100 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                 </div>
 
@@ -303,21 +309,25 @@
                                 <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
                                     <!-- date of birth  -->
                                     <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
-                                        <label for="date_of_birth" class=" text-sm font-bold text-gray-800">Date of Birth
-                                            <span class="text-red-500" id="date-of-birth-error">
-                                                @if ($errors->has('date_of_birth'))
+                                        @if ($errors->has('date_of_birth'))
+                                        <label for="date_of_birth" class="text-sm font-semibold flex justify-between items-center w-full">Date of Birth:
+                                            <span class="text-red-500 text-xs" id="date-of-birth-error">
                                                 {{ $errors->first('date_of_birth') }}
-                                                @endif
                                                 *</span>
                                         </label>
-                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $clinicUser->info->birthdate) }}" readonly
-                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                        @else
+                                        <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth:
+                                            <span class="text-red-500 text-xs" id="date-of-birth-error">*</span>
+                                        </label>
+                                        @endif
+                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $clinicUser->info->birthdate) }}" readonly disabled
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
                                         <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
                                         <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $clinicUser->info->age) }}"
-                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly>
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
@@ -344,31 +354,41 @@
                                     <!-- email  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
-                                            <label for="email" class=" text-sm font-bold text-gray-800">Personal Email
-                                                <span class="text-red-500" id="email-error">
-                                                    @if ($errors->has('email'))
+                                            @if ($errors->has('email'))
+                                            <label for="email" class="text-sm font-semibold flex justify-between items-center w-full">Personal Email:
+                                                <span class="text-red-500 text-xs" id="email-error">
                                                     {{ $errors->first('email') }}
-                                                    @endif
                                                     *</span>
                                             </label>
+                                            @else
+                                            <label for="email" class="text-sm font-semibold ">Personal Email:
+                                                <span class="text-red-500 text-xs" id="email-error">*</span>
+                                            </label>
+                                            @endif
+
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
                                             <input type="email" name="email" placeholder="example@gmail.com" value="{{ old('email', $clinicUser->email) }}"
-                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                                class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
 
                                     <!-- phone number  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
-                                            <label for="contact_number" class=" text-sm font-bold text-gray-800"> Phone Number
-                                                <span class="text-red-500" id="contact-number-error">
-                                                    @if ($errors->has('contact_number'))
+                                            @if ($errors->has('contact_number'))
+                                            <label for="contact_number" class="text-sm font-semibold flex justify-between items-center w-full">Contact Number:
+                                                <span class="text-red-500 text-xs" id="contact-number-error">
                                                     {{ $errors->first('contact_number') }}
-                                                    @endif
                                                     *</span>
                                             </label>
+                                            @else
+                                            <label for="contact_number" class="text-sm font-semibold ">Contact Number:
+                                                <span class="text-red-500 text-xs" id="contact-number-error">*</span>
+                                            </label>
+                                            @endif
+
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="phone-call"></i>
@@ -376,11 +396,10 @@
                                                 placeholder="e.g. 09xx xxx xxxx"
                                                 maxlength="13"
                                                 value="{{  $clinicUser->info->contact_number }}"
-                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                                class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- divider border  -->
                                 <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
 
@@ -398,7 +417,6 @@
                                 <div class="col-span-12 mt-2 p-2">
                                     <p class="font-semibold">Update Address</p>
                                 </div>
-
 
                                 <!-- region, province, city, barangay, purok div  -->
                                 <div class="col-span-12 grid grid-cols-12 gap-2">
@@ -462,6 +480,7 @@
                                             <!-- purok  -->
                                             <div class="col-span-4 md:col-span-2 ">
                                                 <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
+                                                <button id="description_btn" type="button" class="hidden"> </button>
                                                 <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                             </div>
                                         </div>
@@ -485,7 +504,7 @@
                         </form>
                     </dialog>
 
-
+                    <!-- update password card -->
                     <div class="md:w-1/2 w-full p-4">
                         <h1 class="text-xl font-900 text-[#FF000C]">Update Password</h1>
                         <p class="text-sm text-gray-600">
@@ -531,6 +550,16 @@
             </form>
         </x-modal>
 </body>
+
+<!-- js code to auto open modal if there is error -->
+@if ($errors->any())
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('user-profile-info').showModal();
+    });
+</script>
+@endif
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -601,16 +630,32 @@
             formatContactNumber(contactInput);
         }
     });
-
+    //error handling js
     document.addEventListener("DOMContentLoaded", function() {
         let fields = [{
-
-                name: "account_id",
-                label: "account-id-error"
+                name: "region",
+                label: "region-error",
+                btn: "region_btn"
             },
             {
-                name: "default_password",
-                label: "default-password-error"
+                name: "province",
+                label: "province-error",
+                btn: "province_btn"
+            },
+            {
+                name: "city",
+                label: "city-error",
+                btn: "city_btn"
+            },
+            {
+                name: "barangay",
+                label: "barangay-error",
+                btn: "barangay_btn"
+            },
+            {
+                name: "description",
+                label: "description-error",
+                btn: "description_btn"
             },
             {
                 name: "first_name",
@@ -621,12 +666,8 @@
                 label: "last-name-error"
             },
             {
-                name: "middle_name",
-                label: "middle-name-error"
-            },
-            {
-                name: "date_of_birth",
-                label: "date-of-birth-error"
+                name: "middle_initial",
+                label: "middle-initial-error"
             },
             {
                 name: "email",
@@ -638,61 +679,54 @@
             }
         ];
 
-        function markInvalid(input, label) {
-            label.style.color = "red";
+        function markInvalid(input, label, btn) {
+            if (label) label.style.color = "red";
             if (input) input.classList.add("border-red-500");
+            if (btn) btn.classList.add("border-red-500");
         }
 
-        function clearInvalid(input, label) {
-            label.style.color = "";
+        function clearInvalid(input, label, btn) {
+            if (label) label.style.color = "";
             if (input) input.classList.remove("border-red-500");
+            if (btn) btn.classList.remove("border-red-500");
         }
 
-        // Run validation on submit
         document.getElementById("update-user-profile-info").addEventListener("submit", function(e) {
             let isValid = true;
 
-            fields.forEach(function(f) {
+            // Handle btn fields first
+            let btnFields = fields.filter(f => f.btn);
+            let anyBtnHasValue = btnFields.some(f => {
+                let input = document.querySelector(`[name="${f.name}"]`);
+                return input && input.value.trim() !== "";
+            });
+
+            btnFields.forEach(f => {
                 let input = document.querySelector(`[name="${f.name}"]`);
                 let label = document.getElementById(f.label);
+                let btn = document.getElementById(f.btn);
 
-                if (input) {
-                    clearInvalid(input, label); // reset first
-
-                    if (!input.value.trim()) {
-                        isValid = false;
-                        markInvalid(input, label);
-                    }
+                if (anyBtnHasValue && input && input.value.trim() === "") {
+                    markInvalid(input, label, btn);
+                    isValid = false;
+                } else {
+                    clearInvalid(input, label, btn);
                 }
             });
 
-            if (!isValid) {
-                e.preventDefault();
-            }
-        });
+            // Handle fields without btn
+            fields.filter(f => !f.btn).forEach(f => {
+                let input = document.querySelector(`[name="${f.name}"]`);
+                let label = document.getElementById(f.label);
+                if (input && input.value.trim() === "") {
+                    markInvalid(input, label, null);
+                    isValid = false;
+                } else {
+                    clearInvalid(input, label, null);
+                }
+            });
 
-        // Real-time validation
-        fields.forEach(function(f) {
-            let input = document.querySelector(`[name="${f.name}"]`);
-            let label = document.getElementById(f.label);
-
-            if (input) {
-                let checkAndClear = function() {
-                    if (input.value.trim()) {
-                        clearInvalid(input, label);
-                    }
-                };
-
-                input.addEventListener("input", checkAndClear);
-                input.addEventListener("blur", checkAndClear); // also on leaving field
-
-                // For dynamically updated hidden fields (like region/province)
-                let observer = new MutationObserver(checkAndClear);
-                observer.observe(input, {
-                    attributes: true,
-                    attributeFilter: ["value"]
-                });
-            }
+            if (!isValid) e.preventDefault();
         });
     });
 </script>
