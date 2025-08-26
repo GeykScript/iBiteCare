@@ -20,10 +20,15 @@ class PatientsTable extends Component
     public $gender = '';
 
 
-public function updatedPerPage()
-{
-    $this->resetPage();
-}
+    public function updatingSearch()
+    {
+        $this->resetPage(); // reset pagination when search changes 
+    }
+
+    public function updatedPerPage()
+    {
+        $this->resetPage();
+    }
 
     public function setSortBy($sortByField)
     {

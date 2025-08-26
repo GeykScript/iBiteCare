@@ -1,35 +1,28 @@
 <?php
 
 namespace App\Livewire;
-
+use App\Models\Inventory;
 use Livewire\Component;
-use App\Models\ClinicUser;
 use Livewire\WithPagination;
 
 
-class ClinicUsersTable extends Component
+class InventoryRecordsTable extends Component
 {
+
+
     use WithPagination;
 
     public $search = '';
     public $perPage = 5;
+
     public $sortBy = 'created_at';
     public $sortDirection = 'ASC';
-
-    public $selectedUser = null;
-
-    public function showUser($id)
-    {
-        $this->selectedUser = ClinicUser::find($id);
-        $this->dispatch('show-profile-modal')->self(); // fires immediately, no wait
-        $this->dispatch('update-profile-modal')->self(); // fires immediately, no wait
-    }
 
     public function updatingSearch()
     {
         $this->resetPage(); // reset pagination when search changes
     }
-    
+
     public function updatedPerPage()
     {
         $this->resetPage();
@@ -45,14 +38,13 @@ class ClinicUsersTable extends Component
         $this->sortDirection = 'DESC';
     }
 
-
     public function render()
     {
-        $query = ClinicUser::search($this->search);
-        return view('livewire.clinic-users-table',[
-            'clinic_users' => $query
-                ->orderBy($this->sortBy, $this->sortDirection)
-                ->paginate($this->perPage)
+        $query = Inventory::search($this->search);
+        return view('livewire.inventory-records-table',[
+            'supplies' => $query->orderBy($this->sortBy, $this->sortDirection)
+                ->paginate($this->perPage),
         ]);
     }
 }
+

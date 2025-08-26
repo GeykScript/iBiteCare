@@ -52,7 +52,7 @@
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Inventory Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
+                    <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-box" class="w-5 h-5"></i>Supplies Logs</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
@@ -116,9 +116,9 @@
                 <!-- Main content grid -->
                 <div class="grid grid-cols-7 md:p-4 p-2 gap-4 md:gap-2 ">
                     <!-- div for First CHART -->
-                    <div class="col-span-7 md:col-span-3 w-full bg-white ">
-                        <div class="flex flex-col gap-4">
-                            <div class="w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 p-2 md:p-6">
+                    <div class="col-span-7 md:col-span-3 w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 ">
+                        <div class="flex flex-col gap-4 ">
+                            <div class="w-full bg-white  p-2 md:p-6">
                                 <div class="flex items-center gap-2 p-2">
                                     <div>
                                         <h5 class="leading-none md:text-xl font-900 text-gray-900  pb-1"> Patient Summary</h5>
@@ -183,7 +183,7 @@
                     <div class="col-span-7 md:col-span-4 flex flex-col  gap-3 ">
 
                         <!-- div for two chart -->
-                        <div class="grid grid-cols-5 bg-white  rounded md:gap-2 gap-4 ">
+                        <div class="grid grid-cols-5 bg-white  rounded md:gap-2 gap-4 h-full ">
                             <div class="col-span-5 md:col-span-2 flex flex-col ">
                                 <div class="flex flex-col rounded-lg border border-gray-100 gap-2">
                                     <div class="p-8">
@@ -276,7 +276,7 @@
                                     </div>
                                     <div class="grid grid-cols-1 items-center border-gray-200 border-t mt-2 dark:border-gray-700 justify-between">
                                         <div class="flex justify-between items-center pt-5">
-                                            <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <a href="{{ route('clinic.supplies') }}" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <i data-lucide="file-text" class="w-4 h-4 me-2"></i>
                                                 View Details
                                             </a>

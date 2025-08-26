@@ -309,7 +309,7 @@
 
 
     <!-- table pagination -->
-    <div class=" px-3">
+    <div class=" px-3 mt-5">
         {{ $clinic_users->appends(['perPage' => $perPage])->links() }}
     </div>
 
