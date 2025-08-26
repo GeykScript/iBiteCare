@@ -41,6 +41,7 @@ use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
 use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
 use App\Http\Controllers\ClinicUser\ClinicUsersController;
+use App\Http\Controllers\ClinicUser\InventorySupplies;
 
 
 Route::middleware('auth:clinic_user')->group(function () {
@@ -89,6 +90,8 @@ Route::middleware('auth:clinic_user')->group(function () {
     //-----------------END-----------------------//
 
 
+    Route::get('/clinic/supplies', [InventorySupplies::class, 'index'])
+        ->name('clinic.supplies');
 
 }); 
 //---------CLINIC LOGIN FORGOT PASSOWORD --------------------------

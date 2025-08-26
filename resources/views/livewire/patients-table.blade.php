@@ -1,4 +1,4 @@
-<div class="flex flex-col col-span-4 gap-2 relative">
+<div class="flex flex-col col-span-4 gap-2 relative pb-12">
     <div class="overflow-hidden">
         <div class="flex flex-row md:justify-between gap-2 p-2">
             <!-- per page dropdown -->
@@ -114,7 +114,7 @@
         </table>
     </div>
     <!-- table pagination -->
-    <div class=" px-3">
+    <div class=" px-3 mt-5">
         {{ $patients->appends(['perPage' => $perPage])->links() }}
 
     </div>

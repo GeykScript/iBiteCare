@@ -51,7 +51,7 @@
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Inventory Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
+                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-box" class="w-5 h-5"></i>Supplies Logs</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
@@ -111,8 +111,8 @@
                 </div>
                 <!-- Main Content -->
                 <div class="grid grid-cols-12 md:p-4 p-2 gap-2">
-                    <div class="col-span-12 md:col-span-4">
-                        <div class="w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 p-2 md:p-6">
+                    <div class="col-span-12 md:col-span-4 shadow-lg border-2 border-gray-200 ">
+                        <div class="w-full bg-white rounded-lg  p-2 md:p-6">
                             <div class="flex items-center gap-2 p-2">
                                 <div>
                                     <h5 class="leading-none md:text-xl font-900 text-gray-900  pb-1"> Patient Summary</h5>
@@ -173,7 +173,7 @@
                         </div>
                     </div>
                     <div class="col-span-12 md:col-span-4">
-                        <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6">
+                        <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
                             <h1 class="text-lg font-900 pb-8 px-2"> Clinic Revenue Overview</h1>
                             <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center">
@@ -214,7 +214,7 @@
 
                     </div>
                     <div class="col-span-12 md:col-span-4">
-                        <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6">
+                        <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
                             <h1 class="text-lg font-900 pb-8 px-2">Inventory Overview</h1>
                             <div class="flex justify-between pb-4 mb-3 border-b border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center">
@@ -235,7 +235,7 @@
 
                             <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                                 <div class="flex justify-between items-center pt-5">
-                                    <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <a href="{{ route('clinic.supplies') }}" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <i data-lucide="file-text" class="w-4 h-4 me-2"></i>
                                         View Details
                                     </a>
