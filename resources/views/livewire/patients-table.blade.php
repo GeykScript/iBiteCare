@@ -95,7 +95,13 @@
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $patient->middle_initial }}</td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->birthdate }}</td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->age }}</td>
-                    <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->sex }}</td>
+                    <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">
+                    @if ($patient->sex == 'Male')
+                    <span class="text-blue-500 font-bold">M</span>
+                    @else
+                    <span class="text-pink-500 font-bold">F</span>
+                    @endif
+                    </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->contact_number }}</td>
                     <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->registration_date }}</td>

@@ -10,10 +10,29 @@ class InventoryTable extends Component
 {
     use WithPagination;
 
+    public $sortBy = 'created_at';
+    public $sortDirection = 'ASC';
+    public $perPage = 6;
+    
+    public function updatedPerPage()
+    {
+        $this->resetPage();
+    }
+
+    public function setSortBy($sortByField)
+    {
+        if ($this->sortBy === $sortByField) {
+            $this->sortDirection = $this->sortDirection === 'ASC' ? 'DESC' : 'ASC';
+            return;
+        }
+        $this->sortBy = $sortByField;
+        $this->sortDirection = 'ASC';
+        $this->resetPage();
+    }
     public function render()
     {
         return view('livewire.inventory-table', [
-            'inventory_Items' => Inventory::paginate(6),
+            'inventory_Items' => Inventory::orderBy($this->sortBy, $this->sortDirection)->paginate($this->perPage),
         ]);
     }
 }

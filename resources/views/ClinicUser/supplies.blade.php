@@ -15,14 +15,12 @@
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js'])
-    @livewireStyles
 
 
 
     @endif
 
 </head>
-
 
 
 <body>
@@ -117,7 +115,7 @@
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
-                        <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add Supplies</button>
+                        <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
                     </div>
                     <!-- livewire/patient-table.php -->
                     <livewire:inventory-records-table />
@@ -144,7 +142,6 @@
                 </div>
             </form>
         </x-modal>
-        @livewireScripts
 
 </body>
 

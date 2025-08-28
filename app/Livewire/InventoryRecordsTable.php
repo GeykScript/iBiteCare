@@ -35,7 +35,7 @@ class InventoryRecordsTable extends Component
             return;
         }
         $this->sortBy = $sortByField;
-        $this->sortDirection = 'DESC';
+        $this->sortDirection = 'ASC';
     }
 
     public function render()

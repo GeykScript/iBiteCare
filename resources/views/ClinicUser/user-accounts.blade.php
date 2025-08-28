@@ -509,7 +509,7 @@
                                 </div>
                                 <div class="col-span-12 flex gap-2 items-center px-2">
                                     <p class="text-md font-bold">Role:</p>
-                                    <h1 x-text="user.role"></h1>
+                                    <h1 x-text="user.role" class="py-1 px-4 bg-sky-200 text-sky-800 font-bold rounded"></h1>
                                 </div>
                                 <!-- divider border  -->
                                 <div class="col-span-12 border-2 border-gray-100 my-2"></div>

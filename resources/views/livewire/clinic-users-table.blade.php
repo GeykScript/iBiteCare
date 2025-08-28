@@ -97,7 +97,20 @@
                 <tr wire:key="{{ $clinic_user->id }}" class="border-b dark:border-gray-700">
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->id }}</td>
                     <td class="md:px-2 px-0 py-4 text-center font-medium text-gray-900">{{ $clinic_user->account_id }}</td>
-                    <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->UserRole->role_name }}</td>
+                    <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">
+                        <span
+                            class="
+                                    py-2 px-4 rounded
+                                    @if ($clinic_user->UserRole->role_name === 'Admin') bg-sky-200 text-sky-800 border border-sky-
+                                    @elseif ($clinic_user->UserRole->role_name === 'Nurse') bg-green-200 text-green-800
+                                    @elseif ($clinic_user->UserRole->role_name === 'Staff') bg-red-200 text-red-800
+                                    @else bg-gray-100 text-gray-700
+                                    @endif
+                                ">
+                            {{ $clinic_user->UserRole->role_name }}
+                        </span>
+                    </td>
+
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->last_name }}</td>
                     <th class="md:px-2 px-4 py-4 text-center font-medium text-gray-900 whitespace-nowrap"> {{ $clinic_user->first_name }}</th>
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">{{ $clinic_user->middle_initial }}</td>
@@ -124,7 +137,7 @@
                                 age: '{{ $clinic_user->info?->age }}'
                             })"
                             class="text-blue-500 flex items-center justify-center font-semibold col-span-2 md:col-span-1">
-                            <img src="{{ asset('images/view.svg') }}" alt="Profile Details"  >
+                            <img src="{{ asset('images/view.svg') }}" alt="Profile Details">
                         </button>
 
                         <button
@@ -197,7 +210,16 @@
                 </div>
                 <div class="col-span-12 flex gap-2 items-center px-2">
                     <p class="text-sm font-semibold">Role:</p>
-                    <h1 x-text="user.role"></h1>
+                    <h1 x-text="user.role"
+                        :class="{
+        'bg-sky-200 text-sky-800 py-1 px-4 rounded': user.role === 'Admin',
+        'bg-green-200 text-green-800 py-1 px-4 rounded': user.role === 'Nurse',
+        'bg-red-200 text-red-800 py-1 px-4 rounded': user.role !== 'Staff' 
+    }"
+                        class="py-1 px-4 font-bold rounded">
+                    </h1>
+
+
                 </div>
                 <!-- divider border  -->
                 <div class="col-span-12 border-2 border-gray-100 my-2"></div>
@@ -268,7 +290,7 @@
                             <p class="text-sm font-bold text-gray-800">Personal Email</p>
                         </div>
                         <div class="w-full flex items-center md:gap-4 gap-2">
-                            <img src="{{ asset('images/mail.svg') }}" alt="Mail" >
+                            <img src="{{ asset('images/mail.svg') }}" alt="Mail">
                             <h1 x-text="user.email" class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50  "></h1>
                         </div>
                     </div>
@@ -279,7 +301,7 @@
                             <p class="text-sm font-bold text-gray-800">Phone Number</p>
                         </div>
                         <div class="w-full flex items-center gap-4">
-                            <img src="{{ asset('images/phone-call.svg') }}" alt="Phone Call" >
+                            <img src="{{ asset('images/phone-call.svg') }}" alt="Phone Call">
                             <h1 x-text="user.phone" class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50  "></h1>
                         </div>
                     </div>
@@ -293,7 +315,7 @@
                     <label for="address" class="text-xl font-bold text-gray-800">Address</label>
                 </div>
                 <div class="col-span-12 flex items-center gap-2 ">
-                    <img src="{{ asset('images/map-pinned.svg') }}" alt="Map Pinned" >
+                    <img src="{{ asset('images/map-pinned.svg') }}" alt="Map Pinned">
                     <h1 x-text="user.address" class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 "></h1>
                 </div>
 

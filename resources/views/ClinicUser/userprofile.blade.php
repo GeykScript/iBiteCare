@@ -221,9 +221,21 @@
                                 </div>
                                 <div class="col-span-12 px-4 flex items-center gap-3">
                                     <h1 class="font-semibold text-md">Clinic Role: </h1>
-                                    <div class="bg-sky-200 py-2 px-6 rounded">
-                                        <p class="font-900 text-sky-800">{{ $clinicUser->UserRole->role_name}}</p>
+                                    <div class="py-2 px-6 rounded 
+                                            @if ($clinicUser->UserRole->role_name === 'Admin') bg-sky-200 
+                                            @elseif ($clinicUser->UserRole->role_name === 'Doctor') bg-green-200 
+                                            @elseif ($clinicUser->UserRole->role_name === 'Nurse') bg-red-200 
+                                             @endif">
+
+                                        <p class="font-bold 
+                                                @if ($clinicUser->UserRole->role_name === 'Admin') text-sky-700 font-900
+                                                @elseif ($clinicUser->UserRole->role_name === 'Doctor') text-green-700 font-900
+                                                @elseif ($clinicUser->UserRole->role_name === 'Nurse') text-red-700 font-900
+                                                @endif">
+                                            {{ $clinicUser->UserRole->role_name }}
+                                        </p>
                                     </div>
+
                                 </div>
                                 <!-- divider border  -->
                                 <div class="col-span-12 border-2 border-gray-100 my-2"></div>
