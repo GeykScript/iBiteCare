@@ -127,7 +127,7 @@
                         <div class="w-full flex justify-end mb-5">
                             <button onclick="document.getElementById('AddNewSupplies').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
-                     
+
                         <!-- create new user form  -->
                         <form action="{{route('clinic.supplies.add_new_supplies')}}" method="POST" id="add_new_supplies">
                             @csrf
@@ -148,6 +148,7 @@
                                             <label for="category" class="text-sm font-semibold">Category</label>
                                             <x-select-dropdown
                                                 name="category"
+                                                id="category_id"
                                                 placeholder="Choose Category"
                                                 :options="[
                                                         'Vaccine' => 'Vaccine',
@@ -156,16 +157,17 @@
                                                         'Equipment' => 'Equipment',
                                                     ]" />
                                         </div>
+
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="product_type" class="text-sm font-semibold">Product Type</label>
-                                            <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc." class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+                                            <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc." class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
 
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-12 gap-4 py-2">
                                         <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
                                             <label for="brand_name" class="text-sm font-semibold">Product Name</label>
-                                            <input type="text" name="brand_name" placeholder="Brand Name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100 h-12" required />
+                                            <input type="text" name="brand_name" placeholder="Brand Name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
                                         </div>
                                         <div class="md:col-span-6 col-span-12 gap-2">
                                             <h1 class="text-sm font-semibold">Immunity Type</h1>
@@ -199,35 +201,31 @@
                                             <label for="package_type" class="text-sm font-semibold">Package Type</label>
                                             <x-select-dropdown
                                                 name="package_type"
-                                                placeholder="Choose package type"
-                                                :options="[
-                                            'Vial' => 'Vial',
-                                            'Box' => 'Box',
-                                            'Piece' => 'Piece',
-                                            'Pack' => 'Pack',
-                                        ]" />
+                                                id="package_type_id"
+                                                placeholder="Choose Package Type"
+                                                :options="['Vial','Box','Piece','Pack']" />
                                         </div>
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
-                                            <input type="number" name="volume_per_item" placeholder="e.g 5 ml" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" />
+                                            <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-12 gap-2 py-2">
                                         <div class="md:col-span-4 col-span-12">
                                             <label for="packages_received" class="text-sm font-semibold">Package Quantity</label>
-                                            <p class="text-xs italic text-gray-500 mt-2">Enter the number of packages of the product</p>
-                                            <input type="number" name="packages_received" placeholder="e.g 10 vial, 2 box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+                                            <p class="text-xs italic text-gray-500 mt-2"> No. of packages of the product</p>
+                                            <input type="number" name="packages_received" id="package_received_id" placeholder="e.g 10 vial, 2 box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
                                         </div>
                                         <div class="md:col-span-4 col-span-12">
                                             <label for="items_per_package" class="text-sm font-semibold">Items Per Package</label>
-                                            <p class="text-xs italic text-gray-500 mt-2">Enter the number of items per package.</p>
-                                            <input type="number" name="items_per_package" placeholder="e.g 10 pcs in box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+                                            <p class="text-xs italic text-gray-500 mt-2">No. of items per package. (If vial/pcs it should be 1)</p>
+                                            <input type="number" name="items_per_package" id="items_per_package_id" placeholder="e.g 10 pcs in box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
                                         </div>
                                         <div class="md:col-span-4 col-span-12">
                                             <p class="text-sm font-semibold">Total Items :</p>
                                             <p class="text-xs italic text-gray-500">This is the total number of items across all packages.</p>
                                             <div class="flex items-center justify-center w-full p-4 gap-2">
-                                                <h1 class="font-bold">200</h1>
+                                                <h1 class="font-bold" id="total_items_id">0</h1>
                                                 <p>Items</p>
                                             </div>
                                         </div>
@@ -235,18 +233,22 @@
                                     <div class="grid grid-cols-12 gap-2 py-2">
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="price_per_item" class="text-sm font-semibold">Price per Item</label>
-                                            <input type="number" name="price_per_item" placeholder="e.g 100" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+                                            <input type="number" name="price_per_item" id="price_per_item_id" placeholder="e.g 100" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
 
                                         </div>
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="total_price" class="text-sm font-semibold">Total Price</label>
-                                            <input type="number" name="total_price" placeholder="e.g 1000" class="w-full p-2 border-none focus:ring-0 focus:border-none focus:outline-none" readonly />
+                                            <div class="flex items-center ">
+                                                <i data-lucide="philippine-peso" class="w-5 h-5 "></i>
+                                                <input type="text" name="total_price" id="total_price_id" value="0.0" class="w-full p-2 border-none focus:ring-0 focus:border-none focus:outline-none" readonly />
+
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="col-span-12">
                                         <label for="supplier" class="text-sm font-semibold">Supplier</label>
-                                        <input type="text" name="supplier" placeholder="e.g ABC Supplies" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" />
+                                        <input type="text" name="supplier" placeholder="e.g ABC Supplies" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
                                     </div>
                                 </div>
                                 <div class="col-span-12 flex items-center justify-end gap-2">
@@ -286,6 +288,69 @@
             </form>
         </x-modal>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements for item/package calculation
+        const itemsPerPackage = document.getElementById('items_per_package_id');
+        const packagesReceived = document.getElementById('package_received_id');
+        const totalItemsEl = document.getElementById('total_items_id');
+
+        // Elements for price calculation
+        const pricePerItemEl = document.getElementById('price_per_item_id');
+        const totalPriceEl = document.getElementById('total_price_id');
+
+        // Calculate total items
+        function updateTotalItems() {
+            const items = Number(itemsPerPackage.value) || 0;
+            const packages = Number(packagesReceived.value) || 0;
+            totalItemsEl.textContent = items * packages;
+
+            // Also update total price whenever total items changes
+            updateTotalPrice();
+        }
+
+        // Calculate total price
+        function updateTotalPrice() {
+            const items = Number(totalItemsEl.textContent) || 0;
+            const price = Number(pricePerItemEl.value) || 0;
+            const total = items * price;
+
+            totalPriceEl.value = total.toLocaleString();
+        }
+
+        // Listen for Alpine dropdown changes
+        document.addEventListener('package-changed', function(e) {
+            const selected = e.detail;
+
+            if (selected === 'Vial' || selected === 'Piece') {
+                itemsPerPackage.value = 1;
+                itemsPerPackage.readOnly = true; // note the capital "O"
+            } else {
+                itemsPerPackage.value = '';
+                itemsPerPackage.readOnly = false; // note the capital "O"
+
+                packagesReceived.value = '';
+                totalItemsEl.textContent = '0';
+                pricePerItemEl.value = '';
+            }
+
+            updateTotalItems();
+        });
+
+        // Update total whenever inputs change
+        itemsPerPackage.addEventListener('input', updateTotalItems);
+        packagesReceived.addEventListener('input', updateTotalItems);
+        pricePerItemEl.addEventListener('input', updateTotalPrice);
+
+        // Initial calculation
+        updateTotalItems();
+        updateTotalPrice();
+    });
+</script>
+
+
+
 
 
 </html>

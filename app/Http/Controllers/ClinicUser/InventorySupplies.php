@@ -31,7 +31,7 @@ class InventorySupplies extends Controller
             'items_per_package' => 'required|integer|min:1',
             'volume_per_item' => 'nullable|numeric|min:0',
             'price_per_item' => 'required|numeric|min:0',
-            'total_price' => 'required|numeric|min:0',
+            // 'total_price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
 
         ]);
@@ -56,13 +56,12 @@ class InventorySupplies extends Controller
             'unit_type' => "pcs",
             'total_units' => $total_units,
             'total_remaining_units' => $total_units,
-            'total_package_amount' => $request->total_price,
+            'total_package_amount' => $request->price_per_item * $total_units,
             'restock_date' => now(),
             'supplier' => $request->supplier,
         ]);
 
         if (strtolower($request->category) === 'supply' || strtolower($request->category) === 'equipment' ) {
-            // ✅ For supply: just one row
             Inventory_units::create([
                 'item_id' => $item->id,
                 'stock_id' => $stock->id,       
@@ -74,7 +73,7 @@ class InventorySupplies extends Controller
                 'unit_quantity' => $total_units,
                 'remaining_quantity' => $total_units,
                 'status' => "Sealed",
-                'unit_price' => $request->input('price_per_item')
+                'unit_price' => $request->price_per_item
             ]);
         } else {
             $global_unit_number = 1; // Start unit numbering globally
