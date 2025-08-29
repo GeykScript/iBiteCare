@@ -24,6 +24,8 @@ class User extends Authenticatable
         'patient_id',
         'email',
         'password',
+        'auth_provider_id',
+        'auth_provider',
     ];
 
     /**

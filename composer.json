@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.31",
+        "laravel/socialite": "^5.23",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.6"
     },

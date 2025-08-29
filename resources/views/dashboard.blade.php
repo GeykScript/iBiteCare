@@ -45,7 +45,7 @@
         }
     </style>
 
- 
+
     <body>
         <section class="bg-section bg-no-repeat bg-center w-full  h-screen bg-contain sm:bg-cover flex flex-col items-center justify-between">
             <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center h-[80%]   w-full gap-2">

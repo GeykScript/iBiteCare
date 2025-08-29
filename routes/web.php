@@ -1,12 +1,20 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::controller(SocialiteController::class)->group(function(){
+    Route::get('auth/{provider}', 'redirect')->name('auth.provider');
+    Route::get('auth/{provider}/callback', 'callback')->name('auth.provider-callback');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -17,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 require __DIR__.'/auth.php';
 
