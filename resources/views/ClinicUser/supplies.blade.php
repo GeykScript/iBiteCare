@@ -160,14 +160,18 @@
 
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="product_type" class="text-sm font-semibold">Product Type</label>
-                                            <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc." class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
+                                            <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc."
+                                                pattern="[A-Za-z]+"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
 
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-12 gap-4 py-2">
                                         <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
                                             <label for="brand_name" class="text-sm font-semibold">Product Name</label>
-                                            <input type="text" name="brand_name" placeholder="Brand Name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
+                                            <input type="text" name="brand_name" placeholder="Brand Name"
+                                                pattern="[A-Za-z]+"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
                                         </div>
                                         <div class="md:col-span-6 col-span-12 gap-2">
                                             <h1 class="text-sm font-semibold">Immunity Type</h1>
@@ -207,7 +211,9 @@
                                         </div>
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
-                                            <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
+                                            <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml"
+                                                pattern="^\d+(\.\d+)?$"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-12 gap-2 py-2">
@@ -237,7 +243,7 @@
 
                                         </div>
                                         <div class="md:col-span-6 col-span-12">
-                                            <label for="total_price" class="text-sm font-semibold">Total Price</label>
+                                            <label for="total_price" class="text-sm font-semibold">Total Amount</label>
                                             <div class="flex items-center ">
                                                 <i data-lucide="philippine-peso" class="w-5 h-5 "></i>
                                                 <input type="text" name="total_price" id="total_price_id" value="0.0" class="w-full p-2 border-none focus:ring-0 focus:border-none focus:outline-none" readonly />
