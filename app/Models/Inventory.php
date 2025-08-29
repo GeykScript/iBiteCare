@@ -15,8 +15,7 @@ class Inventory extends Model
       'brand_name',
       'product_type',
       'immunity_type',
-      'packages_received',
-      'package_type',
+      'stock_status',
       'total_units',
       'total_unit_remaining',
       'vol_qty_total',
@@ -34,7 +33,6 @@ class Inventory extends Model
         ->orWhere('brand_name', 'like', "%{$searchTerm}%")
         ->orWhere('product_type', 'like', "%{$searchTerm}%")
         ->orWhere('immunity_type', 'like', "%{$searchTerm}%")
-        ->orWhere('package_type', 'like', "%{$searchTerm}%")
         ->orWhere('stock_status', 'like', "%{$searchTerm}%");
     });
   }

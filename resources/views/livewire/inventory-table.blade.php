@@ -1,6 +1,6 @@
 <div class="overflow-x-auto">
     <!-- Header -->
-    <div class="grid grid-cols-4 text-sm text-center font-bold text-white  bg-gray-700 rounded-lg px-2 py-4">
+    <div class="grid grid-cols-4 text-sm text-center font-bold text-white  bg-gray-800 rounded-lg px-2 py-4">
         <div class="col-span-1 flex items-center justify-center md:border-r-2"><p class="hover:cursor-pointer hover:text-gray-100" wire:click="setSortBy('category')">
                 Brand
             </p></div>
