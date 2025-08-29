@@ -93,7 +93,6 @@
                         <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('brand_name')">Brand Name</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('product_type')">Product Type</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200  hidden md:table-cell" wire:click="setSortBy('immunity_type')">Immunity Type</th>
-                        <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200  hidden md:table-cell" wire:click="setSortBy('package_type')">Unit</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center  hidden md:table-cell">Total Unit</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center  hidden md:table-cell">Remaining</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center hidden md:table-cell">Restock Date</th>
@@ -127,7 +126,6 @@
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $supply->brand_name }}</td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 ">{{ $supply->product_type }}</td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $supply->immunity_type ? :'n/a' }}</td>
-                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $supply->packages_received}} {{ $supply->package_type }} </td>
                         <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->total_units}}</td>
                         <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->total_unit_remaining}}</td>
                         <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->last_restocked_date}}</td>

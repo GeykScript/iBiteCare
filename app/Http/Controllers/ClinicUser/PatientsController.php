@@ -21,6 +21,8 @@ class PatientsController extends Controller
 
         return view('ClinicUser.patients', compact('clinicUser', 'patients'));
     }
+
+
 }
 
 

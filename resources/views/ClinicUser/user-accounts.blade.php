@@ -173,7 +173,7 @@
                                             <input type="text" name="default_password" id="default_password" placeholder="Default Password" value="{{ $default_password }}" class=" w-full p-3 px-4 border border-gray-100 rounded-lg bg-gray-100 focus:outline-none focus:ring-0 focus:border-gray-100" readonly>
                                             <!-- hidden password input  -->
                                             <input type="password" name="password" id="password" placeholder="Password" value="{{$default_password}}" class="w-full p-2 border border-gray-300 rounded-lg mt-4" hidden>
-                                        </div>
+                                        </div>  
 
                                         <!-- Generate button  -->
                                         <div class="col-span-5 md:col-span-1 flex items-end justify-start">

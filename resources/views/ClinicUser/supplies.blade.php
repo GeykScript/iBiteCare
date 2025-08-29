@@ -115,8 +115,151 @@
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
-                        <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
+                        <button
+                            onclick="document.getElementById('AddNewSupplies').showModal()"
+                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
                     </div>
+
+
+                    <!-- add new supplies modal  -->
+                    <dialog id="AddNewSupplies" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none h-full">
+                        <!-- close modal button  -->
+                        <div class="w-full flex justify-end mb-5">
+                            <button onclick="document.getElementById('AddNewSupplies').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                        </div>
+                     
+                        <!-- create new user form  -->
+                        <form action="{{route('clinic.supplies.add_new_supplies')}}" method="POST" id="add_new_supplies">
+                            @csrf
+                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
+
+                                <div class="col-span-12 flex flex-col items-center justify-center">
+                                    <h1 class="font-900 md:text-2xl text-xl">Add New Supplies</h1>
+                                    <p>Fill out the form below to add new supplies. All fields are required.</p>
+                                </div>
+                                <!-- divider border  -->
+                                <div class="col-span-12 border-2 border-gray-100 mt-2 mb-2"></div>
+                                <div class="col-span-12">
+                                    <h1 class="font-900 text-md">Product Information</h1>
+                                    <p class="text-gray-600 px-2">Please provide the following information about the product.</p>
+
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="category" class="text-sm font-semibold">Category</label>
+                                            <x-select-dropdown
+                                                name="category"
+                                                placeholder="Choose Category"
+                                                :options="[
+                                                        'Vaccine' => 'Vaccine',
+                                                        'RIG' => 'RIG',
+                                                        'Supply' => 'Supply',
+                                                        'Equipment' => 'Equipment',
+                                                    ]" />
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="product_type" class="text-sm font-semibold">Product Type</label>
+                                            <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc." class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-12 gap-4 py-2">
+                                        <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
+                                            <label for="brand_name" class="text-sm font-semibold">Product Name</label>
+                                            <input type="text" name="brand_name" placeholder="Brand Name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100 h-12" required />
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12 gap-2">
+                                            <h1 class="text-sm font-semibold">Immunity Type</h1>
+                                            <p class="text-xs italic my-2 text-gray-600">Select the immunity type if this is a vaccine or RIG. Choose "None" for other items.</p>
+                                            <div class="flex items-center gap-4">
+                                                <!-- none -->
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="immunity_type" value="" class="text-red-500 focus:ring-red-500" required>
+                                                    <span>None</span>
+                                                </label>
+                                                <!-- active immunity  -->
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="immunity_type" value="Active" class="text-green-600 focus:ring-green-600">
+                                                    <span>Active</span>
+                                                </label>
+                                                <!-- passive immunity  -->
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="immunity_type" value="Passive" class="text-sky-600 focus:ring-sky-600">
+                                                    <span>Passive</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- divider border  -->
+                                <div class="col-span-12 border-2 border-gray-100 mt-2 mb-2"></div>
+                                <div class="col-span-12 ">
+                                    <h1 class="font-900 text-md">Stock Information</h1>
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="package_type" class="text-sm font-semibold">Package Type</label>
+                                            <x-select-dropdown
+                                                name="package_type"
+                                                placeholder="Choose package type"
+                                                :options="[
+                                            'Vial' => 'Vial',
+                                            'Box' => 'Box',
+                                            'Piece' => 'Piece',
+                                            'Pack' => 'Pack',
+                                        ]" />
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
+                                            <input type="number" name="volume_per_item" placeholder="e.g 5 ml" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" />
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-4 col-span-12">
+                                            <label for="packages_received" class="text-sm font-semibold">Package Quantity</label>
+                                            <p class="text-xs italic text-gray-500 mt-2">Enter the number of packages of the product</p>
+                                            <input type="number" name="packages_received" placeholder="e.g 10 vial, 2 box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+                                        </div>
+                                        <div class="md:col-span-4 col-span-12">
+                                            <label for="items_per_package" class="text-sm font-semibold">Items Per Package</label>
+                                            <p class="text-xs italic text-gray-500 mt-2">Enter the number of items per package.</p>
+                                            <input type="number" name="items_per_package" placeholder="e.g 10 pcs in box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+                                        </div>
+                                        <div class="md:col-span-4 col-span-12">
+                                            <p class="text-sm font-semibold">Total Items :</p>
+                                            <p class="text-xs italic text-gray-500">This is the total number of items across all packages.</p>
+                                            <div class="flex items-center justify-center w-full p-4 gap-2">
+                                                <h1 class="font-bold">200</h1>
+                                                <p>Items</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="price_per_item" class="text-sm font-semibold">Price per Item</label>
+                                            <input type="number" name="price_per_item" placeholder="e.g 100" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" required />
+
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="total_price" class="text-sm font-semibold">Total Price</label>
+                                            <input type="number" name="total_price" placeholder="e.g 1000" class="w-full p-2 border-none focus:ring-0 focus:border-none focus:outline-none" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-12">
+                                        <label for="supplier" class="text-sm font-semibold">Supplier</label>
+                                        <input type="text" name="supplier" placeholder="e.g ABC Supplies" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-100" />
+                                    </div>
+                                </div>
+                                <div class="col-span-12 flex items-center justify-end gap-2">
+                                    <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Add New Supplies</button>
+                                    <button type="button" onclick="document.getElementById('AddNewSupplies').close()"
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </dialog>
+
                     <!-- livewire/patient-table.php -->
                     <livewire:inventory-records-table />
                 </div>
@@ -142,7 +285,6 @@
                 </div>
             </form>
         </x-modal>
-
 </body>
 
 

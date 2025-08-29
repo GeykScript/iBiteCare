@@ -93,6 +93,9 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/supplies', [InventorySupplies::class, 'index'])
         ->name('clinic.supplies');
 
+    Route::post('/clinic/supplies/add', [InventorySupplies::class, 'add_new_supplies'])
+        ->name('clinic.supplies.add_new_supplies');
+
 }); 
 //---------CLINIC LOGIN FORGOT PASSOWORD --------------------------
 Route::get('/clinic/two-factor/{id}', [TwoFactorAuthenticationController::class, 'index'])
