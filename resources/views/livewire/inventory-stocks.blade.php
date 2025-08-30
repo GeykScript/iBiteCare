@@ -11,8 +11,8 @@
                         <button
                             @click="open = !open"
                             type="button"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                    focus:ring-gray-500 focus:border-gray-800 block w-full p-2.5 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md
+                                    focus:ring-gray-500 focus:border-gray-800 block w-full px-2 py-1.5
                                     flex justify-between items-center">
                             <span x-text="selected"></span>
                             <img src="{{ asset('images/chevron-down.svg') }}" alt="chevron-down" class="w-4 h-4">
@@ -25,7 +25,7 @@
                             @foreach ([5, 10, 20, 50, 100] as $value)
                             <li
                                 @click="selected = {{ $value }}; $wire.set('perPage', {{ $value }}); open = false"
-                                class="cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-800 hover:text-white transition"
+                                class="cursor-pointer px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-800 hover:text-white transition"
                                 :class="{ 'bg-gray-800 text-white': selected == {{ $value }} }">
                                 {{ $value }}
                             </li>
@@ -52,17 +52,17 @@
         </button>
     </div>
     @endif
-    <table class="min-w-full border border-gray-300 text-sm mt-2">
+    <table class="min-w-full  text-sm mt-2 ">
         <thead class="bg-gray-100">
             <tr>
-                <th class="border px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('id')">Stock No.</th>
-                <th class="border px-2 py-1">Package</th>
-                <th class="border px-2 py-1">Items Per Package</th>
-                <th class="border px-2 py-1">Total Items</th>
-                <th class="border px-2 py-1">Remaining Items</th>
-                <th class="border px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('total_package_amount')">Package Amount</th>
-                <th class="border px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('restock_date')">Restock Date</th>
-                <th class="border px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('supplier')">Supplier</th>
+                <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">Stock #</th>
+                <th class="border bg-gray-800 text-white px-2 py-1">Package</th>
+                <th class="border bg-gray-800 text-white px-2 py-1">Items Per Package</th>
+                <th class="border bg-gray-800 text-white px-2 py-1">Total Items</th>
+                <th class="border bg-gray-800 text-white px-2 py-1">Remaining Items</th>
+                <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('total_package_amount')">Package Amount</th>
+                <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('restock_date')">Restock Date</th>
+                <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tr-lg" wire:click="setSortBy('supplier')">Supplier</th>
             </tr>
         </thead>
         <tbody>
@@ -76,23 +76,21 @@
             @else
             @foreach($inventoryStocks as $stock)
             <tr>
-                <td class="border px-2 py-1 text-gray-700">{{ $stock->id }}</td>
-                <td class="border px-2 py-1 text-gray-700">{{ $stock->packages_received }} {{ $stock->package_type }}</td>
-                <td class="border px-2 py-1 text-gray-700">{{ $stock->items_per_package }} {{$stock->unit_type}}</td>
-                <td class="border px-2 py-1 text-gray-700">{{ $stock->total_units }} {{ $stock->unit_type }}</td>
-                <td class="border px-2 py-1 text-gray-700">{{ $stock->total_remaining_units }} {{ $stock->unit_type }}</td>
-                <td class="border px-2 py-1 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo"
-                            class="w-3 h-3">{{ $stock->total_package_amount }}</span> </td>
-                <td class="border px-2 py-1 text-gray-700">{{ $stock->restock_date }}</td>
-                <td class="border px-2 py-1 text-gray-700">{{ $stock->supplier }}</td>
+                <td class="border-b px-2 py-2 text-gray-700">{{ $stock->id }}</td>
+                <td class="border px-2 py-2 text-gray-700">{{ $stock->packages_received }} {{ $stock->package_type }}</td>
+                <td class="border px-2 py-2 text-gray-700">{{ $stock->items_per_package }} {{$stock->unit_type}}</td>
+                <td class="border px-2 py-2 text-gray-700">{{ $stock->total_units }} {{ $stock->unit_type }}</td>
+                <td class="border px-2 py-2 text-gray-700">{{ $stock->total_remaining_units }} {{ $stock->unit_type }}</td>
+                <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo"class="w-3 h-3">{{ $stock->total_package_amount }}</span> </td>
+                <td class="border px-2 py-2 text-gray-700">{{ $stock->restock_date }}</td>
+                <td class="border-b px-2 py-2 text-gray-700">{{ $stock->supplier }}</td>
             </tr>
             @endforeach
             @endif
         </tbody>
     </table>
     <!-- table pagination -->
-    <div class=" px-3 mt-5">
+    <div class="px-3 mt-5">
         {{ $inventoryStocks->appends(['perPage' => $perPage])->links() }}
-
     </div>
 </div>

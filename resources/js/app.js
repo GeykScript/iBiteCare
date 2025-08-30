@@ -47,7 +47,8 @@ import {
         EyeOff,
         X,
         Check,
-        SquarePen
+        SquarePen,
+        ChevronLeft
     } 
      from 'lucide';
 
@@ -96,7 +97,8 @@ createIcons({
     EyeOff,
     X,
     Check,
-    SquarePen
+    SquarePen,
+    ChevronLeft
   }
 }); 
 

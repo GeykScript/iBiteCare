@@ -111,14 +111,20 @@
                     </div>
                 </div>
 
+                <div class="px-8">
+                    <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                </div>
+
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 p-4  md:px-10 ">
+                <div class="grid grid-cols-4 p-4  md:px-10 gap-2 ">
                     <div class="col-span-4 md:col-span-4 px-2">
+                        <div class="col-span-4 border-2 border-gray-50 mt-2 mb-2"></div>
+
                         <div class="flex items-center gap-2">
-                            <h1 class="font-900 text-md">Product Information</h1>
+                            <h1 class="font-900 text-lg">Product Information</h1>
                             <button
                                 onclick="document.getElementById('EditProduct').showModal()"
-                                class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="square-pen" class="w-5 h-5"></i>Edit</button>
+                                class="text-red-600 px-4 py-2 rounded-lg flex items-center gap-1 focus:outline-none font-900"><i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
                         </div>
                         @if (session('edit-success'))
                         <div
@@ -133,39 +139,79 @@
                         @endif
                         <div class="grid grid-cols-8 gap-2 py-2">
                             <div class="md:col-span-2 col-span-8">
-                                <p class="text-sm font-semibold">Product Name :</p>
-                                <p class="text-gray-700">{{ $inventoryItem->brand_name }}</p>
+                                <p class="text-sm font-semibold text-gray-600">Product Name</p>
+                                <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->brand_name }}</h1>
                             </div>
                             <div class="md:col-span-2 col-span-8">
-                                <p class="text-sm font-semibold">Category :</p>
-                                <p class="text-gray-700">{{ $inventoryItem->category }}</p>
+                                <p class="text-sm font-semibold text-gray-600">Category</p>
+                                <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->category }}</h1>
                             </div>
                             <div class="md:col-span-2 col-span-8">
-                                <p class="text-sm font-semibold">Product Type :</p>
-                                <p class="text-gray-700">{{ $inventoryItem->product_type }}</p>
+                                <p class="text-sm font-semibold text-gray-600">Product Type</p>
+                                <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->product_type }}</h1>
                             </div>
                             <div class="md:col-span-2 col-span-8">
-                                <p class="text-sm font-semibold">Immunity Type :</p>
-                                <p class="text-gray-700">{{ $inventoryItem->immunity_type }}</p>
+                                <p class="text-sm font-semibold text-gray-600">Immunity Type</p>
+                                <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->immunity_type ?? 'N/A' }}</h1>
                             </div>
                         </div>
-                        <h1 class="font-900 text-md">Stocks Details</h1>
-                        <div class="col-span-2">
-                            <p class="text-sm font-semibold">Total Stocks :</p>
-                            <p class="text-gray-700">{{ $inventoryRecords->total_units }} </p>
-                        </div>
-                        <div class="col-span-2">
-                            <p class="text-sm font-semibold">Remaining:</p>
-                            <p class="text-gray-700">{{ $inventoryRecords->total_unit_remaining }} </p>
-                        </div>
-                        <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
-                            <button
-                                onclick="document.getElementById('AddNewStocks').showModal()"
-                                class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add New Stock</button>
-                        </div>
+                        <div class="col-span-4 border-2 border-gray-50 mt-2 mb-2"></div>
 
 
-                        <dialog id="EditProduct" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
+                        <div class="flex items-center gap-2 ">
+                            <h1 class="font-900 text-lg">Stocks Details</h1>
+                        </div>
+                        <div class="col-span-8 grid grid-cols-8 gap-2 mt-2">
+                            <div class="md:col-span-1 col-span-8">
+                                <p class="text-sm font-semibold text-gray-600">Total Stocks</p>
+                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_units }} </p>
+                            </div>
+                            <div class="md:col-span-1 col-span-8">
+                                <p class="text-sm font-semibold text-gray-600">Remaining Stocks</p>
+                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_unit_remaining }} </p>
+                            </div>
+                            <div class="md:col-span-1 col-span-8">
+                                <p class="text-sm font-semibold text-gray-600">Status</p>
+                                <p class="text-green-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
+                            </div>
+                            <div class="md:col-span-2 col-span-8">
+                                <p class="text-sm font-semibold text-gray-600">Last Restocked Date</p>
+                                <p class="text-gray-800 font-bold text-md pt-1 ">{{ $inventoryRecords->last_restocked_date }} </p>
+                            </div>
+                            <div class="md:col-span-2 col-span-8 flex items-center ">
+                                <button
+                                    onclick="document.getElementById('AddNewStocks').showModal()"
+                                    class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>Add New Stock</button>
+                            </div>
+                        </div>
+
+                        <div class="col-span-4 border-2 border-gray-50 my-4"></div>
+
+                        <div class="col-span-4 flex flex-col mt-2">
+                            <div class="flex flex-col items-center justify-center gap-2">
+                                <h1 class="font-900 text-md">Stocks History</h1>
+                                <p class="text-gray-600">View the history of stock changes for this item.</p>
+                            </div>
+                            <!-- LIVEWIRE INVENTORY STOCKS TABLE -->
+                            <livewire:inventory-stocks :item-id=" $inventoryItem->id" />
+                        </div>
+
+                        <div class="col-span-4 border-2 border-gray-50 my-4"></div>
+
+                        <div class="col-span-4 flex flex-col mt-2">
+                            <div class="flex flex-col items-center justify-center gap-2">
+                                <h1 class="font-900 text-md">Items Details</h1>
+                                <p class="text-gray-600">View the details each item.</p>
+                            </div>
+                            <!-- LIVEWIRE INVENTORY ITEMS TABLE  -->
+                            <livewire:inventory-items :item-id="$inventoryItem->id" />
+                        </div>
+
+                        <!-- start of dialog/ modal codes  -->
+
+                        <!-- edit product modal  -->
+                        <dialog id="EditProduct" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/50 focus:outline-none ">
                             <!-- close modal button  -->
                             <div class="w-full flex justify-end mb-5">
                                 <button onclick="document.getElementById('EditProduct').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -192,7 +238,7 @@
                                         <div class="grid grid-cols-12 gap-2 py-2">
                                             <div class="md:col-span-6 col-span-12">
                                                 <label for="category" class="text-sm font-semibold">Category</label>
-                                             <p class="w-full p-2 border border-gray-50 rounded-lg focus:outline-none focus:border-none focus:ring-0   bg-gray-50">{{ $inventoryItem->category }}</p>
+                                                <p class="w-full p-2 border border-gray-50 rounded-lg focus:outline-none focus:border-none focus:ring-0   bg-gray-50">{{ $inventoryItem->category }}</p>
                                             </div>
 
                                             <div class="md:col-span-6 col-span-12">
@@ -262,8 +308,9 @@
                                 </div>
                             </form>
                         </dialog>
+
                         <!-- add new stocks modal  -->
-                        <dialog id="AddNewStocks" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
+                        <dialog id="AddNewStocks" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/50 focus:outline-none ">
                             <!-- close modal button  -->
                             <div class="w-full flex justify-end mb-5">
                                 <button onclick="document.getElementById('AddNewStocks').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -342,7 +389,7 @@
                                         </div>
                                     </div>
                                     <div class="col-span-12 flex items-center justify-end gap-2">
-                                        <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Add New Supplies</button>
+                                        <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Add Supplies</button>
                                         <button type="button" onclick="document.getElementById('AddNewStocks').close()"
                                             class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
                                             Cancel
@@ -352,12 +399,72 @@
                             </form>
                         </dialog>
 
-                        <livewire:inventory-stocks :item-id="$inventoryItem->id" />
-                        <livewire:inventory-items :item-id="$inventoryItem->id" />
+                        <!-- update inventory item modal -->
+                        <dialog id="updateInventoryItemModal"
+                            x-data="{
+                                        item: {
+                                            id: '', stock_id: '', item_id: '', quantity: '', remaining: '', price: '', status: ''
+                                        },
+                                        open() { this.$refs.modal.showModal() },
+                                        close() { this.$refs.modal.close() }
+                                    }"
+                            x-ref="modal"
+                            @update-item-modal.window="item = $event.detail; open()"
+                            class="p-8 rounded-lg shadow-lg w-full max-w-lg backdrop:bg-black/50 focus:outline-none">
 
-                        
+                            <!-- Close button -->
+                            <div class="w-full flex justify-end">
+                                <button @click="close()" class="focus:outline-none">
+                                    <i data-lucide="x" class="w-5 h-5"></i>
+                                </button>
+                            </div>
 
+                            <!-- Form -->
+                            <form action="{{route('clinic.supplies.manage.edit.quantity')}}" method="POST" id="updateItemForm">
+                                @csrf
+                                @method('PUT')
 
+                                <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
+                                    <div class="col-span-12 flex flex-col items-center justify-center">
+                                        <h1 class="font-900 md:text-2xl text-xl">Edit Item</h1>
+                                        <p>Fill out the form below to edit item details. </p>
+                                    </div>
+
+                                    <div class="col-span-12 flex flex-col items-center justify-center">
+                                        <input type="hidden" name="id" x-model="item.id">
+                                        <input type="hidden" name="stock_id" x-model="item.stock_id">
+                                        <input type="hidden" name="item_id" x-model="item.item_id">
+                                    </div>
+                                    <div class="col-span-12 flex flex-col">
+                                        <label class="block text-sm font-medium">Quantity</label>
+                                        <p class="text-xs text-gray-500">(Leave unchanged if no update is needed)</p>
+                                        <input type="number" name="quantity" x-model="item.quantity"
+                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
+                                    </div>
+
+                                    <div class="col-span-12 flex flex-col">
+                                        <label class="block text-sm font-medium">Remaining Quantity</label>
+                                        <p class="text-xs text-gray-500">(Leave unchanged if no update is needed)</p>
+                                        <input type="number" name="remaining_quantity" x-model="item.remaining"
+                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
+                                    </div>
+
+                                    <div class="col-span-12 flex flex-col">
+                                        <label class="block text-sm font-medium">Price</label>
+                                        <p class="text-xs text-gray-500">(Price per item)</p>
+                                        <input type="number" name="price" x-model="item.price"
+                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
+                                    </div>
+
+                                    <div class="col-span-12 flex justify-end space-x-2">
+                                        <button type="button" @click="close()" class="px-4 py-2 bg-gray-100 rounded">Cancel</button>
+                                        <button type="submit" class="px-6 py-2 bg-sky-500 text-white rounded">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </dialog>
+
+                        <!-- end  of all modals code -->
 
 
                     </div>
@@ -444,9 +551,6 @@
         updateTotalPrice();
     });
 </script>
-
-
-
 
 
 </html>

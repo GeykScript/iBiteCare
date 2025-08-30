@@ -52,15 +52,16 @@ class InventoryItems extends Component
                     ->decrement('total_remaining_units', 1);
             }
 
-            // 🔥 Flash success message
+            //  success message
             session()->flash('remove-success', 'Item removed successfully.');
         }else{
-            // 🔥 Flash error message
+            //  error message
             session()->flash('remove-error', 'Item not found.');
         }
 
         return redirect(request()->header('Referer'));
     }
+
 
 
     public function render()

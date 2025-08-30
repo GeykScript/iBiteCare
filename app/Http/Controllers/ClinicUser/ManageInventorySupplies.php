@@ -133,4 +133,40 @@ class ManageInventorySupplies extends Controller
             ->route('clinic.supplies.manage', $request->item_id)
             ->with('edit-success', 'No changes were made.');
     }
+
+    public function updateQuantity(Request $request)
+    {
+        $request->validate([
+
+            'id' => 'required|exists:inventory_units,id',
+            'item_id' => 'required|exists:inventory_items,id',
+            'stock_id' => 'required|exists:inventory_stocks,id',
+            'quantity' => 'required|integer|min:0',
+            'remaining_quantity' => 'required|integer|min:0',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        $item = Inventory_units::findOrFail($request->id);
+        $item->update([
+            'quantity' => $request->quantity,
+            'remaining_quantity' => $request->remaining_quantity,
+            'unit_price' => $request->price,
+        ]);
+
+        $stock = Inventory_stock::findOrFail($request->stock_id);
+
+        $package_amount = $request->quantity * $request->price;
+
+        $stock->update([
+            'items_per_package' => $request->quantity,
+            'total_units' => $request->quantity,
+            'total_remaining_units' => $request->remaining_quantity,
+            'total_package_amount' => $package_amount,
+        ]);
+
+        return redirect()
+            ->route('clinic.supplies.manage', $request->item_id)
+            ->with('edit-item-success', 'Inventory item updated successfully.');
+    }
+
 }

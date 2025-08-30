@@ -103,6 +103,9 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::put('/clinic/supplies/manage/edit', [ManageInventorySupplies::class, 'editProduct'])
         ->name('clinic.supplies.manage.edit');
 
+    Route::put('/clinic/supplies/manage/edit/quantity', [ManageInventorySupplies::class, 'updateQuantity'])
+        ->name('clinic.supplies.manage.edit.quantity');
+
 }); 
 //---------CLINIC LOGIN FORGOT PASSOWORD --------------------------
 Route::get('/clinic/two-factor/{id}', [TwoFactorAuthenticationController::class, 'index'])
