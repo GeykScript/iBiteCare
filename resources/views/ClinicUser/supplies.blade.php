@@ -161,7 +161,7 @@
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="product_type" class="text-sm font-semibold">Product Type</label>
                                             <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc."
-                                                pattern="[A-Za-z]+"
+                                                pattern="[A-Za-z ]+"
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
 
                                         </div>
@@ -170,7 +170,7 @@
                                         <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
                                             <label for="brand_name" class="text-sm font-semibold">Product Name</label>
                                             <input type="text" name="brand_name" placeholder="Brand Name"
-                                                pattern="[A-Za-z]+"
+                                                pattern="[A-Za-z ]+"
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
                                         </div>
                                         <div class="md:col-span-6 col-span-12 gap-2">

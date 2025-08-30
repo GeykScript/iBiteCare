@@ -42,7 +42,7 @@ use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
 use App\Http\Controllers\ClinicUser\ClinicUsersController;
 use App\Http\Controllers\ClinicUser\InventorySupplies;
-
+use App\Http\Controllers\ClinicUser\ManageInventorySupplies;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -95,6 +95,13 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::post('/clinic/supplies/add', [InventorySupplies::class, 'add_new_supplies'])
         ->name('clinic.supplies.add_new_supplies');
+
+    Route::get('/clinic/supplies/manage/{id}', [ManageInventorySupplies::class, 'index'])
+            ->name('clinic.supplies.manage');
+    Route::post('/clinic/supplies/manage/add', [ManageInventorySupplies::class, 'add_new_stock'])
+        ->name('clinic.supplies.manage.add');
+    Route::put('/clinic/supplies/manage/edit', [ManageInventorySupplies::class, 'editProduct'])
+        ->name('clinic.supplies.manage.edit');
 
 }); 
 //---------CLINIC LOGIN FORGOT PASSOWORD --------------------------

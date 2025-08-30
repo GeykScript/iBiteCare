@@ -23,4 +23,14 @@ class Inventory_units extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function item()
+    {
+        return $this->belongsTo(Inventory_items::class, 'item_id');
+    }
+
+    public function stock()
+    {
+        return $this->belongsTo(Inventory_stock::class, 'stock_id');
+    }
 }

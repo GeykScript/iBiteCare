@@ -10,22 +10,21 @@ use App\Models\Inventory_units;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class InventorySupplies extends Controller
-{
-    //
-    public function index(){
 
+class ManageInventorySupplies extends Controller
+{
+    public function index($id)
+    {
+        $inventoryItem = Inventory_items::findOrFail($id);
+        $inventoryRecords = Inventory::findOrFail($id);
         $clinicUser = Auth::user();
-        return view('ClinicUser.supplies', compact('clinicUser'));
+        return view('ClinicUser.supplies-manage', compact('clinicUser', 'inventoryItem', 'inventoryRecords'));
     }
 
-    public function add_new_supplies(Request $request){
-
+    public function add_new_stock(Request $request)
+    {
         $request->validate([
-            'category' => 'required|string|max:255',
-            'brand_name' => 'required|string|max:255',
-            'product_type' => 'required|string|max:255',
-            'immunity_type' => 'nullable|string|max:255',
+            'item_id' => 'required|exists:inventory_items,id',
             'package_type' => 'required|string|max:255',
             'packages_received' => 'required|integer|min:1',
             'items_per_package' => 'required|integer|min:1',
@@ -36,20 +35,11 @@ class InventorySupplies extends Controller
 
         ]);
 
-        $item = Inventory_items::create([
-            'category' => $request->category,
-            'brand_name' => $request->brand_name,
-            'product_type' => $request->product_type,
-            'immunity_type' => $request->immunity_type,
-            'stock_status' => 'In Stock',
-            'last_restocked_date' => now(),
-        ]);
 
-            $total_units = $request->packages_received * $request->items_per_package;
-        
+        $total_units = $request->packages_received * $request->items_per_package;
 
         $stock = Inventory_stock::create([
-            'item_id' => $item->id,
+            'item_id' => $request->item_id,
             'package_type' => $request->package_type,
             'packages_received' => $request->packages_received,
             'items_per_package' => $request->items_per_package,
@@ -61,11 +51,11 @@ class InventorySupplies extends Controller
             'supplier' => $request->supplier,
         ]);
 
-        if (strtolower($request->category) === 'supply' || strtolower($request->category) === 'equipment' ) {
+        if (strtolower($request->category) === 'supply' || strtolower($request->category) === 'equipment') {
             Inventory_units::create([
-                'item_id' => $item->id,
-                'stock_id' => $stock->id,       
-                'package_number' =>  Inventory_units::where('item_id', $item->id)->max('package_number') + 1,
+                'item_id' => $request->item_id,
+                'stock_id' => $stock->id,
+                'package_number' =>  Inventory_units::where('item_id', $request->item_id)->max('package_number') + 1,
                 'unit_number' => 1,
                 'measurement_unit' => "pcs",
                 'unit_volume' => null,
@@ -90,7 +80,7 @@ class InventorySupplies extends Controller
                     }
 
                     Inventory_units::create([
-                        'item_id'            => $item->id,
+                        'item_id'            => $request->item_id,
                         'stock_id'           => $stock->id,
                         'package_number'     => $package,
                         'unit_number'        => $unit_number,
@@ -105,8 +95,42 @@ class InventorySupplies extends Controller
                 }
             }
         }
-        return redirect()->route('clinic.supplies')->with('success', 'New supplies added successfully.');
+        $id = $request->item_id;
+
+        return redirect()
+            ->route('clinic.supplies.manage', $id)
+            ->with('success', 'New supplies added successfully.');
     }
 
-   
+
+
+    public function editProduct(Request $request)
+    {
+        $request->validate([
+            'item_id' => 'required|exists:inventory_items,id',
+            'brand_name' => 'required|string|max:255',
+            'product_type' => 'required|string|max:255',
+            'immunity_type' => 'nullable|string|max:255',
+        ]);
+
+        $item = Inventory_items::findOrFail($request->item_id);
+
+        // Assign new values
+        $item->brand_name   = $request->brand_name;
+        $item->product_type = $request->product_type;
+        $item->immunity_type = $request->immunity_type;
+
+        // Only save if there are changes
+        if ($item->isDirty()) {
+            $item->save();
+
+            return redirect()
+                ->route('clinic.supplies.manage', $request->item_id)
+                ->with('edit-success', 'Product details updated successfully.');
+        }
+
+        return redirect()
+            ->route('clinic.supplies.manage', $request->item_id)
+            ->with('edit-success', 'No changes were made.');
+    }
 }
