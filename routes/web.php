@@ -84,9 +84,12 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
         ->name('clinic.user-accounts');
-
+    
     Route::put('/clinic-users/update', [ClinicUsersController::class, 'updateClinicUserInfo'])
         ->name('clinic.users.update');
+
+    Route::get('/clinic/user-logs', [ClinicUsersController::class, 'ClinicUserLogs'])
+        ->name('clinic.user-logs');
     //-----------------END-----------------------//
 
 
@@ -95,6 +98,10 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::post('/clinic/supplies/add', [InventorySupplies::class, 'add_new_supplies'])
         ->name('clinic.supplies.add_new_supplies');
+
+    Route::get('/clinic/supplies/Usage', [InventorySupplies::class, 'view_usage'])
+        ->name('clinic.supplies.view_usage');
+
 
     Route::get('/clinic/supplies/manage/{id}', [ManageInventorySupplies::class, 'index'])
             ->name('clinic.supplies.manage');

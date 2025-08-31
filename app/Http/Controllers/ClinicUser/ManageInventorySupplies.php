@@ -21,6 +21,8 @@ class ManageInventorySupplies extends Controller
         return view('ClinicUser.supplies-manage', compact('clinicUser', 'inventoryItem', 'inventoryRecords'));
     }
 
+
+    //function to add new stocks
     public function add_new_stock(Request $request)
     {
         $request->validate([
@@ -103,7 +105,7 @@ class ManageInventorySupplies extends Controller
     }
 
 
-
+//function to edit product details
     public function editProduct(Request $request)
     {
         $request->validate([
@@ -134,6 +136,8 @@ class ManageInventorySupplies extends Controller
             ->with('edit-success', 'No changes were made.');
     }
 
+
+    //function to update quantity on box or pack
     public function updateQuantity(Request $request)
     {
         $request->validate([

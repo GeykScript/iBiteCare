@@ -48,7 +48,9 @@ import {
         X,
         Check,
         SquarePen,
-        ChevronLeft
+        ChevronLeft,        
+        Boxes,
+        StretchHorizontal
     } 
      from 'lucide';
 
@@ -98,7 +100,9 @@ createIcons({
     X,
     Check,
     SquarePen,
-    ChevronLeft
+    ChevronLeft,
+    Boxes,
+    StretchHorizontal
   }
 }); 
 

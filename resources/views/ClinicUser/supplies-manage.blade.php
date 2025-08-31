@@ -37,7 +37,7 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-6 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
                 <ul class="space-y-3">
 
                     <li class="flex items-center px-2 mb-4 block md:hidden">
@@ -52,11 +52,8 @@
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Inventory Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-box" class="w-5 h-5"></i>Supplies Logs</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
+                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
@@ -64,7 +61,7 @@
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -112,7 +109,7 @@
                 </div>
 
                 <div class="px-8">
-                    <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                    <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                 </div>
 
                 <!-- Main Content -->
@@ -124,7 +121,7 @@
                             <h1 class="font-900 text-lg">Product Information</h1>
                             <button
                                 onclick="document.getElementById('EditProduct').showModal()"
-                                class="text-red-600 px-4 py-2 rounded-lg flex items-center gap-1 focus:outline-none font-900"><i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
+                                class="text-red-600 px-4 py-2 rounded-lg flex items-center gap-1 focus:outline-none font-900 hover:text-red-500"><i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
                         </div>
                         @if (session('edit-success'))
                         <div
@@ -181,7 +178,7 @@
                             <div class="md:col-span-2 col-span-8 flex items-center ">
                                 <button
                                     onclick="document.getElementById('AddNewStocks').showModal()"
-                                    class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none">
+                                    class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none hover:bg-red-500">
                                     <i data-lucide="plus" class="w-5 h-5"></i>Add New Stock</button>
                             </div>
                         </div>
@@ -189,21 +186,35 @@
                         <div class="col-span-4 border-2 border-gray-50 my-4"></div>
 
                         <div class="col-span-4 flex flex-col mt-2">
-                            <div class="flex flex-col items-center justify-center gap-2">
-                                <h1 class="font-900 text-md">Stocks History</h1>
-                                <p class="text-gray-600">View the history of stock changes for this item.</p>
+                            <div class="flex items-center justify-center gap-4 w-full">
+                                <div class="flex items-center p-4 rounded-full bg-gray-800">
+                                    <i data-lucide="file-box" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div class="flex flex-col items-start justify-start">
+                                    <h1 class="font-900 text-md">Stocks History</h1>
+                                    <p class="text-gray-600">View the history of stocks.</p>
+                                </div>
                             </div>
+
                             <!-- LIVEWIRE INVENTORY STOCKS TABLE -->
                             <livewire:inventory-stocks :item-id=" $inventoryItem->id" />
                         </div>
 
+
                         <div class="col-span-4 border-2 border-gray-50 my-4"></div>
 
-                        <div class="col-span-4 flex flex-col mt-2">
-                            <div class="flex flex-col items-center justify-center gap-2">
+                        <div class="flex items-center justify-center gap-4">
+                            <div class="flex items-center p-4 rounded-full bg-sky-600">
+                                <i data-lucide="stretch-horizontal" class="w-6 h-6 text-white"></i>
+                            </div>
+                            <div class="flex flex-col items-start justify-start">
                                 <h1 class="font-900 text-md">Items Details</h1>
                                 <p class="text-gray-600">View the details each item.</p>
                             </div>
+                        </div>
+
+                        <div class="col-span-4 flex flex-col mt-2">
+
                             <!-- LIVEWIRE INVENTORY ITEMS TABLE  -->
                             <livewire:inventory-items :item-id="$inventoryItem->id" />
                         </div>

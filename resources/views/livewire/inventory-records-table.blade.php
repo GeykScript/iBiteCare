@@ -148,7 +148,7 @@
                             @endif
                         </td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">
-                            <a href="{{ route('clinic.supplies.manage', $supply->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold">
+                            <a href="{{ route('clinic.supplies.manage', $supply->id) }}" class="text-blue-500  hover:underline underline-offset-8 flex items-center  justify-center gap-1 font-semibold">
                                 View <img src="{{asset('images/file-text.svg')}}" alt="Supply Details" class="w-4 h-4"></a>
                         </td>
                        

@@ -55,14 +55,14 @@
     <table class="min-w-full  text-sm mt-2 ">
         <thead class="bg-gray-100">
             <tr>
-                <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">Stock #</th>
+                <th class="border-r border-b bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">Stock #</th>
                 <th class="border bg-gray-800 text-white px-2 py-1">Package</th>
                 <th class="border bg-gray-800 text-white px-2 py-1">Items Per Package</th>
                 <th class="border bg-gray-800 text-white px-2 py-1">Total Items</th>
                 <th class="border bg-gray-800 text-white px-2 py-1">Remaining Items</th>
                 <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('total_package_amount')">Package Amount</th>
                 <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('restock_date')">Restock Date</th>
-                <th class="border bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tr-lg" wire:click="setSortBy('supplier')">Supplier</th>
+                <th class="border-l border-b bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tr-lg" wire:click="setSortBy('supplier')">Supplier</th>
             </tr>
         </thead>
         <tbody>

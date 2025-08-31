@@ -64,30 +64,30 @@
         </button>
     </div>
     @endif
-    <table class="min-w-full  text-sm mt-2">
-        <thead class="bg-gray-100">
+    <table class="min-w-full  text-sm mt-2 border-none">
+        <thead class="bg-sky-600 border-none" >
             <tr>
-                <th class="border bg-sky-500 text-white rounded-tl-lg px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('id')">ID</th>
-                <th class="border bg-sky-500 text-white  px-2 py-1">Name</th>
-                <th class="border bg-sky-500 text-white  px-2 py-1">Stock No.</th>
-                <th class="border bg-sky-500 text-white  px-2 py-1">Package No.</th>
-                <th class="border bg-sky-500 text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('unit_number')">Unit No.</th>
+                <th class="border-r  border-b  text-white rounded-tl-lg px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('id')">ID</th>
+                <th class="border  text-white  px-2 py-1">Name</th>
+                <th class="border  text-white  px-2 py-1">Stock No.</th>
+                <th class="border  text-white  px-2 py-1">Package No.</th>
+                <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('unit_number')">Unit No.</th>
                 @php
                 $category = $column->item->category ?? 'Other';
                 @endphp
                 @if($category === 'Supply' || $category === 'Equipment')
-                <th class="border bg-sky-500 text-white  px-2 py-1">Quantity</th>
-                <th class="border bg-sky-500 text-white  px-2 py-1">Remaining</th>
+                <th class="border  text-white  px-2 py-1">Quantity</th>
+                <th class="border  text-white  px-2 py-1">Remaining</th>
                 @else
-                <th class="border bg-sky-500 text-white  px-2 py-1">Volume</th>
-                <th class="border bg-sky-500 text-white  px-2 py-1">Remaining</th>
+                <th class="border  text-white  px-2 py-1">Volume</th>
+                <th class="border  text-white  px-2 py-1">Remaining</th>
                 @endif
-                <th class="border bg-sky-500 text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('unit_price')">Price</th>
-                <th class="border bg-sky-500 text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('status')">Status</th>
+                <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('unit_price')">Price</th>
+                <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('status')">Status</th>
                 @if($category === 'Supply' || $category === 'Equipment')
-                <th class="border bg-sky-500 text-white  px-2 py-1">Edit</th>
+                <th class="border  text-white  px-2 py-1">Edit</th>
                 @endif
-                <th class="border bg-sky-500 text-white rounded-tr-lg px-2 py-1">Action </th>
+                <th class="border-l border-b  text-white rounded-tr-lg px-2 py-1">Action </th>
             </tr>
         </thead>
         <tbody>
@@ -135,7 +135,7 @@
                                     price: {{ $item->unit_price }},
                                     status: '{{ $item->status }}'
                                 })"
-                            class="text-blue-500 hover:underline">
+                            class="text-blue-500 hover:underline underline-offset-4">
                             Edit
                         </button>
                     </div>
@@ -148,7 +148,7 @@
                         <button
                             type="button"
                             @click="$dispatch('open-remove-modal', { id: {{ $item->id }} })"
-                            class="text-red-500 hover:underline flex items-center ">
+                            class="text-red-500 hover:underline flex items-center underline-offset-4 ">
                             <img src="{{ asset('images/trash.svg') }}" alt="Trash icon" class="w-4 h-4 inline">
                             Remove
                         </button>

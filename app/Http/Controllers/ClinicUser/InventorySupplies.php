@@ -19,6 +19,9 @@ class InventorySupplies extends Controller
         return view('ClinicUser.supplies', compact('clinicUser'));
     }
 
+
+
+    //function to add new supplies
     public function add_new_supplies(Request $request){
 
         $request->validate([
@@ -106,6 +109,14 @@ class InventorySupplies extends Controller
             }
         }
         return redirect()->route('clinic.supplies')->with('success', 'New supplies added successfully.');
+    }
+
+
+//function to show usage logs
+    public function view_usage(){
+        $clinicUser = Auth::user();
+
+        return view('ClinicUser.supplies-logs', compact('clinicUser'));
     }
 
    

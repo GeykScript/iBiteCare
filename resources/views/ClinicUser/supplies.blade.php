@@ -37,10 +37,10 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-6 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
                 <ul class="space-y-3">
 
-                    <li class="flex items-center px-2 mb-4 block md:hidden">
+                    <li class="flex items-center px-2 mb-2 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
@@ -48,15 +48,11 @@
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="syringe" class="w-5 h-5"></i>Immunizations</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Inventory Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-box" class="w-5 h-5"></i>Supplies Logs</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
+                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
@@ -64,7 +60,7 @@
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -113,13 +109,30 @@
                     <h1 class="md:text-lg text-gray-800">All vaccines, rigs, supplies and equipment available at the clinic.</h1>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 p-4  md:px-10 ">
-                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
-                        <button
-                            onclick="document.getElementById('AddNewSupplies').showModal()"
-                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
+                <div class="grid grid-cols-4 p-4  md:px-10 gap-4">
+                    <div class="col-span-4 md:col-span-4 grid grid-cols-7 gap-4  px-2">
+                        <div class="col-span-7 md:col-span-4 flex items-center justify-end gap-2 text-blue-500 hover:text-blue-600">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                            <a href="{{ route('clinic.supplies.view_usage') }}" class="font-bold underline underline-offset-8">View Usage History</a>
+                        </div>
+                        <div class="col-span-7 md:col-span-3 flex flex-col md:flex-row items-start md:items-center justify-start md:justify-end gap-4 md:gap-10">
+                            <div class="flex items-center gap-1">
+                                <p class="font-semibold">Generate Report:</p>
+                                <button class="bg-red-500 rounded-md p-2">
+                                    <img src="{{asset('images/pdf.svg')}}" alt="PDF Icon" class="w-6 h-6">
+                                </button>
+                                <button class="bg-green-500 rounded-md p-2">
+                                    <img src="{{asset('images/csv.svg')}}" alt="CSV Icon" class="w-6 h-6">
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    onclick="document.getElementById('AddNewSupplies').showModal()"
+                                    class="bg-red-600 hover:bg-red-500 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
+                            </div>
+                        </div>
                     </div>
-
 
                     <!-- add new supplies modal  -->
                     <dialog id="AddNewSupplies" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none h-full">

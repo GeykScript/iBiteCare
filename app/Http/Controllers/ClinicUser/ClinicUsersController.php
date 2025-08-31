@@ -136,7 +136,7 @@ class ClinicUsersController extends Controller
     }
 
 
-
+    // function to update clinic user information 
     public function updateClinicUserInfo(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -189,8 +189,6 @@ class ClinicUsersController extends Controller
 
         $clinic_user = ClinicUser::findOrFail($request->id);    
 
-
-
         // Format new values
         $newUserData = [
             'first_name'      => Str::title(Str::lower($request->update_first_name)),
@@ -235,5 +233,14 @@ class ClinicUsersController extends Controller
         $clinicUserInfo->update($newInfoData);
 
         return redirect()->route('clinic.user-accounts')->with('update-success', 'User account updated successfully!');
+    }
+
+
+    //function to show user logs
+    public function ClinicUserLogs()
+    {
+        $clinicUser = Auth::guard('clinic_user')->user();
+
+        return view('ClinicUser.user-logs', compact('clinicUser'));
     }
 }
