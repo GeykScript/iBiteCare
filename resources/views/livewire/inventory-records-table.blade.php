@@ -129,11 +129,15 @@
                             @if (strtolower($supply->category) === 'vaccine')
                             <span class="text-blue-500 font-bold p-2 rounded bg-blue-100">{{ $supply->category }}</span>
                             @elseif (strtolower($supply->category) === 'supply')
+                            <span class="text-orange-500 font-bold p-2 rounded bg-orange-100">{{ $supply->category }}</span>
+                            @elseif (strtolower($supply->category) === 'anti-tetanus')
+                            <span class="text-yellow-500 font-bold p-2 rounded bg-yellow-100">{{ $supply->category }}</span>
+                            @elseif (strtolower($supply->category) === 'booster')
                             <span class="text-green-500 font-bold p-2 rounded bg-green-100">{{ $supply->category }}</span>
                             @elseif (strtolower($supply->category) === 'rig')
                             <span class="text-red-500 font-bold p-2 rounded bg-red-100">{{ $supply->category }}</span>
                             @elseif (strtolower($supply->category) === 'equipment')
-                            <span class="text-yellow-500 p-2 rounded bg-yellow-100">{{ $supply->category }}</span>
+                            <span class="text-stone-500 p-2 rounded bg-stone-100">{{ $supply->category }}</span>
                             @endif
                         </td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $supply->brand_name }}</td>

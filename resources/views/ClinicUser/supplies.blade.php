@@ -166,6 +166,8 @@
                                                 :options="[
                                                         'Vaccine' => 'Vaccine',
                                                         'RIG' => 'RIG',
+                                                        'Anti-Tetanus' => 'Anti-Tetanus',
+                                                        'Booster' => 'Booster',
                                                         'Supply' => 'Supply',
                                                         'Equipment' => 'Equipment',
                                                     ]" />
@@ -174,7 +176,7 @@
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="product_type" class="text-sm font-semibold">Product Type</label>
                                             <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc."
-                                                pattern="[A-Za-z ]+"
+                                                pattern="[A-Za-z0-9 ]+"
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
 
                                         </div>

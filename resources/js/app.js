@@ -50,7 +50,8 @@ import {
         SquarePen,
         ChevronLeft,        
         Boxes,
-        StretchHorizontal
+        StretchHorizontal,
+        User
     } 
      from 'lucide';
 
@@ -102,7 +103,8 @@ createIcons({
     SquarePen,
     ChevronLeft,
     Boxes,
-    StretchHorizontal
+    StretchHorizontal,
+    User
   }
 }); 
 

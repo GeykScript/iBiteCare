@@ -17,9 +17,24 @@ class PatientsController extends Controller
             return redirect()->route('clinic.login')->with('error', 'You must be logged in to access the patients list.');
         }
 
-        $patients = Patient::all();
+        return view('ClinicUser.patients', compact('clinicUser'));
+    }
 
-        return view('ClinicUser.patients', compact('clinicUser', 'patients'));
+
+    public function viewProfile($id){
+        $clinicUser = Auth::guard('clinic_user')->user();
+
+        if (!$clinicUser) {
+            return redirect()->route('clinic.login')->with('error', 'You must be logged in to view patient profiles.');
+        }
+
+        $patient = Patient::find($id);
+
+        if (!$patient) {
+            return redirect()->route('clinic.patients')->with('error', 'Patient not found.');
+        }
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient'));
     }
 
 

@@ -128,7 +128,8 @@
                                 last_name: '{{ $clinic_user->last_name }}',
                                 middle_initial: '{{ $clinic_user->middle_initial }}',
                                 suffix: '{{ $clinic_user->suffix ?? 'N/A' }}',
-                                phone: '{{ $clinic_user->info?->contact_number }}',
+                                phone: '{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $clinic_user->info?->contact_number) }}',
+
                                 email: '{{ $clinic_user->email }}',
 
                                 date_of_birth: '{{ $clinic_user->info?->birthdate }}',
@@ -153,7 +154,7 @@
                                 last_name: '{{ $clinic_user->last_name }}',
                                 middle_initial: '{{ $clinic_user->middle_initial }}',
                                 suffix: '{{ $clinic_user->suffix ?? '' }}',
-                                phone: '{{ $clinic_user->info?->contact_number }}',
+                                phone: '{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $clinic_user->info?->contact_number) }}',
                                 email: '{{ $clinic_user->email }}',
 
                                 date_of_birth: '{{ $clinic_user->info?->birthdate }}',

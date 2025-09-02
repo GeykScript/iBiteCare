@@ -107,8 +107,10 @@
                     </div>
                 </div>
 
-                <div class="px-8">
-                    <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                <div class="grid grid-cols-12">
+                    <div class="col-span-1 flex items-center justify-center">
+                        <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                    </div>
                 </div>
 
                 <!-- Main Content -->

@@ -151,7 +151,10 @@
                                 <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="phone-call"></i>
                             </div>
                             <div class="col-span-11  px-3 md:px-5  py-1">
-                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->info->contact_number}} </h1>
+                                <h1 class="md:text-xl text-md font-bold"> {{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $clinicUser->info->contact_number) }}
+                                </h1>
+                                <p></p>
+
                                 <p class="md:text-sm text-xs  text-gray-600">Phone Number</p>
                             </div>
                         </div>

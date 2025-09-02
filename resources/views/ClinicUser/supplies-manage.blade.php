@@ -108,9 +108,14 @@
                     </div>
                 </div>
 
-                <div class="px-8">
-                    <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+            
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 md:col-span-1 flex items-center justify-center">
+                        <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                    </div>
                 </div>
+
+
 
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 gap-2 ">
@@ -121,7 +126,8 @@
                             <h1 class="font-900 text-lg">Product Information</h1>
                             <button
                                 onclick="document.getElementById('EditProduct').showModal()"
-                                class="text-red-600 px-4 py-2 rounded-lg flex items-center gap-1 focus:outline-none font-900 hover:text-red-500"><i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
+                                class="text-red-600 px-4 py-2 rounded-lg flex items-center gap-1 focus:outline-none font-900 hover:text-red-500">
+                                <i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
                         </div>
                         @if (session('edit-success'))
                         <div

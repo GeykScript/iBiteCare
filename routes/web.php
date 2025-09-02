@@ -58,7 +58,8 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/patients', [PatientsController::class, 'index'])
         ->name('clinic.patients');
 
- 
+    Route::get('/clinic/patients/profile/{id}', [PatientsController::class, 'viewProfile'])
+        ->name('clinic.patients.profile');
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
@@ -133,7 +134,9 @@ Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'up
     
 Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('clinic.update-password.update');
-//--------------------------END----------------------------------------------//
+
+
+    //--------------------------END----------------------------------------------//
 
 
 
