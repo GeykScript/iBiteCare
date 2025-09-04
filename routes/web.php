@@ -43,6 +43,9 @@ use App\Http\Controllers\ClinicUser\UpdatePasswordController;
 use App\Http\Controllers\ClinicUser\ClinicUsersController;
 use App\Http\Controllers\ClinicUser\InventorySupplies;
 use App\Http\Controllers\ClinicUser\ManageInventorySupplies;
+use App\Http\Controllers\ClinicUser\Services;
+use App\Http\Controllers\ClinicUser\Payments;
+use App\Http\Controllers\ClinicUser\Transactions;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -98,6 +101,7 @@ Route::middleware('auth:clinic_user')->group(function () {
     //-----------------END-----------------------//
 
 
+    // CLINIC INVENTORY SUPPLIES ---------------------------
     Route::get('/clinic/supplies', [InventorySupplies::class, 'index'])
         ->name('clinic.supplies');
 
@@ -117,6 +121,23 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/supplies/manage/edit/quantity', [ManageInventorySupplies::class, 'updateQuantity'])
         ->name('clinic.supplies.manage.edit.quantity');
+    //-----------------END-----------------------//
+
+
+    // CLINIC SERVICES ---------------------------
+    Route::get('/clinic/services', [Services::class, 'index'])
+        ->name('clinic.services');
+    //-----------------END-----------------------//
+
+    // CLINIC PAYMENTS ---------------------------
+    Route::get('/clinic/payments', [Payments::class, 'index'])
+        ->name('clinic.payments');
+    //-----------------END-----------------------//
+
+    // CLINIC TRANSACTIONS ---------------------------
+    Route::get('/clinic/transactions', [Transactions::class, 'index'])
+        ->name('clinic.transactions');
+    //-----------------END-----------------------//
 
 }); 
 //---------CLINIC LOGIN FORGOT PASSOWORD --------------------------

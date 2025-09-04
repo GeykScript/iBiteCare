@@ -47,9 +47,9 @@
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
+                    <li><a href="{{ route('clinic.transactions') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
+                    <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
@@ -209,13 +209,13 @@
                                         <h1 class="font-bold text-xl">Previous Anti-Tetanus Immunizations</h1>
                                     </div>
                                     <div class="overflow-x-auto mb-6">
-                                        <table class="min-w-full border border-gray-400 text-sm text-left">
-                                            <thead class="bg-gray-100">
+                                        <table class="min-w-full  text-sm text-center">
+                                            <thead class="bg-gray-800 text-white">
                                                 <tr>
-                                                    <th class="px-4 py-2 border">Dose Brand</th>
+                                                    <th class="px-4 py-2 border rounded-tl-lg">Dose Brand</th>
                                                     <th class="px-4 py-2 border">Dose Given</th>
                                                     <th class="px-4 py-2 border">RN In-Charge</th>
-                                                    <th class="px-4 py-2 border">Date Given</th>
+                                                    <th class="px-4 py-2 border rounded-tr-lg">Date Given</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -246,12 +246,12 @@
                                         <h1 class="font-bold text-xl">Previous Anti-Rabies Immunizations</h1>
                                     </div>
                                     <div class="overflow-x-auto">
-                                        <table class="min-w-full border border-gray-400 text-sm text-left">
-                                            <thead class="bg-gray-100">
+                                        <table class="min-w-full  text-sm text-center">
+                                            <thead class="bg-gray-800 text-white">
                                                 <tr>
-                                                    <th class="px-4 py-2 border">Immunization Type</th>
+                                                    <th class="px-4 py-2 border rounded-tl-lg">Immunization Type</th>
                                                     <th class="px-4 py-2 border">Place of Immunization</th>
-                                                    <th class="px-4 py-2 border">Date Given</th>
+                                                    <th class="px-4 py-2 border rounded-tr-lg">Date Given</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -345,9 +345,9 @@
                                     <div>
                                         <h1 class="font-bold text-xl">Immunization Schedules</h1>
                                     </div>
-                                    
+
                                     @if($schedules->isEmpty())
-                                        <p class="text-gray-500 text-center">No immunization schedules found.</p>
+                                    <p class="text-gray-500 text-center">No immunization schedules found.</p>
                                     @endif
 
                                     @php
@@ -357,9 +357,9 @@
 
                                     <div class="space-y-4">
                                         @foreach ($groupedSchedules as $transactionId => $transactionSchedules)
-                                        <div x-data="{ open: false }" class="border rounded-lg shadow">
+                                        <div x-data="{ open: false }">
                                             <!-- Clickable header -->
-                                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold">
+                                            <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
                                                 <p>{{ $transactionSchedules->first()->service->name }} - <span class="text-xs">
                                                         {{ date('F d, Y g:i A', strtotime($transactionSchedules->first()->transaction->transaction_date)) }}
                                                     </span></p>
@@ -369,14 +369,14 @@
                                                 </svg>
                                             </button>
                                             <!-- Collapsible table -->
-                                            <div x-show="open" x-collapse class="overflow-x-auto">
+                                            <div x-show="open" x-collapse class="overflow-x-auto shadow-lg">
                                                 <table class="min-w-full text-sm text-center">
                                                     <thead class="bg-gray-800  text-white">
                                                         <tr>
-                                                            <th class="px-4 py-2 border-r border-b ">Day</th>
+                                                            <th class="px-4 py-2 border rounded-tl-lg">Day</th>
                                                             <th class="px-4 py-2 border ">Scheduled Date</th>
                                                             <th class="px-4 py-2 border ">Date Completed</th>
-                                                            <th class="px-4 py-2 border ">Status</th>
+                                                            <th class="px-4 py-2 border rounded-tr-lg">Status</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -404,9 +404,100 @@
                             </div>
                             <!-- end of immunization schedule content  -->
 
-                            <div id="tab5" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Payments</div>
-                            <div id="tab6" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Vaccination Card</div>
-                            <div id="tab7" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Medical History</div>
+                            <!-- transactions content  -->
+                            <div id="tab5" class="tab-content hidden  p-8 shadow-lg rounded-lg">
+                                <div class="flex flex-col gap-3">
+                                    <div>
+                                        <h1 class="font-bold text-xl">Transaction History</h1>
+                                    </div>
+                                    <div class="overflow-x-auto mb-6">
+                                        <table class="min-w-full  text-sm text-center">
+                                            <thead class="bg-gray-100">
+                                                <tr>
+                                                    <th class="px-4 py-2 border-r border-b  bg-gray-800 text-white rounded-tl-lg">ID</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Date of Transaction</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Service Received</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Administration Date</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
+                                                    <th class="px-4 py-2 border-l border-b  bg-gray-800 text-white rounded-tr-lg">Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($currentImmunization->isEmpty())
+                                                <tr>
+                                                    <td colspan="9" class="px-4 py-4 border text-center text-gray-500">
+                                                        No Transactions found
+                                                    </td>
+                                                </tr>
+                                                @else
+                                                @foreach ($currentImmunization as $immunization)
+                                                <tr>
+                                                    <td class="px-4 py-2 border-b">{{ $immunization->transaction->id }}</td>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($immunization->transaction->transaction_date)) }}</td>
+                                                    <td class="px-4 py-2 border">{{ $immunization->service->name }}</td>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($immunization->date_given))}} </td>
+                                                    <td class="px-4 py-2 border">{{ $immunization->status }}</td>
+                                                    <td class="px-4 py-2 border-b"><a href="#" class="text-blue-500 hover:underline underline-offset-4 hover:text-blue-600 font-bold">View</a></td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of transactions content  -->
+
+                            <!-- payments content  -->
+                            <div id="tab6" class="tab-content hidden  p-8 shadow-lg rounded-lg">
+                                <div class="flex flex-col gap-3">
+                                    <div>
+                                        <h1 class="font-bold text-xl">Payment Records</h1>
+                                    </div>
+                                    <div class="overflow-x-auto mb-6">
+                                        <table class="min-w-full  text-sm text-center">
+                                            <thead class="bg-gray-100">
+                                                <tr>
+                                                    <th class="px-4 py-2 border-r border-b  bg-gray-800 text-white rounded-tl-lg">Date of Transaction</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Service Received</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Receipt Number</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Paid Amount</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
+                                                    <th class="px-4 py-2 border-l border-b  bg-gray-800 text-white rounded-tr-lg">Payment Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($paymentRecords->isEmpty())
+                                                <tr>
+                                                    <td colspan="9" class="px-4 py-4 border text-center text-gray-500">
+                                                        No payment records found
+                                                    </td>
+                                                </tr>
+                                                @else
+                                                @foreach ($paymentRecords as $payment)
+                                                <tr>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($payment->transaction->transaction_date)) }}</td>
+                                                    <td class="px-4 py-2 border">{{ $payment->transaction->service->name }}</td>
+                                                    <td class="px-4 py-2 border">{{ $payment->receipt_number }}</td>
+                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $payment->amount_paid }}
+                                                        </span></td>
+                                                    <td class="px-4 py-2 border">{{ $payment->receivedBy->UserRole->role_name }}. {{ $payment->receivedBy->first_name }} {{ $payment->receivedBy->middle_initial }} {{ $payment->receivedBy->last_name }} </td>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($payment->payment_date)) }}</td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of payments content  -->
+
+                            <!-- vaccination card content  -->
+                            <div id="tab7" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for vaccination card</div>
+                            <!-- end of vaccination card content  -->
                         </div>
                     </div>
                 </div>

@@ -65,7 +65,7 @@
     </div>
     @endif
     <table class="min-w-full  text-sm mt-2 border-none">
-        <thead class="bg-sky-600 border-none" >
+        <thead class="bg-sky-600 border-none">
             <tr>
                 <th class="border-r  border-b  text-white rounded-tl-lg px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('id')">ID</th>
                 <th class="border  text-white  px-2 py-1">Name</th>
@@ -154,42 +154,44 @@
                         </button>
                     </div>
                 </td>
-                <!-- Remove Confirmation Modal -->
-                <dialog id="removeModal"
-                    x-data="{ removeId: null, open() { this.$refs.modal.showModal() }, close() { this.$refs.modal.close() } }"
-                    x-ref="modal"
-                    @open-remove-modal.window="removeId = $event.detail.id; open()"
-                    class="p-6 rounded-lg shadow-lg w-full max-w-md backdrop:bg-black/50 focus:outline-none">
-
-                    <div class="text-center">
-                        <div class="flex justify-center mb-4">
-                            <img src="{{ asset('images/triangle-alert.svg') }}" alt="Trash icon" class="w-20 h-20">
-
-                        </div>
-                        <h2 class="text-lg font-semibold mb-4">Confirm Removal</h2>
-                        <p class="text-gray-600 mb-6">Are you sure you want to remove this item?</p>
-
-                        <div class="flex justify-center gap-5">
-                            <!-- Cancel -->
-                            <button type="button" @click="close()" class="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">
-                                Cancel
-                            </button>
-
-                            <!-- Confirm -->
-                            <button
-                                type="button"
-                                class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500"
-                                @click="$wire.removeItem(removeId); close()">
-                                Yes, Remove
-                            </button>
-                        </div>
-                    </div>
-                </dialog>
             </tr>
             @endforeach
             @endif
         </tbody>
     </table>
+
+    <!-- Remove Confirmation Modal -->
+    <dialog id="removeModal"
+        x-data="{ removeId: null, open() { this.$refs.modal.showModal() }, close() { this.$refs.modal.close() } }"
+        x-ref="modal"
+        @open-remove-modal.window="removeId = $event.detail.id; open()"
+        class="p-6 rounded-lg shadow-lg w-full max-w-md backdrop:bg-black/50 focus:outline-none">
+
+        <div class="text-center">
+            <div class="flex justify-center mb-4">
+                <img src="{{ asset('images/triangle-alert.svg') }}" alt="Trash icon" class="w-20 h-20">
+
+            </div>
+            <h2 class="text-lg font-semibold mb-4">Confirm Removal</h2>
+            <p class="text-gray-600 mb-6">Are you sure you want to remove this item?</p>
+
+            <div class="flex justify-center gap-5">
+                <!-- Cancel -->
+                <button type="button" @click="close()" class="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">
+                    Cancel
+                </button>
+
+                <!-- Confirm -->
+                <button
+                    type="button"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500"
+                    @click="$wire.removeItem(removeId); close()">
+                    Yes, Remove
+                </button>
+            </div>
+        </div>
+    </dialog>
+    
     <!-- table pagination -->
     <div class=" px-3 mt-5">
         {{ $inventoryItems->appends(['perPage' => $perPage])->links() }}

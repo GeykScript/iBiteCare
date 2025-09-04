@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\ClinicUser;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClinicTransactions;
+use App\Models\ClinicUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -11,6 +13,7 @@ use App\Models\PatientPrevAntiTetanus;
 use App\Models\PatientPrevAntiRabies;
 use App\Models\PatientImmunizations;
 use App\Models\PatientImmunizationsSchedule;
+use App\Models\PaymentRecords;
 
 class PatientsController extends Controller
 {
@@ -45,7 +48,9 @@ class PatientsController extends Controller
         $currentImmunization = PatientImmunizations::where('patient_id', $id)->get();
         $schedules = PatientImmunizationsSchedule::where('patient_id', $id)->get();
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules'));
+        $paymentRecords =  PaymentRecords::where('patient_id', $id )->get();
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords'));
     }
 
 

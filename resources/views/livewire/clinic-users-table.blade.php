@@ -74,7 +74,7 @@
             <thead class="text-md text-white  bg-gray-800 ">
                 <tr class="px-4">
                     <th scope="col" class="md:px-2 px-4 py-4 text-center rounded-l-lg hover:cursor-pointer hover:text-gray-300" wire:click="setSortBy('id')">ID</th>
-                    <th scope="col" class="md:px-2 px-20 py-4 text-center hover:cursor-pointer hover:text-gray-300" wire:click="setSortBy('account_id')">Account ID</th>
+                    <th scope="col" class="md:px-2 px-20 py-4 text-center  hover:cursor-pointer hover:text-gray-300" wire:click="setSortBy('account_id')">Account ID</th>
                     <th scope="col" class="md:px-2 px-4 py-4 text-center hover:cursor-pointer hover:text-gray-300" wire:click="setSortBy('role')">Role</th>
                     <th scope="col" class="md:px-2 px-4 py-4 text-center hover:cursor-pointer hover:text-gray-300" wire:click="setSortBy('last_name')">Last Name</th>
                     <th scope="col" class="md:px-2 px-4 py-4 text-center hover:cursor-pointer hover:text-gray-300" wire:click="setSortBy('first_name')">First Name</th>
