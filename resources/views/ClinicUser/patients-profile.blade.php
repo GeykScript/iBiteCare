@@ -128,6 +128,9 @@
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab6">
                                 Payments
                             </button>
+                            <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab7">
+                                Vaccination Card
+                            </button>
                         </div>
 
                         <!-- Tab contents -->
@@ -196,6 +199,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- end of profile content  -->
+
                             <!-- previous immunization content  -->
                             <div id="tab2" class="tab-content hidden  p-8 shadow-lg rounded-lg">
                                 <!-- Anti-Tetanus Table -->
@@ -216,7 +221,7 @@
                                             <tbody>
                                                 @if ($previousAntiTetanus->isEmpty())
                                                 <tr>
-                                                    <td colspan="4" class="px-4 py-4 border text-center">
+                                                    <td colspan="4" class="px-4 py-4 border text-center text-gray-500">
                                                         No previous immunizations found
                                                     </td>
                                                 </tr>
@@ -252,7 +257,7 @@
                                             <tbody>
                                                 @if ($previousAntiRabies->isEmpty())
                                                 <tr>
-                                                    <td colspan="4" class="px-4 py-4 border text-center">
+                                                    <td colspan="4" class="px-4 py-4 border text-center text-gray-500">
                                                         No previous immunizations found
                                                     </td>
                                                 </tr>
@@ -264,17 +269,144 @@
                                                     <td class="px-4 py-2 border">{{ $antirabies->date_dose_given }}</td>
                                                 </tr>
                                                 @endforeach
-                                            @endif
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
 
                             </div>
-                            <div id="tab3" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for immunizations</div>
-                            <div id="tab4" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Transactions</div>
+                            <!-- end of previous immunization content   -->
+
+                            <!-- current immunization content  -->
+                            <div id="tab3" class="tab-content hidden  p-8 shadow-lg rounded-lg">
+                                <div class="flex flex-col gap-3">
+                                    <div>
+                                        <h1 class="font-bold text-xl">Current Immunizations</h1>
+                                    </div>
+                                    <div class="overflow-x-auto mb-6">
+                                        <table class="min-w-full  text-sm text-center">
+                                            <thead class="bg-gray-100">
+                                                <tr>
+                                                    <th class="px-4 py-2 border-r border-b  bg-gray-800 text-white rounded-tl-lg">Service Provided</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white" colspan="3">Immunizations Used <br><span class="text-xs font-normal">(Vaccine, Rig, Anti-Tetanus)</span></th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Day</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Date Administered</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Status</th>
+                                                    <th class="px-4 py-2 border-l border-b  bg-gray-800 text-white rounded-tr-lg">Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($currentImmunization->isEmpty())
+                                                <tr>
+                                                    <td colspan="9" class="px-4 py-4 border text-center text-gray-500">
+                                                        No immunizations found
+                                                    </td>
+                                                </tr>
+                                                @else
+                                                @foreach ($currentImmunization as $immunization)
+                                                <tr>
+                                                    <td class="px-4 py-2 border-b">{{ $immunization->service->name }}</td>
+                                                    <td class="px-4 py-2 border">
+                                                        {{ optional(optional($immunization->vaccineUsed)->item)->brand_name 
+                                                        ? optional(optional($immunization->vaccineUsed)->item)->brand_name . ' - ' . optional(optional($immunization->vaccineUsed)->item)->product_type 
+                                                        : 'N/A' }}
+                                                    </td>
+                                                    <td class="px-4 py-2 border">
+                                                        {{ optional(optional($immunization->rigUsed)->item)->brand_name 
+                                                            ? optional(optional($immunization->rigUsed)->item)->brand_name . ' - ' . optional(optional($immunization->rigUsed)->item)->product_type 
+                                                            : 'N/A' }}
+                                                    </td>
+                                                    <td class="px-4 py-2 border">
+                                                        {{ optional(optional($immunization->antiTetanusUsed)->item)->brand_name 
+                                                        ? optional(optional($immunization->antiTetanusUsed)->item)->brand_name . ' - ' . optional(optional($immunization->antiTetanusUsed)->item)->product_type 
+                                                        : 'N/A' }}
+                                                    </td>
+                                                    <td class="px-4 py-2 border">{{ $immunization->day_label}} </td>
+                                                    <td class="px-4 py-2 border">{{ $immunization->date_given}} </td>
+                                                    <td class="px-4 py-2 border">{{ $immunization->administeredBy->last_name }}, {{ $immunization->administeredBy->first_name }} </td>
+                                                    <td class="px-4 py-2 border">{{ $immunization->status }}</td>
+                                                    <td class="px-4 py-2 border-b"><a href="#" class="text-blue-500 hover:underline underline-offset-4 hover:text-blue-600 font-bold">View</a></td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of immunization content  -->
+
+                            <!-- immunization schedule content  -->
+                            <div id="tab4" class="tab-content hidden  p-8 shadow-lg rounded-lg">
+                                <div class="flex flex-col gap-3">
+                                    <div>
+                                        <h1 class="font-bold text-xl">Immunization Schedules</h1>
+                                    </div>
+                                    
+                                    @if($schedules->isEmpty())
+                                        <p class="text-gray-500 text-center">No immunization schedules found.</p>
+                                    @endif
+
+                                    @php
+                                    // Group schedules by transaction_id
+                                    $groupedSchedules = $schedules->groupBy('transaction_id');
+                                    @endphp
+
+                                    <div class="space-y-4">
+                                        @foreach ($groupedSchedules as $transactionId => $transactionSchedules)
+                                        <div x-data="{ open: false }" class="border rounded-lg shadow">
+                                            <!-- Clickable header -->
+                                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold">
+                                                <p>{{ $transactionSchedules->first()->service->name }} - <span class="text-xs">
+                                                        {{ date('F d, Y g:i A', strtotime($transactionSchedules->first()->transaction->transaction_date)) }}
+                                                    </span></p>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg>
+                                            </button>
+                                            <!-- Collapsible table -->
+                                            <div x-show="open" x-collapse class="overflow-x-auto">
+                                                <table class="min-w-full text-sm text-center">
+                                                    <thead class="bg-gray-800  text-white">
+                                                        <tr>
+                                                            <th class="px-4 py-2 border-r border-b ">Day</th>
+                                                            <th class="px-4 py-2 border ">Scheduled Date</th>
+                                                            <th class="px-4 py-2 border ">Date Completed</th>
+                                                            <th class="px-4 py-2 border ">Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($transactionSchedules as $schedule)
+                                                        <tr>
+                                                            <td class="px-4 py-2 border-b ">{{ $schedule->Day }} </td>
+                                                            <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                            <td class="px-4 py-2 border">{{ $schedule->date_completed ? $schedule->date_completed : 'N/A' }}</td>
+                                                            <td class="px-4 py-2 border-b">
+                                                                <span class="px-2 py-1 rounded-full text-white font-bold
+                                                                    {{ $schedule->status === 'Completed' ? 'bg-green-400' : 'bg-gray-300' }}">
+                                                                    {{ $schedule->status }}
+                                                                </span>
+                                                            </td>
+
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of immunization schedule content  -->
+
                             <div id="tab5" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Payments</div>
-                            <div id="tab6" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Payments</div>
+                            <div id="tab6" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Vaccination Card</div>
+                            <div id="tab7" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Medical History</div>
                         </div>
                     </div>
                 </div>

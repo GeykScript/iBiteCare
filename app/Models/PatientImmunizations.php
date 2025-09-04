@@ -55,22 +55,22 @@ class PatientImmunizations extends Model
     }
     public function vaccineUsed()
     {
-        return $this->belongsTo(InventoryItems::class, 'vaccine_used_id');
+        return $this->belongsTo(Inventory_units::class, 'vaccine_used_id');
     }
     public function rigUsed()
     {
-        return $this->belongsTo(InventoryItems::class, 'rig_used_id');
+        return $this->belongsTo(Inventory_units::class, 'rig_used_id');
     }
     public function antiTetanusUsed()
     {
-        return $this->belongsTo(InventoryItems::class, 'anti_tetanus_id');
+        return $this->belongsTo(Inventory_units::class, 'anti_tetanus_id');
     }
 
     public function administeredBy()
     {
         return $this->belongsTo(ClinicUser::class, 'administered_by_id');
     }
-    
+
     public function invoice()
     {
         return $this->belongsTo(PaymentInvoice::class, 'invoice_id');

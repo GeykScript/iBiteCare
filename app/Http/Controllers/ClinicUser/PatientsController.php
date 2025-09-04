@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use App\Models\Patient;
 use App\Models\PatientPrevAntiTetanus;
 use App\Models\PatientPrevAntiRabies;
+use App\Models\PatientImmunizations;
+use App\Models\PatientImmunizationsSchedule;
 
 class PatientsController extends Controller
 {
@@ -40,9 +42,14 @@ class PatientsController extends Controller
 
         $previousAntiTetanus = PatientPrevAntiTetanus::where('patient_id', $id)->get();
         $previousAntiRabies = PatientPrevAntiRabies::where('patient_id', $id)->get();
+        $currentImmunization = PatientImmunizations::where('patient_id', $id)->get();
+        $schedules = PatientImmunizationsSchedule::where('patient_id', $id)->get();
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies'));
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules'));
     }
+
+
+
 
     public function updateProfile(Request $request)
     {
