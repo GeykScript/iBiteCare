@@ -16,6 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
     @endif
 </head>
+
 <body>
     <div class="flex h-screen">
         <!-- Sidebar -->
@@ -41,7 +42,6 @@
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="syringe" class="w-5 h-5"></i>Immunizations</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
@@ -95,7 +95,7 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">Profile</p>
+                            <p class="font-bold text-red-500">Profile Information</p>
                         </div>
 
                     </div>
@@ -115,19 +115,18 @@
                                 Profile Details
                             </button>
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab2">
-                                Immunizations
+                                Immunizations <span class="text-sm">(Previous)</span>
                             </button>
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab3">
-                                Schedules
+                                Immunizations <span class="text-sm">(Current)</span>
                             </button>
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab4">
+                                Schedules </button>
+                            <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab5">
                                 Transactions
                             </button>
-                            <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab5">
-                                Payments
-                            </button>
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab6">
-                                Medical History
+                                Payments
                             </button>
                         </div>
 
@@ -197,13 +196,85 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- previous immunization content  -->
+                            <div id="tab2" class="tab-content hidden  p-8 shadow-lg rounded-lg">
+                                <!-- Anti-Tetanus Table -->
+                                <div class="flex flex-col gap-3">
+                                    <div>
+                                        <h1 class="font-bold text-xl">Previous Anti-Tetanus Immunizations</h1>
+                                    </div>
+                                    <div class="overflow-x-auto mb-6">
+                                        <table class="min-w-full border border-gray-400 text-sm text-left">
+                                            <thead class="bg-gray-100">
+                                                <tr>
+                                                    <th class="px-4 py-2 border">Dose Brand</th>
+                                                    <th class="px-4 py-2 border">Dose Given</th>
+                                                    <th class="px-4 py-2 border">RN In-Charge</th>
+                                                    <th class="px-4 py-2 border">Date Given</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($previousAntiTetanus->isEmpty())
+                                                <tr>
+                                                    <td colspan="4" class="px-4 py-4 border text-center">
+                                                        No previous immunizations found
+                                                    </td>
+                                                </tr>
+                                                @else
+                                                @foreach ($previousAntiTetanus as $antitetanus)
+                                                <tr>
+                                                    <td class="px-4 py-2 border">{{ $antitetanus->dose_brand }}</td>
+                                                    <td class="px-4 py-2 border">{{ $antitetanus->dose_given }}</td>
+                                                    <td class="px-4 py-2 border">{{ $antitetanus->rn_in_charge }}</td>
+                                                    <td class="px-4 py-2 border">{{ $antitetanus->date_dose_given }}</td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
 
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Anti-Rabies Table -->
+                                <div class="flex flex-col gap-3 mt-4">
+                                    <div>
+                                        <h1 class="font-bold text-xl">Previous Anti-Rabies Immunizations</h1>
+                                    </div>
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full border border-gray-400 text-sm text-left">
+                                            <thead class="bg-gray-100">
+                                                <tr>
+                                                    <th class="px-4 py-2 border">Immunization Type</th>
+                                                    <th class="px-4 py-2 border">Place of Immunization</th>
+                                                    <th class="px-4 py-2 border">Date Given</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($previousAntiRabies->isEmpty())
+                                                <tr>
+                                                    <td colspan="4" class="px-4 py-4 border text-center">
+                                                        No previous immunizations found
+                                                    </td>
+                                                </tr>
+                                                @else
+                                                @foreach ($previousAntiRabies as $antirabies)
+                                                <tr>
+                                                    <td class="px-4 py-2 border">{{ $antirabies->immunization_type }}</td>
+                                                    <td class="px-4 py-2 border">{{ $antirabies->place_of_immunization }}</td>
+                                                    <td class="px-4 py-2 border">{{ $antirabies->date_dose_given }}</td>
+                                                </tr>
+                                                @endforeach
+                                            @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                            <div id="tab2" class="tab-content hidden">Content for Immunizations</div>
-                            <div id="tab3" class="tab-content hidden">Content for Schedules</div>
-                            <div id="tab4" class="tab-content hidden">Content for Transactions</div>
-                            <div id="tab5" class="tab-content hidden">Content for Payments</div>
-                            <div id="tab6" class="tab-content hidden">Content for Medical History</div>
+                            </div>
+                            <div id="tab3" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for immunizations</div>
+                            <div id="tab4" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Transactions</div>
+                            <div id="tab5" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Payments</div>
+                            <div id="tab6" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for Payments</div>
                         </div>
                     </div>
                 </div>
@@ -511,29 +582,42 @@
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
 
+    // Load saved tab from localStorage or default to tab1
+    let activeTab = localStorage.getItem("activeTab") || "tab1";
+    showTab(activeTab);
+
     tabButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
             const target = btn.getAttribute("data-tab");
 
-            // Hide all contents
-            tabContents.forEach((content) => content.classList.add("hidden"));
+            // Save active tab to localStorage
+            localStorage.setItem("activeTab", target);
 
-            // Reset all tabs
-            tabButtons.forEach((b) =>
-                b.classList.remove("text-red-500", "border-red-500", "text-gray-600")
-            );
-            tabButtons.forEach((b) =>
-                b.classList.add("text-gray-600", "border-transparent")
-            );
-
-            // Show active content
-            document.getElementById(target).classList.remove("hidden");
-
-            // Highlight active tab button (text + border)
-            btn.classList.remove("text-gray-600", "border-transparent");
-            btn.classList.add("text-red-500", "border-red-500");
+            showTab(target);
         });
     });
+
+    function showTab(target) {
+        // Hide all contents
+        tabContents.forEach((content) => content.classList.add("hidden"));
+
+        // Reset all tabs
+        tabButtons.forEach((b) =>
+            b.classList.remove("text-red-500", "border-red-500")
+        );
+        tabButtons.forEach((b) =>
+            b.classList.add("text-gray-600", "border-transparent")
+        );
+
+        // Show active content
+        document.getElementById(target).classList.remove("hidden");
+
+        // Highlight active tab button
+        const activeBtn = document.querySelector(`[data-tab="${target}"]`);
+        activeBtn.classList.remove("text-gray-600", "border-transparent");
+        activeBtn.classList.add("text-red-500", "border-red-500");
+    }
+
 
     function formatContactNumber(input) {
         let value = input.value.replace(/\D/g, ""); // remove non-digits

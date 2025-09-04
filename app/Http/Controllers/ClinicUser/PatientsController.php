@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Patient;
+use App\Models\PatientPrevAntiTetanus;
+use App\Models\PatientPrevAntiRabies;
 
 class PatientsController extends Controller
 {
@@ -36,7 +38,10 @@ class PatientsController extends Controller
             return redirect()->route('clinic.patients')->with('error', 'Patient not found.');
         }
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient'));
+        $previousAntiTetanus = PatientPrevAntiTetanus::where('patient_id', $id)->get();
+        $previousAntiRabies = PatientPrevAntiRabies::where('patient_id', $id)->get();
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies'));
     }
 
     public function updateProfile(Request $request)
