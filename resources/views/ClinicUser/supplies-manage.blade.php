@@ -316,9 +316,9 @@
                                     <!-- divider border  -->
                                     <div class="col-span-12 border-2 border-gray-100 mt-2 mb-2"></div>
                                     <div class="col-span-12 flex items-center justify-end gap-2">
-                                        <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Save Changes</button>
+                                        <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600">Save Changes</button>
                                         <button type="button" onclick="document.getElementById('EditProduct').close()"
-                                            class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                            class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
                                             Cancel
                                         </button>
                                     </div>
@@ -406,9 +406,9 @@
                                         </div>
                                     </div>
                                     <div class="col-span-12 flex items-center justify-end gap-2">
-                                        <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Add Supplies</button>
+                                        <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-400">Add Supplies</button>
                                         <button type="button" onclick="document.getElementById('AddNewStocks').close()"
-                                            class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                            class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
                                             Cancel
                                         </button>
                                     </div>
@@ -474,8 +474,8 @@
                                     </div>
 
                                     <div class="col-span-12 flex justify-end space-x-2">
-                                        <button type="button" @click="close()" class="px-4 py-2 bg-gray-100 rounded">Cancel</button>
-                                        <button type="submit" class="px-6 py-2 bg-sky-500 text-white rounded">Save changes</button>
+                                        <button type="button" @click="close()" class="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">Cancel</button>
+                                        <button type="submit" class="px-6 py-2 bg-sky-500 text-white rounded hover:bg-sky-400">Save changes</button>
                                     </div>
                                 </div>
                             </form>

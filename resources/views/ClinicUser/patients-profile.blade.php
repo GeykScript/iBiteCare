@@ -11,18 +11,11 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js'])
-
-
-
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
     @endif
-
 </head>
-
-
 <body>
     <div class="flex h-screen">
         <!-- Sidebar -->
@@ -141,330 +134,69 @@
                         <!-- Tab contents -->
                         <div class=" mt-4">
                             <!-- profile -content  -->
-                            <div id="tab1" class="tab-content p-12 shadow-lg">
+                            <div id="tab1" class="tab-content p-8 shadow-lg rounded-lg">
                                 <div class="flex flex-col justify-center items-center p-2 gap-6 ">
                                     <div class="w-full text-center">
                                         <h1 class="font-900 text-red-500 text-2xl">Profile Information</h1>
                                     </div>
-                                    <div class="flex flex-col md:flex-row gap-20 justify-center items-center text-lg">
-                                        <div class="flex items-center justify-center rounded-full bg-red-500 p-4 md:w-52 md:h-52 w-28 h-28">
-                                            <i data-lucide="user"
-                                                class="w-full h-full text-gray-100 [stroke-width:1.55]"></i>
+                                    <div class="flex flex-col">
+                                        <!-- success div  -->
+                                        @if (session('profile-success'))
+                                        <div
+                                            x-data="{ show: true }"
+                                            x-show="show"
+                                            class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
+                                            <h1 class="text-md font-bold text-green-600">{{ session('profile-success') }}</h1>
+                                            <button @click="show = false" class="text-lg font-bold text-green-600">
+                                                <i data-lucide="x"></i>
+                                            </button>
                                         </div>
+                                        @endif
+                                        <!-- end of success div  -->
 
-                                        <div class="flex flex-col  gap-5">
-                                            <div class="border-2 border-gray-50"></div>
-                                            <div class="flex gap-4 justify-start items-start">
-                                                <div class="flex flex-col items-start gap-2 font-semibold">
-                                                    <p>Name:</p>
-                                                    <p>Birthdate:</p>
-                                                    <p>Gender:</p>
-                                                    <p>Age:</p>
-                                                </div>
-                                                <div class="flex flex-col gap-2">
-                                                    <p>{{ $patient->first_name }} {{ $patient->middle_initial }} {{ $patient->last_name }} {{$patient->suffix}} </p>
-                                                    <p>{{ date('F d, Y', strtotime($patient->birthdate)) }}</p>
-                                                    <p>{{ $patient->sex }}</p>
-                                                    <p>{{ $patient->age }} yrs old</p>
-                                                </div>
+                                        <div class="flex flex-col md:flex-row gap-20 justify-center items-center text-lg">
+                                            <div class="flex items-center justify-center rounded-full bg-red-500 p-4 md:w-52 md:h-52 w-28 h-28">
+                                                <i data-lucide="user"
+                                                    class="w-full h-full text-gray-100 [stroke-width:1.55]"></i>
                                             </div>
-                                            <div class="border-2 border-gray-50"></div>
-                                            <div class="flex gap-4 justify-start items-start">
-                                                <div class="flex flex-col gap-2 items-start font-semibold">
-                                                    <p>Phone:</p>
-                                                    <p>Address:</p>
+                                            <div class="flex flex-col  gap-5">
+                                                <div class="border-2 border-gray-50"></div>
+                                                <div class="flex gap-4 justify-start items-start">
+                                                    <div class="flex flex-col items-start gap-2 font-semibold">
+                                                        <p>Name:</p>
+                                                        <p>Birthdate:</p>
+                                                        <p>Gender:</p>
+                                                        <p>Age:</p>
+                                                    </div>
+                                                    <div class="flex flex-col gap-2">
+                                                        <p>{{ $patient->first_name }} {{ $patient->middle_initial }} {{ $patient->last_name }} {{$patient->suffix}} </p>
+                                                        <p>{{ date('F d, Y', strtotime($patient->birthdate)) }}</p>
+                                                        <p>{{ $patient->sex }}</p>
+                                                        <p>{{ $patient->age }} yrs old</p>
+                                                    </div>
                                                 </div>
-                                                <div class="flex flex-col gap-2">
-                                                    <p>{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
-                                                    <p>{{ $patient->address }}</p>
+                                                <div class="border-2 border-gray-50"></div>
+                                                <div class="flex gap-4 justify-start items-start">
+                                                    <div class="flex flex-col gap-2 items-start font-semibold">
+                                                        <p>Phone:</p>
+                                                        <p>Address:</p>
+                                                    </div>
+                                                    <div class="flex flex-col gap-2">
+                                                        <p>{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
+                                                        <p>{{ $patient->address }}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <button
-                                                    onclick="document.getElementById('EditPatientProfile').showModal()"
-                                                    class="text-white bg-blue-600 px-4 py-2 rounded-lg flex items-center gap-1 text-sm focus:outline-none font-900 hover:bg-blue-500">
-                                                    <i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
+                                                <div>
+                                                    <button
+                                                        onclick="document.getElementById('EditPatientProfile').showModal()"
+                                                        class="text-white bg-blue-600 px-4 py-2 rounded-lg flex items-center gap-1 text-sm focus:outline-none font-900 hover:bg-blue-500">
+                                                        <i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- update  profile modal -->
-                            <dialog id="EditPatientProfile" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
-                                <!-- close modal button  -->
-                                <div class="w-full flex justify-end mb-5 md:mb-2">
-                                    <button onclick="document.getElementById('EditPatientProfile').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
-                                </div>
-                                <!-- update profile info  form  -->
-                                <form action="#" method="POST" id="EditPatientProfileForm">
-                                    @csrf
-                                    @method('PUT')
-
-                                    <input type="text" name="id" value="{{ $patient->id }}" hidden>
-
-                                    <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
-                                        <div class="col-span-12 flex items-center justify-center">
-                                            <div class="flex items-center justify-center gap-4 ">
-                                                <i data-lucide="circle-user" class="w-12 h-12 text-sky-500"></i>
-                                                <div>
-                                                    <h1 class="font-900 md:text-2xl text-xl">Patient Profile</h1>
-                                                    <p>Update Patient Information</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- divider border  -->
-                                        <div class="col-span-12 border-2 border-gray-100 my-2"></div>
-                                        <div class="col-span-12">
-                                            <h1 class="font-semibold text-xl">Personal Information</h1>
-                                        </div>
-                                        <!-- fname. lname , initial div  -->
-                                        <div class="col-span-12 grid grid-cols-12 gap-2">
-                                            <!-- FIRST NAME -->
-                                            <div class="col-span-12 md:col-span-5">
-                                                @if ($errors->has('first_name'))
-                                                <label for="first_name" class="text-sm font-semibold flex justify-between items-center w-full">First Name:
-                                                    <span class="text-red-500 text-xs" id="first-name-error">
-                                                        {{ $errors->first('first_name') }}
-                                                        *</span>
-                                                </label>
-                                                @else
-                                                <label for="first_name" class="text-sm font-semibold ">First Name:
-                                                    <span class="text-red-500 text-xs" id="first-name-error">*</span>
-                                                </label>
-                                                @endif
-                                                <input type="text" id="first_name" name="first_name"
-                                                    placeholder="First Name"
-                                                    value="{{ ( $patient->first_name) }}"
-                                                    class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
-                                            </div>
-
-                                            <!-- LAST NAME -->
-                                            <div class="col-span-12 md:col-span-5">
-                                                @if ($errors->has('last_name'))
-                                                <label for="last_name" class="text-sm font-semibold flex justify-between items-center w-full">Last Name:
-                                                    <span class="text-red-500 text-xs" id="last-name-error">
-                                                        {{ $errors->first('last_name') }}
-                                                        *</span>
-                                                </label>
-                                                @else
-                                                <label for="last_name" class="text-sm font-semibold ">Last Name:
-                                                    <span class="text-red-500 text-xs" id="last-name-error">*</span>
-                                                </label>
-                                                @endif
-
-                                                <input type="text" id="last_name" name="last_name" placeholder="Last Name"
-                                                    value="{{ ( $patient->last_name) }}"
-                                                    class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:bg-white  focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
-                                            </div>
-
-                                            <!-- MIDDLE INITIAL -->
-                                            <div class="col-span-6 md:col-span-1">
-                                                @if ($errors->has('middle_initial'))
-                                                <label for="middle_initial" class="text-sm font-semibold flex justify-between items-center w-full">M.I:
-                                                    <span class="text-red-500 text-xs" id="middle-initial-error">
-                                                        {{ $errors->first('middle_initial') }}
-                                                        *</span>
-                                                </label>
-                                                @else
-                                                <label for="middle_initial" class="text-sm font-semibold ">M.I:
-                                                    <span class="text-red-500 text-xs" id="middle-initial-error">*</span>
-                                                </label>
-                                                @endif
-
-                                                <input type="text" id="middle_initial" name="middle_initial" placeholder="M.I" maxlength="3"
-                                                    pattern="[A-Z]\."
-                                                    oninput="this.value = this.value.toUpperCase()"
-                                                    title="Only one letter followed by a period is allowed (e.g., M.)"
-                                                    value="{{ old('middle_initial', $patient->middle_initial) }}"
-                                                    class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
-                                            </div>
-
-                                            <!-- SUFFIX -->
-                                            <div class="col-span-6 md:col-span-1">
-                                                <label for="suffix" class="text-sm font-semibold">Suffix: </label>
-                                                <input type="text" id="suffix" name="suffix" placeholder="E.g., Jr."
-                                                    pattern="[A-Za-z]{1,5}"
-                                                    maxlength="5"
-                                                    title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
-                                                    value="{{ old('suffix', $patient->suffix) }}"
-                                                    class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
-                                            </div>
-                                        </div>
-
-
-                                        <!-- date of birth, age , gender div  -->
-                                        <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
-                                            <!-- date of birth  -->
-                                            <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
-                                                <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth: </label>
-                                                <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}" readonly disabled
-                                                    class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
-                                            </div>
-                                            <!-- age  -->
-                                            <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                                <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
-                                                <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
-                                                    class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
-                                            </div>
-                                            <!-- gender  -->
-                                            <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                                <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
-                                                <div class="flex gap-5 items-center">
-                                                    @if ($patient->sex == 'Male')
-                                                    <label class="flex items-center space-x-2">
-                                                        <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
-                                                        <span>Male</span>
-                                                    </label>
-                                                    @elseif ($patient->sex == 'Female')
-                                                    <label class="flex items-center space-x-2">
-                                                        <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
-                                                        <span>Female</span>
-                                                    </label>
-                                                    @endif
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- contact number  -->
-                                        <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
-
-                                            <!-- phone number  -->
-                                            <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
-                                                <div class="w-full flex items-center">
-                                                    @if ($errors->has('contact_number'))
-                                                    <label for="contact_number" class="text-sm font-semibold flex justify-between items-center w-full">Contact Number:
-                                                        <span class="text-red-500 text-xs" id="contact-number-error">
-                                                            {{ $errors->first('contact_number') }}
-                                                            *</span>
-                                                    </label>
-                                                    @else
-                                                    <label for="contact_number" class="text-sm font-semibold ">Contact Number:
-                                                        <span class="text-red-500 text-xs" id="contact-number-error">*</span>
-                                                    </label>
-                                                    @endif
-
-                                                </div>
-                                                <div class="w-full flex items-center gap-4">
-                                                    <i data-lucide="phone-call"></i>
-                                                    <input type="tel" id="contact_number" name="contact_number"
-                                                        placeholder="e.g. 09xx xxx xxxx"
-                                                        maxlength="13"
-                                                        value="{{  $patient->contact_number }}"
-                                                        class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- divider border  -->
-                                        <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
-
-                                        <!-- address label  -->
-                                        <div class="col-span-12 p-2 ">
-                                            <label for="address" class="text-xl font-bold text-gray-800">Address</label>
-                                        </div>
-
-                                        <div class="col-span-12 flex items-center gap-2 p-2">
-                                            <i data-lucide="map-pin"></i>
-                                            <div>{{ $patient->address }} (Current)</div>
-                                        </div>
-                                        <!-- divider border  -->
-                                        <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
-                                        <div class="col-span-12 mt-2 p-2">
-                                            <p class="font-semibold">Update Address</p>
-                                        </div>
-
-                                        <!-- region, province, city, barangay, purok div  -->
-                                        <div class="col-span-12 grid grid-cols-12 gap-2">
-                                            <!-- region  -->
-                                            <div class="col-span-12 md:col-span-4">
-                                                <div class="mb-3 relative">
-                                                    <label for="region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-500" id="region-error">*</span></label>
-                                                    <button id="region_btn" type="button"
-                                                        class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center">
-                                                        <span id="region_selected">Select Region</span>
-                                                        <i data-lucide="chevron-down"></i>
-                                                    </button>
-                                                    <ul id="region" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                                    <!-- hidden input -->
-                                                    <input type="hidden" name="region" id="region_input">
-                                                </div>
-                                            </div>
-                                            <!-- province  -->
-                                            <div class="col-span-12 md:col-span-4">
-                                                <div class="mb-3 relative">
-                                                    <label for="province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-500" id="province-error">*</span></label>
-                                                    <button id="province_btn" type="button"
-                                                        class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
-                                                        <span id="province_selected">Select Province</span>
-                                                        <i data-lucide="chevron-down"></i>
-                                                    </button>
-                                                    <ul id="province" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                                    <!-- hidden input -->
-                                                    <input type="hidden" name="province" id="province_input">
-                                                </div>
-                                            </div>
-                                            <!-- city  -->
-                                            <div class="col-span-12 md:col-span-4">
-                                                <div class="mb-3 relative">
-                                                    <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-500" id="city-error">*</span></label>
-                                                    <button id="city_btn" type="button"
-                                                        class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
-                                                        <span id="city_selected">Select City</span>
-                                                        <i data-lucide="chevron-down"></i>
-                                                    </button>
-                                                    <ul id="city" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                                    <!-- hidden input -->
-                                                    <input type="hidden" name="city" id="city_input">
-                                                </div>
-                                            </div>
-                                            <!-- barangay and purok  -->
-                                            <div class="col-span-12 md:col-span-12">
-                                                <div class="grid grid-cols-4 gap-4">
-                                                    <!-- barangay  -->
-                                                    <div class="col-span-4 md:col-span-2 mb-3 relative">
-                                                        <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-500" id="barangay-error">*</span></label>
-                                                        <button id="barangay_btn" type="button"
-                                                            class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
-                                                            <span id="barangay_selected">Select Barangay</span>
-                                                            <i data-lucide="chevron-down"></i>
-                                                        </button>
-                                                        <ul id="barangay" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                                        <!-- hidden input -->
-                                                        <input type="hidden" name="barangay" id="barangay_input">
-                                                    </div>
-                                                    <!-- purok  -->
-                                                    <div class="col-span-4 md:col-span-2 ">
-                                                        <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
-                                                        <button id="description_btn" type="button" class="hidden"> </button>
-                                                        <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- divider border  -->
-                                            <div class="col-span-12 border-2 border-gray-100"></div>
-                                        </div>
-
-                                        <!-- submit and cancel button   -->
-                                        <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                            <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md">
-                                                Save Changes
-                                            </button>
-                                            <button type="button" onclick="document.getElementById('EditPatientProfile').close()"
-                                                class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </dialog>
-
-
-
-
-
 
 
                             <div id="tab2" class="tab-content hidden">Content for Immunizations</div>
@@ -477,7 +209,277 @@
                 </div>
 
 
+                <!-- update  profile modal -->
+                <dialog id="EditPatientProfile" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
+                    <!-- close modal button  -->
+                    <div class="w-full flex justify-end mb-5 md:mb-2">
+                        <button onclick="document.getElementById('EditPatientProfile').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    </div>
+                    <!-- update profile info  form  -->
+                    <form action="{{ route('clinic.patients.profile.update')  }}" method="POST" id="EditPatientProfileForm">
+                        @csrf
+                        @method('PUT')
 
+                        <input type="text" name="id" value="{{ $patient->id }}" hidden>
+
+                        <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
+                            <div class="col-span-12 flex items-center justify-center">
+                                <div class="flex items-center justify-center gap-4 ">
+                                    <i data-lucide="circle-user" class="w-12 h-12 text-sky-500"></i>
+                                    <div>
+                                        <h1 class="font-900 md:text-2xl text-xl">Patient Profile</h1>
+                                        <p>Update Patient Information</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- divider border  -->
+                            <div class="col-span-12 border-2 border-gray-100 my-2"></div>
+                            <div class="col-span-12">
+                                <h1 class="font-semibold text-xl">Personal Information</h1>
+                            </div>
+                            <!-- fname. lname , initial div  -->
+                            <div class="col-span-12 grid grid-cols-12 gap-2">
+                                <!-- FIRST NAME -->
+                                <div class="col-span-12 md:col-span-5">
+                                    @if ($errors->has('first_name'))
+                                    <label for="first_name" class="text-sm font-semibold flex justify-between items-center w-full">First Name:
+                                        <span class="text-red-500 text-xs" id="first-name-error">
+                                            {{ $errors->first('first_name') }}
+                                            *</span>
+                                    </label>
+                                    @else
+                                    <label for="first_name" class="text-sm font-semibold ">First Name:
+                                        <span class="text-red-500 text-xs" id="first-name-error">*</span>
+                                    </label>
+                                    @endif
+                                    <input type="text" id="first_name" name="first_name"
+                                        placeholder="First Name"
+                                        value="{{ ( $patient->first_name) }}"
+                                        class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
+                                </div>
+
+                                <!-- LAST NAME -->
+                                <div class="col-span-12 md:col-span-5">
+                                    @if ($errors->has('last_name'))
+                                    <label for="last_name" class="text-sm font-semibold flex justify-between items-center w-full">Last Name:
+                                        <span class="text-red-500 text-xs" id="last-name-error">
+                                            {{ $errors->first('last_name') }}
+                                            *</span>
+                                    </label>
+                                    @else
+                                    <label for="last_name" class="text-sm font-semibold ">Last Name:
+                                        <span class="text-red-500 text-xs" id="last-name-error">*</span>
+                                    </label>
+                                    @endif
+
+                                    <input type="text" id="last_name" name="last_name" placeholder="Last Name"
+                                        value="{{ ( $patient->last_name) }}"
+                                        class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:bg-white  focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
+                                </div>
+
+                                <!-- MIDDLE INITIAL -->
+                                <div class="col-span-6 md:col-span-1">
+                                    @if ($errors->has('middle_initial'))
+                                    <label for="middle_initial" class="text-sm font-semibold flex justify-between items-center w-full">M.I:
+                                        <span class="text-red-500 text-xs" id="middle-initial-error">
+                                            {{ $errors->first('middle_initial') }}
+                                            *</span>
+                                    </label>
+                                    @else
+                                    <label for="middle_initial" class="text-sm font-semibold ">M.I:
+                                        <span class="text-red-500 text-xs" id="middle-initial-error">*</span>
+                                    </label>
+                                    @endif
+
+                                    <input type="text" id="middle_initial" name="middle_initial" placeholder="M.I" maxlength="3"
+                                        pattern="[A-Z]\."
+                                        oninput="this.value = this.value.toUpperCase()"
+                                        title="Only one letter followed by a period is allowed (e.g., M.)"
+                                        value="{{ old('middle_initial', $patient->middle_initial) }}"
+                                        class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
+                                </div>
+
+                                <!-- SUFFIX -->
+                                <div class="col-span-6 md:col-span-1">
+                                    <label for="suffix" class="text-sm font-semibold">Suffix: </label>
+                                    <input type="text" id="suffix" name="suffix" placeholder="E.g., Jr."
+                                        pattern="[A-Za-z]{1,5}"
+                                        maxlength="5"
+                                        title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
+                                        value="{{ old('suffix', $patient->suffix) }}"
+                                        class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                </div>
+                            </div>
+
+
+                            <!-- date of birth, age , gender div  -->
+                            <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
+                                <!-- date of birth  -->
+                                <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
+                                    <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth: </label>
+                                    <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}" readonly disabled
+                                        class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                </div>
+                                <!-- age  -->
+                                <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
+                                    <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
+                                    <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
+                                        class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
+                                </div>
+                                <!-- gender  -->
+                                <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
+                                    <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
+                                    <div class="flex gap-5 items-center">
+                                        @if ($patient->sex == 'Male')
+                                        <label class="flex items-center space-x-2">
+                                            <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                            <span>Male</span>
+                                        </label>
+                                        @elseif ($patient->sex == 'Female')
+                                        <label class="flex items-center space-x-2">
+                                            <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
+                                            <span>Female</span>
+                                        </label>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- contact number  -->
+                            <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
+
+                                <!-- phone number  -->
+                                <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
+                                    <div class="w-full flex items-center">
+                                        @if ($errors->has('contact_number'))
+                                        <label for="contact_number" class="text-sm font-semibold flex justify-between items-center w-full">Contact Number:
+                                            <span class="text-red-500 text-xs" id="contact-number-error">
+                                                {{ $errors->first('contact_number') }}
+                                                *</span>
+                                        </label>
+                                        @else
+                                        <label for="contact_number" class="text-sm font-semibold ">Contact Number:
+                                            <span class="text-red-500 text-xs" id="contact-number-error">*</span>
+                                        </label>
+                                        @endif
+
+                                    </div>
+                                    <div class="w-full flex items-center gap-4">
+                                        <i data-lucide="phone-call"></i>
+                                        <input type="tel" id="contact_number" name="contact_number"
+                                            placeholder="e.g. 09xx xxx xxxx"
+                                            maxlength="13"
+                                            value="{{  $patient->contact_number }}"
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- divider border  -->
+                            <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
+
+                            <!-- address label  -->
+                            <div class="col-span-12 p-2 ">
+                                <label for="address" class="text-xl font-bold text-gray-800">Address</label>
+                            </div>
+
+                            <div class="col-span-12 flex items-center gap-2 p-2">
+                                <i data-lucide="map-pin"></i>
+                                <div>{{ $patient->address }} (Current)</div>
+                            </div>
+                            <!-- divider border  -->
+                            <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
+                            <div class="col-span-12 mt-2 p-2">
+                                <p class="font-semibold">Update Address</p>
+                            </div>
+
+                            <!-- region, province, city, barangay, purok div  -->
+                            <div class="col-span-12 grid grid-cols-12 gap-2">
+                                <!-- region  -->
+                                <div class="col-span-12 md:col-span-4">
+                                    <div class="mb-3 relative">
+                                        <label for="region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-500" id="region-error">*</span></label>
+                                        <button id="region_btn" type="button"
+                                            class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center">
+                                            <span id="region_selected">Select Region</span>
+                                            <i data-lucide="chevron-down"></i>
+                                        </button>
+                                        <ul id="region" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                        <!-- hidden input -->
+                                        <input type="hidden" name="region" id="region_input">
+                                    </div>
+                                </div>
+                                <!-- province  -->
+                                <div class="col-span-12 md:col-span-4">
+                                    <div class="mb-3 relative">
+                                        <label for="province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-500" id="province-error">*</span></label>
+                                        <button id="province_btn" type="button"
+                                            class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                            <span id="province_selected">Select Province</span>
+                                            <i data-lucide="chevron-down"></i>
+                                        </button>
+                                        <ul id="province" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                        <!-- hidden input -->
+                                        <input type="hidden" name="province" id="province_input">
+                                    </div>
+                                </div>
+                                <!-- city  -->
+                                <div class="col-span-12 md:col-span-4">
+                                    <div class="mb-3 relative">
+                                        <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-500" id="city-error">*</span></label>
+                                        <button id="city_btn" type="button"
+                                            class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                            <span id="city_selected">Select City</span>
+                                            <i data-lucide="chevron-down"></i>
+                                        </button>
+                                        <ul id="city" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                        <!-- hidden input -->
+                                        <input type="hidden" name="city" id="city_input">
+                                    </div>
+                                </div>
+                                <!-- barangay and purok  -->
+                                <div class="col-span-12 md:col-span-12">
+                                    <div class="grid grid-cols-4 gap-4">
+                                        <!-- barangay  -->
+                                        <div class="col-span-4 md:col-span-2 mb-3 relative">
+                                            <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-500" id="barangay-error">*</span></label>
+                                            <button id="barangay_btn" type="button"
+                                                class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                                <span id="barangay_selected">Select Barangay</span>
+                                                <i data-lucide="chevron-down"></i>
+                                            </button>
+                                            <ul id="barangay" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                            <!-- hidden input -->
+                                            <input type="hidden" name="barangay" id="barangay_input">
+                                        </div>
+                                        <!-- purok  -->
+                                        <div class="col-span-4 md:col-span-2 ">
+                                            <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
+                                            <button id="description_btn" type="button" class="hidden"> </button>
+                                            <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- divider border  -->
+                                <div class="col-span-12 border-2 border-gray-100"></div>
+                            </div>
+
+                            <!-- submit and cancel button   -->
+                            <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
+                                <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
+                                    Save Changes
+                                </button>
+                                <button type="button" onclick="document.getElementById('EditPatientProfile').close()"
+                                    class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </dialog>
+                <!-- end of dialog  -->
 
 
         </section>
@@ -532,10 +534,6 @@
             btn.classList.add("text-red-500", "border-red-500");
         });
     });
-
-
-
-
 
     function formatContactNumber(input) {
         let value = input.value.replace(/\D/g, ""); // remove non-digits

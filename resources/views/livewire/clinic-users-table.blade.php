@@ -322,7 +322,7 @@
 
                 <div class="col-span-12 flex items-end justify-end">
                     <button type="button" @click="open = false"
-                        class="px-6 py-2 bg-gray-800 text-white rounded-lg text-md">
+                        class="px-6 py-2 bg-gray-800 text-white rounded-lg text-md hover:bg-gray-600">
                         Close
                     </button>
                 </div>

@@ -444,11 +444,11 @@
 
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md">
+                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Create Account
                                     </button>
                                     <button type="button" onclick="document.getElementById('newClinicUserModal').close()"
-                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
                                         Cancel
                                     </button>
                                 </div>
@@ -763,11 +763,11 @@
                                 </div>
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md">
+                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Save Changes
                                     </button>
                                     <button type="button" @click="close"
-                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md">
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
                                         Cancel
                                     </button>
                                 </div>

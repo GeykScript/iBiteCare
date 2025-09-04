@@ -61,6 +61,10 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/patients/profile/{id}', [PatientsController::class, 'viewProfile'])
         ->name('clinic.patients.profile');
 
+    Route::put('/clinic/patients/profile/update', [PatientsController::class, 'updateProfile'])
+        ->name('clinic.patients.profile.update');
+        
+
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
 
