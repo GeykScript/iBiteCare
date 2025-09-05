@@ -101,8 +101,9 @@
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="grid grid-cols-4 p-4 md:px-20">
-                    <div class="col-span-4 md:col-span-4 px-2">
+                <div class="grid grid-cols-5 p-4 md:px-10">
+                    <div class="col-span-5 bg-white rounded-lg shadow-md p-4">
+                    <!-- transactions table livewire  -->
                         <livewire:transactions-table />
                     </div>
                 </div>
