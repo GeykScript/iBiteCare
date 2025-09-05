@@ -31,7 +31,7 @@ class InventoryItems extends Component
         }
 
         $this->sortBy = $sortByField;
-        $this->sortDirection = 'ASC';
+        $this->sortDirection = 'DESC';
     }
 
 

@@ -326,7 +326,7 @@
                                                     <td class="px-4 py-2 border">{{ $immunization->day_label}} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->date_given}} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->administeredBy->last_name }}, {{ $immunization->administeredBy->first_name }} </td>
-                                                    <td class="px-4 py-2 border">{{ $immunization->status }}</td>
+                                                    <td class="px-4 py-2 border"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $immunization->status }} </span></td>
                                                     <td class="px-4 py-2 border-b"><a href="#" class="text-blue-500 hover:underline underline-offset-4 hover:text-blue-600 font-bold">View</a></td>
                                                 </tr>
                                                 @endforeach
@@ -418,29 +418,33 @@
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white ">Date of Transaction</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Service Received</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Administration Date</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
-                                                    <th class="px-4 py-2 border-l border-b  bg-gray-800 text-white rounded-tr-lg">Details</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Paid Amount</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Status</th>
+                                                    <th colspan="2" class="px-4 py-2 border  bg-gray-800 text-white rounded-tr-lg flex flex-col"> In Charge <span class="text-xs">(Administration & Payment)</span></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if ($currentImmunization->isEmpty())
+                                                @if ($transactions->isEmpty())
                                                 <tr>
                                                     <td colspan="9" class="px-4 py-4 border text-center text-gray-500">
                                                         No Transactions found
                                                     </td>
                                                 </tr>
                                                 @else
-                                                @foreach ($currentImmunization as $immunization)
+                                                @foreach ($transactions as $transaction)
                                                 <tr>
-                                                    <td class="px-4 py-2 border-b">{{ $immunization->transaction->id }}</td>
-                                                    <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($immunization->transaction->transaction_date)) }}</td>
-                                                    <td class="px-4 py-2 border">{{ $immunization->service->name }}</td>
-                                                    <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($immunization->date_given))}} </td>
-                                                    <td class="px-4 py-2 border">{{ $immunization->status }}</td>
-                                                    <td class="px-4 py-2 border-b"><a href="#" class="text-blue-500 hover:underline underline-offset-4 hover:text-blue-600 font-bold">View</a></td>
-                                                </tr>
-                                                @endforeach
-                                                @endif
+                                                    <td class="px-4 py-2 border-b">{{ $transaction->id }}</td>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
+                                                    <td class="px-4 py-2 border">{{ $transaction->Service->name }}</td>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->date_given))}} </td>
+                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $transaction->paymentRecords->amount_paid }}
+                                                        </span></td>
+                                                    <td class="px-4 py-2 border-b"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $transaction->immunizations->status }} </span></td>
+                                                    <td class="px-4 py-2 border-b">{{ $transaction->immunizations->administeredBy->first_name }} {{ $transaction->immunizations->administeredBy->last_name }},
+                                                        {{ $transaction->paymentRecords->receivedBy->first_name }} {{ $transaction->paymentRecords->receivedBy->last_name }}
+                                                    </td>
+                                                    @endforeach
+                                                    @endif
                                             </tbody>
 
                                         </table>

@@ -50,7 +50,11 @@ class PatientsController extends Controller
 
         $paymentRecords =  PaymentRecords::where('patient_id', $id )->get();
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords'));
+        $transactions = ClinicTransactions::with(['patient', 'service', 'paymentRecords'])
+            ->where('patient_id', $id)
+            ->get();
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions'));
     }
 
 

@@ -102,43 +102,7 @@
                 </div>
                 <!-- Header content -->
                 <div class="grid grid-cols-4 p-4 md:px-20">
-                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
-                        <button
-                            onclick="document.getElementById('newClinicServiceModal').showModal()"
-                            class=" bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none font-bold hover:bg-red-700"><i data-lucide="plus" class="w-5 h-5 stroke-[2]"></i>New Service</button>
-                    </div>
-
-                    <!-- New Clinic Service Modal -->
-                    <dialog id="newClinicServiceModal" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
-                        <!-- close modal button  -->
-                        <div class="w-full flex justify-end mb-5">
-                            <button onclick="document.getElementById('newClinicServiceModal').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
-                        </div>
-
-                        <!-- create new user form  -->
-                        <form action="{{route('clinic.users.create')}}" method="POST" id="newClinicServiceForm">
-                            @csrf
-                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
-                                <div class="col-span-12 flex flex-col items-center justify-center">
-                                    <h1 class="font-900 md:text-2xl text-xl">Create User Account</h1>
-                                    <p>Fill out the form below to add a new user. All fields are required.</p>
-                                </div>
-
-
-                                <!-- submit and cancel button   -->
-                                <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
-                                        Create Account
-                                    </button>
-                                    <button type="button" onclick="document.getElementById('newClinicServiceModal').close()"
-                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </dialog>
-
+                
 
                 </div>
             </div>

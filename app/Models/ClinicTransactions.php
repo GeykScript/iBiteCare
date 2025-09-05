@@ -23,6 +23,20 @@ class ClinicTransactions extends Model
         return $this->belongsTo(ClinicServices::class, 'service_id', 'id');
     }
 
+    public function paymentRecords()
+    {
+        return $this->hasOne(PaymentRecords::class, 'transaction_id', 'id');
+    }
+
+    public function immunizations()
+    {
+        return $this->hasOne(PatientImmunizations::class, 'transaction_id', 'id');
+    }
+    public function invoice()
+    {
+        return $this->hasOne(PaymentInvoice::class, 'transaction_id', 'id');
+    }
+
 
     public function getDateOnlyAttribute()
     {
@@ -38,5 +52,7 @@ class ClinicTransactions extends Model
     {
         return Carbon::parse($this->transaction_date)->format('Y-m-d H:i');
     }
+
+    
 
 }

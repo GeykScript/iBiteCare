@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentInvoice extends Model
 {
     //
-    protected $table = 'payment_invoices';
+    protected $table = 'payment_invoice';
     protected $fillable = [
         'patient_id',
         'transaction_id',
