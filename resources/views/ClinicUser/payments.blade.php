@@ -102,10 +102,10 @@
                 </div>
                 <!-- Header content -->
                 <div class="grid grid-cols-4 p-4 md:px-10">
-                <div class="col-span-4 bg-white rounded-lg shadow-md p-4">
-                    <!-- payment records table livewire  -->
-                    <livewire:payment-records-table />
-                </div>
+                    <div class="col-span-4 bg-white rounded-lg border border-gray-200 shadow-md p-4">
+                        <!-- payment records table livewire  -->
+                        <livewire:payment-records-table />
+                    </div>
                 </div>
             </div>
         </section>

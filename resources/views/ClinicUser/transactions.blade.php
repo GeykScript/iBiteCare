@@ -102,7 +102,7 @@
                 </div>
                 <!-- Header content -->
                 <div class="grid grid-cols-5 p-4 md:px-10">
-                    <div class="col-span-5 bg-white rounded-lg shadow-md p-4">
+                    <div class="col-span-5 bg-white border border-gray-200 rounded-lg shadow-md p-4">
                     <!-- transactions table livewire  -->
                         <livewire:transactions-table />
                     </div>

@@ -42,7 +42,10 @@ class TransactionsTable extends Component
             'patient',
             'service',
             'paymentRecords.receivedBy',
-            'immunizations.administeredBy'
+            'immunizations.administeredBy',
+            'immunizations.vaccineUsed.item',
+            'immunizations.rigUsed.item',
+            'immunizations.antiTetanusUsed.item'
         ])
             ->where(function ($query) {
                 $query->whereHas('patient', function ($q) {
@@ -60,6 +63,18 @@ class TransactionsTable extends Component
                             ->orWhereHas('administeredBy', function ($sub) {
                                 $sub->where('first_name', 'like', '%' . $this->search . '%')
                                     ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                            })
+                            ->orWhereHas('vaccineUsed.item', function ($sub) {
+                                $sub->where('brand_name', 'like', '%' . $this->search . '%')
+                                    ->orWhere('product_type', 'like', '%' . $this->search . '%');
+                            })
+                            ->orWhereHas('rigUsed.item', function ($sub) {
+                                $sub->where('brand_name', 'like', '%' . $this->search . '%')
+                                    ->orWhere('product_type', 'like', '%' . $this->search . '%');
+                            })
+                            ->orWhereHas('antiTetanusUsed.item', function ($sub) {
+                                $sub->where('brand_name', 'like', '%' . $this->search . '%')
+                                    ->orWhere('product_type', 'like', '%' . $this->search . '%');
                             });
                     })
                     ->orWhereHas('paymentRecords', function ($q) {
