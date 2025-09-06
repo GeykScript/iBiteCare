@@ -127,6 +127,13 @@ Route::middleware('auth:clinic_user')->group(function () {
     // CLINIC SERVICES ---------------------------
     Route::get('/clinic/services', [Services::class, 'index'])
         ->name('clinic.services');
+        
+    Route::get('/clinic/services/update/{id}', [Services::class, 'update'])
+        ->name('clinic.services.update');
+    
+    Route::put('/clinic/services/update/details', [Services::class, 'updateServiceDetails'])
+        ->name('clinic.services.update.details');
+    
     //-----------------END-----------------------//
 
     // CLINIC PAYMENTS ---------------------------

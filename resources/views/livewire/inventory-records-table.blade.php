@@ -148,7 +148,8 @@
                         <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->last_restocked_date}}</td>
                         <td class="px-6 md:px-2 py-4 text-center font-bold text-gray-900">
                             @if(strtolower($supply->stock_status) === 'in stock') <span class="text-green-500 p-2 rounded bg-green-100">{{ $supply->stock_status }}</span>
-                            @else <span class="text-gray-700">{{ $supply->stock_status }}</span>
+                            @elseif(strtolower($supply->stock_status) === 'out of stock') <span class="text-red-500 p-2 rounded bg-red-100">{{ $supply->stock_status }}</span>
+                            @elseif(strtolower($supply->stock_status) === 'low stock') <span class="text-yellow-500 p-2 rounded bg-yellow-100">{{ $supply->stock_status }}</span>
                             @endif
                         </td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">

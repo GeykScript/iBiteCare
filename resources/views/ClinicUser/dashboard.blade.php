@@ -194,7 +194,7 @@
                                                 </div>
                                                 <div class="flex flex-col">
                                                     <h1 class="font-bold">Transactions</h1>
-                                                    <a href="#" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
+                                                    <a href="{{ route('clinic.transactions') }}" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-center  bg-sky-400 rounded-full w-12 h-12">

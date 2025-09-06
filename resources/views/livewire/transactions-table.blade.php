@@ -76,8 +76,8 @@
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('service')">Service Provided</th>
                     <th class="border bg-gray-800 text-white px-2 py-2" colspan="3">Immunizations Used <br><span class="text-xs font-normal">(Vaccine, Rig, Anti-Tetanus)</span></th>
                     <th class="border bg-gray-800 text-white px-2 py-2">Paid Amount</th>
-                    <th class="border-l border-b bg-gray-800 text-white px-2 py-2 ">Status</th>
-                    <th colspan="2" class="px-2 py-2 border  bg-gray-800 text-white rounded-tr-lg flex flex-col"> In Charge <span class="text-xs font-normal">(Administration & Payment)</span></th>
+                    <th class="border bg-gray-800 text-white px-2 py-2 ">Status</th>
+                    <th colspan="2" class="px-2 py-2 border-l border-b bg-gray-800 text-white rounded-tr-lg ">In Charge <br><span class="text-xs font-normal">(Administration & Payment)</span></th>
                 </tr>
             </thead>
             <tbody>
