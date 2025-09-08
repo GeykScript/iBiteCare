@@ -129,7 +129,6 @@
                                     stock_id: {{ $item->stock_id }},
                                     quantity: {{ $item->unit_quantity }},
                                     remaining: {{ $item->remaining_quantity }},
-                                    price: {{ $item->unit_price }},
                                     status: '{{ $item->status }}'
                                 })"
                             class="text-blue-500 hover:underline underline-offset-4">

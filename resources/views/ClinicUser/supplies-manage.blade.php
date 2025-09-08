@@ -466,12 +466,7 @@
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
                                     </div>
 
-                                    <div class="col-span-12 flex flex-col">
-                                        <label class="block text-sm font-medium">Price</label>
-                                        <p class="text-xs text-gray-500">(Price per item)</p>
-                                        <input type="number" name="price" x-model="item.price"
-                                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
-                                    </div>
+                               
 
                                     <div class="col-span-12 flex justify-end space-x-2">
                                         <button type="button" @click="close()" class="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">Cancel</button>
