@@ -82,7 +82,6 @@
                 <th class="border  text-white  px-2 py-1">Volume</th>
                 <th class="border  text-white  px-2 py-1">Remaining</th>
                 @endif
-                <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('unit_price')">Price</th>
                 <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('status')">Status</th>
                 @if($category === 'Supply' || $category === 'Equipment')
                 <th class="border  text-white  px-2 py-1">Edit</th>
@@ -113,8 +112,6 @@
                 <td class="border px-2 py-2 text-gray-700">{{ $item->unit_volume }} {{ $item->measurement_unit }}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ $item->remaining_volume }} {{ $item->measurement_unit }}</td>
                 @endif
-                <td class="border px-2 py-2 text-gray-700"><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo"
-                            class="w-3 h-3">{{ $item->unit_price}}</span> </td>
                 <td class="border px-2 py-2 text-gray-700">{{ $item->status }} </td>
 
                 @if($column->item->category === 'Supply'|| $column->item->category === 'Equipment')

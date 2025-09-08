@@ -19,7 +19,6 @@ class Inventory_units extends Model
         'unit_quantity',
         'remaining_quantity',
         'status',
-        'unit_price',
         'created_at',
         'updated_at'
     ];
