@@ -15,14 +15,12 @@
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js'])
-    @livewireStyles
 
 
 
     @endif
 
 </head>
-
 
 
 <body>
@@ -39,10 +37,10 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-6 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
                 <ul class="space-y-3">
 
-                    <li class="flex items-center px-2 mb-4 block md:hidden">
+                    <li class="flex items-center px-2 mb-2 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
@@ -50,23 +48,19 @@
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="syringe" class="w-5 h-5"></i>Immunizations</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Inventory Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-box" class="w-5 h-5"></i>Supplies Logs</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
+                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
+                    <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
+                    <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -115,10 +109,180 @@
                     <h1 class="md:text-lg text-gray-800">All vaccines, rigs, supplies and equipment available at the clinic.</h1>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 p-4  md:px-10 ">
-                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
-                        <button class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add Supplies</button>
+                <div class="grid grid-cols-4 p-4  md:px-10 gap-4">
+                    <div class="col-span-4 md:col-span-4 grid grid-cols-7 gap-4  px-2">
+                        <div class="col-span-7 md:col-span-4 flex items-center justify-end gap-2 text-blue-500 hover:text-blue-600">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                            <a href="{{ route('clinic.supplies.view_usage') }}" class="font-bold underline underline-offset-8">View Usage History</a>
+                        </div>
+                        <div class="col-span-7 md:col-span-3 flex flex-col md:flex-row items-start md:items-center justify-start md:justify-end gap-4 md:gap-10">
+                            <div class="flex items-center gap-1">
+                                <p class="font-semibold">Generate Report:</p>
+                                <button class="bg-red-500 rounded-md p-2">
+                                    <img src="{{asset('images/pdf.svg')}}" alt="PDF Icon" class="w-6 h-6">
+                                </button>
+                                <button class="bg-green-500 rounded-md p-2">
+                                    <img src="{{asset('images/csv.svg')}}" alt="CSV Icon" class="w-6 h-6">
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    onclick="document.getElementById('AddNewSupplies').showModal()"
+                                    class="bg-red-600 hover:bg-red-500 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- add new supplies modal  -->
+                    <dialog id="AddNewSupplies" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none h-full">
+                        <!-- close modal button  -->
+                        <div class="w-full flex justify-end mb-5">
+                            <button onclick="document.getElementById('AddNewSupplies').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                        </div>
+
+                        <!-- create new user form  -->
+                        <form action="{{route('clinic.supplies.add_new_supplies')}}" method="POST" id="add_new_supplies">
+                            @csrf
+                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
+
+                                <div class="col-span-12 flex flex-col items-center justify-center">
+                                    <h1 class="font-900 md:text-2xl text-xl">Add New Supplies</h1>
+                                    <p>Fill out the form below to add new supplies. All fields are required.</p>
+                                </div>
+                                <!-- divider border  -->
+                                <div class="col-span-12 border-2 border-gray-100 mt-2 mb-2"></div>
+                                <div class="col-span-12">
+                                    <h1 class="font-900 text-md">Product Information</h1>
+                                    <p class="text-gray-600 px-2">Please provide the following information about the product.</p>
+
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="category" class="text-sm font-semibold">Category</label>
+                                            <x-select-dropdown
+                                                name="category"
+                                                id="category_id"
+                                                placeholder="Choose Category"
+                                                :options="[
+                                                        'Vaccine' => 'Vaccine',
+                                                        'RIG' => 'RIG',
+                                                        'Anti-Tetanus' => 'Anti-Tetanus',
+                                                        'Booster' => 'Booster',
+                                                        'Supply' => 'Supply',
+                                                        'Equipment' => 'Equipment',
+                                                    ]" />
+                                        </div>
+
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="product_type" class="text-sm font-semibold">Product Type</label>
+                                            <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc."
+                                                pattern="[A-Za-z0-9 ]+"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
+
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-12 gap-4 py-2">
+                                        <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
+                                            <label for="brand_name" class="text-sm font-semibold">Product Name</label>
+                                            <input type="text" name="brand_name" placeholder="Brand Name"
+                                                pattern="[A-Za-z ]+"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12 gap-2">
+                                            <h1 class="text-sm font-semibold">Immunity Type</h1>
+                                            <p class="text-xs italic my-2 text-gray-600">Select the immunity type if this is a vaccine or RIG. Choose "None" for other items.</p>
+                                            <div class="flex items-center gap-4">
+                                                <!-- none -->
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="immunity_type" value="" class="text-red-500 focus:ring-red-500" required>
+                                                    <span>None</span>
+                                                </label>
+                                                <!-- active immunity  -->
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="immunity_type" value="Active" class="text-green-600 focus:ring-green-600">
+                                                    <span>Active</span>
+                                                </label>
+                                                <!-- passive immunity  -->
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="immunity_type" value="Passive" class="text-sky-600 focus:ring-sky-600">
+                                                    <span>Passive</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- divider border  -->
+                                <div class="col-span-12 border-2 border-gray-100 mt-2 mb-2"></div>
+                                <div class="col-span-12 ">
+                                    <h1 class="font-900 text-md">Stock Information</h1>
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="package_type" class="text-sm font-semibold">Package Type</label>
+                                            <x-select-dropdown
+                                                name="package_type"
+                                                id="package_type_id"
+                                                placeholder="Choose Package Type"
+                                                :options="['Vial','Box','Piece','Pack']" />
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
+                                            <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml"
+                                                pattern="^\d+(\.\d+)?$"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-4 col-span-12">
+                                            <label for="packages_received" class="text-sm font-semibold">Package Quantity</label>
+                                            <p class="text-xs italic text-gray-500 mt-2"> No. of packages of the product</p>
+                                            <input type="number" name="packages_received" id="package_received_id" placeholder="e.g 10 vial, 2 box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
+                                        </div>
+                                        <div class="md:col-span-4 col-span-12">
+                                            <label for="items_per_package" class="text-sm font-semibold">Items Per Package</label>
+                                            <p class="text-xs italic text-gray-500 mt-2">No. of items per package. (If vial/pcs it should be 1)</p>
+                                            <input type="number" name="items_per_package" id="items_per_package_id" placeholder="e.g 10 pcs in box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
+                                        </div>
+                                        <div class="md:col-span-4 col-span-12">
+                                            <p class="text-sm font-semibold">Total Items :</p>
+                                            <p class="text-xs italic text-gray-500">This is the total number of items across all packages.</p>
+                                            <div class="flex items-center justify-center w-full p-4 gap-2">
+                                                <h1 class="font-bold" id="total_items_id">0</h1>
+                                                <p>Items</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-12 gap-2 py-2">
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="price_per_item" class="text-sm font-semibold">Price per Item</label>
+                                            <input type="number" name="price_per_item" id="price_per_item_id" placeholder="e.g 100" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
+
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12">
+                                            <label for="total_price" class="text-sm font-semibold">Total Amount</label>
+                                            <div class="flex items-center ">
+                                                <i data-lucide="philippine-peso" class="w-5 h-5 "></i>
+                                                <input type="text" name="total_price" id="total_price_id" value="0.0" class="w-full p-2 border-none focus:ring-0 focus:border-none focus:outline-none" readonly />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-12">
+                                        <label for="supplier" class="text-sm font-semibold">Supplier</label>
+                                        <input type="text" name="supplier" placeholder="e.g ABC Supplies" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
+                                    </div>
+                                </div>
+                                <div class="col-span-12 flex items-center justify-end gap-2">
+                                    <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Add New Supplies</button>
+                                    <button type="button" onclick="document.getElementById('AddNewSupplies').close()"
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </dialog>
+
                     <!-- livewire/patient-table.php -->
                     <livewire:inventory-records-table />
                 </div>
@@ -144,9 +308,70 @@
                 </div>
             </form>
         </x-modal>
-        @livewireScripts
-
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements for item/package calculation
+        const itemsPerPackage = document.getElementById('items_per_package_id');
+        const packagesReceived = document.getElementById('package_received_id');
+        const totalItemsEl = document.getElementById('total_items_id');
+
+        // Elements for price calculation
+        const pricePerItemEl = document.getElementById('price_per_item_id');
+        const totalPriceEl = document.getElementById('total_price_id');
+
+        // Calculate total items
+        function updateTotalItems() {
+            const items = Number(itemsPerPackage.value) || 0;
+            const packages = Number(packagesReceived.value) || 0;
+            totalItemsEl.textContent = items * packages;
+
+            // Also update total price whenever total items changes
+            updateTotalPrice();
+        }
+
+        // Calculate total price
+        function updateTotalPrice() {
+            const items = Number(totalItemsEl.textContent) || 0;
+            const price = Number(pricePerItemEl.value) || 0;
+            const total = items * price;
+
+            totalPriceEl.value = total.toLocaleString();
+        }
+
+        // Listen for Alpine dropdown changes
+        document.addEventListener('package-changed', function(e) {
+            const selected = e.detail;
+
+            if (selected === 'Vial' || selected === 'Piece') {
+                itemsPerPackage.value = 1;
+                itemsPerPackage.readOnly = true; // note the capital "O"
+            } else {
+                itemsPerPackage.value = '';
+                itemsPerPackage.readOnly = false; // note the capital "O"
+
+                packagesReceived.value = '';
+                totalItemsEl.textContent = '0';
+                pricePerItemEl.value = '';
+            }
+
+            updateTotalItems();
+        });
+
+        // Update total whenever inputs change
+        itemsPerPackage.addEventListener('input', updateTotalItems);
+        packagesReceived.addEventListener('input', updateTotalItems);
+        pricePerItemEl.addEventListener('input', updateTotalPrice);
+
+        // Initial calculation
+        updateTotalItems();
+        updateTotalPrice();
+    });
+</script>
+
+
+
 
 
 </html>

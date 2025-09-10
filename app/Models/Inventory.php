@@ -15,12 +15,11 @@ class Inventory extends Model
       'brand_name',
       'product_type',
       'immunity_type',
-      'packaging_unit',
-      'total_unit',
-      'unit_values_with_count',
-      'total_capacity',
-      'total_remaining',
       'stock_status',
+      'total_units',
+      'total_unit_remaining',
+      'vol_qty_total',
+      'vol_qty_remaining',
       'last_restocked_date',
       'created_at',
       'updated_at'
@@ -34,13 +33,6 @@ class Inventory extends Model
         ->orWhere('brand_name', 'like', "%{$searchTerm}%")
         ->orWhere('product_type', 'like', "%{$searchTerm}%")
         ->orWhere('immunity_type', 'like', "%{$searchTerm}%")
-        ->orWhere('packaging_unit', 'like', "%{$searchTerm}%")
-        // ->orWhere('volumne_per_unit', 'like', "%{$searchTerm}%")
-        // ->orWhere('measurement_unit', 'like', "%{$searchTerm}%")
-        // ->orWhere('used_per_unit', 'like', "%{$searchTerm}%")
-        // ->orWhere('remaining_volume_per_unit', 'like', "%{$searchTerm}%")
-        // ->orWhere('quantity_in_stock', 'like', "%{$searchTerm}%")
-        // ->orWhere('used_unit_count', 'like', "%{$searchTerm}%")
         ->orWhere('stock_status', 'like', "%{$searchTerm}%");
     });
   }

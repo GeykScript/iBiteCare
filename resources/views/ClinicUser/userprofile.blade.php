@@ -36,7 +36,7 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-6 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
                 <ul class="space-y-3">
 
                     <li class="flex items-center px-2 mb-4 block md:hidden">
@@ -47,23 +47,19 @@
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="syringe" class="w-5 h-5"></i>Immunizations</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Inventory Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Supplies</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-box" class="w-5 h-5"></i>Supplies Logs</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
+                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
+                    <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
+                    <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -155,7 +151,10 @@
                                 <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="phone-call"></i>
                             </div>
                             <div class="col-span-11  px-3 md:px-5  py-1">
-                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->info->contact_number}} </h1>
+                                <h1 class="md:text-xl text-md font-bold"> {{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $clinicUser->info->contact_number) }}
+                                </h1>
+                                <p></p>
+
                                 <p class="md:text-sm text-xs  text-gray-600">Phone Number</p>
                             </div>
                         </div>
@@ -221,9 +220,21 @@
                                 </div>
                                 <div class="col-span-12 px-4 flex items-center gap-3">
                                     <h1 class="font-semibold text-md">Clinic Role: </h1>
-                                    <div class="bg-sky-200 py-2 px-6 rounded">
-                                        <p class="font-900 text-sky-800">{{ $clinicUser->UserRole->role_name}}</p>
+                                    <div class="py-2 px-6 rounded 
+                                            @if ($clinicUser->UserRole->role_name === 'Admin') bg-sky-200 
+                                            @elseif ($clinicUser->UserRole->role_name === 'Doctor') bg-green-200 
+                                            @elseif ($clinicUser->UserRole->role_name === 'Nurse') bg-red-200 
+                                             @endif">
+
+                                        <p class="font-bold 
+                                                @if ($clinicUser->UserRole->role_name === 'Admin') text-sky-700 font-900
+                                                @elseif ($clinicUser->UserRole->role_name === 'Doctor') text-green-700 font-900
+                                                @elseif ($clinicUser->UserRole->role_name === 'Nurse') text-red-700 font-900
+                                                @endif">
+                                            {{ $clinicUser->UserRole->role_name }}
+                                        </p>
                                     </div>
+
                                 </div>
                                 <!-- divider border  -->
                                 <div class="col-span-12 border-2 border-gray-100 my-2"></div>
@@ -492,11 +503,11 @@
 
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md">
+                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Save Changes
                                     </button>
                                     <button type="button" onclick="document.getElementById('user-profile-info').close()"
-                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
                                         Cancel
                                     </button>
                                 </div>

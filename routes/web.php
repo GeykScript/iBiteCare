@@ -42,7 +42,10 @@ use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
 use App\Http\Controllers\ClinicUser\ClinicUsersController;
 use App\Http\Controllers\ClinicUser\InventorySupplies;
-
+use App\Http\Controllers\ClinicUser\ManageInventorySupplies;
+use App\Http\Controllers\ClinicUser\Services;
+use App\Http\Controllers\ClinicUser\Payments;
+use App\Http\Controllers\ClinicUser\Transactions;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -58,7 +61,12 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/patients', [PatientsController::class, 'index'])
         ->name('clinic.patients');
 
- 
+    Route::get('/clinic/patients/profile/{id}', [PatientsController::class, 'viewProfile'])
+        ->name('clinic.patients.profile');
+
+    Route::put('/clinic/patients/profile/update', [PatientsController::class, 'updateProfile'])
+        ->name('clinic.patients.profile.update');
+        
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
@@ -84,14 +92,62 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/user-accounts', [ClinicUsersController::class, 'index'])
         ->name('clinic.user-accounts');
-
+    
     Route::put('/clinic-users/update', [ClinicUsersController::class, 'updateClinicUserInfo'])
         ->name('clinic.users.update');
+
+    Route::get('/clinic/user-logs', [ClinicUsersController::class, 'ClinicUserLogs'])
+        ->name('clinic.user-logs');
     //-----------------END-----------------------//
 
 
+    // CLINIC INVENTORY SUPPLIES ---------------------------
     Route::get('/clinic/supplies', [InventorySupplies::class, 'index'])
         ->name('clinic.supplies');
+
+    Route::post('/clinic/supplies/add', [InventorySupplies::class, 'add_new_supplies'])
+        ->name('clinic.supplies.add_new_supplies');
+
+    Route::get('/clinic/supplies/Usage', [InventorySupplies::class, 'view_usage'])
+        ->name('clinic.supplies.view_usage');
+
+
+    Route::get('/clinic/supplies/manage/{id}', [ManageInventorySupplies::class, 'index'])
+            ->name('clinic.supplies.manage');
+    Route::post('/clinic/supplies/manage/add', [ManageInventorySupplies::class, 'add_new_stock'])
+        ->name('clinic.supplies.manage.add');
+    Route::put('/clinic/supplies/manage/edit', [ManageInventorySupplies::class, 'editProduct'])
+        ->name('clinic.supplies.manage.edit');
+
+    Route::put('/clinic/supplies/manage/edit/quantity', [ManageInventorySupplies::class, 'updateQuantity'])
+        ->name('clinic.supplies.manage.edit.quantity');
+    //-----------------END-----------------------//
+
+
+    // CLINIC SERVICES ---------------------------
+    Route::get('/clinic/services', [Services::class, 'index'])
+        ->name('clinic.services');
+        
+    Route::get('/clinic/services/update/{id}', [Services::class, 'update'])
+        ->name('clinic.services.update');
+    
+    Route::put('/clinic/services/update/details', [Services::class, 'updateServiceDetails'])
+        ->name('clinic.services.update.details');
+    
+    Route::post('/clinic/services/add', [Services::class, 'addNewService'])
+        ->name('clinic.services.add');
+    
+    //-----------------END-----------------------//
+
+    // CLINIC PAYMENTS ---------------------------
+    Route::get('/clinic/payments', [Payments::class, 'index'])
+        ->name('clinic.payments');
+    //-----------------END-----------------------//
+
+    // CLINIC TRANSACTIONS ---------------------------
+    Route::get('/clinic/transactions', [Transactions::class, 'index'])
+        ->name('clinic.transactions');
+    //-----------------END-----------------------//
 
 }); 
 //---------CLINIC LOGIN FORGOT PASSOWORD --------------------------
@@ -113,7 +169,9 @@ Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'up
     
 Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('clinic.update-password.update');
-//--------------------------END----------------------------------------------//
+
+
+    //--------------------------END----------------------------------------------//
 
 
 

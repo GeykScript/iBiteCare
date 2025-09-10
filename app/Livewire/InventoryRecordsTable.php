@@ -16,7 +16,7 @@ class InventoryRecordsTable extends Component
     public $perPage = 5;
 
     public $sortBy = 'created_at';
-    public $sortDirection = 'ASC';
+    public $sortDirection = 'DESC';
 
     public function updatingSearch()
     {
@@ -31,11 +31,11 @@ class InventoryRecordsTable extends Component
     public function setSortBy($sortByField)
     {
         if ($this->sortBy === $sortByField) {
-            $this->sortDirection = $this->sortDirection === 'ASC' ? 'DESC' : 'ASC';
-            return;
+            $this->sortDirection = $this->sortDirection === 'DESC' ? 'ASC' : 'DESC';
+        } else {
+            $this->sortBy = $sortByField;
+            $this->sortDirection = 'ASC';
         }
-        $this->sortBy = $sortByField;
-        $this->sortDirection = 'DESC';
     }
 
     public function render()

@@ -54,6 +54,19 @@
             </div>
         </div>
     </div>
+
+    @if (session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
+        <h1 class="text-md font-bold text-green-600">{{ session('success') }}</h1>
+        <button @click="show = false" class="text-lg font-bold text-green-600">
+            <i data-lucide="x"></i>
+        </button>
+    </div>
+    @endif
+
     <!-- table with overflow -->
     <div class="overflow-x-auto md:overflow-hidden">
         <!-- <div class="grid grid-cols-12 gap-2  text-white bg-gray-800 rounded text-sm">
@@ -94,10 +107,8 @@
                         <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('product_type')">Product Type</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200  hidden md:table-cell" wire:click="setSortBy('immunity_type')">Immunity Type</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center  hidden md:table-cell">Total Unit</th>
-                        <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200  hidden md:table-cell" wire:click="setSortBy('packaging_unit')">Unit</th>
-                        <th scope="col" class="px-6 md:px-2 py-4 text-center  hidden md:table-cell">Values Per Unit</th>
-                        <th scope="col" class="px-6 md:px-2 py-4 text-center  hidden md:table-cell">Total</th>
-                        <th scope="col" class="px-6 md:px-2 py-4 text-center ">Remaining</th>
+                        <th scope="col" class="px-6 md:px-2 py-4 text-center  hidden md:table-cell">Remaining</th>
+                        <th scope="col" class="px-6 md:px-2 py-4 text-center hidden md:table-cell">Restock Date</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer" wire:click="setSortBy('stock_status')">Status</th>
                         <th scope="col" class="px-6 md:px-2 py-4 text-center rounded-r-lg">Details</th>
                     </tr>
@@ -114,25 +125,38 @@
                     @foreach ($supplies as $supply)
                     <tr wire:key="{{ $supply->id }}" class="border-b dark:border-gray-700">
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $supply->id }}</td>
-                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $supply->category }}</td>
+                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">
+                            @if (strtolower($supply->category) === 'vaccine')
+                            <span class="text-blue-500 font-bold p-2 rounded bg-blue-100">{{ $supply->category }}</span>
+                            @elseif (strtolower($supply->category) === 'supply')
+                            <span class="text-orange-500 font-bold p-2 rounded bg-orange-100">{{ $supply->category }}</span>
+                            @elseif (strtolower($supply->category) === 'anti-tetanus')
+                            <span class="text-yellow-500 font-bold p-2 rounded bg-yellow-100">{{ $supply->category }}</span>
+                            @elseif (strtolower($supply->category) === 'booster')
+                            <span class="text-green-500 font-bold p-2 rounded bg-green-100">{{ $supply->category }}</span>
+                            @elseif (strtolower($supply->category) === 'rig')
+                            <span class="text-red-500 font-bold p-2 rounded bg-red-100">{{ $supply->category }}</span>
+                            @elseif (strtolower($supply->category) === 'equipment')
+                            <span class="text-stone-500 p-2 rounded bg-stone-100">{{ $supply->category }}</span>
+                            @endif
+                        </td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $supply->brand_name }}</td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 ">{{ $supply->product_type }}</td>
                         <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $supply->immunity_type ? :'n/a' }}</td>
-                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $supply->total_units}}</td>
-                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $supply->packaging_unit }}</td>
-                        <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->unit_values_with_count}}</td>
-                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $supply->total_capacity}}</td>
-                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 ">{{ $supply->total_remaining }} </td>
-                        <td class="px-6 md:px-2 py-4 text-center font-semibold text-gray-900
-                     @if(strtolower($supply->stock_status) === 'in stock') text-green-500
-                        @else text-gray-700
-                        @endif
-                        ">{{ $supply->stock_status }} </td>
-                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">
-                            <a href="#" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold">
-                                View <img src="{{asset('images/file-text.svg')}}" alt="Supply Details"></a>
+                        <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->total_units}}</td>
+                        <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->total_unit_remaining}}</td>
+                        <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->last_restocked_date}}</td>
+                        <td class="px-6 md:px-2 py-4 text-center font-bold text-gray-900">
+                            @if(strtolower($supply->stock_status) === 'in stock') <span class="text-green-500 p-2 rounded bg-green-100">{{ $supply->stock_status }}</span>
+                            @elseif(strtolower($supply->stock_status) === 'out of stock') <span class="text-red-500 p-2 rounded bg-red-100">{{ $supply->stock_status }}</span>
+                            @elseif(strtolower($supply->stock_status) === 'low stock') <span class="text-yellow-500 p-2 rounded bg-yellow-100">{{ $supply->stock_status }}</span>
+                            @endif
                         </td>
-
+                        <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">
+                            <a href="{{ route('clinic.supplies.manage', $supply->id) }}" class="text-blue-500  hover:underline underline-offset-8 flex items-center  justify-center gap-1 font-semibold">
+                                View <img src="{{asset('images/file-text.svg')}}" alt="Supply Details" class="w-4 h-4"></a>
+                        </td>
+                       
                     </tr>
                     @endforeach
                     @endif
