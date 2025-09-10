@@ -108,7 +108,7 @@
                     </div>
                 </div>
 
-            
+
                 <div class="grid grid-cols-12">
                     <div class="col-span-3 md:col-span-1 flex items-center justify-center">
                         <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
@@ -466,7 +466,7 @@
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
                                     </div>
 
-                               
+
 
                                     <div class="col-span-12 flex justify-end space-x-2">
                                         <button type="button" @click="close()" class="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">Cancel</button>
@@ -483,25 +483,9 @@
                 </div>
         </section>
 
+
         <!-- Modals For Logout -->
-        <x-modal id="logoutModal" title="Confirm Logout">
-            <form method="POST" action="{{ route('clinic.logout') }}">
-                @csrf
-                <p class="mb-4">Are you sure you want to log out?</p>
-
-                <div class="flex justify-end gap-2">
-                    <button type="button"
-                        onclick="document.getElementById('logoutModal').classList.add('hidden')"
-                        class="border-2 border-gray-200 px-4 py-2 rounded">
-                        Cancel
-                    </button>
-
-                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">
-                        Confirm
-                    </button>
-                </div>
-            </form>
-        </x-modal>
+        <x-logout-modal />
 </body>
 
 <script>

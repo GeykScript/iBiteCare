@@ -462,7 +462,7 @@
                                     user: {
                                         id: '', account_id: '', default_password: '', role: '',
                                         first_name: '', last_name: '', middle_initial: '', suffix: '',
-                                        phone: '', email: '', date_of_birth: '', address: '', gender: '', age: ''
+                                        phone: '', email: '', date_of_birth: '', address: '', gender: '', age: '' , is_disabled: ''
                                     },
                                     open() { this.$refs.modal.showModal() },
                                     close() { this.$refs.modal.close() }
@@ -505,16 +505,20 @@
                                 </div>
                                 <div class="col-span-12 flex gap-2 items-center px-2">
                                     <p class="text-md font-bold">Role:</p>
-                                    <h1 x-text="user.role" class="py-1 px-4 bg-sky-200 text-sky-800 font-bold rounded"></h1>
+                                    <h1 x-text="user.role" :class="{
+                                        'bg-sky-200 text-sky-600 py-1 px-4 font-bold rounded': user.role === 'Admin',
+                                        'bg-green-200 text-green-600 py-1 px-4 font-bold rounded': user.role === 'Nurse',
+                                        'bg-red-200 text-red-600 py-1 px-4 font-bold rounded': user.role === 'Staff' 
+                                        }"></h1>
                                 </div>
                                 <!-- divider border  -->
                                 <div class="col-span-12 border-2 border-gray-100 my-2"></div>
                                 <div class="col-span-12">
                                     <h1 class="font-semibold text-xl">Personal Information</h1>
                                 </div>
+
                                 <!-- fname. lname , initial div  -->
                                 <div class="col-span-12 grid grid-cols-12 gap-2">
-
                                     <!-- FIRST NAME -->
                                     <div class="col-span-12 md:col-span-5">
                                         @if (session('update_errors') && session('update_errors')->has('update_first_name'))
@@ -525,12 +529,15 @@
                                         </label>
                                         @else
                                         <label for="update_first_name" class="text-sm font-semibold ">First Name:
-                                            <span class="text-red-500 text-xs" id="first-name-error">*</span>
                                         </label>
                                         @endif
                                         <input type="text" name="update_first_name"
                                             placeholder="First Name"
                                             :value="user.first_name"
+                                            :disabled="user.is_disabled == 1"
+                                            :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
+                                            pattern="[A-Za-z]+( [A-Za-z]+)*"
+
                                             class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
                                     </div>
 
@@ -544,11 +551,14 @@
                                         </label>
                                         @else
                                         <label for="update_last_name" class="text-sm font-semibold ">Last Name:
-                                            <span class="text-red-500 text-xs" id="update-last-name-error">*</span>
                                         </label>
                                         @endif
 
                                         <input type="text" name="update_last_name" placeholder="Last Name"
+                                            :disabled="user.is_disabled == 1"
+                                            :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
+                                            pattern="[A-Za-z]+( [A-Za-z]+)*"
+
                                             class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:bg-white  focus:outline-none focus:ring-1 focus:border-sky-300 uppercase "
                                             :value="user.last_name">
                                     </div>
@@ -563,7 +573,6 @@
                                         </label>
                                         @else
                                         <label for="update_middle_initial" class="text-sm font-semibold ">M.I:
-                                            <span class="text-red-500 text-xs" id="update-middle-initial-error">*</span>
                                         </label>
                                         @endif
 
@@ -572,6 +581,8 @@
                                             oninput="this.value = this.value.toUpperCase()"
                                             title="Only one letter followed by a period is allowed (e.g., M.)"
                                             :value="user.middle_initial"
+                                            :disabled="user.is_disabled == 1"
+                                            :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
                                     </div>
 
@@ -583,6 +594,8 @@
                                             maxlength="5"
                                             title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
                                             :value="user.suffix"
+                                            :disabled="user.is_disabled == 1"
+                                            :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                 </div>
@@ -598,27 +611,31 @@
                                         </label>
                                         @else
                                         <label for="update_date_of_birth" class="text-sm font-semibold ">Date of Birth
-                                            <span class="text-red-500 text-xs" id="update-date-of-birth-error">*</span>
+                                            <span class="text-red-500 text-xs" id="update-date-of-birth-error"></span>
                                         </label>
                                         @endif
 
 
                                         <input type="date" name="update_date_of_birth" id="update_date_of_birth" :value="user.date_of_birth" readonly disabled
+                                            :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
                                         <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
                                         <input type="number" name="update_age" placeholder="Age" id="update_age" :value="user.age"
+                                            :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
+                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error"></span></label>
                                         <div class="flex gap-5 items-center">
 
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" name="update_gender" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                                <input type="radio" name="update_gender" checked disabled
+                                                    :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none text-gray-400' : ''"
+                                                    class="text-sky-500 focus:ring-sky-500">
                                                 <span x-text="user.gender"></span>
                                             </label>
                                         </div>
@@ -637,13 +654,15 @@
                                             </label>
                                             @else
                                             <label for="update_email" class="text-sm font-semibold ">Personal Email:
-                                                <span class="text-red-500 text-xs" id="update-email-error">*</span>
+                                                <span class="text-red-500 text-xs" id="update-email-error"></span>
                                             </label>
                                             @endif
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
                                             <input type="email" name="update_email" placeholder="example@gmail.com" :value="user.email" id="update-email"
+                                                :disabled="user.is_disabled == 1"
+                                                :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                                 class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
@@ -670,6 +689,8 @@
                                                 placeholder="e.g. 09xx xxx xxxx"
                                                 maxlength="13"
                                                 :value="user.phone"
+                                                :disabled="user.is_disabled == 1"
+                                                :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                                 class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
@@ -695,8 +716,10 @@
                                     <!-- region  -->
                                     <div class="col-span-12 md:col-span-4">
                                         <div class="mb-3 relative">
-                                            <label for="update-region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-500" id="update-region-error">*</span></label>
+                                            <label for="update-region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-500" id="update-region-error"></span></label>
                                             <button id="update-region_btn" type="button"
+                                                :disabled="user.is_disabled == 1"
+                                                :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                                 class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center">
                                                 <span id="update-region_selected">Select Region</span>
                                                 <i data-lucide="chevron-down"></i>
@@ -709,7 +732,7 @@
                                     <!-- province  -->
                                     <div class="col-span-12 md:col-span-4">
                                         <div class="mb-3 relative">
-                                            <label for="update-province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-500" id="update-province-error">*</span></label>
+                                            <label for="update-province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-500" id="update-province-error"></span></label>
                                             <button id="update-province_btn" type="button"
                                                 class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
                                                 <span id="update-province_selected">Select Province</span>
@@ -723,7 +746,7 @@
                                     <!-- city  -->
                                     <div class="col-span-12 md:col-span-4">
                                         <div class="mb-3 relative">
-                                            <label for="update-city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-500" id="update-city-error">*</span></label>
+                                            <label for="update-city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-500" id="update-city-error"></span></label>
                                             <button id="update-city_btn" type="button"
                                                 class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
                                                 <span id="update-city_selected">Select City</span>
@@ -739,7 +762,7 @@
                                         <div class="grid grid-cols-4 gap-4">
                                             <!-- barangay  -->
                                             <div class="col-span-4 md:col-span-2 mb-3 relative">
-                                                <label for="update-barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-500" id="update-barangay-error">*</span></label>
+                                                <label for="update-barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-500" id="update-barangay-error"></span></label>
                                                 <button id="update-barangay_btn" type="button"
                                                     class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
                                                     <span id="update-barangay_selected">Select Barangay</span>
@@ -751,7 +774,10 @@
                                             </div>
                                             <!-- purok  -->
                                             <div class="col-span-4 md:col-span-2 ">
-                                                <label for="update-description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="update-description-error">*</span></label>
+                                                <label for="update-description"
+                                                    :disabled="user.is_disabled == 1"
+                                                    :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
+                                                    class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="update-description-error"></span></label>
                                                 <button id="update-description_btn" type="button" class="hidden"> </button>
                                                 <input type="text" name="update_description" id="update-description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                             </div>
@@ -761,11 +787,38 @@
                                     <!-- divider border  -->
                                     <div class="col-span-12 border-2 border-gray-100"></div>
                                 </div>
+
+                                @if($clinicUser->UserRole->role_name === 'Admin')
+                                <!-- disable account section  -->
+                                <div class="col-span-12"
+                                    x-show="user.id != {{ $clinicUser->id }}">
+                                    <div class="flex items-center w-full gap-2">
+                                        <i data-lucide="info" class="text-red-500"></i>
+                                        <h4 class="text-sm text-gray-700">
+                                            Check the box below if you want to disable this account.
+                                        </h4>
+                                    </div>
+                                    <div class="flex items-center space-x-2 px-5">
+                                        <input type="checkbox" id="is_disabled" name="is_disabled"
+                                            :value="1"
+                                            class="mt-1 text-red-500 focus:ring-red-500 border-red-500 rounded w-4 h-4 cursor-pointer "
+                                            x-bind:checked="user.is_disabled == 1">
+                                        <div>
+                                            <label for="is_disabled" class="text-sm text-red-500 font-bold cursor-pointer">Disable Account</label>
+                                            <p class="text-sm text-red-500 italic">
+                                                Please note: if this option is checked, the user will not be able to log in until re-enabled.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
                                     <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Save Changes
                                     </button>
+
                                     <button type="button" @click="close"
                                         class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
                                         Cancel
@@ -807,24 +860,8 @@
         @endif
 
         <!-- Modals For Logout -->
-        <x-modal id="logoutModal" title="Confirm Logout">
-            <form method="POST" action="{{ route('clinic.logout') }}">
-                @csrf
-                <p class="mb-4">Are you sure you want to log out?</p>
+        <x-logout-modal />
 
-                <div class="flex justify-end gap-2">
-                    <button type="button"
-                        onclick="document.getElementById('logoutModal').classList.add('hidden')"
-                        class="border-2 border-gray-200 px-4 py-2 rounded">
-                        Cancel
-                    </button>
-
-                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">
-                        Confirm
-                    </button>
-                </div>
-            </form>
-        </x-modal>
 </body>
 
 

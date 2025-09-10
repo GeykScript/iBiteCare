@@ -103,7 +103,7 @@
                 <!-- Header content -->
                 <div class="grid grid-cols-5 p-4 md:px-10">
                     <div class="col-span-5 bg-white border border-gray-200 rounded-lg shadow-md p-4">
-                    <!-- transactions table livewire  -->
+                        <!-- transactions table livewire  -->
                         <livewire:transactions-table />
                     </div>
                 </div>
@@ -111,25 +111,9 @@
         </section>
 
 
+
         <!-- Modals For Logout -->
-        <x-modal id="logoutModal" title="Confirm Logout">
-            <form method="POST" action="{{ route('clinic.logout') }}">
-                @csrf
-                <p class="mb-4">Are you sure you want to log out?</p>
-
-                <div class="flex justify-end gap-2">
-                    <button type="button"
-                        onclick="document.getElementById('logoutModal').classList.add('hidden')"
-                        class="border-2 border-gray-200 px-4 py-2 rounded">
-                        Cancel
-                    </button>
-
-                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">
-                        Confirm
-                    </button>
-                </div>
-            </form>
-        </x-modal>
+        <x-logout-modal />
 </body>
 
 </html>

@@ -161,7 +161,11 @@
                                                 <i data-lucide="user"
                                                     class="w-full h-full text-gray-100 [stroke-width:1.55]"></i>
                                             </div>
-                                            <div class="flex flex-col  gap-5">
+                                            <div class="flex flex-col  gap-4">
+                                                <div class="flex gap-2 italic text-sm items-end justify-end">
+                                                    <p>Registration Date:</p>
+                                                    <p>{{ date('F d, Y', strtotime($patient->registration_date)) }}</p>
+                                                </div>
                                                 <div class="border-2 border-gray-50"></div>
                                                 <div class="flex gap-4 justify-start items-start">
                                                     <div class="flex flex-col items-start gap-2 font-semibold">
@@ -188,6 +192,7 @@
                                                         <p>{{ $patient->address }}</p>
                                                     </div>
                                                 </div>
+
                                                 <div>
                                                     <button
                                                         onclick="document.getElementById('EditPatientProfile').showModal()"

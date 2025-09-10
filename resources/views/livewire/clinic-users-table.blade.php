@@ -100,10 +100,10 @@
                     <td class="md:px-2 px-4 py-4 text-center font-medium text-gray-900">
                         <span
                             class="
-                                    py-2 px-4 rounded
-                                    @if ($clinic_user->UserRole->role_name === 'Admin') bg-sky-200 text-sky-800 border border-sky-
-                                    @elseif ($clinic_user->UserRole->role_name === 'Nurse') bg-green-200 text-green-800
-                                    @elseif ($clinic_user->UserRole->role_name === 'Staff') bg-red-200 text-red-800
+                                    py-2 px-4 rounded font-bold
+                                    @if ($clinic_user->UserRole->role_name === 'Admin') bg-sky-200 text-sky-600
+                                    @elseif ($clinic_user->UserRole->role_name === 'Nurse') bg-green-200 text-green-600
+                                    @elseif ($clinic_user->UserRole->role_name === 'Staff') bg-red-200 text-red-600
                                     @else bg-gray-100 text-gray-700
                                     @endif
                                 ">
@@ -135,7 +135,8 @@
                                 date_of_birth: '{{ $clinic_user->info?->birthdate }}',
                                 address: '{{ $clinic_user->info?->address }}',
                                 gender: '{{ $clinic_user->info?->gender }}',
-                                age: '{{ $clinic_user->info?->age }}'
+                                age: '{{ $clinic_user->info?->age }}',
+                                is_disabled: '{{ $clinic_user->is_disabled }}'
                             })"
                             class="text-blue-500 flex items-center justify-center font-semibold col-span-2 md:col-span-1">
                             <img src="{{ asset('images/view.svg') }}" alt="Profile Details">
@@ -160,7 +161,8 @@
                                 date_of_birth: '{{ $clinic_user->info?->birthdate }}',
                                 address: '{{ $clinic_user->info?->address }}',
                                 gender: '{{ $clinic_user->info?->gender }}',
-                                age: '{{ $clinic_user->info?->age }}'
+                                age: '{{ $clinic_user->info?->age }}',
+                                is_disabled: '{{ $clinic_user->is_disabled }}'
                             })"
                             class="text-red-500 flex items-center justify-center  font-semibold col-span-2 md:col-span-1">
                             <img src="{{ asset('images/square-pen.svg') }}" alt="Manage Transactions"> </button>
@@ -215,7 +217,7 @@
                         :class="{
         'bg-sky-200 text-sky-800 py-1 px-4 rounded': user.role === 'Admin',
         'bg-green-200 text-green-800 py-1 px-4 rounded': user.role === 'Nurse',
-        'bg-red-200 text-red-800 py-1 px-4 rounded': user.role !== 'Staff' 
+        'bg-red-200 text-red-800 py-1 px-4 rounded': user.role === 'Staff' 
     }"
                         class="py-1 px-4 font-bold rounded">
                     </h1>
@@ -315,9 +317,18 @@
                 <div class="col-span-12  ">
                     <label for="address" class="text-xl font-bold text-gray-800">Address</label>
                 </div>
+
                 <div class="col-span-12 flex items-center gap-2 ">
                     <img src="{{ asset('images/map-pinned.svg') }}" alt="Map Pinned">
                     <h1 x-text="user.address" class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 "></h1>
+                </div>
+                <div class="col-span-12  flex items-center gap-2 mt-4">
+                    <h1 class=" text-md">Account Status :</h1>
+                    <h1
+                        x-text="user.is_disabled == 1 ? 'Disabled' : 'Active'"
+                        :class="{'font-bold text-red-600': user.is_disabled == 1, 'font-bold text-green-600': user.is_disabled == 0 }"
+                    >
+                    </h1>
                 </div>
 
                 <div class="col-span-12 flex items-end justify-end">

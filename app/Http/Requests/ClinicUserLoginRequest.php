@@ -51,7 +51,14 @@ class ClinicUserLoginRequest extends FormRequest
             ]);
         }
 
-        // 2. If found, check password manually
+        // 2. Check if account is disabled
+        if ($clinic_user->is_disabled) {
+            throw ValidationException::withMessages([
+                'account_id' => 'This account is currently unavailable.',
+            ]);
+        }
+
+        // 3. If found, check password manually
         if (! Hash::check($password, $clinic_user->password)) {
             RateLimiter::hit($this->throttleKey());
 
@@ -60,11 +67,12 @@ class ClinicUserLoginRequest extends FormRequest
             ]);
         }
 
-        // 3. If both are valid, log in
+        // 4. If all checks pass, log in
         Auth::guard('clinic_user')->login($clinic_user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }
+
 
 
     public function ensureIsNotRateLimited(): void

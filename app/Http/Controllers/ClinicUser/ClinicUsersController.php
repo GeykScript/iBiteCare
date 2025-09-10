@@ -151,6 +151,7 @@ class ClinicUsersController extends Controller
             'update_city'            => 'nullable|string|max:255',
             'update_barangay'        => 'nullable|string|max:255',
             'update_description'     => 'nullable|string|max:500',
+            'is_disabled'            => 'nullable|boolean',
         ], [], [
             //  Custom attribute names here
             'update_first_name'     => 'first name',    
@@ -163,6 +164,7 @@ class ClinicUsersController extends Controller
             'update_city'           => 'city',
             'update_barangay'       => 'barangay',
             'update_description'    => 'description',
+            'is_disabled'           => 'is disabled',
         ]);
 
 
@@ -196,6 +198,7 @@ class ClinicUsersController extends Controller
             'middle_initial'  => Str::upper($request->update_middle_initial),
             'suffix'          => $suffix,
             'email'           => $request->update_email,
+            'is_disabled'     => $request->is_disabled ?? 0, // default to 0 if not set
         ];
 
         // Old user data
