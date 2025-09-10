@@ -109,19 +109,66 @@
                     </div>
 
                     <!-- New Clinic Service Modal -->
-                    <dialog id="newClinicServiceModal" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
+                    <dialog id="newClinicServiceModal" class="p-8 rounded-lg shadow-lg w-full max-w-3xl backdrop:bg-black/30 focus:outline-none ">
                         <!-- close modal button  -->
                         <div class="w-full flex justify-end mb-5">
                             <button onclick="document.getElementById('newClinicServiceModal').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
                         <!-- create new services form  -->
-                        <form action="#" method="POST" id="newClinicServiceForm">
+                        <form action="{{ route('clinic.services.add') }}" method="POST" id="newClinicServiceForm">
                             @csrf
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
                                 <div class="col-span-12 flex flex-col items-center justify-center">
                                     <h1 class="font-900 md:text-2xl text-xl">New Clinic Services</h1>
                                     <p>Fill out the form below to add a new service. All fields are required.</p>
+                                </div>
+
+                                <div class="col-span-12  w-full  flex flex-col gap-3 mt-4">
+                                    <div class="grid grid-cols-4 w-full gap-2 ">
+                                        <div class="md:col-span-3 col-span-4">
+                                            <label for="service_name" class="block mb-2 text-sm font-medium text-gray-900">Service Name</label>
+                                            <input type="text" id="service_name" name="service_name" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="Enter Service Name" required>
+                                        </div>
+                                        <div class="md:col-span-1 col-span-4">
+                                            <label for="service_fee" class="block mb-2 text-sm font-medium text-gray-900">Service Fee</label>
+                                            <input type="number" id="service_fee" name="service_fee" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="Service Fee" required>
+
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col w-full">
+                                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
+                                        <textarea id="description" name="description" class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="Enter Description" required></textarea>
+                                    </div>
+                                    <div class="flex justify-between items-center pr-10 p-2">
+                                        <!-- Add button -->
+                                        <button type="button" id="add-schedule" class="mt-2 text-blue-500 font-bold  py-1 rounded flex items-center gap-2 hover:text-blue-600"><i data-lucide="plus" class="w-4 h-4 "></i>Add  Schedule <span class="text-gray-400 font-normal">(Optional)</span></button>
+                                    </div>
+                                    <!-- Container for new schedules -->
+                                    <div id="Newschedule" class="space-y-2">
+                                        <!-- Default input -->
+                                        <div class="grid grid-cols-5 gap-2">
+                                            <input type="number" name="newDay[]" placeholder="Day Offset"
+                                                class="border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                            <input type="text" name="newLabel[]" placeholder="New label"
+                                                class="col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                            <button type="button" class="remove-btn p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    width="20" height="20"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="lucide lucide-trash2-icon lucide-trash-2">
+                                                    <path d="M10 11v6" />
+                                                    <path d="M14 11v6" />
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                                    <path d="M3 6h18" />
+                                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                                </svg></button>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -167,5 +214,70 @@
             </form>
         </x-modal>
 </body>
+
+<script>
+    const container = document.getElementById('Newschedule');
+    const addBtn = document.getElementById('add-schedule');
+
+    addBtn.addEventListener('click', () => {
+        // Create wrapper div
+        const div = document.createElement('div');
+        div.classList.add('grid', 'grid-cols-5', 'gap-2');
+
+        // Create Day input
+        const dayInput = document.createElement('input');
+        dayInput.type = 'number';
+        dayInput.name = 'newDay[]';
+        dayInput.placeholder = 'Day Offset';
+        dayInput.className =
+            'border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
+
+        // Create Label input
+        const labelInput = document.createElement('input');
+        labelInput.type = 'text';
+        labelInput.name = 'newLabel[]';
+        labelInput.placeholder = 'New label';
+        labelInput.className =
+            'col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
+
+        // Create remove button with SVG
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className =
+            'remove-btn p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600';
+        removeBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="20" height="20"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="lucide lucide-trash-2">
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+        `;
+
+        // Append inputs + button to div
+        div.appendChild(dayInput);
+        div.appendChild(labelInput);
+        div.appendChild(removeBtn);
+
+        // Append div to container
+        container.appendChild(div);
+    });
+
+    // Event delegation for all remove buttons (existing + future)
+    container.addEventListener('click', (e) => {
+        if (e.target.closest('.remove-btn')) {
+            e.target.closest('.grid').remove();
+        }
+    });
+</script>
 
 </html>

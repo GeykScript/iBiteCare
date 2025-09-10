@@ -95,8 +95,8 @@
                     <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $service->service_fee }}</span></td>
                     <td class="border-b px-2 py-2 text-gray-700 text-center">
                         @forelse ($service->schedules as $schedule)
-                        <div>
-                            {{ $schedule->day_offset }} - {{ $schedule->label }}
+                        <div class="flex items-start justify-start">
+                            Day - {{ $schedule->day_offset }}
                         </div>
                         @empty
                         <span class="text-gray-400">No Schedule</span>

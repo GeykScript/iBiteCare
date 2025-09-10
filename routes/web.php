@@ -134,6 +134,9 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::put('/clinic/services/update/details', [Services::class, 'updateServiceDetails'])
         ->name('clinic.services.update.details');
     
+    Route::post('/clinic/services/add', [Services::class, 'addNewService'])
+        ->name('clinic.services.add');
+    
     //-----------------END-----------------------//
 
     // CLINIC PAYMENTS ---------------------------

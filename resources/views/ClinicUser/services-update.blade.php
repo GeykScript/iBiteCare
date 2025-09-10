@@ -104,11 +104,8 @@
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
                             <p class="font-bold text-red-500">Update Details</p>
                         </div>
-
                     </div>
                 </div>
-
-
                 <div class="grid grid-cols-12">
                     <div class="col-span-3 md:col-span-1 flex items-center justify-center">
                         <a href="{{ route('clinic.services') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
@@ -119,8 +116,13 @@
 
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 gap-2 ">
+                    <div class="col-span-4 md:col-span-4 px-2 ">
+                        <h1 class="text-xl font-bold">
+                            Update Service Details
+                        </h1>
+                        <p class="text-sm text-gray-500">Update the information for the service.</p>
+                    </div>
                     <div class="col-span-4 md:col-span-4 px-2">
-
                         <form action="{{ route('clinic.services.update.details') }}" method="POST" class="space-y-4">
                             @csrf
                             @method('PUT')
@@ -163,41 +165,42 @@
                                         <div class="mb-2">
                                             <p class="text-sm text-gray-500">Day Offset - Label</p>
                                         </div>
-                                        @forelse ($service->schedules as $index => $schedule)
-                                        <div class="grid grid-cols-5 gap-2 mb-2">
-                                            <input type="hidden" name="schedules[{{ $index }}][id]" value="{{ $schedule->id }}" class="border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                        <p class="text-center text-gray-500 font-bold" id="no-schedule" hidden>No Schedule</p>
+                                        <div id="schedule-container">
+                                            @forelse ($service->schedules as $index => $schedule)
+                                            <div class="grid grid-cols-5 gap-2 mb-2">
+                                                <input type="hidden" name="schedules[{{ $index }}][id]" value="{{ $schedule->id }}" class="border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
 
-                                            <input type="number" name="day[{{ $index }}]" value="{{ $schedule->day_offset }}" class="col-span-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-                                            <input type="text" name="label[{{ $index }}]" value="{{ $schedule->label }}" class="col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                                <input type="number" name="day[{{ $index }}]" value="{{ $schedule->day_offset }}" class="col-span-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                                <input type="text" name="label[{{ $index }}]" value="{{ $schedule->label }}" class="col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
 
-                                            {{-- Remove button --}}
-                                            <button type="button"
-                                                class="p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600"
-                                                onclick="removeSchedule(this, '{{ $schedule->id }}')">
+                                                {{-- Remove button --}}
+                                                <button type="button"
+                                                    class="p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600"
+                                                    onclick="removeSchedule(this, '{{ $schedule->id }}')">
 
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    width="20" height="20"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="lucide lucide-trash2-icon lucide-trash-2">
-                                                    <path d="M10 11v6" />
-                                                    <path d="M14 11v6" />
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                                    <path d="M3 6h18" />
-                                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                                </svg>
-                                            </button>
-
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="lucide lucide-trash2-icon lucide-trash-2">
+                                                        <path d="M10 11v6" />
+                                                        <path d="M14 11v6" />
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            @empty
+                                            <p class="text-center text-gray-500 font-bold">No Schedule</p>
+                                            @endforelse
                                         </div>
-                                        @empty
-                                        <div class="flex items-center justify-center">
-                                            <span class="text-gray-400">No Schedule</span>
-                                        </div>
-                                        @endforelse
+
                                     </div>
                                     <!-- Container for deleted schedule IDs -->
                                     <div id="deleted-schedules"></div>
@@ -235,7 +238,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="flex justify-end p-4 items-center gap-4 md:pr-24">
                                 <a href="{{ route('clinic.services') }}" class="text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg">Cancel</a>
                                 <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-500">
@@ -265,18 +267,24 @@
             </form>
         </x-modal>
 </body>
+
 <script>
     function removeSchedule(button, id) {
         // Add hidden input with deleted ID (so it submits)
         const deletedContainer = document.getElementById('deleted-schedules');
         const hiddenInput = document.createElement('input');
+        const noScheduleMsg = document.getElementById('no-schedule');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'deleted_schedules[]';
         hiddenInput.value = id;
         deletedContainer.appendChild(hiddenInput);
 
         // Remove the input row
-        button.closest('div').remove();
+        button.closest('.grid').remove();
+        // Check if no schedule rows remain
+        if (document.querySelectorAll('#schedule-container .grid').length === 0) {
+            noScheduleMsg.removeAttribute('hidden');
+        }
     }
 
 
