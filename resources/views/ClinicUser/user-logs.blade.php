@@ -124,7 +124,7 @@
             </div>
         </section>
 
-
+      
         <!-- Modals For Logout -->
         <x-logout-modal />
 </body>

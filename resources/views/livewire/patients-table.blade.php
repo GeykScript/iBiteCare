@@ -72,8 +72,8 @@
                         @endif
                     </th>
                     <th scope="col" class="px-6 md:px-2 py-4 text-center hidden md:table-cell">Contact#</th>
-                    <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('address')">Address</th>
-                    <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('registration_date')">Registration Date</th>
+                    <th scope="col" colspan="2" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('address')">Address</th>
+                    <!-- <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hidden md:table-cell" wire:click="setSortBy('registration_date')">Registration Date</th> -->
                     <th scope="col" class="px-6 md:px-2 py-4 text-center">Profile</th>
                     <th scope="col" class="px-6 md:px-2 py-4 text-center rounded-r-lg">Transactions</th>
                 </tr>
@@ -97,16 +97,16 @@
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->age }}</td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">
                     @if ($patient->sex == 'Male')
-                    <span class="text-blue-500 font-bold">M</span>
+                    <span class="text-blue-500 font-bold">Male</span>
                     @else
-                    <span class="text-pink-500 font-bold">F</span>
+                    <span class="text-pink-500 font-bold">Female</span>
                     @endif
                     </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->contact_number }}</td>
-                    <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
-                    <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->registration_date }}</td>
+                    <td colspan="2" class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
+                    <!-- <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->registration_date }}</td> -->
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 ">
-                        <a href="{{ route('clinic.patients.profile', $patient->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold">
+                        <a href="{{ route('clinic.patients.profile', $patient->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold hover:underline underline-offset-2">
                             View <img src="{{asset('images/file-text.svg')}}" alt="Profile Details"></a>
                     </td>
                     <td class="px-2 py-4 text-center font-medium text-gray-900">
