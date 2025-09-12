@@ -19,7 +19,7 @@
 </head>
 
 
-<body class="bg-gray-300">
+<body class="bg-gray-200">
     <section class="flex items-center justify-center md:h-screen mb-5 mt-5 md:mb-0 md:mt-0">
         <div class="flex flex-col md:flex-row justify-center items-center ">
             <div class="md:h-[600px] md:w-[25rem] h-[16rem] w-[20rem] shadow-2xl bg-[#EB1C26] md:rounded-l-[10px]  p-2 rounded-t-[15px] md:rounded-r-none md:overflow-none overflow-hidden">
