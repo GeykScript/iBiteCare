@@ -22,6 +22,9 @@ class ClinicUser extends Model implements Authenticatable
         'account_id',
         'password',
         'default_password',
+        'remember_token',
+        'two_factor_code',
+        'is_disabled',
 
     ];
     protected $hidden = [

@@ -114,11 +114,15 @@
                             <button class="tab-btn w-full px-4 py-2 text-red-500 border-b-4 border-red-500 hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab1">
                                 Profile Details
                             </button>
+
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab2">
                                 Immunizations <span class="text-sm">(Previous)</span>
                             </button>
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab3">
                                 Immunizations <span class="text-sm">(Current)</span>
+                            </button>
+                            <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab7">
+                                Vaccination Card
                             </button>
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab4">
                                 Schedules </button>
@@ -128,9 +132,7 @@
                             <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab6">
                                 Payments
                             </button>
-                            <button class="tab-btn w-full px-4 py-2 text-gray-600 border-b-4 border-transparent hover:text-red-500 hover:border-red-500 font-bold" data-tab="tab7">
-                                Vaccination Card
-                            </button>
+
                         </div>
 
                         <!-- Tab contents -->
@@ -161,7 +163,11 @@
                                                 <i data-lucide="user"
                                                     class="w-full h-full text-gray-100 [stroke-width:1.55]"></i>
                                             </div>
-                                            <div class="flex flex-col  gap-5">
+                                            <div class="flex flex-col  gap-4">
+                                                <div class="flex gap-2 italic text-sm items-end justify-end">
+                                                    <p>Registration Date:</p>
+                                                    <p>{{ date('F d, Y', strtotime($patient->registration_date)) }}</p>
+                                                </div>
                                                 <div class="border-2 border-gray-50"></div>
                                                 <div class="flex gap-4 justify-start items-start">
                                                     <div class="flex flex-col items-start gap-2 font-semibold">
@@ -188,6 +194,7 @@
                                                         <p>{{ $patient->address }}</p>
                                                     </div>
                                                 </div>
+
                                                 <div>
                                                     <button
                                                         onclick="document.getElementById('EditPatientProfile').showModal()"
@@ -221,7 +228,7 @@
                                             <tbody>
                                                 @if ($previousAntiTetanus->isEmpty())
                                                 <tr>
-                                                    <td colspan="4" class="px-4 py-4 border text-center text-gray-500">
+                                                    <td class="px-4 py-4 border text-center text-gray-500">
                                                         No previous immunizations found
                                                     </td>
                                                 </tr>
@@ -257,7 +264,7 @@
                                             <tbody>
                                                 @if ($previousAntiRabies->isEmpty())
                                                 <tr>
-                                                    <td colspan="4" class="px-4 py-4 border text-center text-gray-500">
+                                                    <td class="px-4 py-4 border text-center text-gray-500">
                                                         No previous immunizations found
                                                     </td>
                                                 </tr>
@@ -500,307 +507,539 @@
                             <!-- end of payments content  -->
 
                             <!-- vaccination card content  -->
-                            <div id="tab7" class="tab-content hidden  p-8 shadow-lg rounded-lg">Content for vaccination card</div>
-                            <!-- end of vaccination card content  -->
+                            <div id="tab7" class="tab-content hidden shadow-lg p-8 rounded-lg">
+                                <div class="flex flex-col justify-center mb-4   px-2 p-8" x-data="{ open: false }">
+                                    <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
+                                        <p>show vaccine</p>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down">
+                                            <path d="m6 9 6 6 6-6" />
+                                        </svg>
+                                    </button>
+
+                                    <div>
+                                        <div x-show="open" x-collapse class="overflow-x-auto shadow-lg px-20 flex flex-col gap-4 p-4">
+                                            <div class="grid grid-cols-10 gap-2 border-2 border-gray-700 ">
+                                                <div class="col-span-5 bg-[#EB1C26] flex flex-col p-4">
+                                                    <h1 class="text-center font-900 text-xl text-white">MGA DAPAT TANDAAN</h1>
+                                                    <ul class="list-disc text-white p-4 px-10 space-y-2">
+                                                        <li>BAWAL uminom ng alak ng 30 days.</li>
+                                                        <li>BAWAL kumain ng manok, itlog, hipon, bagoong, patis at malansang pagkain.</li>
+                                                        <li>Kung tuturukan ng ERIG, iwasan ang Frozen Foods, fishy-smelling foods, canned foods, noodles, chocolate, peanut at junk foods.</li>
+                                                        <li>Panatilihing tuyo at iwasang galawin ang sugat sa loob ng 8 oras. Pagkatapos hugasan ang sugat ng sabon at tubig at lagyan ng betadine pagkatapos itong patuyuin. Takpan ang sugat gamit ang gasa sa loob ng 24–48 oras.</li>
+                                                        <li>Magpacheck-up kung lumalala ang pamamaga, pamumula o kirot, pagkakaroon ng nana ang sugat o may mabahong amoy ang sugat.</li>
+                                                        <li>Maaaring mamaga ang lugar na pinagturukan, i-warm compress ito. Kapag inilagnat, maaaring uminom ng paracetamol kung walang allergy sa paracetamol.</li>
+                                                    </ul>
+                                                    <div class="flex justify-evenly items-center mt-auto">
+                                                        <img src="{{ asset('images/vaccine-card-title.png') }}" alt="Title Logo" class="w-80 h-16">
+                                                        <img src="{{ asset('drcare_logo.png') }}" alt="Title Logo" class="w-20 h-20">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-span-5 flex flex-col items-center gap-4 mt-2 ">
+                                                    <div class="w-full ">
+                                                        <img src="{{ asset('images/vaccine-card-title.png') }}" alt="Title Logo">
+                                                    </div>
+                                                    <h1 class="font-900 text-xl text-red-500">COVID-19 VACCINATION CARD</h1>
+                                                    <div class="w-full flex flex-col gap-2 px-2">
+                                                        <h2 class="text-lg font-bold">Name: <span class="ml-2 font-normal">John O. Doe</span></h2>
+                                                        <h2 class="text-lg font-bold">Age/Gender: <span class="ml-2 font-normal">30/Male</span></h2>
+                                                        <h2 class="text-lg font-bold">ABC Center Branch: <span class="ml-2 font-normal">Guinobatan</span></h2>
+                                                        <h2 class="text-lg font-bold">Address: <span class="ml-2 font-normal">P2 - Muladbucad Grande, Guinobatan, Albay</span></h2>
+                                                    </div>
+                                                    <div class="w-full border-2 border-red-500"></div>
+                                                    <div class="w-full flex flex-col gap-2 px-2">
+                                                        <h1 class="font-bold text-md ">For more Information. Kindly call or message us</h1>
+                                                        <div class="flex gap-4 items-center">
+                                                            <div class="p-2 rounded-full bg-red-600">
+                                                                <i data-lucide="phone" class="w-5 h-5 text-white"></i>
+                                                            </div>
+                                                            <div>
+                                                                <p class="font-bold">Clinic Contact Number</p>
+                                                                <p>09123456789</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex gap-4 items-center">
+                                                            <div class="rounded-full">
+                                                                <img src="{{ asset('socials/facebook.svg') }}" alt="Facebook Logo" class="w-8 h-8 ">
+                                                            </div>
+                                                            <div>
+                                                                <p class="font-bold">Facebook Page</p>
+                                                                <p>DR. CARE ANIMAL BITE CENTER - GUINOBATAN, ALBAY</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex gap-4 items-center">
+                                                            <div class="p-2 rounded-full bg-green-500">
+                                                                <i data-lucide="map-pinned" class="w-5 h-5 text-white"></i>
+                                                            </div>
+                                                            <div>
+                                                                <p>2nd Floor, CPD Building, 164 Rizal St.,Ilawod, Guinobatan, Albay</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="w-full flex items-end justify-end mb-2">
+                                                            <img src="{{ asset('images/Logo-DOH.webp') }}" alt="DOH Logo" class="w-28 h-20">
+                                                            <img src="{{ asset('images/rabies-free.jpg') }}" alt="Rabies Free Logo" class="w-28 h-28">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-10 gap-2 border-2 border-gray-100 mt-4">
+                                                <div class="col-span-5 flex flex-col items-center gap-4 mt-2 px-8 py-2">
+                                                    <div class="p-2 rounded-2xl border-4 border-red-500 w-64 text-center">
+                                                        <h1 class="font-900 text-red-500 ">HISTORY OF EXPOSURE</h1>
+                                                    </div>
+                                                    <div class="w-full flex flex-col gap-2 ">
+                                                        <h2 class="text-lg font-bold">Date: <span class="ml-2 font-normal">MM/DD/YYYY</span></h2>
+                                                        <h2 class="text-lg font-bold">Place: <span class="ml-2 font-normal">Home - Guinobatan</span></h2>
+                                                        <h2 class="text-lg font-bold">Type of Animal: <span class="ml-2 font-normal">Dog</span></h2>
+                                                        <!-- Type of Exposure -->
+                                                        <div class="w-full flex  gap-2 ">
+                                                            <h2 class="text-lg font-bold">Type of Exposure:</h2>
+                                                            <label><input type="radio" checked disabled class=" text-red-500"> Bite</label>
+                                                            <label><input type="radio" disabled class="text-red-500"> Scratch</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-2 rounded-2xl border-4 border-red-500 w-64 text-center">
+                                                        <h1 class="font-900 text-red-500">CONDITION OF ANIMAL</h1>
+                                                    </div>
+                                                    <div class="w-full flex items-center justify-center gap-4 ">
+                                                        <label><input type="radio" checked disabled class="text-red-500"> Healthy</label>
+                                                        <label><input type="radio" disabled class="text-red-500"> Lost</label>
+                                                        <label><input type="radio" disabled class="text-red-500"> Sick</label>
+                                                        <label><input type="radio" disabled class="text-red-500"> Died</label>
+                                                    </div>
+
+                                                    <div class="p-2 rounded-2xl border-4 border-red-500 w-64 text-center">
+                                                        <h1 class="font-900 text-red-500">CATEGORY</h1>
+                                                    </div>
+                                                    <div class="w-full flex items-center justify-center gap-4  text-lg">
+                                                        <h1 class="font-900 text-red-500">I</h1>
+                                                        <h1 class="font-900 text-gray-600">II</h1>
+                                                        <h1 class="font-900 text-gray-600">III</h1>
+                                                    </div>
+                                                    <div class="p-2 rounded-2xl border-4 border-red-500 w-64 text-center">
+                                                        <h1 class="font-900 text-red-500">VACCINE USED</h1>
+                                                    </div>
+                                                    <div class="w-full flex items-start justify-start gap-2 ">
+                                                        <h2 class="text-lg font-bold">Anti-Rabies: </h2>
+                                                        <label><input type="radio" checked disabled class="text-red-500"> PVRV</label>
+                                                        <label><input type="radio" disabled class="text-red-500"> PCEC</label>
+                                                    </div>
+                                                    <div class="w-full flex flex-col gap-2 ">
+                                                        <h2 class="text-lg font-bold">Brand Name: <span class="ml-2 font-normal">Abhayrab</span></h2>
+                                                        <h2 class="text-lg font-bold">Route: <span class="ml-2 font-normal">ID</span></h2>
+                                                        <h2 class="text-lg font-bold">Tetanus Toxoid: <span class="ml-2 font-normal">MM/DD/YYYY</span></h2>
+                                                        <h2 class="text-lg font-bold">RIG: <span class="ml-2 font-normal">ERIG</span></h2>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-span-5 flex flex-col items-center gap-4 mt-2 py-2 ">
+                                                    <div class="p-2 px-6 rounded-lg bg-red-500 text-center ">
+                                                        <h1 class="font-900 text-white ">PRE EXPOSURE PROPHYLAXIS</h1>
+                                                    </div>
+                                                    <div class="w-full flex flex-col gap-2 px-4">
+                                                        <table class="w-full text-sm text-center border-2 border-gray-700 text-gray-700  ">
+                                                            <thead>
+                                                                <tr class="font-900">
+                                                                    <th class="px-4 py-2 border rounded-tl-lg border-gray-700">DAY</th>
+                                                                    <th class="px-4 py-2 border border-gray-700">DATE</th>
+                                                                    <th class="px-4 py-2 border border-gray-700">DOSE</th>
+                                                                    <th class="px-4 py-2 border rounded-tr-lg border-gray-700">SIGNATURE</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D0</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D7</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D28</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="p-2 px-6 rounded-lg bg-red-500 text-center">
+                                                        <h1 class="font-900 text-white ">POST EXPOSURE PROPHYLAXIS</h1>
+                                                    </div>
+                                                    <div class="w-full flex flex-col gap-2 px-4">
+                                                        <table class="w-full text-sm text-center border-2 border-gray-700 text-gray-700  ">
+                                                            <thead>
+                                                                <tr class="font-900">
+                                                                    <th class="px-4 py-2 border rounded-tl-lg border-gray-700">DAY</th>
+                                                                    <th class="px-4 py-2 border border-gray-700">DATE</th>
+                                                                    <th class="px-4 py-2 border border-gray-700">DOSE</th>
+                                                                    <th class="px-4 py-2 border rounded-tr-lg border-gray-700">SIGNATURE</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D0</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D3</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D7</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D14</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D28</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="p-2 px-6 rounded-lg bg-red-500 text-center">
+                                                        <h1 class="font-900 text-white ">BOOSTER</h1>
+                                                    </div>
+                                                    <div class="w-full flex flex-col gap-2 px-4">
+                                                        <table class="w-full text-sm text-center border-2 border-gray-700 text-gray-700  ">
+                                                            <thead>
+                                                                <tr class="font-900">
+                                                                    <th class="px-4 py-2 border rounded-tl-lg border-gray-700">DAY</th>
+                                                                    <th class="px-4 py-2 border border-gray-700">DATE</th>
+                                                                    <th class="px-4 py-2 border border-gray-700">DOSE</th>
+                                                                    <th class="px-4 py-2 border rounded-tr-lg border-gray-700">SIGNATURE</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D0</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="px-4 py-2 border border-gray-700">D2</td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                    <td class="px-4 py-2 border border-gray-700"></td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="w-full flex items-start justify-start gap-2 px-4 mb-4">
+                                                        <p class="font-bold text-red-500">Remarks: </p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
-                <!-- update  profile modal -->
-                <dialog id="EditPatientProfile" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
-                    <!-- close modal button  -->
-                    <div class="w-full flex justify-end mb-5 md:mb-2">
-                        <button onclick="document.getElementById('EditPatientProfile').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
-                    </div>
-                    <!-- update profile info  form  -->
-                    <form action="{{ route('clinic.patients.profile.update')  }}" method="POST" id="EditPatientProfileForm">
-                        @csrf
-                        @method('PUT')
+                    <!-- update  profile modal -->
+                    <dialog id="EditPatientProfile" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
+                        <!-- close modal button  -->
+                        <div class="w-full flex justify-end mb-5 md:mb-2">
+                            <button onclick="document.getElementById('EditPatientProfile').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                        </div>
+                        <!-- update profile info  form  -->
+                        <form action="{{ route('clinic.patients.profile.update')  }}" method="POST" id="EditPatientProfileForm">
+                            @csrf
+                            @method('PUT')
 
-                        <input type="text" name="id" value="{{ $patient->id }}" hidden>
+                            <input type="text" name="id" value="{{ $patient->id }}" hidden>
 
-                        <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
-                            <div class="col-span-12 flex items-center justify-center">
-                                <div class="flex items-center justify-center gap-4 ">
-                                    <i data-lucide="circle-user" class="w-12 h-12 text-sky-500"></i>
-                                    <div>
-                                        <h1 class="font-900 md:text-2xl text-xl">Patient Profile</h1>
-                                        <p>Update Patient Information</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- divider border  -->
-                            <div class="col-span-12 border-2 border-gray-100 my-2"></div>
-                            <div class="col-span-12">
-                                <h1 class="font-semibold text-xl">Personal Information</h1>
-                            </div>
-                            <!-- fname. lname , initial div  -->
-                            <div class="col-span-12 grid grid-cols-12 gap-2">
-                                <!-- FIRST NAME -->
-                                <div class="col-span-12 md:col-span-5">
-                                    @if ($errors->has('first_name'))
-                                    <label for="first_name" class="text-sm font-semibold flex justify-between items-center w-full">First Name:
-                                        <span class="text-red-500 text-xs" id="first-name-error">
-                                            {{ $errors->first('first_name') }}
-                                            *</span>
-                                    </label>
-                                    @else
-                                    <label for="first_name" class="text-sm font-semibold ">First Name:
-                                        <span class="text-red-500 text-xs" id="first-name-error">*</span>
-                                    </label>
-                                    @endif
-                                    <input type="text" id="first_name" name="first_name"
-                                        placeholder="First Name"
-                                        value="{{ ( $patient->first_name) }}"
-                                        class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
-                                </div>
-
-                                <!-- LAST NAME -->
-                                <div class="col-span-12 md:col-span-5">
-                                    @if ($errors->has('last_name'))
-                                    <label for="last_name" class="text-sm font-semibold flex justify-between items-center w-full">Last Name:
-                                        <span class="text-red-500 text-xs" id="last-name-error">
-                                            {{ $errors->first('last_name') }}
-                                            *</span>
-                                    </label>
-                                    @else
-                                    <label for="last_name" class="text-sm font-semibold ">Last Name:
-                                        <span class="text-red-500 text-xs" id="last-name-error">*</span>
-                                    </label>
-                                    @endif
-
-                                    <input type="text" id="last_name" name="last_name" placeholder="Last Name"
-                                        value="{{ ( $patient->last_name) }}"
-                                        class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:bg-white  focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
-                                </div>
-
-                                <!-- MIDDLE INITIAL -->
-                                <div class="col-span-6 md:col-span-1">
-                                    @if ($errors->has('middle_initial'))
-                                    <label for="middle_initial" class="text-sm font-semibold flex justify-between items-center w-full">M.I:
-                                        <span class="text-red-500 text-xs" id="middle-initial-error">
-                                            {{ $errors->first('middle_initial') }}
-                                            *</span>
-                                    </label>
-                                    @else
-                                    <label for="middle_initial" class="text-sm font-semibold ">M.I:
-                                        <span class="text-red-500 text-xs" id="middle-initial-error">*</span>
-                                    </label>
-                                    @endif
-
-                                    <input type="text" id="middle_initial" name="middle_initial" placeholder="M.I" maxlength="3"
-                                        pattern="[A-Z]\."
-                                        oninput="this.value = this.value.toUpperCase()"
-                                        title="Only one letter followed by a period is allowed (e.g., M.)"
-                                        value="{{ old('middle_initial', $patient->middle_initial) }}"
-                                        class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
-                                </div>
-
-                                <!-- SUFFIX -->
-                                <div class="col-span-6 md:col-span-1">
-                                    <label for="suffix" class="text-sm font-semibold">Suffix: </label>
-                                    <input type="text" id="suffix" name="suffix" placeholder="E.g., Jr."
-                                        pattern="[A-Za-z]{1,5}"
-                                        maxlength="5"
-                                        title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
-                                        value="{{ old('suffix', $patient->suffix) }}"
-                                        class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
-                                </div>
-                            </div>
-
-
-                            <!-- date of birth, age , gender div  -->
-                            <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
-                                <!-- date of birth  -->
-                                <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
-                                    <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth: </label>
-                                    <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}" readonly disabled
-                                        class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
-                                </div>
-                                <!-- age  -->
-                                <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                    <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
-                                    <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
-                                        class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
-                                </div>
-                                <!-- gender  -->
-                                <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                    <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
-                                    <div class="flex gap-5 items-center">
-                                        @if ($patient->sex == 'Male')
-                                        <label class="flex items-center space-x-2">
-                                            <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
-                                            <span>Male</span>
-                                        </label>
-                                        @elseif ($patient->sex == 'Female')
-                                        <label class="flex items-center space-x-2">
-                                            <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
-                                            <span>Female</span>
-                                        </label>
-                                        @endif
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- contact number  -->
-                            <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
-
-                                <!-- phone number  -->
-                                <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
-                                    <div class="w-full flex items-center">
-                                        @if ($errors->has('contact_number'))
-                                        <label for="contact_number" class="text-sm font-semibold flex justify-between items-center w-full">Contact Number:
-                                            <span class="text-red-500 text-xs" id="contact-number-error">
-                                                {{ $errors->first('contact_number') }}
-                                                *</span>
-                                        </label>
-                                        @else
-                                        <label for="contact_number" class="text-sm font-semibold ">Contact Number:
-                                            <span class="text-red-500 text-xs" id="contact-number-error">*</span>
-                                        </label>
-                                        @endif
-
-                                    </div>
-                                    <div class="w-full flex items-center gap-4">
-                                        <i data-lucide="phone-call"></i>
-                                        <input type="tel" id="contact_number" name="contact_number"
-                                            placeholder="e.g. 09xx xxx xxxx"
-                                            maxlength="13"
-                                            value="{{  $patient->contact_number }}"
-                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- divider border  -->
-                            <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
-
-                            <!-- address label  -->
-                            <div class="col-span-12 p-2 ">
-                                <label for="address" class="text-xl font-bold text-gray-800">Address</label>
-                            </div>
-
-                            <div class="col-span-12 flex items-center gap-2 p-2">
-                                <i data-lucide="map-pin"></i>
-                                <div>{{ $patient->address }} (Current)</div>
-                            </div>
-                            <!-- divider border  -->
-                            <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
-                            <div class="col-span-12 mt-2 p-2">
-                                <p class="font-semibold">Update Address</p>
-                            </div>
-
-                            <!-- region, province, city, barangay, purok div  -->
-                            <div class="col-span-12 grid grid-cols-12 gap-2">
-                                <!-- region  -->
-                                <div class="col-span-12 md:col-span-4">
-                                    <div class="mb-3 relative">
-                                        <label for="region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-500" id="region-error">*</span></label>
-                                        <button id="region_btn" type="button"
-                                            class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center">
-                                            <span id="region_selected">Select Region</span>
-                                            <i data-lucide="chevron-down"></i>
-                                        </button>
-                                        <ul id="region" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                        <!-- hidden input -->
-                                        <input type="hidden" name="region" id="region_input">
-                                    </div>
-                                </div>
-                                <!-- province  -->
-                                <div class="col-span-12 md:col-span-4">
-                                    <div class="mb-3 relative">
-                                        <label for="province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-500" id="province-error">*</span></label>
-                                        <button id="province_btn" type="button"
-                                            class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
-                                            <span id="province_selected">Select Province</span>
-                                            <i data-lucide="chevron-down"></i>
-                                        </button>
-                                        <ul id="province" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                        <!-- hidden input -->
-                                        <input type="hidden" name="province" id="province_input">
-                                    </div>
-                                </div>
-                                <!-- city  -->
-                                <div class="col-span-12 md:col-span-4">
-                                    <div class="mb-3 relative">
-                                        <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-500" id="city-error">*</span></label>
-                                        <button id="city_btn" type="button"
-                                            class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
-                                            <span id="city_selected">Select City</span>
-                                            <i data-lucide="chevron-down"></i>
-                                        </button>
-                                        <ul id="city" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                        <!-- hidden input -->
-                                        <input type="hidden" name="city" id="city_input">
-                                    </div>
-                                </div>
-                                <!-- barangay and purok  -->
-                                <div class="col-span-12 md:col-span-12">
-                                    <div class="grid grid-cols-4 gap-4">
-                                        <!-- barangay  -->
-                                        <div class="col-span-4 md:col-span-2 mb-3 relative">
-                                            <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-500" id="barangay-error">*</span></label>
-                                            <button id="barangay_btn" type="button"
-                                                class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
-                                                <span id="barangay_selected">Select Barangay</span>
-                                                <i data-lucide="chevron-down"></i>
-                                            </button>
-                                            <ul id="barangay" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
-                                            <!-- hidden input -->
-                                            <input type="hidden" name="barangay" id="barangay_input">
-                                        </div>
-                                        <!-- purok  -->
-                                        <div class="col-span-4 md:col-span-2 ">
-                                            <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
-                                            <button id="description_btn" type="button" class="hidden"> </button>
-                                            <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
+                                <div class="col-span-12 flex items-center justify-center">
+                                    <div class="flex items-center justify-center gap-4 ">
+                                        <i data-lucide="circle-user" class="w-12 h-12 text-sky-500"></i>
+                                        <div>
+                                            <h1 class="font-900 md:text-2xl text-xl">Patient Profile</h1>
+                                            <p>Update Patient Information</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- divider border  -->
-                                <div class="col-span-12 border-2 border-gray-100"></div>
-                            </div>
+                                <div class="col-span-12 border-2 border-gray-100 my-2"></div>
+                                <div class="col-span-12">
+                                    <h1 class="font-semibold text-xl">Personal Information</h1>
+                                </div>
+                                <!-- fname. lname , initial div  -->
+                                <div class="col-span-12 grid grid-cols-12 gap-2">
+                                    <!-- FIRST NAME -->
+                                    <div class="col-span-12 md:col-span-5">
+                                        @if ($errors->has('first_name'))
+                                        <label for="first_name" class="text-sm font-semibold flex justify-between items-center w-full">First Name:
+                                            <span class="text-red-500 text-xs" id="first-name-error">
+                                                {{ $errors->first('first_name') }}
+                                                *</span>
+                                        </label>
+                                        @else
+                                        <label for="first_name" class="text-sm font-semibold ">First Name:
+                                            <span class="text-red-500 text-xs" id="first-name-error">*</span>
+                                        </label>
+                                        @endif
+                                        <input type="text" id="first_name" name="first_name"
+                                            placeholder="First Name"
+                                            value="{{ ( $patient->first_name) }}"
+                                            class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
+                                    </div>
 
-                            <!-- submit and cancel button   -->
-                            <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
-                                    Save Changes
-                                </button>
-                                <button type="button" onclick="document.getElementById('EditPatientProfile').close()"
-                                    class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
-                                    Cancel
-                                </button>
+                                    <!-- LAST NAME -->
+                                    <div class="col-span-12 md:col-span-5">
+                                        @if ($errors->has('last_name'))
+                                        <label for="last_name" class="text-sm font-semibold flex justify-between items-center w-full">Last Name:
+                                            <span class="text-red-500 text-xs" id="last-name-error">
+                                                {{ $errors->first('last_name') }}
+                                                *</span>
+                                        </label>
+                                        @else
+                                        <label for="last_name" class="text-sm font-semibold ">Last Name:
+                                            <span class="text-red-500 text-xs" id="last-name-error">*</span>
+                                        </label>
+                                        @endif
+
+                                        <input type="text" id="last_name" name="last_name" placeholder="Last Name"
+                                            value="{{ ( $patient->last_name) }}"
+                                            class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:bg-white  focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
+                                    </div>
+
+                                    <!-- MIDDLE INITIAL -->
+                                    <div class="col-span-6 md:col-span-1">
+                                        @if ($errors->has('middle_initial'))
+                                        <label for="middle_initial" class="text-sm font-semibold flex justify-between items-center w-full">M.I:
+                                            <span class="text-red-500 text-xs" id="middle-initial-error">
+                                                {{ $errors->first('middle_initial') }}
+                                                *</span>
+                                        </label>
+                                        @else
+                                        <label for="middle_initial" class="text-sm font-semibold ">M.I:
+                                            <span class="text-red-500 text-xs" id="middle-initial-error">*</span>
+                                        </label>
+                                        @endif
+
+                                        <input type="text" id="middle_initial" name="middle_initial" placeholder="M.I" maxlength="3"
+                                            pattern="[A-Z]\."
+                                            oninput="this.value = this.value.toUpperCase()"
+                                            title="Only one letter followed by a period is allowed (e.g., M.)"
+                                            value="{{ old('middle_initial', $patient->middle_initial) }}"
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
+                                    </div>
+
+                                    <!-- SUFFIX -->
+                                    <div class="col-span-6 md:col-span-1">
+                                        <label for="suffix" class="text-sm font-semibold">Suffix: </label>
+                                        <input type="text" id="suffix" name="suffix" placeholder="E.g., Jr."
+                                            pattern="[A-Za-z]{1,5}"
+                                            maxlength="5"
+                                            title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
+                                            value="{{ old('suffix', $patient->suffix) }}"
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                    </div>
+                                </div>
+
+
+                                <!-- date of birth, age , gender div  -->
+                                <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
+                                    <!-- date of birth  -->
+                                    <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
+                                        <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth: </label>
+                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}" readonly disabled
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                    </div>
+                                    <!-- age  -->
+                                    <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
+                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
+                                        <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
+                                    </div>
+                                    <!-- gender  -->
+                                    <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
+                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
+                                        <div class="flex gap-5 items-center">
+                                            @if ($patient->sex == 'Male')
+                                            <label class="flex items-center space-x-2">
+                                                <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                                <span>Male</span>
+                                            </label>
+                                            @elseif ($patient->sex == 'Female')
+                                            <label class="flex items-center space-x-2">
+                                                <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
+                                                <span>Female</span>
+                                            </label>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- contact number  -->
+                                <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
+
+                                    <!-- phone number  -->
+                                    <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
+                                        <div class="w-full flex items-center">
+                                            @if ($errors->has('contact_number'))
+                                            <label for="contact_number" class="text-sm font-semibold flex justify-between items-center w-full">Contact Number:
+                                                <span class="text-red-500 text-xs" id="contact-number-error">
+                                                    {{ $errors->first('contact_number') }}
+                                                    *</span>
+                                            </label>
+                                            @else
+                                            <label for="contact_number" class="text-sm font-semibold ">Contact Number:
+                                                <span class="text-red-500 text-xs" id="contact-number-error">*</span>
+                                            </label>
+                                            @endif
+
+                                        </div>
+                                        <div class="w-full flex items-center gap-4">
+                                            <i data-lucide="phone-call"></i>
+                                            <input type="tel" id="contact_number" name="contact_number"
+                                                placeholder="e.g. 09xx xxx xxxx"
+                                                maxlength="13"
+                                                value="{{  $patient->contact_number }}"
+                                                class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- divider border  -->
+                                <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
+
+                                <!-- address label  -->
+                                <div class="col-span-12 p-2 ">
+                                    <label for="address" class="text-xl font-bold text-gray-800">Address</label>
+                                </div>
+
+                                <div class="col-span-12 flex items-center gap-2 p-2">
+                                    <i data-lucide="map-pin"></i>
+                                    <div>{{ $patient->address }} (Current)</div>
+                                </div>
+                                <!-- divider border  -->
+                                <div class="col-span-12 border-2 border-gray-100 mt-5"></div>
+                                <div class="col-span-12 mt-2 p-2">
+                                    <p class="font-semibold">Update Address</p>
+                                </div>
+
+                                <!-- region, province, city, barangay, purok div  -->
+                                <div class="col-span-12 grid grid-cols-12 gap-2">
+                                    <!-- region  -->
+                                    <div class="col-span-12 md:col-span-4">
+                                        <div class="mb-3 relative">
+                                            <label for="region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-500" id="region-error">*</span></label>
+                                            <button id="region_btn" type="button"
+                                                class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center">
+                                                <span id="region_selected">Select Region</span>
+                                                <i data-lucide="chevron-down"></i>
+                                            </button>
+                                            <ul id="region" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                            <!-- hidden input -->
+                                            <input type="hidden" name="region" id="region_input">
+                                        </div>
+                                    </div>
+                                    <!-- province  -->
+                                    <div class="col-span-12 md:col-span-4">
+                                        <div class="mb-3 relative">
+                                            <label for="province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-500" id="province-error">*</span></label>
+                                            <button id="province_btn" type="button"
+                                                class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                                <span id="province_selected">Select Province</span>
+                                                <i data-lucide="chevron-down"></i>
+                                            </button>
+                                            <ul id="province" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                            <!-- hidden input -->
+                                            <input type="hidden" name="province" id="province_input">
+                                        </div>
+                                    </div>
+                                    <!-- city  -->
+                                    <div class="col-span-12 md:col-span-4">
+                                        <div class="mb-3 relative">
+                                            <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-500" id="city-error">*</span></label>
+                                            <button id="city_btn" type="button"
+                                                class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                                <span id="city_selected">Select City</span>
+                                                <i data-lucide="chevron-down"></i>
+                                            </button>
+                                            <ul id="city" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                            <!-- hidden input -->
+                                            <input type="hidden" name="city" id="city_input">
+                                        </div>
+                                    </div>
+                                    <!-- barangay and purok  -->
+                                    <div class="col-span-12 md:col-span-12">
+                                        <div class="grid grid-cols-4 gap-4">
+                                            <!-- barangay  -->
+                                            <div class="col-span-4 md:col-span-2 mb-3 relative">
+                                                <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-500" id="barangay-error">*</span></label>
+                                                <button id="barangay_btn" type="button"
+                                                    class="w-full border rounded px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                                    <span id="barangay_selected">Select Barangay</span>
+                                                    <i data-lucide="chevron-down"></i>
+                                                </button>
+                                                <ul id="barangay" class="absolute w-full border rounded bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                                <!-- hidden input -->
+                                                <input type="hidden" name="barangay" id="barangay_input">
+                                            </div>
+                                            <!-- purok  -->
+                                            <div class="col-span-4 md:col-span-2 ">
+                                                <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
+                                                <button id="description_btn" type="button" class="hidden"> </button>
+                                                <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- divider border  -->
+                                    <div class="col-span-12 border-2 border-gray-100"></div>
+                                </div>
+
+                                <!-- submit and cancel button   -->
+                                <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
+                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
+                                        Save Changes
+                                    </button>
+                                    <button type="button" onclick="document.getElementById('EditPatientProfile').close()"
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
+                                        Cancel
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </dialog>
-                <!-- end of dialog  -->
+                        </form>
+                    </dialog>
+                    <!-- end of dialog  -->
 
 
         </section>
 
         <!-- Modals For Logout -->
-        <x-modal id="logoutModal" title="Confirm Logout">
-            <form method="POST" action="{{ route('clinic.logout') }}">
-                @csrf
-                <p class="mb-4">Are you sure you want to log out?</p>
-
-                <div class="flex justify-end gap-2">
-                    <button type="button"
-                        onclick="document.getElementById('logoutModal').classList.add('hidden')"
-                        class="border-2 border-gray-200 px-4 py-2 rounded">
-                        Cancel
-                    </button>
-
-                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">
-                        Confirm
-                    </button>
-                </div>
-            </form>
-        </x-modal>
+        <x-logout-modal />
 </body>
 
 

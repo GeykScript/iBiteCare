@@ -142,7 +142,7 @@
                                     </div>
                                     <div class="flex justify-between items-center pr-10 p-2">
                                         <!-- Add button -->
-                                        <button type="button" id="add-schedule" class="mt-2 text-blue-500 font-bold  py-1 rounded flex items-center gap-2 hover:text-blue-600"><i data-lucide="plus" class="w-4 h-4 "></i>Add  Schedule <span class="text-gray-400 font-normal">(Optional)</span></button>
+                                        <button type="button" id="add-schedule" class="mt-2 text-blue-500 font-bold  py-1 rounded flex items-center gap-2 hover:text-blue-600"><i data-lucide="plus" class="w-4 h-4 "></i>Add Schedule <span class="text-gray-400 font-normal">(Optional)</span></button>
                                     </div>
                                     <!-- Container for new schedules -->
                                     <div id="Newschedule" class="space-y-2">
@@ -195,24 +195,8 @@
 
 
         <!-- Modals For Logout -->
-        <x-modal id="logoutModal" title="Confirm Logout">
-            <form method="POST" action="{{ route('clinic.logout') }}">
-                @csrf
-                <p class="mb-4">Are you sure you want to log out?</p>
+        <x-logout-modal />
 
-                <div class="flex justify-end gap-2">
-                    <button type="button"
-                        onclick="document.getElementById('logoutModal').classList.add('hidden')"
-                        class="border-2 border-gray-200 px-4 py-2 rounded">
-                        Cancel
-                    </button>
-
-                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">
-                        Confirm
-                    </button>
-                </div>
-            </form>
-        </x-modal>
 </body>
 
 <script>

@@ -57,6 +57,8 @@ class TwoFactorAuthenticationController extends Controller
         return back()->withErrors(['account_id' => 'This account ID is not registered.']);
     }
 
+
+    
     // function to verify the code
     public function verify(Request $request){
         $request->validate([
