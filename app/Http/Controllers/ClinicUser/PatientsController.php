@@ -48,13 +48,33 @@ class PatientsController extends Controller
         $currentImmunization = PatientImmunizations::where('patient_id', $id)->get();
         $schedules = PatientImmunizationsSchedule::where('patient_id', $id)->get();
 
+        $groupedSchedules = $schedules
+            ->sortByDesc(fn($schedule) => $schedule->transaction->transaction_date) 
+            ->groupBy('transaction_id');
+
+
         $paymentRecords =  PaymentRecords::where('patient_id', $id )->get();
 
-        $transactions = ClinicTransactions::with(['patient', 'service', 'paymentRecords'])
+        $transactions = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'invoice', 'patientExposures', 'patientSchedules'])
             ->where('patient_id', $id)
             ->get();
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions'));
+            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'invoice', 'patientExposures', 'patientSchedules'])
+            ->where('patient_id', $id)
+            ->orderBy('transaction_date', 'asc')
+            ->get()
+            ->groupBy('grouping')
+            ->map(function ($group) {
+                $first = $group->first();
+                // merge all schedules from this grouping
+                $first->allSchedules = $group->flatMap->patientSchedules;
+                return $first;
+            })
+            ->sortByDesc('transaction_date');
+
+
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules'));
     }
 
 
