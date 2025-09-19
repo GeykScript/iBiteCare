@@ -34,6 +34,7 @@ Route::middleware('guest.clinic')->group(function () {
 //the exception middle ware issue like dashbaord shoud go back to login (boostrap/app.php)
 use App\Http\Controllers\ClinicUser\DashboardController;
 use App\Http\Controllers\ClinicUser\PatientsController;
+use App\Http\Controllers\ClinicUser\PatientTransactionsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 use App\Http\Controllers\ClinicUser\ReportsController;
 use App\Http\Controllers\Auth\ClinicUser\PasswordController;
@@ -66,6 +67,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/patients/profile/update', [PatientsController::class, 'updateProfile'])
         ->name('clinic.patients.profile.update');
+
+    Route::get('/clinic/patients/transactions/{id}', [PatientTransactionsController::class, 'index'])
+        ->name('clinic.patients.transactions');
         
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])

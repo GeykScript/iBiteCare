@@ -110,7 +110,7 @@
                             View <img src="{{asset('images/file-text.svg')}}" alt="Profile Details"></a>
                     </td>
                     <td class="px-2 py-4 text-center font-medium text-gray-900">
-                        <a href="#" class="text-red-500 flex items-center justify-center gap-1 font-semibold">
+                        <a href="{{ route('clinic.patients.transactions', $patient->id) }}" class="text-red-500 flex items-center justify-center gap-1 font-semibold">
                             Manage <img src="{{asset('images/align-justify.svg')}}" alt="Manage Transactions"></a>
                     </td>
                 </tr>
