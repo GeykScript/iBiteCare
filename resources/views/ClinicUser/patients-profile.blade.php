@@ -10,6 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -228,7 +229,7 @@
                                             <tbody>
                                                 @if ($previousAntiTetanus->isEmpty())
                                                 <tr>
-                                                    <td class="px-4 py-4 border text-center text-gray-500">
+                                                    <td colspan="4" class="px-4 py-4 border text-center text-gray-500">
                                                         No previous immunizations found
                                                     </td>
                                                 </tr>
@@ -264,7 +265,7 @@
                                             <tbody>
                                                 @if ($previousAntiRabies->isEmpty())
                                                 <tr>
-                                                    <td class="px-4 py-4 border text-center text-gray-500">
+                                                    <td colspan="4" class="px-4 py-4 border text-center text-gray-500">
                                                         No previous immunizations found
                                                     </td>
                                                 </tr>
