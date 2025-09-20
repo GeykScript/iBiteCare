@@ -14,13 +14,9 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js'])
-
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
     @endif
-
 </head>
-
-
 
 <body>
     <div class="flex h-screen">
@@ -28,7 +24,7 @@
         <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
             <div class="absolute top-20 right-[-0.6rem]  md:hidden">
                 <button id="closeSidebar" class="text-white text-2xl">
-                    <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
+                    <i data-lucide="circle-chevron-right" class="w-8 h-8 stroke-white fill-[#FF000D]"></i>
                 </button>
             </div>
             <!-- Logo -->
@@ -52,7 +48,7 @@
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
-                    <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
+                    <li><a href="{{ route('clinic.transactions') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
@@ -64,7 +60,7 @@
             </nav>
             <div class="flex flex-col p-4 gap-2">
                 <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
-                    <i data-lucide="circle-user" class="w-6 h-6"></i>
+                    <i data-lucide="circle-user" class="w-8 h-8"></i>
                     <div class="flex flex-col items-center">
                         <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
                         <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
@@ -95,75 +91,141 @@
             <div class="flex flex-col flex-1  pt-[60px]">
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
-                    <div>
-                        <h1 class="text-xl md:text-3xl font-900">Patient Clinic Records</h1>
-                    </div>
-                </div>
-                <!-- Header content -->
-                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
-                    <h1 class="md:text-2xl font-900 text-[#FF000D]"> Registed Patients</h1>
-                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
-                </div>
-                <div class="md:pl-12 pl-6">
-                    <h1 class="md:text-lg text-gray-800">All individuals who have been officially registered to receive care at the clinic.</h1>
-                </div>
-                <!-- Main Content -->
-                <div class="grid grid-cols-4 p-4  md:px-10 ">
-                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
-                        <button
-                            onclick="document.getElementById('registerPatientModal').showModal()"
-                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
-                    </div>
-                    <dialog id="registerPatientModal" class="p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop:bg-black/30 focus:outline-none ">
-                        <!-- close modal button  -->
-                        <div class="w-full flex justify-end mb-5">
-                            <button onclick="document.getElementById('registerPatientModal').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <div class="flex flex-col gap-2">
+                        <h1 class="text-xl md:text-3xl font-900">Patient Registration</h1>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            <p class="font-bold text-red-500">Registry</p>
                         </div>
 
-                        <!-- create new user form  -->
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 md:col-span-1 flex items-center justify-center">
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="grid grid-cols-4 py-4  md:px-10 gap-2 ">
+                    <div class="col-span-4 bg-white rounded-lg shadow-lg w-full p-10  border border-gray-100">
                         <div>
-                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
-
-                                <div class="col-span-12 flex flex-col items-center justify-center">
-                                    <h1 class="font-900 md:text-2xl text-xl">Register Patient</h1>
-                                    <p>Select a service to register the patient for:</p>
-                                </div>
-
-                                @foreach ($services as $service)
-                                @if ($service->name == 'Tetanus Toxoid')
-                                <a href="{{ route('clinic.patients.register.anti-tetanus') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name == 'Post Exposure Prophylaxis')
-                                <a href="{{ route('clinic.patients.register.pep') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name == 'Pre-Exposure Prophylaxis')
-                                <a href="{{ route('clinic.patients.register.prep') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name == 'Booster')
-                                <a href="{{ route('clinic.patients.register.booster') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name != 'Tetanus Toxoid' && $service->name != 'Post Exposure Prophylaxis' && $service->name != 'Pre-Exposure Prophylaxis' && $service->name != 'Booster')
-                                <a href="{{ route('clinic.patients.register.other') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @endif
-                                @endforeach
-
-                                <div class="col-span-12 flex items-center justify-end gap-2">
-                                    <button type="button" onclick="document.getElementById('registerPatientModal').close()"
-                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
-                                        Cancel
-                                    </button>
-                                </div>
+                            <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                            <div class="flex flex-col mb-6 gap-2">
+                                <h1 class="text-2xl font-900 text-center ">New Patient Registration</h1>
+                                <p class="text-gray-400 text-sm text-center">Service: Post Exposure Prophylaxis (PEP)</p>
                             </div>
                         </div>
-                    </dialog>
+                        <livewire:register-pep-multiform />
 
-                    <!-- livewire/patient-table.php -->
-                    <livewire:patients-table />
+                        
+                    </div>
                 </div>
+
+
             </div>
+
+
+
+
         </section>
 
         <!-- Modals For Logout -->
         <x-logout-modal />
-
-
 </body>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 7;
+
+    const form = document.getElementById("multi-step-form");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll(".step").forEach(s => s.classList.add("hidden"));
+        document.getElementById(`step-${step}`).classList.remove("hidden");
+
+        // Update step circles + labels
+        for (let i = 1; i <= totalSteps; i++) {
+            const circle = document.getElementById(`step${i}-circle`);
+            const label = circle.parentElement.querySelector("span");
+
+            if (i < step) {
+                // Completed step
+                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+            } else if (i === step) {
+                // Active step
+                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+            } else {
+                // Inactive step
+                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
+                label.className = "mt-2 text-sm font-bold text-red-400 text-center";
+            }
+        }
+
+        // Update connecting lines
+        for (let i = 1; i < totalSteps; i++) {
+            const line = document.getElementById(`line${i}`);
+            if (i < step) {
+                line.className = "bg-red-600 mx-2 border-2 h-1 w-full border-red-600";
+            } else {
+                line.className = "bg-red-300 mx-2 border-2 h-1 w-full border-red-300";
+            }
+        }
+
+        // Toggle buttons
+        prevBtn.classList.toggle("hidden", step === 1);
+        nextBtn.classList.toggle("hidden", step === totalSteps);
+        submitBtn.classList.toggle("hidden", step !== totalSteps);
+    }
+
+    function validateStep(step) {
+        const currentStepElement = document.getElementById(`step-${step}`);
+        const inputs = currentStepElement.querySelectorAll("input[required], select[required]");
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (!input.value) {
+                isValid = false;
+                input.classList.add("border-red-500");
+            } else {
+                input.classList.remove("border-red-500");
+            }
+        });
+
+        return isValid;
+    }
+
+    nextBtn.addEventListener("click", () => {
+        if (validateStep(currentStep)) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+
+    prevBtn.addEventListener("click", () => {
+        currentStep--;
+        showStep(currentStep);
+    });
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (validateStep(currentStep)) {
+            alert("Form submitted successfully!");
+            // Here you’d typically send form data via AJAX or submit
+        }
+    });
+
+    // Initialize wizard
+    showStep(currentStep);
+</script>
+
 
 
 </html>

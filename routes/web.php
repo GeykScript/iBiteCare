@@ -48,6 +48,12 @@ use App\Http\Controllers\ClinicUser\Services;
 use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
 
+use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\OtherRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\PepRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\PrepRegistration;
+
 Route::middleware('auth:clinic_user')->group(function () {
     
     Route::get('/clinic/dashboard', [DashboardController::class, 'index'])
@@ -70,6 +76,19 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/patients/transactions/{id}', [PatientTransactionsController::class, 'index'])
         ->name('clinic.patients.transactions');
+
+    // register patient routes
+    Route::get('/clinic/patients/register/anti-tetanus', [AntiTetanuRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.anti-tetanus');
+    Route::get('/clinic/patients/register/booster', [BoosterRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.booster');
+    Route::get('/clinic/patients/register/other', [OtherRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.other');
+    Route::get('/clinic/patients/register/pep', [PepRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.pep');
+    Route::get('/clinic/patients/register/prep', [PrepRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.prep');
+    
         
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])

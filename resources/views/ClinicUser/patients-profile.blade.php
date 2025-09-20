@@ -96,7 +96,7 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">Profile Information</p>
+                            <p class="font-bold text-red-500">{{ $patient->last_name }}'s  Information</p>
                         </div>
 
                     </div>

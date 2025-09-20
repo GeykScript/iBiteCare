@@ -14,6 +14,7 @@ use App\Models\PatientPrevAntiRabies;
 use App\Models\PatientImmunizations;
 use App\Models\PatientImmunizationsSchedule;
 use App\Models\PaymentRecords;
+use App\Models\ClinicServices;
 
 class PatientsController extends Controller
 {
@@ -21,11 +22,13 @@ class PatientsController extends Controller
 
         $clinicUser = Auth::guard('clinic_user')->user();
 
+        $services = ClinicServices::all();
+
         if (!$clinicUser) {
             return redirect()->route('clinic.login')->with('error', 'You must be logged in to access the patients list.');
         }
 
-        return view('ClinicUser.patients', compact('clinicUser'));
+        return view('ClinicUser.patients', compact('clinicUser', 'services'));
     }
 
 
