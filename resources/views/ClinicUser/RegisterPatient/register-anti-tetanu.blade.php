@@ -188,18 +188,8 @@
                         <form id="multi-step-form">
                             <!-- Step 1: Personal Information -->
                             <div id="step-1" class="step">
-                                <div class="mb-6">
-                                    <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
-                                    <input type="text" id="fullName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email Address</label>
-                                    <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
-                                    <input type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
+                                <x-body-part-selector />
+
                             </div>
 
                             <!-- Step 2: Account Details -->

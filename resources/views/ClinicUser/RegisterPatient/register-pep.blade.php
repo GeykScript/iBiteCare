@@ -14,7 +14,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/registeraddress.js', 'resources/js/alpine.js'])
     @endif
 </head>
 
@@ -117,9 +117,356 @@
                                 <p class="text-gray-400 text-sm text-center">Service: Post Exposure Prophylaxis (PEP)</p>
                             </div>
                         </div>
-                        <livewire:register-pep-multiform />
+                        <!-- Progress Bar -->
+                        <div class="mb-8">
+                            <div class="flex items-center justify-between ">
 
-                        
+                                <!-- Step 1 -->
+                                <div class="flex flex-col items-center ">
+                                    <div id="step1-circle"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
+                                    </div>
+                                    <span class="mt-2 text-sm font-bold text-gray-900 text-center">Personal Details</span>
+                                </div>
+
+                                <!-- Line between step 1 & 2 -->
+                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line1"></div>
+
+                                <!-- Step 2 -->
+                                <div class="flex flex-col items-center ">
+                                    <div id="step2-circle"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                    </div>
+                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">History Exposure</span>
+                                </div>
+
+                                <!-- Line between step 2 & 3 -->
+                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line2"></div>
+
+                                <!-- Step 3 -->
+                                <div class="flex flex-col items-center ">
+                                    <div id="step3-circle"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                    </div>
+                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">Animal Profile</span>
+                                </div>
+                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line3"></div>
+
+                                <div class="flex flex-col items-center ">
+                                    <div id="step4-circle"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                    </div>
+                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">Past Immunizations</span>
+                                </div>
+                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line4"></div>
+                                <div class="flex flex-col items-center ">
+                                    <div id="step5-circle"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                    </div>
+                                    <span class="mt-2 text-sm font-bold text-red-400">Immunization</span>
+                                </div>
+                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line5"></div>
+
+                                <div class="flex flex-col items-center ">
+                                    <div id="step6-circle"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                    </div>
+                                    <span class="mt-2 text-sm font-bold text-red-400">Payment</span>
+                                </div>
+                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line6"></div>
+
+                                <div class="flex flex-col items-center ">
+                                    <div id="step7-circle"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                    </div>
+                                    <span class="mt-2 text-sm font-bold text-red-400">Finalizing</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Form Steps -->
+                        <form id="multi-step-form">
+                            <!-- Step 1: Personal Information -->
+                            <div id="step-1" class="step">
+                                <div class="flex flex-col gap-2">
+                                    <div class="grid grid-cols-12 gap-2">
+
+                                        <div class="col-span-12">
+                                            <h2 class="text-lg text-gray-700 font-900 mb-2">Patient Information</h2>
+                                        </div>
+                                        <div class="col-span-12 md:col-span-4 ">
+                                            <label for="first_name" class="block mb-2 text-sm font-bold text-gray-900">First Name</label>
+                                            <input type="text" id="first_name"
+                                                class=" border @error('first_name') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500 ">
+                                            @error('first_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                        </div>
+                                        <div class="col-span-12 md:col-span-4 ">
+                                            <label for="last_name" class="block mb-2 text-sm font-bold text-gray-900">Last Name</label>
+                                            <input type="text" id="last_name"
+                                                class=" border @error('last_name') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                            @error('last_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                        </div>
+                                        <div class="col-span-12 md:col-span-1 ">
+                                            <div class="grid grid-cols-2 gap-1 flex">
+                                                <div>
+                                                    <label for="middleInitial" class="block mb-2 text-sm font-bold text-gray-900">M.I.</label>
+                                                    <input type="text" id="middleInitial"
+                                                        class=" border @error('middleInitial') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                </div>
+                                                <div>
+                                                    <label for="suffix" class="block mb-2 text-sm font-bold text-gray-900">Suffix</label>
+                                                    <input type="text" id="suffix"
+                                                        class=" border @error('suffix') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5  focus:ring-sky-500 focus:border-sky-500">
+                                                    @error('suffix') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-12 md:col-span-3 md:ml-10 ">
+                                            <label for="dateOfRegistration" class="block mb-2 text-sm font-bold text-gray-900">Date of Registration</label>
+                                            <input type="date" id="dateOfRegistration"
+                                                class=" border @error('dateOfRegistration') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                            @error('dateOfRegistration') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <!-- divider border  -->
+                                        <div class="col-span-12 border-2 border-gray-50 mt-4"></div>
+
+                                        <!-- address  -->
+                                        <div class="col-span-12 grid grid-cols-12 gap-2 ">
+                                            <div class="col-span-12">
+                                                <h2 class="text-lg text-gray-700 font-900 ">Address</h2>
+                                            </div>
+                                            <div class="col-span-12 md:col-span-4">
+                                                <div class="mb-3 relative">
+                                                    <label for="region_btn" class="text-sm mb-2 font-semibold">Region</label>
+                                                    <!-- wrapper that gets the red border -->
+                                                    <div class="w-full  flex items-center border rounded-lg px-2
+                                                        @error('region') border-red-500  @else border-gray-200  @enderror">
+
+                                                        <!-- Only the JS dropdown is ignored -->
+                                                        <div class="flex-1">
+                                                            <button id="region_btn" type="button"
+                                                                class="w-full px-3 py-2 text-left bg-white flex justify-between items-center">
+                                                                <span id="region_selected">Select Region</span>
+                                                                <i data-lucide="chevron-down"></i>
+                                                            </button>
+                                                            <ul id="region"
+                                                                class="absolute w-full bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" id="region_input">
+                                                    <!-- Error message -->
+                                                    @error('region')
+                                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <!-- province  -->
+                                            <div class="col-span-12 md:col-span-4">
+                                                <div class="mb-3 relative">
+                                                    <label for="province_btn" class="text-sm mb-2 font-semibold">Province</label>
+                                                    <div class="w-full  flex items-center border rounded-lg px-2
+                                                            @error('province') border-red-500  @else border-gray-200  @enderror">
+                                                        <div class="flex-1">
+                                                            <button id="province_btn" type="button"
+                                                                class="w-full  px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                                                <span id="province_selected">Select Province</span>
+                                                                <i data-lucide="chevron-down"></i>
+                                                            </button>
+                                                            <ul id="province" class="absolute w-full   bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                                        </div>
+
+                                                        <!-- hidden input -->
+                                                        <input type="hidden" name="province" id="province_input">
+                                                    </div>
+
+                                                    @error('province')
+                                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <!-- city  -->
+                                            <div class="col-span-12 md:col-span-4">
+                                                <div class="mb-3 relative">
+                                                    <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality </label>
+                                                    <div class="w-full  flex items-center border rounded-lg px-2
+                                @error('city') border-red-500  @else border-gray-200  @enderror">
+                                                        <div class="flex-1">
+                                                            <button id="city_btn" type="button"
+                                                                class="w-full  px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                                                <span id="city_selected">Select City</span>
+                                                                <i data-lucide="chevron-down"></i>
+                                                            </button>
+                                                            <ul id="city" class="absolute w-full  bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                                        </div>
+
+                                                        <!-- hidden input -->
+                                                        <input type="hidden" name="city" id="city_input">
+                                                    </div>
+                                                    @error('city')
+                                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <!-- barangay and purok  -->
+                                            <div class="col-span-12 md:col-span-12">
+                                                <div class="grid grid-cols-4 gap-4">
+                                                    <!-- barangay  -->
+                                                    <div class="col-span-4 md:col-span-2 mb-3 relative">
+                                                        <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay</label>
+                                                        <div class="w-full  flex items-center border rounded-lg px-2
+                                @error('barangay') border-red-500  @else border-gray-200  @enderror">
+                                                            <div class="flex-1">
+                                                                <button id="barangay_btn" type="button"
+                                                                    class="w-full  px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
+                                                                    <span id="barangay_selected">Select Barangay</span>
+                                                                    <i data-lucide="chevron-down"></i>
+                                                                </button>
+                                                                <ul id="barangay" class="absolute w-full  bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
+                                                            </div>
+                                                            <!-- hidden input -->
+                                                            <input type="hidden" name="barangay" id="barangay_input">
+                                                        </div>
+                                                        @error('barangay')
+                                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                    <!-- purok  -->
+                                                    <div class="col-span-4 md:col-span-2 ">
+                                                        <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. </label>
+                                                        <input type="text" name="description" id="description_input" placeholder="e.g Purok-2" class="w-full  @error('description') border-red-500  @else border-gray-200  @enderror p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                                        @error('description')
+                                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- divider border  -->
+                                            <div class="col-span-12 border-2 border-gray-50"></div>
+                                        </div>
+
+                                        <div class="col-span-12 grid grid-cols-12 gap-6 ">
+                                            <div class="col-span-12 md:col-span-7 grid grid-cols-6 gap-2 ">
+                                                <div class="col-span-6">
+                                                    <h2 class="text-lg text-gray-700 font-900 mb-2">Contact & Demographics</h2>
+                                                </div>
+
+                                                <div class="col-span-6 md:col-span-2 ">
+                                                    <label for="phone" class="block mb-2 text-sm font-bold text-gray-900">Phone Number</label>
+                                                    <input type="text" wire:model="phone" id="contact_number"
+                                                        class=" border @error('phone') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                                </div>
+                                                <div class="col-span-6 md:col-span-1">
+                                                    <label for="sex" class="block mb-2 text-sm font-bold text-gray-900">Sex</label>
+                                                    <select wire:model="sex" id="sex"
+                                                        class="block w-full p-2.5 text-sm text-gray-900 border rounded-lg 
+               @error('sex') border-red-500 @else border-gray-300 @enderror
+               focus:ring-sky-500 focus:border-sky-500">
+                                                        <option value="">-- Select --</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+                                                    @error('sex')
+                                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="col-span-6 md:col-span-2 ">
+                                                    <label for="phone" class="block mb-2 text-sm font-bold text-gray-900">Date of Birth</label>
+                                                    <input type="date" wire:model="date_of_birth" id="date_of_birth"
+                                                        class=" border @error('date_of_birth') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    @error('date_of_birth') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                                </div>
+                                                <div class="col-span-6 md:col-span-1 ">
+                                                    <label for="age" class="block mb-2 text-sm font-bold text-gray-900">Age</label>
+                                                    <input type="text" wire:model="age" id="age"
+                                                        class=" border @error('age') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    @error('age') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-span-12 md:col-span-5 grid grid-cols-6 gap-2 md:px-10 ">
+                                                <div class="col-span-6">
+                                                    <h2 class="text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
+                                                </div>
+                                                <div class="col-span-6 md:col-span-2 ">
+                                                    <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-900">Weight (kg)</label>
+                                                    <input type="text" wire:model="heart_rate" id="heart_rate"
+                                                        class=" border @error('heart_rate') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    @error('heart_rate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                                </div>
+                                                <div class="col-span-6 md:col-span-2 ">
+                                                    <label for="temperature" class="block mb-2 text-sm font-bold text-gray-900">Temperature</label>
+                                                    <input type="text" wire:model="temperature" id="temperature"
+                                                        class=" border @error('temperature') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    @error('temperature') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                                </div>
+                                                <div class="col-span-6 md:col-span-2 ">
+                                                    <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-900">Blood Pressure</label>
+                                                    <input type="text" wire:model="blood_pressure" id="blood_pressure"
+                                                        class=" border @error('blood_pressure') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    @error('blood_pressure') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Account Details -->
+                            <div id="step-2" class="step hidden">
+                                <div class="mb-6">
+                                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                                    <input type="text" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                                    <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
+                                    <input type="password" id="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Preferences -->
+                            <div id="step-3" class="step hidden">
+                                <div class="mb-6">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900">Preferred Contact Method</label>
+                                    <div class="flex items-center mb-4">
+                                        <input id="contact-email" type="radio" name="contact" value="email" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
+                                        <label for="contact-email" class="ml-2 text-sm font-medium text-gray-900">Email</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="contact-phone" type="radio" name="contact" value="phone" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
+                                        <label for="contact-phone" class="ml-2 text-sm font-medium text-gray-900">Phone</label>
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="interests" class="block mb-2 text-sm font-medium text-gray-900">Interests (select all that apply)</label>
+                                    <select id="interests" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
+                                        <option value="technology">Technology</option>
+                                        <option value="finance">Finance</option>
+                                        <option value="health">Health & Wellness</option>
+                                        <option value="travel">Travel</option>
+                                        <option value="food">Food & Cooking</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center mb-6">
+                                    <input id="newsletter" type="checkbox" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500">
+                                    <label for="newsletter" class="ml-2 text-sm font-medium text-gray-900">Subscribe to newsletter</label>
+                                </div>
+                            </div>
+
+                            <!-- Navigation Buttons -->
+                            <div class="flex justify-end mt-8 gap-4">
+                                <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
+                                <button type="button" id="nextBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
+                                <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
 
@@ -135,6 +482,96 @@
         <x-logout-modal />
 </body>
 
+<script>
+    let currentStep = 1;
+    const totalSteps = 7;
+
+    const form = document.getElementById("multi-step-form");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll(".step").forEach(s => s.classList.add("hidden"));
+        document.getElementById(`step-${step}`).classList.remove("hidden");
+
+        // Update step circles + labels
+        for (let i = 1; i <= totalSteps; i++) {
+            const circle = document.getElementById(`step${i}-circle`);
+            const label = circle.parentElement.querySelector("span");
+
+            if (i < step) {
+                // Completed step
+                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+            } else if (i === step) {
+                // Active step
+                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+            } else {
+                // Inactive step
+                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
+                label.className = "mt-2 text-sm font-bold text-red-400 text-center";
+            }
+        }
+
+        // Update connecting lines
+        for (let i = 1; i < totalSteps; i++) {
+            const line = document.getElementById(`line${i}`);
+            if (i < step) {
+                line.className = "bg-red-600 mx-2 border-2 h-1 w-full border-red-600";
+            } else {
+                line.className = "bg-red-300 mx-2 border-2 h-1 w-full border-red-300";
+            }
+        }
+
+        // Toggle buttons
+        prevBtn.classList.toggle("hidden", step === 1);
+        nextBtn.classList.toggle("hidden", step === totalSteps);
+        submitBtn.classList.toggle("hidden", step !== totalSteps);
+    }
+
+    function validateStep(step) {
+        const currentStepElement = document.getElementById(`step-${step}`);
+        const inputs = currentStepElement.querySelectorAll("input[required], select[required]");
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (!input.value) {
+                isValid = false;
+                input.classList.add("border-red-500");
+            } else {
+                input.classList.remove("border-red-500");
+            }
+        });
+
+        return isValid;
+    }
+
+    nextBtn.addEventListener("click", () => {
+        if (validateStep(currentStep)) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+
+    prevBtn.addEventListener("click", () => {
+        currentStep--;
+        showStep(currentStep);
+    });
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (validateStep(currentStep)) {
+            alert("Form submitted successfully!");
+            // Here you’d typically send form data via AJAX or submit
+        }
+    });
+
+    // Initialize wizard
+    showStep(currentStep);
+</script>
 
 
 
