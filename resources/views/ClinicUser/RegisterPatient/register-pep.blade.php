@@ -14,7 +14,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/registeraddress.js', 'resources/js/alpine.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
     @endif
 </head>
 
@@ -189,7 +189,6 @@
                             <div id="step-1" class="step">
                                 <div class="flex flex-col gap-2">
                                     <div class="grid grid-cols-12 gap-2">
-
                                         <div class="col-span-12">
                                             <h2 class="text-lg text-gray-700 font-900 mb-2">Patient Information</h2>
                                         </div>
@@ -290,7 +289,7 @@
                                                 <div class="mb-3 relative">
                                                     <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality </label>
                                                     <div class="w-full  flex items-center border rounded-lg px-2
-                                @error('city') border-red-500  @else border-gray-200  @enderror">
+                                                            @error('city') border-red-500  @else border-gray-200  @enderror">
                                                         <div class="flex-1">
                                                             <button id="city_btn" type="button"
                                                                 class="w-full  px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
@@ -315,7 +314,7 @@
                                                     <div class="col-span-4 md:col-span-2 mb-3 relative">
                                                         <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay</label>
                                                         <div class="w-full  flex items-center border rounded-lg px-2
-                                @error('barangay') border-red-500  @else border-gray-200  @enderror">
+                                                            @error('barangay') border-red-500  @else border-gray-200  @enderror">
                                                             <div class="flex-1">
                                                                 <button id="barangay_btn" type="button"
                                                                     class="w-full  px-3 py-2 text-left bg-white flex justify-between items-center opacity-50 cursor-not-allowed">
@@ -362,8 +361,8 @@
                                                     <label for="sex" class="block mb-2 text-sm font-bold text-gray-900">Sex</label>
                                                     <select wire:model="sex" id="sex"
                                                         class="block w-full p-2.5 text-sm text-gray-900 border rounded-lg 
-               @error('sex') border-red-500 @else border-gray-300 @enderror
-               focus:ring-sky-500 focus:border-sky-500">
+                                                            @error('sex') border-red-500 @else border-gray-300 @enderror
+                                                            focus:ring-sky-500 focus:border-sky-500">
                                                         <option value="">-- Select --</option>
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
@@ -416,55 +415,53 @@
 
                             <!-- Step 2: Account Details -->
                             <div id="step-2" class="step hidden">
-                                <div class="mb-6">
-                                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                                    <input type="text" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                                    <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
-                                    <input type="password" id="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
+                                <div class="flex flex-col gap-2">
+                                    <div class="grid grid-cols-12 gap-2">
+                                        <div class="col-span-12 md:col-span-7">
+
+                                        </div>
+                                        <div class="col-span-12 md:col-span-5">
+                                            <x-body-part-selector />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Step 3: Preferences -->
-                            <div id="step-3" class="step hidden">
-                                <div class="mb-6">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900">Preferred Contact Method</label>
-                                    <div class="flex items-center mb-4">
-                                        <input id="contact-email" type="radio" name="contact" value="email" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
-                                        <label for="contact-email" class="ml-2 text-sm font-medium text-gray-900">Email</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input id="contact-phone" type="radio" name="contact" value="phone" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
-                                        <label for="contact-phone" class="ml-2 text-sm font-medium text-gray-900">Phone</label>
-                                    </div>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="interests" class="block mb-2 text-sm font-medium text-gray-900">Interests (select all that apply)</label>
-                                    <select id="interests" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
-                                        <option value="technology">Technology</option>
-                                        <option value="finance">Finance</option>
-                                        <option value="health">Health & Wellness</option>
-                                        <option value="travel">Travel</option>
-                                        <option value="food">Food & Cooking</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-center mb-6">
-                                    <input id="newsletter" type="checkbox" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500">
-                                    <label for="newsletter" class="ml-2 text-sm font-medium text-gray-900">Subscribe to newsletter</label>
-                                </div>
-                            </div>
+                                        <!-- Step 3: Preferences -->
+                                        <div id="step-3" class="step hidden">
+                                            <div class="mb-6">
+                                                <label class="block mb-2 text-sm font-medium text-gray-900">Preferred Contact Method</label>
+                                                <div class="flex items-center mb-4">
+                                                    <input id="contact-email" type="radio" name="contact" value="email" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
+                                                    <label for="contact-email" class="ml-2 text-sm font-medium text-gray-900">Email</label>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <input id="contact-phone" type="radio" name="contact" value="phone" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
+                                                    <label for="contact-phone" class="ml-2 text-sm font-medium text-gray-900">Phone</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-6">
+                                                <label for="interests" class="block mb-2 text-sm font-medium text-gray-900">Interests (select all that apply)</label>
+                                                <select id="interests" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
+                                                    <option value="technology">Technology</option>
+                                                    <option value="finance">Finance</option>
+                                                    <option value="health">Health & Wellness</option>
+                                                    <option value="travel">Travel</option>
+                                                    <option value="food">Food & Cooking</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex items-center mb-6">
+                                                <input id="newsletter" type="checkbox" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500">
+                                                <label for="newsletter" class="ml-2 text-sm font-medium text-gray-900">Subscribe to newsletter</label>
+                                            </div>
+                                        </div>
 
-                            <!-- Navigation Buttons -->
-                            <div class="flex justify-end mt-8 gap-4">
-                                <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
-                                <button type="button" id="nextBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
-                                <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
-                            </div>
+                                        <!-- Navigation Buttons -->
+                                        <div class="flex justify-end mt-8 gap-4">
+                                            <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
+                                            <button type="button" id="nextBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
+                                            <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
+                                        </div>
                         </form>
 
                     </div>
