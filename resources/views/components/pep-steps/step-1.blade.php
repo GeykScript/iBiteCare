@@ -1,3 +1,6 @@
+@if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+@vite([ 'resources/js/address.js'])
+@endif
 <!-- Step 1: Personal Information -->
 <div id="step-1" class="step">
     <div class="flex flex-col gap-2">
@@ -209,6 +212,7 @@
     </div>
 </div>
 
+
 <script>
     // ----------------------------------------------------------------------------VALIDATE STEP 1----------------------------------------------------------------------------//
     function validateStep1() {
@@ -303,7 +307,7 @@
     // Apply to your fields
     nameValidator("first_name");
     nameValidator("last_name");
-    
+
     //MIDDLE INITIAL VALIDATOR
     document.getElementById("middleInitial").addEventListener("input", function() {
         // Force uppercase
