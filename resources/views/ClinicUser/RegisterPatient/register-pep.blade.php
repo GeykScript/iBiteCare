@@ -293,8 +293,8 @@
     }
 
     function validateStep(step) {
-        // if (step === 1) return validateStep1();
-        // if (step === 2) return validateStep2();
+        if (step === 1) return validateStep1();
+        if (step === 2) return validateStep2();
         return true; // add more as needed
     }
 

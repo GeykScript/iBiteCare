@@ -254,10 +254,17 @@
 
 
     <!-- Hidden input -->
-    <input type="hidden" id="selectedPart" name="selectedPart" value="">
+    <div class="flex flex-col gap-2 px-4">
+        <p id="error_selectedPart" class="text-red-500 text-xs mt-1 hidden">*This field is required. Please select a body part.</p>
+        <div class="flex items-center  gap-3 ">
+            <label for="selectedPart" class=" text-sm font-bold text-gray-900">Affected Body Part: </label>
+            <input type="text" id="selectedPart" name="selectedPart" disabled class="border border-gray-300  text-gray-900 text-sm rounded-lg block w-1/8 p-2.5 focus:ring-sky-500 focus:border-sky-500" value="" required>
+        </div>
+    </div>
+
+
 </div>
 
-<p class="text-gray-600 font-bold">Selected: <span class="font-normal" id="display"></span></p>
 
 <script>
     const paths = document.querySelectorAll("svg path");
