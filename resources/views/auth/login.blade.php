@@ -34,7 +34,7 @@
             <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[34rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
 
 
-                <div class="flex flex-col justify-center -mt-14">
+                <div class="flex flex-col justify-center -mt-12">
 
                     <div class="flex  justify-between mb-5">
                         <a href="{{url('/')}}" class="flex items-center justify-center gap-2 hover:underline text-red-500  underline-offset-4">
@@ -95,21 +95,21 @@
                         </div>
                         <!-- Social Login -->
                         <div class="mt-6">
-                            <p class="text-center text-gray-500 text-sm mb-3">— Or sign in with —</p>
+                            <p class="text-center text-gray-500 text-sm mb-2">— Or sign in with —</p>
                             <div class="flex items-center justify-center gap-4">
                                 
                                 <!-- Google -->
                                 <a title="Login with Google" href="{{ route('auth.provider', ['provider' => 'google']) }}"
-                                class="flex items-center justify-center w-12 h-12 bg-white border border-gray-300 
+                                class="flex items-center justify-center w-8 h-8 bg-white border border-gray-300 
                                         rounded-full shadow hover:bg-gray-200 transition">
-                                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-6 h-6">
+                                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-4 h-4">
                                 </a>
 
                                 <!-- Facebook -->
                                 <a title="Login with Facebook" href="{{ route('auth.provider', ['provider' => 'facebook']) }}"
-                                class="flex items-center justify-center w-12 h-12 bg-white rounded-full 
+                                class="flex items-center justify-center w-8 h-8 bg-white rounded-full 
                                         shadow hover:bg-gray-200 transition">
-                                    <img src="{{asset('/socials/facebook.svg')}}" alt="Facebook" class="w-7 h-7 ">
+                                    <img src="{{asset('/socials/facebook.svg')}}" alt="Facebook" class="w-5 h-5 ">
                                 </a>
 
                             </div>

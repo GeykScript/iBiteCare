@@ -26,49 +26,29 @@ class SocialiteController extends Controller
     public function callback($provider)
     {
         try {
-            
-            // Log for debugging
-            Log::info('OAuth callback hit', ['provider' => $provider]);
-            
             $socialUser = Socialite::driver($provider)->user();
 
-            
-            Log::info('Social user data', [
-                'provider' => $provider,
-                'email' => $socialUser->email,
-                'name' => $socialUser->name
-            ]);
-
-            // Check if user exists with this provider ID
+            // Check if already exists
             $user = User::where('auth_provider', $provider)
-                    ->where('auth_provider_id', $socialUser->id)
-                    ->first();
+                        ->where('auth_provider_id', $socialUser->id)
+                        ->first();
 
             if ($user) {
                 Auth::login($user);
-            } else {
-                // Check by email
-                $existingUser = User::where('email', $socialUser->email)->first();
-
-                if ($existingUser) {
-                    $existingUser->update([
-                        'auth_provider'    => $provider,
-                        'auth_provider_id' => $socialUser->id,
-                    ]);
-                    Auth::login($existingUser);
-                } else {
-                    $userData = User::create([
-                        'name'             => $socialUser->name,
-                        'email'            => $socialUser->email,
-                        'password'         => Hash::make('Password1234'),
-                        'auth_provider'    => $provider,
-                        'auth_provider_id' => $socialUser->id,
-                    ]);
-                    Auth::login($userData);
-                    Log::info('New user created and logged in', ['user_id' => $userData->id]);
-                }
+                session(['auth_provider' => $provider]);
+                return redirect()->route('dashboard');
             }
-            return redirect()->route('dashboard');
+
+            // If not existing -> store social data in session
+            session([
+                'auth_provider'    => $provider,
+                'auth_provider_id' => $socialUser->id,
+                'social_name'      => $socialUser->name,
+                'social_email'     => $socialUser->email,
+            ]);
+
+            // Redirect to password setup without saving user yet
+            return redirect()->route('set.password');
 
         } catch (Exception $e) {
             Log::error('OAuth callback error', [
@@ -80,7 +60,4 @@ class SocialiteController extends Controller
             return redirect()->route('login')->with('error', 'Authentication failed. Please try again.');
         }
     }
-
-
-    
 }
