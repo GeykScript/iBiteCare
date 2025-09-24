@@ -5,7 +5,7 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\PasswordSetupController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\BookingController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,6 +23,14 @@ Route::post('/set-password', [PasswordSetupController::class, 'store'])->name('s
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::prefix('book')->group(function () {
+    Route::get('/', [BookingController::class, 'index'])->name('booking.index');
+    Route::post('/', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/slots', [BookingController::class, 'getAvailableSlots'])->name('booking.slots');
+    Route::post('/{id}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
+    Route::post('/{id}/reschedule', [BookingController::class, 'reschedule'])->name('booking.reschedule');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
