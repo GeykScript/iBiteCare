@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SocialController;
 use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\PasswordSetupController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +16,10 @@ Route::controller(SocialiteController::class)->group(function(){
 });
 
 
+Route::get('/set-password', [PasswordSetupController::class, 'showForm'])->name('set.password');
+Route::post('/set-password', [PasswordSetupController::class, 'store'])->name('set.password.store');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -25,7 +29,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 
 require __DIR__.'/auth.php';
@@ -47,7 +50,10 @@ use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
 use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
 use App\Http\Controllers\ClinicUser\ClinicUsersController;
-
+use App\Http\Controllers\PatientTwoFactorAuthenticationController;
+use App\Http\Controllers\PatientForgotPasswordController;
+use App\Http\Controllers\PatientUpdatePasswordController;
+use App\Models\Patient;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -102,6 +108,28 @@ Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'up
     
 Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('clinic.update-password.update');
+
+
+// Patient Forgot Password
+
+Route::get('/patient/two-factor/{id}', [PatientTwoFactorAuthenticationController::class, 'index'])
+    ->name('patient.two-factor');
+
+Route::post('/patient/two-factor/send', [PatientTwoFactorAuthenticationController::class, 'send_code'])
+    ->name('patient.two-factor.send_code');
+
+Route::post('/patient/two-factor/verify', [PatientTwoFactorAuthenticationController::class, 'verify'])
+    ->name('patient.two-factor.verify');
+
+Route::get('/patient/forgot-password', [PatientForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('patient.forgot-password');
+
+
+Route::get('/patient/update-password/{id}', [PatientUpdatePasswordController::class, 'updatePasswordForm'])
+    ->name('patient.update-password');
+    
+Route::post('/patient/update-password', [PatientUpdatePasswordController::class, 'updatePassword'])
+    ->name('patient.update-password.update');
 
 
 

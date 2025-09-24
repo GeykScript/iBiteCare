@@ -17,5 +17,4 @@ class ForgotPasswordController extends Controller
         return view('auth.ClinicUser.forgot-password');
     }
 
-  
 }

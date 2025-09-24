@@ -14,34 +14,34 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                       text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
-                       hover:border-red-300 focus:outline-none focus:text-red-600 
-                       focus:border-red-300 transition">
-                        {{ __('Home') }}
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
+                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        hover:border-red-300 focus:outline-none focus:text-red-600 
+                        focus:border-red-300 transition">
+                            {{ __('Home') }}
                     </a>
 
-                    <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                       text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
-                       hover:border-red-300 focus:outline-none focus:text-red-600 
-                       focus:border-red-300 transition">
-                        {{ __('Appointments') }}
+                    <a href="" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
+                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        hover:border-red-300 focus:outline-none focus:text-red-600 
+                        focus:border-red-300 transition">
+                            {{ __('Appointments') }}
                     </a>
                     <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                       text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
-                       hover:border-red-300 focus:outline-none focus:text-red-600 
-                       focus:border-red-300 transition">
-                        {{ __('Schedules') }}
+                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        hover:border-red-300 focus:outline-none focus:text-red-600 
+                        focus:border-red-300 transition">
+                            {{ __('Schedules') }}
                     </a>
                     <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                       text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
-                       hover:border-red-300 focus:outline-none focus:text-red-600 
-                       focus:border-red-300 transition">
-                        {{ __('Messages') }}
+                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        hover:border-red-300 focus:outline-none focus:text-red-600 
+                        focus:border-red-300 transition">
+                            {{ __('Messages') }}
                     </a>
+                    </div>
+
                 </div>
-
-            </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
