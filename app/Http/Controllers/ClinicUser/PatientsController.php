@@ -14,6 +14,7 @@ use App\Models\PatientPrevAntiRabies;
 use App\Models\PatientImmunizations;
 use App\Models\PatientImmunizationsSchedule;
 use App\Models\PaymentRecords;
+use App\Models\ClinicServices;
 
 class PatientsController extends Controller
 {
@@ -21,11 +22,13 @@ class PatientsController extends Controller
 
         $clinicUser = Auth::guard('clinic_user')->user();
 
+        $services = ClinicServices::all();
+
         if (!$clinicUser) {
             return redirect()->route('clinic.login')->with('error', 'You must be logged in to access the patients list.');
         }
 
-        return view('ClinicUser.patients', compact('clinicUser'));
+        return view('ClinicUser.patients', compact('clinicUser', 'services'));
     }
 
 
@@ -48,13 +51,33 @@ class PatientsController extends Controller
         $currentImmunization = PatientImmunizations::where('patient_id', $id)->get();
         $schedules = PatientImmunizationsSchedule::where('patient_id', $id)->get();
 
+        $groupedSchedules = $schedules
+            ->sortByDesc(fn($schedule) => $schedule->transaction->transaction_date) 
+            ->groupBy('transaction_id');
+
+
         $paymentRecords =  PaymentRecords::where('patient_id', $id )->get();
 
-        $transactions = ClinicTransactions::with(['patient', 'service', 'paymentRecords'])
+        $transactions = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'invoice', 'patientExposures', 'patientSchedules'])
             ->where('patient_id', $id)
             ->get();
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions'));
+            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'invoice', 'patientExposures', 'patientSchedules'])
+            ->where('patient_id', $id)
+            ->orderBy('transaction_date', 'asc')
+            ->get()
+            ->groupBy('grouping')
+            ->map(function ($group) {
+                $first = $group->first();
+                // merge all schedules from this grouping
+                $first->allSchedules = $group->flatMap->patientSchedules;
+                return $first;
+            })
+            ->sortByDesc('transaction_date');
+
+
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules'));
     }
 
 

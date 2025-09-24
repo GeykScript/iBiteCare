@@ -17,6 +17,9 @@ class PatientImmunizationsSchedule extends Model
         'schedule_date',
         'date_completed',
         'status',
+        'dose',
+        'administered_by',
+        'grouping',
         'created_at',
         'updated_at',
     ];
@@ -36,6 +39,10 @@ class PatientImmunizationsSchedule extends Model
     public function serviceSchedule()
     {
         return $this->belongsTo(ClinicServicesSchedules::class, 'service_sched_id');
+    }
+    public function nurse()
+    {
+        return $this->belongsTo(ClinicUser::class, 'administered_by', 'id');
     }
 
 }

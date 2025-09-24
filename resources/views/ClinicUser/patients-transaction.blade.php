@@ -95,68 +95,62 @@
             <div class="flex flex-col flex-1  pt-[60px]">
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
-                    <div>
-                        <h1 class="text-xl md:text-3xl font-900">Patient Clinic Records</h1>
+                    <div class="flex flex-col gap-2">
+                        <h1 class="text-xl md:text-3xl font-900">Patient Transactions</h1>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            <p class="font-bold text-red-500">Clinic Transactions</p>
+                        </div>
+
                     </div>
                 </div>
-                <!-- Header content -->
-                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
-                    <h1 class="md:text-2xl font-900 text-[#FF000D]"> Registed Patients</h1>
-                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
+
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 md:col-span-1 flex items-center justify-center">
+                        <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                    </div>
                 </div>
-                <div class="md:pl-12 pl-6">
-                    <h1 class="md:text-lg text-gray-800">All individuals who have been officially registered to receive care at the clinic.</h1>
-                </div>
+
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
                         <button
-                            onclick="document.getElementById('registerPatientModal').showModal()"
-                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
+                            onclick="document.getElementById('patientTransactionModal').showModal()"
+                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add Transaction</button>
                     </div>
-                    <dialog id="registerPatientModal" class="p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop:bg-black/30 focus:outline-none ">
+                    <dialog id="patientTransactionModal" class="p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop:bg-black/30 focus:outline-none ">
                         <!-- close modal button  -->
                         <div class="w-full flex justify-end mb-5">
-                            <button onclick="document.getElementById('registerPatientModal').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                            <button onclick="document.getElementById('patientTransactionModal').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
                         <!-- create new user form  -->
-                        <div>
+                        <form action="#" method="POST" id="registerPatientForm">
+                            @csrf
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
 
                                 <div class="col-span-12 flex flex-col items-center justify-center">
-                                    <h1 class="font-900 md:text-2xl text-xl">Register Patient</h1>
-                                    <p>Select a service to register the patient for:</p>
+                                    <h1 class="font-900 md:text-2xl text-xl">Patient Transactions</h1>
+                                    <p>Fill out the form below to add a new transaction for the patient. All fields are required.</p>
                                 </div>
 
-                                @foreach ($services as $service)
-                                @if ($service->name == 'Tetanus Toxoid')
-                                <a href="{{ route('clinic.patients.register.anti-tetanus') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name == 'Post Exposure Prophylaxis')
-                                <a href="{{ route('clinic.patients.register.pep') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name == 'Pre-Exposure Prophylaxis')
-                                <a href="{{ route('clinic.patients.register.prep') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name == 'Booster')
-                                <a href="{{ route('clinic.patients.register.booster') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @elseif ($service->name != 'Tetanus Toxoid' && $service->name != 'Post Exposure Prophylaxis' && $service->name != 'Pre-Exposure Prophylaxis' && $service->name != 'Booster')
-                                <a href="{{ route('clinic.patients.register.other') }}" class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">{{ $service->name }}</a>
-                                @endif
-                                @endforeach
-
                                 <div class="col-span-12 flex items-center justify-end gap-2">
-                                    <button type="button" onclick="document.getElementById('registerPatientModal').close()"
+                                    <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Continue</button>
+                                    <button type="button" onclick="document.getElementById('patientTransactionModal').close()"
                                         class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
                                         Cancel
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </dialog>
 
-                    <!-- livewire/patient-table.php -->
-                    <livewire:patients-table />
+                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
+                        <!-- livewire/patient-table.php -->
+                        <livewire:patients-transaction-table :patientId="$patient->id" />
+                    </div>
                 </div>
-            </div>
         </section>
 
         <!-- Modals For Logout -->

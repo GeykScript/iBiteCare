@@ -12,6 +12,7 @@ class ClinicTransactions extends Model
         'patient_id',
         'service_id',
         'transaction_date',
+        'grouping'
     ];
 
     public function Patient()
@@ -36,6 +37,16 @@ class ClinicTransactions extends Model
     public function invoice()
     {
         return $this->hasOne(PaymentInvoice::class, 'transaction_id', 'id');
+    }
+
+    public function patientExposures()
+    {
+        return $this->hasOne(PatientExposures::class, 'transaction_id', 'id');
+    }
+
+    public function patientSchedules()
+    {
+        return $this->hasMany(PatientImmunizationsSchedule::class, 'transaction_id', 'id');
     }
 
 

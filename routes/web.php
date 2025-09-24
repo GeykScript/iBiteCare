@@ -34,6 +34,7 @@ Route::middleware('guest.clinic')->group(function () {
 //the exception middle ware issue like dashbaord shoud go back to login (boostrap/app.php)
 use App\Http\Controllers\ClinicUser\DashboardController;
 use App\Http\Controllers\ClinicUser\PatientsController;
+use App\Http\Controllers\ClinicUser\PatientTransactionsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 use App\Http\Controllers\ClinicUser\ReportsController;
 use App\Http\Controllers\Auth\ClinicUser\PasswordController;
@@ -46,6 +47,12 @@ use App\Http\Controllers\ClinicUser\ManageInventorySupplies;
 use App\Http\Controllers\ClinicUser\Services;
 use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
+
+use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\OtherRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\PepRegistration;
+use App\Http\Controllers\ClinicUser\RegisterPatient\PrepRegistration;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -66,6 +73,22 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/patients/profile/update', [PatientsController::class, 'updateProfile'])
         ->name('clinic.patients.profile.update');
+
+    Route::get('/clinic/patients/transactions/{id}', [PatientTransactionsController::class, 'index'])
+        ->name('clinic.patients.transactions');
+
+    // register patient routes
+    Route::get('/clinic/patients/register/anti-tetanus', [AntiTetanuRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.anti-tetanus');
+    Route::get('/clinic/patients/register/booster', [BoosterRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.booster');
+    Route::get('/clinic/patients/register/other', [OtherRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.other');
+    Route::get('/clinic/patients/register/pep', [PepRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.pep');
+    Route::get('/clinic/patients/register/prep', [PrepRegistration::class, 'showForm'])
+        ->name('clinic.patients.register.prep');
+    
         
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
