@@ -6,7 +6,7 @@
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-2">
             <div class="col-span-12">
-                <h2 class="text-lg text-gray-700 font-900 mb-2">Patient Information</h2>
+                <h2 class="md:text-lg text-gray-700 font-900 mb-2">Patient Information</h2>
             </div>
             <div class="col-span-12 md:col-span-4 ">
                 <label for="first_name" class="block mb-2 text-sm font-bold text-gray-900">First Name</label>
@@ -144,13 +144,17 @@
                 <!-- divider border  -->
                 <div class="col-span-12 border-2 border-gray-50"></div>
             </div>
+            <!-- contact & demographics  -->
+            <div class="col-span-12 grid grid-cols-12 gap-2 ">
+                <div class="col-span-12 md:col-span-7">
+                    <h2 class="md:text-lg text-gray-700 font-900 ">Contact & Demographics</h2>
 
-            <div class="col-span-12 grid grid-cols-12 gap-6 ">
+                </div>
+                <div class="col-span-5 hidden md:block">
+                    <h2 class="md:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
+                </div>
+
                 <div class="col-span-12 md:col-span-7 grid grid-cols-6 gap-2 ">
-                    <div class="col-span-6">
-                        <h2 class="text-lg text-gray-700 font-900 mb-2">Contact & Demographics</h2>
-                    </div>
-
                     <div class="col-span-6 md:col-span-2 ">
                         <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900">Phone Number</label>
                         <input type="text" name="contact_number" id="contact_number" required placeholder="e.g 09xx xxx xxxx" maxlength="13"
@@ -184,8 +188,8 @@
                     </div>
                 </div>
                 <div class="col-span-12 md:col-span-5 grid grid-cols-6 gap-2 md:px-10 ">
-                    <div class="col-span-6">
-                        <h2 class="text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
+                    <div class="col-span-6 block md:hidden">
+                        <h2 class="md:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
                     </div>
                     <div class="col-span-6 md:col-span-2 ">
                         <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-900">Weight (kg)</label>

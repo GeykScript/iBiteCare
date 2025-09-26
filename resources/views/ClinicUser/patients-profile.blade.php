@@ -10,7 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -96,7 +96,7 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">{{ $patient->last_name }}'s  Information</p>
+                            <p class="font-bold text-red-500">{{ $patient->last_name }}'s Information</p>
                         </div>
 
                     </div>
@@ -1215,17 +1215,13 @@
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
 
-    // Load saved tab from localStorage or default to tab1
-    let activeTab = localStorage.getItem("activeTab") || "tab1";
+    // Always default to tab1 on load
+    let activeTab = "tab1";
     showTab(activeTab);
 
     tabButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
             const target = btn.getAttribute("data-tab");
-
-            // Save active tab to localStorage
-            localStorage.setItem("activeTab", target);
-
             showTab(target);
         });
     });

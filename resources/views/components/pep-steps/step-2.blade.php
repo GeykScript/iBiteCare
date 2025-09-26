@@ -2,10 +2,10 @@
 <div id="step-2" class="step hidden">
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-2">
-            <div class="col-span-12 md:col-span-7 px-6 ">
-                <h1 class="font-900 text-lg mb-2">Bite Incident Details</h1>
+            <div class="col-span-12 md:col-span-7 md:px-6 ">
+                <h1 class="font-900  text-md md:text-lg mb-2">Bite Incident Details</h1>
                 <div class="grid grid-cols-8 gap-4">
-                    <div class="col-span-4">
+                    <div class="col-span-8 md:col-span-4">
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-2">
                                 <label for="date_of_bite" class=" mb-2 text-sm font-bold text-gray-900">Date of Bite</label>
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-4">
+                    <div class="col-span-8 md:col-span-4">
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-4">
                                 <div class="flex justify-between items-center">
@@ -65,7 +65,7 @@
                                     <label class="mb-2 text-sm font-bold text-gray-900 block">Bite Category</label>
                                     <p id="error_bite_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
-                                <div class="flex items-center space-x-6 p-2 ">
+                                <div class="flex flex-col md:flex-row items-center justify-center md:space-x-6 p-2 ">
                                     <label class="flex items-center space-x-2">
                                         <input type="radio" name="bite_category" value="1" required
                                             class="text-red-500 focus:ring-red-500">

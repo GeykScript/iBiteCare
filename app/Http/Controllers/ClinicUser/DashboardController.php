@@ -23,3 +23,4 @@ class DashboardController extends Controller
         return view('ClinicUser.dashboard', compact('clinicUser', 'clinic_transactions', 'today_clinic_transactions'));
     }
 }
+    

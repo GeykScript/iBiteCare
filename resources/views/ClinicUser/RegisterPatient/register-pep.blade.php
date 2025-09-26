@@ -14,7 +14,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js',  'resources/js/alpine.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/alpine.js'])
     @endif
 </head>
 
@@ -108,25 +108,25 @@
                 </div>
 
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 py-4  md:px-10 gap-2 ">
-                    <div class="col-span-4 bg-white rounded-lg shadow-lg w-full p-10  border border-gray-100">
-                        <div>
+                <div class="grid grid-cols-4  md:px-10 gap-2 ">
+                    <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
+                        <div class="flex flex-col gap-4 md:gap-0 ">
                             <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
-                            <div class="flex flex-col mb-6 gap-2">
-                                <h1 class="text-2xl font-900 text-center ">New Patient Registration</h1>
+                            <div class="flex flex-col mb-6 ">
+                                <h1 class="text-md  md:text-2xl font-900 text-center ">New Patient Registration</h1>
                                 <p class="text-gray-400 text-sm text-center">Service: Post Exposure Prophylaxis (PEP)</p>
                             </div>
                         </div>
                         <!-- Progress Bar -->
-                        <div class="mb-8">
+                        <div class="mb-8 overflow-x-auto  scrollbar-hidden ">
                             <div class="flex items-center justify-between ">
 
                                 <!-- Step 1 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step1-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-gray-900 text-center">Personal Details</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Personal Details</span>
                                 </div>
 
                                 <!-- Line between step 1 & 2 -->
@@ -135,9 +135,9 @@
                                 <!-- Step 2 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step2-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">History Exposure</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">History Exposure</span>
                                 </div>
 
                                 <!-- Line between step 2 & 3 -->
@@ -146,40 +146,40 @@
                                 <!-- Step 3 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step3-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">Animal Profile</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Animal Profile</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line3"></div>
 
                                 <div class="flex flex-col items-center ">
                                     <div id="step4-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">Past Immunizations</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Past Immunizations</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line4"></div>
                                 <div class="flex flex-col items-center ">
                                     <div id="step5-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400">Immunization</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Immunization</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line5"></div>
 
                                 <div class="flex flex-col items-center ">
                                     <div id="step6-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400">Payment</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Payment</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line6"></div>
 
                                 <div class="flex flex-col items-center ">
                                     <div id="step7-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400">Finalizing</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Finalizing</span>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +188,7 @@
                             <!-- Step 1: Personal Details -->
                             <x-pep-steps.step-1 />
 
-                            <x-pep-steps.step-2 />  
+                            <x-pep-steps.step-2 />
 
                             <!-- Step 3: Preferences -->
                             <div id="step-3" class="step hidden">
@@ -220,9 +220,9 @@
                             </div>
 
                             <!-- Navigation Buttons -->
-                            <div class="flex justify-end mt-8 gap-4">
+                            <div class="flex justify-end mt-6 gap-4">
                                 <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
-                                <button type="button" id="nextBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
+                                <button type="button" id="nextBtn" class="px-8 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
                                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
                             </div>
                         </form>
@@ -263,16 +263,16 @@
 
             if (i < step) {
                 // Completed step
-                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
-                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+                circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
             } else if (i === step) {
                 // Active step
-                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
-                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+                circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
             } else {
                 // Inactive step
-                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
-                label.className = "mt-2 text-sm font-bold text-red-400 text-center";
+                circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
+                label.className = "mt-2 text-xs md:text-sm font-bold text-red-400 text-center";
             }
         }
 
