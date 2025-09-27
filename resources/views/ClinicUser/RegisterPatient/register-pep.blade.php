@@ -187,37 +187,10 @@
                         <form id="multi-step-form">
                             <!-- Step 1: Personal Details -->
                             <x-pep-steps.step-1 />
-
+                            <!-- Step 2: History of Exposure -->
                             <x-pep-steps.step-2 />
-
-                            <!-- Step 3: Preferences -->
-                            <div id="step-3" class="step hidden">
-                                <div class="mb-6">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900">Preferred Contact Method</label>
-                                    <div class="flex items-center mb-4">
-                                        <input id="contact-email" type="radio" name="contact" value="email" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
-                                        <label for="contact-email" class="ml-2 text-sm font-medium text-gray-900">Email</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input id="contact-phone" type="radio" name="contact" value="phone" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
-                                        <label for="contact-phone" class="ml-2 text-sm font-medium text-gray-900">Phone</label>
-                                    </div>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="interests" class="block mb-2 text-sm font-medium text-gray-900">Interests (select all that apply)</label>
-                                    <select id="interests" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
-                                        <option value="technology">Technology</option>
-                                        <option value="finance">Finance</option>
-                                        <option value="health">Health & Wellness</option>
-                                        <option value="travel">Travel</option>
-                                        <option value="food">Food & Cooking</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-center mb-6">
-                                    <input id="newsletter" type="checkbox" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500">
-                                    <label for="newsletter" class="ml-2 text-sm font-medium text-gray-900">Subscribe to newsletter</label>
-                                </div>
-                            </div>
+                            <!-- Step 3: Animal Profile -->
+                            <x-pep-steps.step-3 />
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
@@ -226,16 +199,9 @@
                                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
                             </div>
                         </form>
-
                     </div>
                 </div>
-
-
             </div>
-
-
-
-
         </section>
 
         <!-- Modals For Logout -->
@@ -293,8 +259,9 @@
     }
 
     function validateStep(step) {
-        if (step === 1) return validateStep1();
-        if (step === 2) return validateStep2();
+        // if (step === 1) return validateStep1();
+        // if (step === 2) return validateStep2();
+        if (step === 3) return validateStep3();
         return true; // add more as needed
     }
 
