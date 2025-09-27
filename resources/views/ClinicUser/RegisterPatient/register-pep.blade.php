@@ -156,14 +156,15 @@
                                     <div id="step4-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Past Immunizations</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Immunization</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line4"></div>
+
                                 <div class="flex flex-col items-center ">
                                     <div id="step5-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Immunization</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Payment</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line5"></div>
 
@@ -171,18 +172,12 @@
                                     <div id="step6-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Payment</span>
-                                </div>
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line6"></div>
-
-                                <div class="flex flex-col items-center ">
-                                    <div id="step7-circle"
-                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Finalizing</span>
                                 </div>
                             </div>
                         </div>
+                    
+
                         <!-- Form Steps -->
                         <form id="multi-step-form">
                             <!-- Step 1: Personal Details -->
@@ -191,6 +186,13 @@
                             <x-pep-steps.step-2 />
                             <!-- Step 3: Animal Profile -->
                             <x-pep-steps.step-3 />
+                            <!-- Step 4:  Immunizations -->
+                            <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" />
+                            <!-- Step 5: Payment -->
+                            <x-pep-steps.step-5 />
+                            <!-- Step 6: Finalizing -->
+                            <x-pep-steps.step-6 />
+
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
@@ -210,7 +212,7 @@
 
 <script>
     let currentStep = 1;
-    const totalSteps = 7;
+    const totalSteps = 6;
 
     const form = document.getElementById("multi-step-form");
     const prevBtn = document.getElementById("prevBtn");
@@ -261,7 +263,8 @@
     function validateStep(step) {
         // if (step === 1) return validateStep1();
         // if (step === 2) return validateStep2();
-        if (step === 3) return validateStep3();
+        // if (step === 3) return validateStep3();
+
         return true; // add more as needed
     }
 

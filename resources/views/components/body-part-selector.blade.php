@@ -253,12 +253,35 @@
     </div>
 
 
-    <!-- Hidden input -->
+    <!-- Mode Selection -->
     <div class="flex flex-col gap-2 px-4">
-        <p id="error_selectedPart" class="text-red-500 text-xs mt-1 hidden">*This field is required. Please select a body part.</p>
-        <div class="flex items-center  gap-3 ">
-            <label for="selectedPart" class=" text-sm font-bold text-gray-900">Affected Body Part: </label>
-            <input type="text" id="selectedPart" name="selectedPart" disabled class="border border-gray-300  text-gray-900 text-sm rounded-lg block w-1/8 p-2.5 focus:ring-sky-500 focus:border-sky-500" value="" required>
+        <label class="text-sm font-bold text-gray-900">Selection Mode:</label>
+        <div class="flex gap-4">
+            <label class="flex items-center gap-2">
+                <input type="radio" name="selectionMode" value="single" checked class="text-sky-500 focus:ring-sky-500">
+                <span>Single Part</span>
+            </label>
+            <label class="flex items-center gap-2">
+                <input type="radio" name="selectionMode" value="multiple" class="text-sky-500 focus:ring-sky-500">
+                <span>Multiple Parts</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Hidden input -->
+    <div class="flex flex-col gap-2 px-4 mt-4">
+        <p id="error_selectedPart" class="text-red-500 text-xs mt-1 hidden">
+            *This field is required. Please select at least one body part.
+        </p>
+        <div class="flex items-center gap-3">
+            <label for="selectedPart" class="text-sm font-bold text-gray-900">
+                Affected Body Part:
+            </label>
+            <input type="text" id="selectedPart" name="selectedPart" disabled
+                class="hidden border border-gray-300 text-gray-900 text-sm rounded-lg block w-1/8 p-2.5 focus:ring-sky-500 focus:border-sky-500"
+                value="" required>
+            <div id="display" class="text-sm text-gray-700  flex items-center"></div>
+
         </div>
     </div>
 
@@ -270,18 +293,47 @@
     const paths = document.querySelectorAll("svg path");
     const hiddenInput = document.getElementById("selectedPart");
     const display = document.getElementById("display");
+    const modeRadios = document.querySelectorAll("input[name='selectionMode']");
+
+    let selectedParts = [];
+    let selectionMode = "single"; // default
+
+    // Listen for mode changes
+    modeRadios.forEach(radio => {
+        radio.addEventListener("change", () => {
+            selectionMode = radio.value;
+
+            // Reset selections when switching mode
+            selectedParts = [];
+            paths.forEach(p => p.classList.remove("selected"));
+            hiddenInput.value = "";
+            display.textContent = "";
+        });
+    });
 
     paths.forEach(path => {
         path.addEventListener("click", () => {
-            // Remove previous selection
-            paths.forEach(p => p.classList.remove("selected"));
+            const part = path.id;
 
-            // Highlight clicked part
-            path.classList.add("selected");
+            if (selectionMode === "single") {
+                // Clear previous selection
+                selectedParts = [part];
+                paths.forEach(p => p.classList.remove("selected"));
+                path.classList.add("selected");
+            } else {
+                // Toggle multiple selection
+                if (selectedParts.includes(part)) {
+                    selectedParts = selectedParts.filter(p => p !== part);
+                    path.classList.remove("selected");
+                } else {
+                    selectedParts.push(part);
+                    path.classList.add("selected");
+                }
+            }
 
             // Update hidden input + display
-            hiddenInput.value = path.id;
-            display.textContent = path.id;
+            hiddenInput.value = selectedParts.join(", ");
+            display.textContent = selectedParts.join(", ");
         });
     });
 </script>

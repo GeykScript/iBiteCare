@@ -66,21 +66,23 @@
                                     <p id="error_bite_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
                                 <div class="flex flex-col md:flex-row items-center justify-center md:space-x-6 p-2 ">
+
+                                    <!-- In blade with radio -->
                                     <label class="flex items-center space-x-2">
-                                        <input type="radio" name="bite_category" value="1" required
-                                            class="text-red-500 focus:ring-red-500">
-                                        <span>Category 1</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="bite_category" value="2"
-                                            class="text-red-500 focus:ring-red-500">
+                                        <input type="radio" name="bite_category" value="2" required
+                                            class="text-red-500 focus:ring-red-500"
+                                            onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
                                         <span>Category 2</span>
                                     </label>
                                     <label class="flex items-center space-x-2">
                                         <input type="radio" name="bite_category" value="3"
-                                            class="text-red-500 focus:ring-red-500">
+                                            class="text-red-500 focus:ring-red-500"
+                                            onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
                                         <span>Category 3</span>
                                     </label>
+
+                                    <input type="hidden" id="biteCategoryInput" value="">
+
                                 </div>
                             </div>
                             <div class="col-span-4 md:col-span-4 ">
