@@ -84,8 +84,14 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.patients.register.booster');
     Route::get('/clinic/patients/register/other', [OtherRegistration::class, 'showForm'])
         ->name('clinic.patients.register.other');
+
     Route::get('/clinic/patients/register/pep', [PepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.pep');
+    Route::post('/clinic/patients/register/pep/verify-nurse', [PepRegistration::class, 'verifyNurse'])
+        ->name('clinic.patients.register.pep.verify-nurse');
+
+
+
     Route::get('/clinic/patients/register/prep', [PrepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.prep');
     

@@ -11,20 +11,20 @@
                     </div>
                     <div class="col-span-6 md:col-span-3">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">No. of Dose Given</h2>
-                        <p id="error_dose_given" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
+                        <p id="error_anti_tetanus_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                         <div class="flex  items-cente justify-center gap-4 p-2">
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="dose_given" value="TT1" required
+                                <input type="radio" name="anti_tetanus_dose_given" value="TT1" required
                                     class="text-red-500 focus:ring-red-500">
                                 <span>TT1</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="dose_given" value="TT2"
+                                <input type="radio" name="anti_tetanus_dose_given" value="TT2"
                                     class="text-red-500 focus:ring-red-500">
                                 <span>TT2</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="dose_given" value="TT3"
+                                <input type="radio" name="anti_tetanus_dose_given" value="TT3"
                                     class="text-red-500 focus:ring-red-500">
                                 <span>TT3</span>
                             </label>
@@ -35,11 +35,12 @@
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Anti-Tetanus Vaccine</h2>
                         <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine' }" class="relative">
                             <!-- Hidden input to store the selected id -->
-                            <input type="hidden" name="anti_tetanus_vaccine_id" x-model="selected">
+                            <input type="hidden" name="anti_tetanus_vaccine_id" x-model="selected" required>
                             <!-- Button / Display -->
                             <button type="button"
                                 @click="open = !open"
-                                class="w-full border-2   border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
+                                id="anti_tetanus_vaccine_dropdown_button"
+                                class="w-full border   border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
                                 <span x-text="selectedLabel"></span>
                                 <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
                             </button>
@@ -55,13 +56,14 @@
                                 @endforeach
                             </div>
                         </div>
-                        <p id="error_anti_tetanus_vaccine" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        <p id="error_anti_tetanus_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
 
                     <div class="col-span-6 md:col-span-3 mt-2 md:px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Administered</h2>
-                        <input type="date" id="date_dose_given"
+                        <input type="date" id="anti_tetanus_date_dose_given" required
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                        <p id="error_anti_tetanus_date_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                 </div>
             </div>
@@ -109,9 +111,10 @@
                             <h2>Post Exposure Prophylaxis (PEP)</h2>
                             <div class="flex flex-col">
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 ">Administration Route</h2>
+                                <p id="error_route_of_administration" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 <div class="flex  gap-4 p-2">
                                     <label class="flex items-center space-x-2">
-                                        <input type="radio" name="route_of_administration" value="Intradermal"
+                                        <input type="radio" name="route_of_administration" value="Intradermal" required
                                             class="text-red-500 focus:ring-red-500">
                                         <span>ID</span>
                                     </label>
@@ -122,9 +125,10 @@
                                     </label>
                                 </div>
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 ">Vaccine Type</h2>
+                                <p id="error_active_vaccine_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 <div class="flex  gap-4 p-2">
                                     <label class="flex items-center space-x-2">
-                                        <input type="radio" name="active_vaccine_category" value="PVRV" checked
+                                        <input type="radio" name="active_vaccine_category" value="PVRV" checked required
                                             class="text-red-500 focus:ring-red-500">
                                         <span>PVRV</span>
                                     </label>
@@ -140,11 +144,12 @@
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PVRV Vaccine</h2>
                                     <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine' }" class="relative">
                                         <!-- Hidden input to store the selected id -->
-                                        <input type="hidden" name="pvrv_vaccine_id" x-model="selected">
+                                        <input type="hidden" name="pvrv_vaccine_id" x-model="selected" required>
                                         <!-- Button / Display -->
                                         <button type="button"
                                             @click="open = !open"
-                                            class="w-full border-2   border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
+                                            id="pvrv_vaccine_dropdown_button"
+                                            class="w-full border   border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
                                             <span x-text="selectedLabel"></span>
                                             <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
                                         </button>
@@ -166,18 +171,19 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <p id="error_pvrv_vaccine" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                                    <p id="error_pvrv_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
                                 @props(['pcecVaccines'])
                                 <div class="col-span-6 md:col-span-3 mt-2 md:px-4 hidden" id="pcec_vaccine_section">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PCEC Vaccine</h2>
                                     <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine' }" class="relative">
                                         <!-- Hidden input to store the selected id -->
-                                        <input type="hidden" name="pcec_vaccine_id" x-model="selected">
+                                        <input type="hidden" name="pcec_vaccine_id" x-model="selected" required>
                                         <!-- Button / Display -->
                                         <button type="button"
                                             @click="open = !open"
-                                            class="w-full border-2   border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
+                                            id="pcec_vaccine_dropdown_button"
+                                            class="w-full border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
                                             <span x-text="selectedLabel"></span>
                                             <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
                                         </button>
@@ -199,7 +205,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <p id="error_pcec_vaccine" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                                    <p id="error_pcec_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
                             </div>
                         </div>
@@ -208,9 +214,10 @@
                         <h2 class="text-lg  text-gray-500 font-900 mb-2">Passive </h2>
                         <div class="flex flex-col">
                             <h2 class="text-xs md:text-md text-gray-500 font-900 ">RIG Type</h2>
+                            <p id="error_passive_rig_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                             <div class="flex  gap-4 p-2">
                                 <label class="flex items-center space-x-2">
-                                    <input type="radio" name="passive_rig_category" value="ERIG" checked
+                                    <input type="radio" name="passive_rig_category" value="ERIG" checked required
                                         class="text-red-500 focus:ring-red-500">
                                     <span>ERIG</span>
                                 </label>
@@ -220,16 +227,17 @@
                                     <span>HRIG</span>
                                 </label>
                             </div>
-                            <div class="grid grid-cols-6 gap-2 ">
+                            <div class="grid grid-cols-6 gap-2 mb-2 ">
                                 <div class="col-span-6 md:col-span-2 ">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose:</h2>
-                                    <input type="text" id="place_of_immunization"
+                                    <p id="error_passive_dose_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
+                                    <input type="text" id="passive_dose_given" required
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                 </div>
                                 <div class="col-span-6 md:col-span-2">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Given:</h2>
-                                    <p id="error_date_given" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
-                                    <input type="date" id="date_dose_given"
+                                    <p id="error_passive_date_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
+                                    <input type="date" id="passive_date_given" required
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                 </div>
                             </div>
@@ -238,11 +246,12 @@
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">ERIG Vaccine</h2>
                                 <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine' }" class="relative">
                                     <!-- Hidden input to store the selected id -->
-                                    <input type="hidden" name="erig_vaccine_id" x-model="selected">
+                                    <input type="hidden" name="erig_vaccine_id" x-model="selected" required>
                                     <!-- Button / Display -->
                                     <button type="button"
                                         @click="open = !open"
-                                        class="w-full border-2   border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
+                                        id="erig_vaccine_dropdown_button"
+                                        class="w-full border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
                                         <span x-text="selectedLabel"></span>
                                         <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
                                     </button>
@@ -264,18 +273,19 @@
                                         @endif
                                     </div>
                                 </div>
-                                <p id="error_erig_vaccine" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                                <p id="error_erig_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                             </div>
                             @props(['hrigVaccines'])
                             <div class="col-span-6 md:col-span-3 mt-2 md:px-4 hidden" id="hrig_rig_section">
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">HRIG Vaccine</h2>
                                 <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine' }" class="relative">
                                     <!-- Hidden input to store the selected id -->
-                                    <input type="hidden" name="hrig_vaccine_id" x-model="selected">
+                                    <input type="hidden" name="hrig_vaccine_id" x-model="selected" required>
                                     <!-- Button / Display -->
                                     <button type="button"
                                         @click="open = !open"
-                                        class="w-full border-2   border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
+                                        id="hrig_vaccine_dropdown_button"
+                                        class="w-full border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
                                         <span x-text="selectedLabel"></span>
                                         <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
                                     </button>
@@ -298,16 +308,217 @@
 
                                     </div>
                                 </div>
-                                <p id="error_hrig_vaccine" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                                <p id="error_hrig_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- divider border  -->
+            <div class="col-span-12 border-2 border-gray-50 mt-4"></div>
+            <div class="col-span-12 md:p-4 pb-6">
+                <h2 class="md:text-lg text-gray-700 font-900 mb-2">Nurse In-charge</h2>
+                <p id="verifySuccess" class="text-green-500 text-sm mt-1 hidden mb-2">Nurse verified successfully.</p>
+                <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                <p id="EmptyChoice" class="text-red-500 text-xs mt-1 hidden">*Please select a nurse first.</p>
 
+                <div class="flex gap-2"
+                    x-data="{ open: false, nurse_id: null, nurse_name: 'Select Nurse', modalOpen: false, nursePassword: '' }">
+                    <!-- Nurse Dropdown -->
+                    <div>
+                        <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">RN Name</h2>
+                        @props(['nurses'])
+
+                        <div class="relative">
+                            <!-- Hidden input to store the selected id -->
+                            <input type="hidden" name="nurse_id" x-model="nurse_id" required>
+
+                            <!-- Button / Display -->
+                            <button type="button"
+                                @click="open = !open"
+                                id="nurseDropdownButton"
+                                class="w-full border border-gray-300 text-gray-900 rounded-lg px-4 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500">
+                                <span x-text="nurse_name"></span>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                            </button>
+
+                            <!-- Dropdown list -->
+                            <div x-show="open"
+                                @click.outside="open = false"
+                                class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
+                                @if (count($nurses) === 0)
+                                <div class="px-3 py-2 text-sm text-gray-500">
+                                    No nurses available
+                                </div>
+                                @else
+                                @foreach ($nurses as $nurse)
+                                <div @click="nurse_id = '{{ $nurse->id }}'; nurse_name = '{{ $nurse->first_name }} {{ $nurse->last_name }}'; open = false"
+                                    class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
+                                    {{ $nurse->first_name }} {{ $nurse->last_name }}
+                                </div>
+                                @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verify Button -->
+                    <div class="flex flex-col ">
+                        <h2 class="text-xs md:text-md text-gray-500 font-900 mb-3">RN Verification</h2>
+                        <!-- Original Verify Button -->
+                        <button
+                            id="verifyButton"
+                            type="button"
+                            :disabled="!nurse_id"
+                            @click="$dispatch('nurse-modal', { nurse_id: nurse_id, nurse_name: nurse_name })"
+                            class="text-blue-500 flex items-center justify-center font-bold hover:underline underline-offset-4 hover:cursor-pointer ">
+                            Verify
+                        </button>
+                        <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    function validateStep4() {
+        let isValid = true;
+
+        // Hide all error messages first
+        document.querySelectorAll("#step-4 p[id^='error_']").forEach(el => {
+            el.classList.add("hidden");
+        });
+
+        // Reset borders
+        document.querySelectorAll("#step-4 input, #step-4 button").forEach(el => {
+            el.classList.remove("border-red-500");
+            if (el.classList.contains("border-gray-300") || el.tagName === "BUTTON") {
+                el.classList.add("border-gray-300");
+            }
+        });
+
+        // Validate required inputs (text/date/hidden)
+        const inputs = document.querySelectorAll("#step-4 input[required]");
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                if (input.type === "hidden") {
+                    // Dropdown → highlight its button
+                    const btnId = input.name.replace("_id", "") + "_dropdown_button";
+                    const btn = document.getElementById(btnId);
+                    if (btn) {
+                        btn.classList.remove("border-gray-300");
+                        btn.classList.add("border-red-500");
+                    }
+                } else {
+                    input.classList.remove("border-gray-300");
+                    input.classList.add("border-red-500");
+                }
+
+                // Show related error message if exists
+                const errorP =
+                    document.getElementById("error_" + input.id) ||
+                    document.getElementById("error_" + input.name);
+                if (errorP) errorP.classList.remove("hidden");
+
+                isValid = false;
+            }
+        });
+
+        // Validate radios → show <p> if none selected
+        const radioGroups = [...new Set(
+            Array.from(document.querySelectorAll("#step-4 input[type=radio][required]"))
+            .map(r => r.name)
+        )];
+
+        radioGroups.forEach(name => {
+            const checked = document.querySelector(`#step-4 input[name="${name}"]:checked`);
+            const errorP = document.getElementById(`error_${name}`);
+            if (!checked && errorP) {
+                errorP.classList.remove("hidden");
+                isValid = false;
+            }
+        });
+
+        // Special: Nurse dropdown validation
+        const nurseInput = document.querySelector("#step-4 input[name='nurse_id']");
+        if (nurseInput && !nurseInput.value.trim()) {
+            const nurseBtn = document.getElementById("nurseDropdownButton");
+            if (nurseBtn) {
+                nurseBtn.classList.remove("border-gray-300");
+                nurseBtn.classList.add("border-red-500");
+            }
+            const nurseError = document.getElementById("error_nurse");
+            if (nurseError) nurseError.classList.remove("hidden");
+            isValid = false;
+        }
+        // ✅ Verification check 
+        const verifiedLabel = document.getElementById("verifiedLabel");
+        const notVerified = document.getElementById("NotVerified");
+        if (verifiedLabel && verifiedLabel.classList.contains("hidden")) {
+            // Not verified → block progression
+            if (notVerified) notVerified.classList.remove("hidden");
+            isValid = false;
+        } else {
+            // Verified → hide the red warning if shown
+            if (notVerified) notVerified.classList.add("hidden");
+        }
+
+        return isValid;
+    }
+
+    function clearFieldError(el) {
+        if (el.type === "hidden") {
+            // For hidden inputs, clear their related dropdown button + error message
+            const btnId = el.name.replace("_id", "") + "_dropdown_button";
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.classList.remove("border-red-500");
+                btn.classList.add("border-gray-300");
+            }
+
+            const errorP =
+                document.getElementById("error_" + el.id) ||
+                document.getElementById("error_" + el.name);
+            if (errorP) errorP.classList.add("hidden");
+
+        } else {
+            // Normal input/select/button cleanup
+            el.classList.remove("border-red-500");
+            if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") {
+                el.classList.add("border-gray-300");
+            }
+
+            const errorP =
+                document.getElementById("error_" + el.id) ||
+                document.getElementById("error_" + el.name);
+            if (errorP) errorP.classList.add("hidden");
+        }
+    }
+
+    // Attach to visible UI controls (not hidden inputs)
+    document.querySelectorAll("#step-4 input:not([type=hidden]), #step-4 select, #step-4 button").forEach(el => {
+        el.addEventListener("input", () => clearFieldError(el));
+        el.addEventListener("change", () => clearFieldError(el));
+        el.addEventListener("click", () => clearFieldError(el));
+    });
+
+    // Also attach directly to hidden inputs (in case x-model changes their value)
+    document.querySelectorAll("#step-4 input[type=hidden]").forEach(el => {
+        const observer = new MutationObserver(() => clearFieldError(el));
+        observer.observe(el, {
+            attributes: true,
+            attributeFilter: ["value"]
+        });
+    });
+</script>
+
+
+
 <script>
     const radios = document.querySelectorAll('input[name="active_vaccine_category"]');
     const pvrvSection = document.getElementById("pvrv_vaccine_section");

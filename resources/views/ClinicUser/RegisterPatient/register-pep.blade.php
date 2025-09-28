@@ -176,7 +176,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+
 
                         <!-- Form Steps -->
                         <form id="multi-step-form">
@@ -187,12 +187,11 @@
                             <!-- Step 3: Animal Profile -->
                             <x-pep-steps.step-3 />
                             <!-- Step 4:  Immunizations -->
-                            <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" />
+                            <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" :nurses="$nurses" />
                             <!-- Step 5: Payment -->
                             <x-pep-steps.step-5 />
                             <!-- Step 6: Finalizing -->
                             <x-pep-steps.step-6 />
-
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
@@ -201,6 +200,92 @@
                                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
                             </div>
                         </form>
+
+
+                        <!-- Modal Dialog -->
+                        <dialog
+                            id="verfiyNurseModal"
+                            x-data="{
+                                        nurse_id: null,
+                                        nurse_name: null,
+                                        open() { this.$refs.modal.showModal() },
+                                        close() { this.$refs.modal.close() }
+                                    }"
+                            x-ref="modal"
+                            @nurse-modal.window="nurse_id = $event.detail.nurse_id; nurse_name = $event.detail.nurse_name; open()"
+                            class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
+
+                            <!-- Modal content -->
+                            <div class="flex justify-center items-center gap-2 mb-2">
+                                <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-10 h-10">
+                                <div class="flex flex-col items-center justify-center">
+                                    <h2 class="text-xl font-bold ">Nurse Verification</h2>
+                                </div>
+                            </div>
+                            <div class="flex flex-col mb-4">
+                                <p>Nurse: <span x-text="nurse_name"></span></p>
+                            </div>
+                            <form
+                                x-data
+                                @submit.prevent="
+                                            fetch('{{ route('clinic.patients.register.pep.verify-nurse') }}', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({
+                                                    nurse_id: nurse_id,
+                                                    nurse_password: $el.querySelector('#nurse_password').value
+                                                })
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    close(); // close modal
+                                                    document.querySelector('#verifiedLabel').classList.remove('hidden'); // show Verified
+                                                    document.querySelector('#verifyButton').classList.add('hidden'); // hide Verify button
+                                                    document.querySelector('#nurseDropdownButton').disabled = true; // disable nurse dropdown button
+                                                    document.querySelector('#verifySuccess').classList.remove('hidden');
+
+                                                } else {
+                                                    document.querySelector('#error_nurse_password').classList.remove('hidden');
+                                                    document.querySelector('#nurse_password').classList.add('border-red-500');
+
+                                                }
+                                            })
+                                            
+                                            .catch(err => console.error(err));
+                                        ">
+                                <input type="hidden" name="nurse_id" :value="nurse_id">
+
+                                <div class="flex flex-col gap-2">
+                                    <label for="password" class="font-bold">Password</label>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
+                                        <p id="error_nurse_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
+                                    </div>
+                                    <input
+                                        type="password"
+                                        id="nurse_password"
+                                        name="nurse_password"
+                                        class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                                        required>
+                                </div>
+                                <div class="mt-4 flex justify-end gap-2">
+                                    <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
+                                        Verify
+                                    </button>
+                                    <!-- Close button -->
+                                    <button
+                                        class="px-4 py-2 bg-gray-200 rounded"
+                                        @click="close()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </dialog>
+
                     </div>
                 </div>
             </div>
@@ -264,6 +349,7 @@
         // if (step === 1) return validateStep1();
         // if (step === 2) return validateStep2();
         // if (step === 3) return validateStep3();
+        if (step === 4) return validateStep4();
 
         return true; // add more as needed
     }

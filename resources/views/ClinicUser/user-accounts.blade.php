@@ -534,7 +534,6 @@
                                         <input type="text" name="update_first_name"
                                             placeholder="First Name"
                                             :value="user.first_name"
-                                            :disabled="user.is_disabled == 1"
                                             :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             pattern="[A-Za-z]+( [A-Za-z]+)*"
 
@@ -555,7 +554,6 @@
                                         @endif
 
                                         <input type="text" name="update_last_name" placeholder="Last Name"
-                                            :disabled="user.is_disabled == 1"
                                             :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             pattern="[A-Za-z]+( [A-Za-z]+)*"
 
@@ -581,7 +579,6 @@
                                             oninput="this.value = this.value.toUpperCase()"
                                             title="Only one letter followed by a period is allowed (e.g., M.)"
                                             :value="user.middle_initial"
-                                            :disabled="user.is_disabled == 1"
                                             :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             class="w-full p-2 border border-gray-300 bg-gray-50 focus:bg-white  rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase ">
                                     </div>
@@ -661,7 +658,6 @@
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
                                             <input type="email" name="update_email" placeholder="example@gmail.com" :value="user.email" id="update-email"
-                                                :disabled="user.is_disabled == 1"
                                                 :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                                 class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
@@ -689,7 +685,6 @@
                                                 placeholder="e.g. 09xx xxx xxxx"
                                                 maxlength="13"
                                                 :value="user.phone"
-                                                :disabled="user.is_disabled == 1"
                                                 :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                                 class="w-full p-2 border border-gray-300 rounded-lg  bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>

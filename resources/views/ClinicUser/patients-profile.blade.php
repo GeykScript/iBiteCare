@@ -627,9 +627,9 @@
                                                                         disabled
                                                                         class="text-red-500"
                                                                         @if ($transaction->patientExposures !== null)
-                                                                    {{ strtolower($transaction->patientExposures->type_of_exposure) === 'scratch' ? 'checked' : '' }}
+                                                                    {{ strtolower($transaction->patientExposures->type_of_exposure) === 'non-bite' ? 'checked' : '' }}
                                                                     @endif>
-                                                                    Scratch
+                                                                    Non-Bite
                                                                 </label>
                                                             </div>
                                                         </div>

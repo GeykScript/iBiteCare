@@ -42,9 +42,9 @@
                                         <span>Bite</span>
                                     </label>
                                     <label class="flex items-center space-x-2">
-                                        <input type="radio" name="exposure" value="Scratch"
+                                        <input type="radio" name="exposure" value="Non-Bite"
                                             class="text-sky-500 focus:ring-sky-500">
-                                        <span>Scratch</span>
+                                        <span>Non-Bite</span>
                                     </label>
                                 </div>
                             </div>
@@ -85,11 +85,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-span-4 md:col-span-4 ">
-                                <label for="exposure_description" class=" mb-2 text-sm font-bold text-gray-900">Exposure Description <span class="text-gray-500 text-xs">( Leave blank if N/A )</span></label>
-                                <input type="text" id="exposure_description"
-                                    class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="col-span-8">
