@@ -85,7 +85,7 @@
 
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="col-span-8">
@@ -95,7 +95,7 @@
                                     <label class="mb-2 text-sm font-bold text-gray-900 block">Bite Management</label>
                                     <p id="error_bite_management" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
-                                <div class="flex items-center space-x-6 p-2 ">
+                                <div class="flex flex-col p-2 gap-2 ">
                                     <label class="flex items-center space-x-2">
                                         <input type="radio" name="bite_management" value="washed" required
                                             class="text-sky-500 focus:ring-sky-500">
@@ -106,12 +106,15 @@
                                             class="text-sky-500 focus:ring-sky-500">
                                         <span>Not Washed the Bite</span>
                                     </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="radio" name="bite_management" value="others" class="text-sky-500 focus:ring-sky-500">
+                                        <span>Others <span class="text-gray-500 text-xs">( Please specify if applicable )</span></span>
+                                    </label>
                                 </div>
                             </div>
-                            <div class="col-span-4 md:col-span-4 ">
-                                <label for="bite_management" class=" mb-2 text-sm font-bold text-gray-900">Others <span class="text-gray-500 text-xs">( Leave blank if N/A )</span></label>
-                                <input type="text" id="bite_management" name="bite_management"
-                                    class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                            <div class="col-span-4 md:col-span-4">
+                                <input type="text" id="bite_management_other"
+                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500 ">
                             </div>
                         </div>
                     </div>
@@ -123,6 +126,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    const radiosSpecies = document.querySelectorAll("input[name='bite_management']");
+    const othersInputSpecies = document.getElementById("bite_management_other");
+
+    radiosSpecies.forEach(radio => {
+        radio.addEventListener("change", function() {
+            if (this.value === "others") {
+                othersInputSpecies.classList.remove("hidden");
+                othersInputSpecies.setAttribute("required", "required");
+
+                // Sync text input value into the radio whenever typed
+                othersInputSpecies.addEventListener("input", () => {
+                    radio.value = othersInputSpecies.value;
+                });
+
+            } else {
+                othersInputSpecies.classList.add("hidden");
+                othersInputSpecies.removeAttribute("required");
+                othersInputSpecies.value = "";
+            }
+        });
+    });
+</script>
 <script>
     function validateStep2() {
         let isValid = true;

@@ -52,7 +52,8 @@ import {
         ChevronLeft,        
         Boxes,
         StretchHorizontal,
-        User
+        User,
+        CircleCheck
     } 
      from 'lucide';
 
@@ -106,7 +107,8 @@ createIcons({
     ChevronLeft,
     Boxes,
     StretchHorizontal,
-    User
+    User,
+    CircleCheck
   }
 }); 
 

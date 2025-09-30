@@ -60,7 +60,7 @@
             </nav>
             <div class="flex flex-col p-4 gap-2">
                 <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
-                    <i data-lucide="circle-user" class="w-8 h-8"></i>
+                    <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
                         <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
                         <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
@@ -176,8 +176,7 @@
                                 </div>
                             </div>
                         </div>
-
-
+                
                         <!-- Form Steps -->
                         <form id="multi-step-form">
                             <!-- Step 1: Personal Details -->
@@ -189,7 +188,7 @@
                             <!-- Step 4:  Immunizations -->
                             <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" :nurses="$nurses" />
                             <!-- Step 5: Payment -->
-                            <x-pep-steps.step-5 />
+                            <x-pep-steps.step-5 :staffs="$staffs" :service_fee="$service_fee" />
                             <!-- Step 6: Finalizing -->
                             <x-pep-steps.step-6 />
 
@@ -202,6 +201,93 @@
                         </form>
 
 
+                        <!-- Modal Dialog -->
+                        <dialog
+                            id="verifyPaymentModal"
+                            x-data="{
+                                        staff_id: null,
+                                        staff_name: null,
+                                        open() { this.$refs.modal.showModal() },
+                                        close() { this.$refs.modal.close() }
+                                    }"
+                            x-ref="modal"
+                            @payment-modal.window="staff_id = $event.detail.staff_id; staff_name = $event.detail.staff_name; open()"
+                            class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
+
+                            <!-- Modal content -->
+                            <div class="flex justify-center items-center gap-2 mb-2">
+                                <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-10 h-10">
+                                <div class="flex flex-col items-center justify-center">
+                                    <h2 class="text-xl font-bold ">Verification</h2>
+                                </div>
+                            </div>
+                            <div class="flex flex-col mb-4">
+                                <p>Nurse: <span x-text="staff_name"></span></p>
+                            </div>
+                            <form
+                                x-data
+                                @submit.prevent="
+                                            fetch('{{ route('clinic.patients.register.pep.verify-staff') }}', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({
+                                                    staff_id: staff_id,
+                                                    staff_password: $el.querySelector('#staff_password').value
+                                                })
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    close(); // close modal
+                                                    document.querySelector('#verifiedStaffLabel').classList.remove('hidden'); // show Verified
+                                                    document.querySelector('#verifyButtonPayment').classList.add('hidden'); // hide Verify button
+                                                    document.querySelector('#staffDropdownButton').disabled = true; // disable nurse dropdown button
+                                                    document.querySelector('#verifyStaffSuccess').classList.remove('hidden');
+                                                    document.querySelector('#NotVerifiedStaff').classList.add('hidden');
+                                                    document.querySelector('#error_staff').classList.add('hidden');
+                                                    document.querySelector('#staffDropdownButton').classList.remove('border-red-500');
+
+
+                                                } else {
+                                                    document.querySelector('#error_staff_password').classList.remove('hidden');
+                                                    document.querySelector('#staff_password').classList.add('border-red-500');
+
+                                                }
+                                            })
+                                            
+                                            .catch(err => console.error(err));
+                                        ">
+                                <input type="hidden" name="staff_id" :value="staff_id">
+
+                                <div class="flex flex-col gap-2">
+                                    <label for="password" class="font-bold">Password</label>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
+                                        <p id="error_staff_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
+                                    </div>
+                                    <input
+                                        type="password"
+                                        id="staff_password"
+                                        name="staff_password"
+                                        class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                                        required>
+                                </div>
+                                <div class="mt-4 flex justify-end gap-2">
+                                    <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
+                                        Verify
+                                    </button>
+                                    <!-- Close button -->
+                                    <button
+                                        class="px-4 py-2 bg-gray-200 rounded"
+                                        @click="close()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </dialog>
                         <!-- Modal Dialog -->
                         <dialog
                             id="verfiyNurseModal"
@@ -247,6 +333,10 @@
                                                     document.querySelector('#verifyButton').classList.add('hidden'); // hide Verify button
                                                     document.querySelector('#nurseDropdownButton').disabled = true; // disable nurse dropdown button
                                                     document.querySelector('#verifySuccess').classList.remove('hidden');
+                                                    document.querySelector('#NotVerified').classList.add('hidden');
+                                                    document.querySelector('#error_nurse').classList.add('hidden');
+                                                    d
+                                                    
 
                                                 } else {
                                                     document.querySelector('#error_nurse_password').classList.remove('hidden');
@@ -349,7 +439,8 @@
         // if (step === 1) return validateStep1();
         // if (step === 2) return validateStep2();
         // if (step === 3) return validateStep3();
-        if (step === 4) return validateStep4();
+        // if (step === 4) return validateStep4();
+        // if (step === 5) return validateStep5();
 
         return true; // add more as needed
     }
