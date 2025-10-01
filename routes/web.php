@@ -91,6 +91,8 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.patients.register.pep.verify-nurse');
     Route::post('/clinic/patients/register/pep/verify-staff', [PepRegistration::class, 'verifyStaff'])
         ->name('clinic.patients.register.pep.verify-staff');
+    Route::post('/clinic/patients/register/pep/register', [PepRegistration::class, 'registerPatientPEP'])
+        ->name('clinic.patients.register.pep.register');
 
 
 

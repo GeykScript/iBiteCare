@@ -166,31 +166,31 @@
                                     </div>
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Payment</span>
                                 </div>
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line5"></div>
+                                <!-- <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line5"></div> -->
 
-                                <div class="flex flex-col items-center ">
+                                <!-- <div class="flex flex-col items-center ">
                                     <div id="step6-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Finalizing</span>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
-                
+                        @if (session('success'))
+                        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100">
+                            {{ session('success') }}
+                        </div>
+                        @endif
                         <!-- Form Steps -->
-                        <form id="multi-step-form">
+                        <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.pep.register') }}">
+                            @csrf
                             <!-- Step 1: Personal Details -->
                             <x-pep-steps.step-1 />
                             <!-- Step 2: History of Exposure -->
                             <x-pep-steps.step-2 />
                             <!-- Step 3: Animal Profile -->
                             <x-pep-steps.step-3 />
-                            <!-- Step 4:  Immunizations -->
-                            <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" :nurses="$nurses" />
-                            <!-- Step 5: Payment -->
-                            <x-pep-steps.step-5 :staffs="$staffs" :service_fee="$service_fee" />
-                            <!-- Step 6: Finalizing -->
-                            <x-pep-steps.step-6 />
+                            
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
@@ -387,7 +387,7 @@
 
 <script>
     let currentStep = 1;
-    const totalSteps = 6;
+    const totalSteps = 3;
 
     const form = document.getElementById("multi-step-form");
     const prevBtn = document.getElementById("prevBtn");
@@ -461,8 +461,8 @@
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (validateStep(currentStep)) {
-            alert("Form submitted successfully!");
             // Here you’d typically send form data via AJAX or submit
+            form.submit();
         }
     });
 

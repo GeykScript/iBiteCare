@@ -277,7 +277,7 @@
             <label for="selectedPart" class="text-sm font-bold text-gray-900">
                 Affected Body Part:
             </label>
-            <input type="text" id="selectedPart" name="selectedPart" disabled
+            <input type="text" id="selectedPart" name="selectedPart" readonly
                 class="hidden border border-gray-300 text-gray-900 text-sm rounded-lg block w-1/8 p-2.5 focus:ring-sky-500 focus:border-sky-500"
                 value="" required>
             <div id="display" class="text-sm text-gray-700  flex items-center"></div>

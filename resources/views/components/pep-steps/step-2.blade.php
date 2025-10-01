@@ -9,21 +9,21 @@
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-2">
                                 <label for="date_of_bite" class=" mb-2 text-sm font-bold text-gray-900">Date of Bite</label>
-                                <input type="date" id="date_of_bite" required
+                                <input type="date" id="date_of_bite" name="date_of_bite" required
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5  focus:ring-sky-500 focus:border-sky-500">
                                 <p id="error_date_of_bite" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
 
                             </div>
                             <div class="col-span-4 md:col-span-2">
                                 <label for="time_of_bite" class=" mb-2 text-sm font-bold text-gray-900">Time of Bite</label>
-                                <input type="time" id="time_of_bite" required
+                                <input type="time" id="time_of_bite" name="time_of_bite" required
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5">
                                 <p id="error_time_of_bite" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
 
                             </div>
                             <div class="col-span-4 md:col-span-4">
                                 <label for="location_of_incident" class=" mb-2 text-sm font-bold text-gray-900">Location of Incident <span class="text-gray-500 text-xs">( Leave blank if N/A )</span></label>
-                                <input type="text" id="location_of_incident"
+                                <input type="text" id="location_of_incident" name="location_of_incident"
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5  focus:ring-sky-500 focus:border-sky-500">
                             </div>
                         </div>

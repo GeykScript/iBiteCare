@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ClinicUser\RegisterPatient;
 
 use App\Http\Controllers\ClinicUser\Services;
 use App\Http\Controllers\Controller;
+use App\Models\AnimalProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Inventory_items;
@@ -12,6 +13,10 @@ use App\Models\Inventory_units;
 use App\Models\ClinicUser;
 use App\Models\Patient;
 use App\Models\ClinicServices;
+use App\Models\ClinicTransactions;
+use App\Models\PatientExposures;
+use App\Models\PatientVitalSigns;
+use Carbon\Carbon;
 
 class PepRegistration extends Controller
 {
@@ -94,4 +99,129 @@ class PepRegistration extends Controller
 
         return response()->json(['success' => false, 'message' => 'Incorrect password.'], 422);
     }
+
+
+    public function registerPatientPEP(Request $request)
+    {
+        $request->validate([
+            // Step 1: Personal Details
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_initial' => 'required|string|max:2',
+            'suffix' => 'nullable|string|max:4',
+            'date_of_registration' => 'required|date',
+
+            'region' => 'string|max:255',
+            'province' => 'string|max:255',
+            'city' => 'string|max:255',
+            'barangay' => 'string|max:255',
+            'description' => 'string|max:255',
+            
+            'contact_number' => 'required|string|max:13',   
+            'sex' => 'string|max:255',
+            'date_of_birth' => 'required|date',
+            'age' => 'required|integer|min:0',
+
+            'temperature' => 'nullable|numeric',
+            'weight' => 'nullable|numeric',
+            'blood_pressure' => 'nullable|string|max:255',
+
+           // Step 2: Exposure Details
+            'date_of_bite' => 'required|date',
+            'time_of_bite' => 'required|date_format:H:i',
+            'location_of_incident' => 'nullable|string|max:255',
+            'exposure' => 'required|in:Bite,Non-Bite',
+            'selectedPart' => 'required|string|max:255',
+            'bite_category' => 'required|integer',
+            'bite_management' => 'nullable|string|max:255',
+
+            // Step 3: Animal Profile
+            'species' => 'required|string|max:255',
+            'clinical_status' => 'required|in:Healthy,Sick,Died,Killed,Lost',
+            'ownership_status' => 'required|in:Owned,Neighbor,Stray',
+            'brain_exam' => 'nullable|string|max:255',
+            'brain_exam_location' => 'nullable|string|max:255',
+            'brain_exam_results' => 'nullable|string|max:255',
+
+            // Step 4: A. Previous Anti-Tetanus Vaccination
+
+
+        ]);
+
+        // Combine address fields into a single address string
+        $address = $request->province . ', ' . $request->city . ', ' . $request->barangay . ', ' . $request->description;
+
+        // Create new Patient record
+        $patient = Patient::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'middle_initial' => $request->middle_initial,
+            'suffix' => $request->suffix,
+            'birthdate' => $request->date_of_birth,
+            'age' => $request->age,
+            'sex' => $request->sex,
+            'registration_date' => $request->date_of_registration,
+            'address' => $address,
+            'contact_number' => $request->contact_number,
+        ]);
+
+        // Create new ClinicTransaction record
+        $transaction = ClinicTransactions::create([
+            'patient_id'       => $patient->id,
+            'service_id'       => 1,
+            'transaction_date' => $request->date_of_registration,
+        ]);
+        // Update the grouping field with the transaction's own ID
+        ClinicTransactions::where('id', $transaction->id)
+            ->update(['grouping' => $transaction->id]);
+
+        // Create new PatientVitalSigns record
+        PatientVitalSigns::create([
+            'patient_id' => $patient->id,
+            'transaction_id' => $transaction->id,
+            'recorded_date' => $request->date_of_registration,
+            'temperature' => $request->temperature,
+            'weight' => $request->weight,
+            'blood_pressure' => $request->blood_pressure,
+        ]);
+
+        // Create new AnimalProfile record
+       $animalProfile = AnimalProfile::create([
+            'species' => $request->species,
+            'clinical_status' => $request->clinical_status,
+            'ownership_status' => $request->ownership_status,
+            'brain_exam' => $request->brain_exam,
+            'brain_exam_location' => $request->brain_exam_location,
+            'brain_exam_results' => $request->brain_exam_results,             
+        ]);
+
+
+        $dateTimeOfBite = Carbon::parse(
+            $request->date_of_bite . ' ' . $request->time_of_bite
+        );
+
+        // Create new PatientExposures record
+       PatientExposures::create([
+            'patient_id' => $patient->id,
+            'transaction_id' => $transaction->id,
+            'date_time' =>  $dateTimeOfBite,
+            'place_of_bite' => $request->location_of_incident,
+            'type_of_exposure' => $request->exposure,
+            'site_of_bite' => $request->selectedPart,
+            'bite_category' => $request->bite_category,
+            'bite_management' => $request->bite_management,
+            'animal_profile_id' => $animalProfile->id
+        ]);
+
+
+
+        return redirect()->route('clinic.patients.register.pep')->with('success', 'Patient registered successfully.');
+
+    }  
+
+
+
+
+
+
 }

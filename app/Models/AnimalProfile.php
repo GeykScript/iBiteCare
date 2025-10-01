@@ -16,6 +16,6 @@ class AnimalProfile extends Model
         'brain_exam_location',
         'brain_exam_results',
         'created_at',
-        'modified_at',
+        'updated_at',
     ];
 }

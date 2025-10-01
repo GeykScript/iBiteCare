@@ -10,13 +10,13 @@
             </div>
             <div class="col-span-12 md:col-span-4 ">
                 <label for="first_name" class="block mb-2 text-sm font-bold text-gray-900">First Name</label>
-                <input type="text" id="first_name" required placeholder="e.g Juan"
+                <input type="text" name="first_name" id="first_name" required placeholder="e.g Juan"
                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500 ">
                 <p id="error_first_name" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
             </div>
             <div class="col-span-12 md:col-span-4 ">
                 <label for="last_name" class="block mb-2 text-sm font-bold text-gray-900">Last Name</label>
-                <input type="text" id="last_name" required placeholder="e.g Dela Cruz"
+                <input type="text" name="last_name" id="last_name" required placeholder="e.g Dela Cruz"
                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                 <p id="error_last_name" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
             </div>
@@ -24,14 +24,14 @@
                 <div class="grid grid-cols-2 gap-1 flex">
                     <div>
                         <label for="middleInitial" class="block mb-2 text-sm font-bold text-gray-900">M.I.</label>
-                        <input type="text" id="middleInitial" required maxlength="2" placeholder="e.g R."
+                        <input type="text" name="middle_initial" id="middleInitial" required maxlength="2" placeholder="e.g R."
 
                             class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_middleInitial" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                     <div>
                         <label for="suffix" class="block mb-2 text-sm font-bold text-gray-900">Suffix</label>
-                        <input type="text" id="suffix" placeholder="e.g Jr."
+                        <input type="text" name="suffix" id="suffix" placeholder="e.g Jr."
                             maxlength="4"
                             class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5  focus:ring-sky-500 focus:border-sky-500">
                     </div>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-span-12 md:col-span-2 md:ml-6 ">
                 <label for="dateOfRegistration" class="block mb-2 text-sm font-bold text-gray-900">Date of Registration</label>
-                <input type="date" id="dateOfRegistration" required
+                <input type="date" name="date_of_registration" id="dateOfRegistration" required
                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5  focus:ring-sky-500 focus:border-sky-500">
                 <p id="error_dateOfRegistration" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
             </div>
@@ -67,7 +67,7 @@
                                     class="absolute w-full bg-white mt-1 hidden max-h-60 overflow-y-auto z-10"></ul>
                             </div>
                         </div>
-                        <input type="hidden" id="region_input">
+                        <input type="hidden" id="region_input" name="region">
                         <p id="error_region" class="text-end text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                 </div>

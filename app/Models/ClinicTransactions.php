@@ -12,7 +12,8 @@ class ClinicTransactions extends Model
         'patient_id',
         'service_id',
         'transaction_date',
-        'grouping'
+        'grouping',
+        
     ];
 
     public function Patient()

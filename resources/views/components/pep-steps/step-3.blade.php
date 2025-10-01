@@ -136,12 +136,12 @@
 
                             <div class="flex items-center gap-2 mb-2">
                                 <label for="brain_exam_location" class=" mb-2 text-sm font-bold text-gray-900">Location:</label>
-                                <input type="text" id="brain_exam_location"
+                                <input type="text" id="brain_exam_location" name="brain_exam_location"
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                             </div>
                             <div class="flex items-center gap-2">
                                 <label for="brain_exam_results" class=" mb-2 text-sm font-bold text-gray-900">Results:</label>
-                                <input type="text" id="brain_exam_results"
+                                <input type="text" id="brain_exam_results" name="brain_exam_results" 
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                             </div>
                         </div>

@@ -20,8 +20,8 @@
                     </h2>
 
                     <p>You may proceed to view patient details or return to the home page.</p>
-                    <div class="flex flex-col text-sky-400 font-semibold">
-                        <a href="#" class="text-blue-500 hover:underline underline-offset-4">View Patient Details</a>
+                    <div class="flex flex-col text-sky-400 font-semibold text-sm">
+                        <a href="#" class="text-blue-500 hover:underline underline-offset-4 ">View Patient Details</a>
                         <a href="{{ route('clinic.dashboard') }}" class="text-blue-500 hover:underline underline-offset-4">Return to Home Page</a>
                     </div>
                 </div>
