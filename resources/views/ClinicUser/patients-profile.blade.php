@@ -238,7 +238,7 @@
                                                 <tr>
                                                     <td class="px-4 py-2 border">{{ $antitetanus->dose_brand }}</td>
                                                     <td class="px-4 py-2 border">{{ $antitetanus->dose_given }}</td>
-                                                    <td class="px-4 py-2 border">{{ $antitetanus->rn_in_charge }}</td>
+                                                    <td class="px-4 py-2 border">{{ $antitetanus->nurse->first_name }} {{ $antitetanus->nurse->middle_initial }} {{ $antitetanus->nurse->last_name }} </td>
                                                     <td class="px-4 py-2 border">{{ $antitetanus->date_dose_given }}</td>
                                                 </tr>
                                                 @endforeach

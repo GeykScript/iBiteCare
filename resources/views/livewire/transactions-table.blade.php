@@ -76,7 +76,7 @@
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('service')">Service Provided</th>
                     <th class="border bg-gray-800 text-white px-2 py-2" colspan="3">Immunizations Used <br><span class="text-xs font-normal">(Vaccine, Rig, Anti-Tetanus)</span></th>
                     <th class="border bg-gray-800 text-white px-2 py-2">Paid Amount</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2 ">Status</th>
+                    <!-- <th class="border bg-gray-800 text-white px-2 py-2 ">Status</th> -->
                     <th colspan="2" class="px-2 py-2 border-l border-b bg-gray-800 text-white rounded-tr-lg ">In Charge <br><span class="text-xs font-normal">(Administration & Payment)</span></th>
                 </tr>
             </thead>
@@ -112,7 +112,7 @@
         : 'N/A' }}
                     </td>
                     <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo" class="w-3 h-3">{{ $transaction->paymentRecords->amount_paid }}</span> </td>
-                    <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-4 p-1 text-green-500 font-bold rounded-md">{{ $transaction->invoice->status }} </span></td>
+                    <!-- <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-4 p-1 text-green-500 font-bold rounded-md">Paid</span></td> -->
                     <td class="border-b px-2 py-2 text-gray-700">{{ $transaction->immunizations->administeredBy->first_name }} {{ $transaction->immunizations->administeredBy->last_name }},
                         {{ $transaction->paymentRecords->receivedBy->first_name }} {{ $transaction->paymentRecords->receivedBy->last_name }}
                     </td>

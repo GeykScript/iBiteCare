@@ -37,7 +37,7 @@ class PaymentRecordsTable extends Component
     }
     public function render()
     {
-        $query = PaymentRecords::with(['patient', 'transaction.service', 'invoice', 'receivedBy']);
+        $query = PaymentRecords::with(['patient', 'transaction.service', 'receivedBy']);
 
         // Handle sorting
         if ($this->sortBy === 'patient') {

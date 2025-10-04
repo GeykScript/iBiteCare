@@ -34,11 +34,7 @@ class ClinicTransactions extends Model
     {
         return $this->hasOne(PatientImmunizations::class, 'transaction_id', 'id');
     }
-    
-    public function invoice()
-    {
-        return $this->hasOne(PaymentInvoice::class, 'transaction_id', 'id');
-    }
+
 
     public function patientExposures()
     {
@@ -49,6 +45,9 @@ class ClinicTransactions extends Model
     {
         return $this->hasMany(PatientImmunizationsSchedule::class, 'transaction_id', 'id');
     }
+
+
+
 
 
     public function getDateOnlyAttribute()

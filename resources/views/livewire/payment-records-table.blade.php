@@ -73,11 +73,10 @@
                     <th class="border-r border-b bg-gray-800 text-white px-2 py-3 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">ID</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer" wire:click="setSortBy('patient')">Patient Name</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer" wire:click="setSortBy('transaction')">Service Received</th>
-                    <th class="border bg-gray-800 text-white px-2 py-3">Invoice No#</th>
                     <th class="border bg-gray-800 text-white px-2 py-3">Receipt No#</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer" wire:click="setSortBy('amount_paid')">Paid Amount</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer" wire:click="setSortBy('payment_date')">Payment Date</th>
-                    <th class="border-l border-b bg-gray-800 text-white px-2 py-3">Status</th>
+                    <!-- <th class="border-l border-b bg-gray-800 text-white px-2 py-3">Status</th> -->
                     <th colspan="2" class="px-2 py-3 border bg-gray-800 text-white rounded-tr-lg hover:cursor-pointer" wire:click="setSortBy('in_charge')"> In Charge</th>
                 </tr>
             </thead>
@@ -95,11 +94,10 @@
                     <td class="border-b px-2 py-2 text-gray-700">{{ $paymentRecord->id }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $paymentRecord->patient->first_name }} {{ $paymentRecord->patient->middle_initial }} {{ $paymentRecord->patient->last_name }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $paymentRecord->transaction->service->name }}</td>
-                    <td class="border px-2 py-2 text-gray-700">{{ $paymentRecord->invoice->invoice_number }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $paymentRecord->receipt_number }}</td>
                     <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo" class="w-3 h-3">{{ $paymentRecord->amount_paid }}</span> </td>
                     <td class="border px-2 py-2 text-gray-700">{{ date('F d, Y - g:i A', strtotime($paymentRecord->payment_date)) }}</td>
-                    <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-4 p-1 text-green-500 font-bold rounded-md">{{ $paymentRecord->invoice->status }} </span></td>
+                    <!-- <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-4 p-1 text-green-500 font-bold rounded-md">Paid </span></td> -->
                     <td class="border-b px-2 py-2 text-gray-700">{{ $paymentRecord->receivedBy->first_name }} {{ $paymentRecord->receivedBy->last_name }}</td>
                 </tr>
                 @endforeach

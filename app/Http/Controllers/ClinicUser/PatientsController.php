@@ -58,11 +58,11 @@ class PatientsController extends Controller
 
         $paymentRecords =  PaymentRecords::where('patient_id', $id )->get();
 
-        $transactions = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'invoice', 'patientExposures', 'patientSchedules'])
+        $transactions = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations','patientExposures', 'patientSchedules'])
             ->where('patient_id', $id)
             ->get();
 
-            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'invoice', 'patientExposures', 'patientSchedules'])
+            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
             ->where('patient_id', $id)
             ->orderBy('transaction_date', 'asc')
             ->get()

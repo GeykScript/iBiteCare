@@ -13,9 +13,15 @@ use App\Models\Inventory_units;
 use App\Models\ClinicUser;
 use App\Models\Patient;
 use App\Models\ClinicServices;
+use App\Models\ClinicServicesSchedules;
 use App\Models\ClinicTransactions;
 use App\Models\PatientExposures;
+use App\Models\PatientImmunizations;
+use App\Models\PatientImmunizationsSchedule;
+use App\Models\PatientPrevAntiRabies;
+use App\Models\PatientPrevAntiTetanus;
 use App\Models\PatientVitalSigns;
+use App\Models\PaymentRecords;
 use Carbon\Carbon;
 
 class PepRegistration extends Controller
@@ -133,6 +139,7 @@ class PepRegistration extends Controller
             'exposure' => 'required|in:Bite,Non-Bite',
             'selectedPart' => 'required|string|max:255',
             'bite_category' => 'required|integer',
+            'pep_immunization_type' => 'required|in:Active,Passive/Active,None',
             'bite_management' => 'nullable|string|max:255',
 
             // Step 3: Animal Profile
@@ -144,6 +151,39 @@ class PepRegistration extends Controller
             'brain_exam_results' => 'nullable|string|max:255',
 
             // Step 4: A. Previous Anti-Tetanus Vaccination
+            // previous anti-tetanus vaccination
+            'year_last_dose_given' => 'nullable|date_format:Y',
+            'anti_tetanus_dose_given' => 'nullable|string|max:255',
+            'anti_tetanus_vaccine_id' => 'nullable|integer',
+            'anti_tetanus_date_dose_given' => 'nullable|date',
+
+            //previous rabies vaccination
+            'immunization_type' => 'nullable|string|max:255',
+            'date_dose_given' => 'nullable|date',
+            'place_of_immunization' => 'nullable|string|max:255',
+
+            // current vaccination details
+            //active vaccine category
+            'route_of_administration' => 'required|string|max:255',
+            'active_vaccine_category' => 'required|in:PVRV,PCEC',
+            'pvrv_vaccine_id' => 'nullable|integer',
+            'pcec_vaccine_id' => 'nullable|integer',
+
+            // passive vaccine category
+            'passive_rig_category' => 'nullable|in:ERIG,HRIG',
+            'erig_vaccine_id' => 'nullable|integer',
+            'hrig_vaccine_id' => 'nullable|integer',
+            'passive_dose_given' => 'nullable|numeric|min:0',
+            'passive_date_given' => 'nullable|date',
+
+            //nurse
+            'nurse_id' => 'required|integer',
+
+            //step 5: payment
+            'dateOfTransaction' => 'required|date',
+            'service_id' => 'nullable|integer',
+            'staff_id' => 'required|integer',
+            'total_amount' => 'required|numeric|min:0',
 
 
         ]);
@@ -176,7 +216,7 @@ class PepRegistration extends Controller
             ->update(['grouping' => $transaction->id]);
 
         // Create new PatientVitalSigns record
-        PatientVitalSigns::create([
+       $patientVitalSigns = PatientVitalSigns::create([
             'patient_id' => $patient->id,
             'transaction_id' => $transaction->id,
             'recorded_date' => $request->date_of_registration,
@@ -201,7 +241,8 @@ class PepRegistration extends Controller
         );
 
         // Create new PatientExposures record
-       PatientExposures::create([
+
+       $patientExposure = PatientExposures::create([
             'patient_id' => $patient->id,
             'transaction_id' => $transaction->id,
             'date_time' =>  $dateTimeOfBite,
@@ -213,6 +254,91 @@ class PepRegistration extends Controller
             'animal_profile_id' => $animalProfile->id
         ]);
 
+        PatientPrevAntiTetanus::create([
+            'patient_id' => $patient->id,
+            'dose_brand' => "Anti-Tetanus",
+            'dose_given' => $request->anti_tetanus_dose_given,
+            'date_dose_given' => $request->anti_tetanus_date_dose_given,
+            'rn_in_charge' => $request->nurse_id,
+            'year_last_dose_given' => $request->year_last_dose_given,
+        ]);
+
+        if ($request->immunization_type && $request->place_of_immunization && $request->date_dose_given != null){
+            PatientPrevAntiRabies::create([
+                'patient_id' => $patient->id,
+                'immunization_type' => $request->immunization_type,
+                'place_of_immunization' => $request->place_of_immunization,
+                'date_dose_given' => $request->date_dose_given,
+            ]);
+        }
+  
+
+            // 1. Generate all schedules
+            $serviceSchedules = ClinicServicesSchedules::where('service_id', 1)->get();
+            $patientSchedules = collect(); // will hold all created schedules
+
+            foreach ($serviceSchedules as $serviceSchedule) {
+               $scheduledDate = Carbon::parse($request->date_of_registration)
+                            ->addDays($serviceSchedule->day_offset)
+                            ->format('Y-m-d');
+
+            // Determine if this is the "Day 0" schedule
+            $isDay0 = $serviceSchedule->day_offset == 0;
+
+                $patientSchedules->push(
+                    PatientImmunizationsSchedule::create([
+                        'patient_id'       => $patient->id,
+                        'transaction_id'   => $transaction->id,
+                        'service_id'      =>  1,
+                        'service_sched_id' => $serviceSchedule->id,
+                        'Day'              => $serviceSchedule->label,
+                        'grouping'         => $transaction->id,
+                        'scheduled_date'   => $scheduledDate,
+                        'date_completed'   => $isDay0 ? $scheduledDate : null, // initially not completed
+                        'dose'             => $isDay0 ? 0.2 : null, // default dose
+                        'status'           => $isDay0 ? 'Completed' : 'Pending',
+                        'administered_by'  => $isDay0 ? $request->nurse_id : null,
+                    ])
+                );
+            }
+
+        // 2. Grab the first schedule (Day 0)
+        $firstSchedule = $patientSchedules->first();
+
+
+        $paymentRecord = PaymentRecords::create([
+            'patient_id' => $patient->id,
+            'transaction_id' => $transaction->id,
+            'receipt_number' => date('Y') . '-' . str_pad(mt_rand(1, 99999999), 8, '0', STR_PAD_LEFT),
+            'payment_date' => $request->dateOfTransaction,
+            'amount_paid' => $request->total_amount,
+            'received_by_id' => $request->staff_id,
+        ]);
+
+        //immunization record
+        PatientImmunizations::create([
+            'patient_id' => $patient->id,
+            'transaction_id' => $transaction->id,
+            'service_id' => 1,
+            'exposure_id' => $patientExposure->id,
+            'vital_signs_id' => $patientVitalSigns->id,
+            'immunization_type' => $request->pep_immunization_type,
+            'date_given' => $request->date_of_registration,
+            'day_label' =>  'D0',
+            'vaccine_used_id' => $request->active_vaccine_category == 'PVRV'
+                ? ($request->pvrv_vaccine_id ?? null)
+                : ($request->pcec_vaccine_id ?? null),
+            'rig_used_id' => $request->passive_rig_category == 'ERIG'
+                ? ($request->erig_vaccine_id ?? null)
+                : ($request->hrig_vaccine_id ?? null),
+            'anti_tetanus_id' => $request->anti_tetanus_vaccine_id ?? null,
+            'route_of_administration' => $request->route_of_administration,
+            'administered_by_id' => $request->nurse_id,
+            'payment_id' => $paymentRecord->id,
+            'schedule_id' => $firstSchedule?->id, // <-- links to the first schedule
+            'status' => 'Completed',
+        ]);
+        
 
 
         return redirect()->route('clinic.patients.register.pep')->with('success', 'Patient registered successfully.');

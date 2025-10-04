@@ -48,11 +48,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-span-4 md:col-span-4 ">
-                                <label for="exposure_description" class=" mb-2 text-sm font-bold text-gray-900">Exposure Description <span class="text-gray-500 text-xs">( Leave blank if N/A )</span></label>
-                                <input type="text" id="exposure_description"
-                                    class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -69,7 +65,13 @@
 
                                     <!-- In blade with radio -->
                                     <label class="flex items-center space-x-2">
-                                        <input type="radio" name="bite_category" value="2" required
+                                        <input type="radio" name="bite_category" value="1" required
+                                            class="text-red-500 focus:ring-red-500"
+                                            onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
+                                        <span>Category 1</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="radio" name="bite_category" value="2"
                                             class="text-red-500 focus:ring-red-500"
                                             onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
                                         <span>Category 2</span>
@@ -80,7 +82,7 @@
                                             onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
                                         <span>Category 3</span>
                                     </label>
-
+                                    <input type="text" id="pep_immunization_type" name="pep_immunization_type" value="">
                                     <input type="hidden" id="biteCategoryInput" value="">
 
                                 </div>

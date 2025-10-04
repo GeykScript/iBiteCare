@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-2">
             <div class="col-span-12 md:col-span-6 md:px-4">
-                <h2 class="md:text-lg text-gray-700 font-900 mb-2">Previous Anti-Tetanus Immunization</h2>
+                <h2 class="md:text-lg text-gray-700 font-900 mb-2"> Anti-Tetanus Immunization</h2>
                 <div class="grid grid-cols-6 ">
                     <div class="col-span-6 md:col-span-3 px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Year last Dose Given <br> <span class="text-gray-500 text-xs font-normal">( Leave blank if unknown )</span></h2>
@@ -61,7 +61,7 @@
                     </div>
                     <div class="col-span-6 md:col-span-3 mt-2 md:px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Administered</h2>
-                        <input type="date" id="anti_tetanus_date_dose_given" required
+                        <input type="date" id="anti_tetanus_date_dose_given" name="anti_tetanus_date_dose_given" required
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_anti_tetanus_date_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
@@ -89,12 +89,12 @@
                     <div class="col-span-6 md:col-span-2">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Given</h2>
                         <p id="error_date_given" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
-                        <input type="date" id="date_dose_given"
+                        <input type="date" id="date_dose_given" name="date_dose_given"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
                     <div class="col-span-6 mt-2">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Place Administered</h2>
-                        <input type="text" id="place_of_immunization"
+                        <input type="text" id="place_of_immunization" name="place_of_immunization"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
                 </div>
@@ -238,7 +238,7 @@
                             @props(['erigVaccines'])
                             <div class="col-span-12 md:col-span-6 mt-2 " x-show="PassiveCategory === 'ERIG'">
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">ERIG Vaccine</h2>
-                                <div x-data="{ open: false, selected_erig: null, selectedLabelErig: 'Select Vaccine' }" class="relative">
+                                <div x-data="{ open: false, selected_erig: null, selectedLabelErig: 'Select Vaccine', volume: null }" class="relative">
                                     <!-- Hidden input to store the selected id -->
                                     <input type="hidden" name="erig_vaccine_id" x-model="selected_erig" :required="PassiveCategory === 'ERIG'" :disabled="PassiveCategory !== 'ERIG'">
                                     <!-- Button / Display -->
@@ -259,9 +259,9 @@
                                         </div>
                                         @else
                                         @foreach ($erigVaccines as $vaccine)
-                                        <div @click="selected_erig = '{{ $vaccine->id }}'; selectedLabelErig = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; open = false"
+                                        <div @click="selected_erig = '{{ $vaccine->id }}'; selectedLabelErig = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; volume = '{{ $vaccine->remaining_volume }}'; open = false"
                                             class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                            {{ $vaccine->item->product_type }} - #{{ $vaccine->id }}
+                                            {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )
                                         </div>
                                         @endforeach
                                         @endif
@@ -308,13 +308,13 @@
                                 <div class="col-span-6 md:col-span-2 ">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose:</h2>
                                     <p id="error_passive_dose_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
-                                    <input type="text" id="passive_dose_given" required
+                                    <input type="number" id="passive_dose_given" name="passive_dose_given" required min="0" step="any"
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                 </div>
                                 <div class="col-span-6 md:col-span-3">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Given:</h2>
                                     <p id="error_passive_date_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
-                                    <input type="date" id="passive_date_given" required
+                                    <input type="date" id="passive_date_given" name="passive_date_given" required
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                 </div>
                             </div>
@@ -523,13 +523,21 @@
 
 <script>
     function checkCategory() {
+        const pep_immunization_type = document.getElementById("pep_immunization_type");
         const passiveSection = document.getElementById("passive_section");
         const category = document.getElementById("biteCategoryInput").value;
+        const inputs = passiveSection.querySelectorAll("input, select, textarea, button");
 
-        if (category === "2") {
+        if (category === "2" || category === "1") {
+            // Hide and disable all inputs
+            pep_immunization_type.value = "Active";
             passiveSection.style.display = "none";
+            inputs.forEach(el => el.disabled = true);
         } else if (category === "3") {
+            // Show and enable all inputs
+            pep_immunization_type.value = "Passive/Active";
             passiveSection.style.display = "block";
+            inputs.forEach(el => el.disabled = false);
         }
     }
 

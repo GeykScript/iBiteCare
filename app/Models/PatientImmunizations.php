@@ -16,20 +16,18 @@ class PatientImmunizations extends Model
         'exposure_id',
         'vital_signs_id',
         'immunization_type',
-        'scheduled_date',
         'date_given',
         'day_label',
         'vaccine_used_id',
         'rig_used_id',
         'anti_tetanus_id',
         'route_of_administration',
-        'patient_outcome',
         'administered_by_id',
-        'invoice_id',
+        'payment_id',
         'schedule_id',
         'status',
         'created_at',
-        'modified_at',
+        'updated_at',
     ];
     public function patient()
     {
@@ -71,10 +69,11 @@ class PatientImmunizations extends Model
         return $this->belongsTo(ClinicUser::class, 'administered_by_id');
     }
 
-    public function invoice()
+    public function payment()
     {
-        return $this->belongsTo(PaymentInvoice::class, 'invoice_id');
+        return $this->belongsTo(PaymentRecords::class, 'payment_id');
     }
+    
     public function schedule()
     {
         return $this->belongsTo(ClinicServicesSchedules::class, 'schedule_id');

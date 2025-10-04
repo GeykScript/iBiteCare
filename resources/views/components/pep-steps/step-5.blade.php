@@ -7,13 +7,13 @@
                         <h2 class="md:text-lg text-gray-700 font-900 ">Payment Transaction</h2>
                         <div>
                             <h2 class="text-xs md:text-md text-gray-500 font-900 ">Date of Transaction</h2>
-                            <input type="date" id="dateOfTransaction" required
+                            <input type="date" id="dateOfTransaction" name="dateOfTransaction" required
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                             <p id="error_dateOfTransaction" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                         </div>
                         <div>
                             <h2 class="text-xs md:text-md text-gray-500 font-900 ">Service Received: </h2>
-                            <input type="hidden" value="1" id="service_id">
+                            <input type="hidden" value="1" id="service_id" name="service_id">
                             <p>Post Exposure Prophylaxis (PEP) Treatment</p>
                         </div>
                         <div class="flex gap-2  justify-between"
@@ -78,15 +78,15 @@
                     <div class="flex flex-col mt-6">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Service Fee: </h2>
                         @props(['service_fee'])
-                        <input type="text" id="price" disabled value="{{ $service_fee->service_fee }}" required
+                        <input type="text" id="service_fee" name="service_fee" disabled value="{{ $service_fee->service_fee }}" required
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
-                        <p id="error_price" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        <p id="error_service_fee" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                     <div class="flex flex-col">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Additional Fee:</h2>
-                        <input type="text" id="additional_price" required placeholder="Leave blank if N/A"
+                        <input type="text" id="additional_fee" name="additional_fee"  placeholder="Leave blank if N/A"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
-                        <p id="error_additional_price" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        <p id="error_additional_fee" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                     <div class="flex flex-col">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 ">Total Amount:</h2>
@@ -94,7 +94,7 @@
                             <i data-lucide="philippine-peso" class="text-red-500 "></i>
                             <h1 id="total_amount_display" class="text-2xl text-red-500 font-bold">500.00</h1>
                         </div>
-                        <input type="hidden" id="total_amount" required
+                        <input type="hidden" id="total_amount" name="total_amount" required
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_total_amount" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
@@ -105,8 +105,8 @@
 </div>
 
 <script>
-    const servicePrice = document.getElementById('price');
-    const additionalPrice = document.getElementById('additional_price');
+    const servicePrice = document.getElementById('service_fee');
+    const additionalPrice = document.getElementById('additional_fee');
     const totalAmountDisplay = document.getElementById('total_amount_display');
     const totalAmountInput = document.getElementById('total_amount');
 

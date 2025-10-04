@@ -15,6 +15,7 @@ class PatientPrevAntiTetanus extends Model
         'dose_given',
         'rn_in_charge',
         'date_dose_given',
+        'year_last_dose_given',
         'created_at',
         'updated_at',
     ];
@@ -22,5 +23,9 @@ class PatientPrevAntiTetanus extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id');
+    }
+    public function nurse()
+    {
+        return $this->belongsTo(ClinicUser::class, 'rn_in_charge');
     }
 }

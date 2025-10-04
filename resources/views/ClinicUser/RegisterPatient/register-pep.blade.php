@@ -190,7 +190,13 @@
                             <x-pep-steps.step-2 />
                             <!-- Step 3: Animal Profile -->
                             <x-pep-steps.step-3 />
-                            
+                            <!-- Step 4:  Immunizations -->
+                            <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" :nurses="$nurses" />
+                            <!-- Step 5: Payment -->
+                            <x-pep-steps.step-5 :staffs="$staffs" :service_fee="$service_fee" />
+                             <!-- Step 6: Finalizing -->
+                            <x-pep-steps.step-6 /> 
+
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
@@ -387,7 +393,7 @@
 
 <script>
     let currentStep = 1;
-    const totalSteps = 3;
+    const totalSteps = 5;
 
     const form = document.getElementById("multi-step-form");
     const prevBtn = document.getElementById("prevBtn");
@@ -405,15 +411,12 @@
             const label = circle.parentElement.querySelector("span");
 
             if (i < step) {
-                // Completed step
                 circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
                 label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
             } else if (i === step) {
-                // Active step
                 circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
                 label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
             } else {
-                // Inactive step
                 circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
                 label.className = "mt-2 text-xs md:text-sm font-bold text-red-400 text-center";
             }
@@ -442,7 +445,7 @@
         // if (step === 4) return validateStep4();
         // if (step === 5) return validateStep5();
 
-        return true; // add more as needed
+        return true;
     }
 
 
@@ -461,7 +464,7 @@
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (validateStep(currentStep)) {
-            // Here you’d typically send form data via AJAX or submit
+            // Final submission only if step 5 passes
             form.submit();
         }
     });
@@ -469,6 +472,7 @@
     // Initialize wizard
     showStep(currentStep);
 </script>
+
 
 
 
