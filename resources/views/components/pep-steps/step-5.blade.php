@@ -84,7 +84,7 @@
                     </div>
                     <div class="flex flex-col">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Additional Fee:</h2>
-                        <input type="text" id="additional_fee" name="additional_fee"  placeholder="Leave blank if N/A"
+                        <input type="text" id="additional_fee" name="additional_fee" placeholder="Leave blank if N/A"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_additional_fee" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
@@ -182,4 +182,50 @@
         return isValid;
 
     }
+</script>
+<script>
+    function clearFieldError(el) {
+        if (el.type === "hidden") {
+            // For hidden inputs, clear their related dropdown button + error message
+            const btnId = el.name.replace("_id", "") + "_dropdown_button";
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.classList.remove("border-red-500");
+                btn.classList.add("border-gray-300");
+            }
+
+            const errorP =
+                document.getElementById("error_" + el.id) ||
+                document.getElementById("error_" + el.name);
+            if (errorP) errorP.classList.add("hidden");
+
+        } else {
+            // Normal input/select/button cleanup
+            el.classList.remove("border-red-500");
+            if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") {
+                el.classList.add("border-gray-300");
+            }
+
+            const errorP =
+                document.getElementById("error_" + el.id) ||
+                document.getElementById("error_" + el.name);
+            if (errorP) errorP.classList.add("hidden");
+        }
+    }
+
+    // Attach to visible UI controls (not hidden inputs)
+    document.querySelectorAll("#step-5 input:not([type=hidden]), #step-5 select, #step-5 button").forEach(el => {
+        el.addEventListener("input", () => clearFieldError(el));
+        el.addEventListener("change", () => clearFieldError(el));
+        el.addEventListener("click", () => clearFieldError(el));
+    });
+
+    // Also attach directly to hidden inputs (in case x-model changes their value)
+    document.querySelectorAll("#step-5 input[type=hidden]").forEach(el => {
+        const observer = new MutationObserver(() => clearFieldError(el));
+        observer.observe(el, {
+            attributes: true,
+            attributeFilter: ["value"]
+        });
+    });
 </script>

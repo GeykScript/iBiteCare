@@ -220,7 +220,6 @@
                         <div class="grid grid-cols-12" x-data="{ PassiveCategory: 'ERIG' }">
                             <div class="col-span-12">
                                 <h2 class=" text-xs md:text-md text-gray-500 font-900 ">RIG Type</h2>
-                                <p id=" error_passive_rig_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 <div class="flex  gap-4 p-2">
                                     <label class="flex items-center space-x-2">
                                         <input type="radio" name="passive_rig_category" value="ERIG" x-model="PassiveCategory" required
@@ -387,6 +386,7 @@
 
 <script>
     function validateStep4() {
+        console.log("Validating Step 4...");
         let isValid = true;
 
         // Hide all error messages first
@@ -468,6 +468,8 @@
             // Verified → hide the red warning if shown
             if (notVerified) notVerified.classList.add("hidden");
         }
+        console.log("Validation result:", isValid);
+
         return isValid;
     }
 
@@ -528,18 +530,32 @@
         const category = document.getElementById("biteCategoryInput").value;
         const inputs = passiveSection.querySelectorAll("input, select, textarea, button");
 
-        if (category === "2" || category === "1") {
+        if (category === "1" || category === "2") {
             // Hide and disable all inputs
             pep_immunization_type.value = "Active";
             passiveSection.style.display = "none";
-            inputs.forEach(el => el.disabled = true);
+
+            inputs.forEach(el => {
+                el.disabled = true;
+                el.required = false;
+                el.value = ""; // optional: clear old values
+            });
+
         } else if (category === "3") {
             // Show and enable all inputs
             pep_immunization_type.value = "Passive/Active";
             passiveSection.style.display = "block";
-            inputs.forEach(el => el.disabled = false);
+
+            inputs.forEach(el => {
+                el.disabled = false;
+                // optional: re-enable required only for specific inputs
+                if (el.hasAttribute("data-required")) {
+                    el.required = true;
+                }
+            });
         }
     }
+
 
     function dateOfTransactionToday() {
         const anti_tetanuDate = document.getElementById("anti_tetanus_date_dose_given");

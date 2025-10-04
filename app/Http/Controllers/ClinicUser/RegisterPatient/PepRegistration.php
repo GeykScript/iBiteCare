@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Inventory_items;
 use App\Models\Inventory_stock;
+use App\Models\Inventory_usage;
 use App\Models\Inventory_units;
 use App\Models\ClinicUser;
 use App\Models\Patient;
 use App\Models\ClinicServices;
 use App\Models\ClinicServicesSchedules;
 use App\Models\ClinicTransactions;
+use App\Models\ClinicUserLogs;
 use App\Models\PatientExposures;
 use App\Models\PatientImmunizations;
 use App\Models\PatientImmunizationsSchedule;
@@ -23,6 +25,9 @@ use App\Models\PatientPrevAntiTetanus;
 use App\Models\PatientVitalSigns;
 use App\Models\PaymentRecords;
 use Carbon\Carbon;
+
+use App\Http\Requests\RegisterPatientPEPRequest;
+use App\Models\Inventory;
 
 class PepRegistration extends Controller
 {
@@ -56,7 +61,9 @@ class PepRegistration extends Controller
 
         $service_fee = ClinicServices::where('id', 1)->first();
 
-        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee'));
+        $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
+
+        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee', 'recentlyAddedPatients'));
     }
 
 
@@ -107,86 +114,9 @@ class PepRegistration extends Controller
     }
 
 
-    public function registerPatientPEP(Request $request)
+    public function registerPatientPEP(RegisterPatientPEPRequest  $request)
     {
-        $request->validate([
-            // Step 1: Personal Details
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'middle_initial' => 'required|string|max:2',
-            'suffix' => 'nullable|string|max:4',
-            'date_of_registration' => 'required|date',
-
-            'region' => 'string|max:255',
-            'province' => 'string|max:255',
-            'city' => 'string|max:255',
-            'barangay' => 'string|max:255',
-            'description' => 'string|max:255',
-            
-            'contact_number' => 'required|string|max:13',   
-            'sex' => 'string|max:255',
-            'date_of_birth' => 'required|date',
-            'age' => 'required|integer|min:0',
-
-            'temperature' => 'nullable|numeric',
-            'weight' => 'nullable|numeric',
-            'blood_pressure' => 'nullable|string|max:255',
-
-           // Step 2: Exposure Details
-            'date_of_bite' => 'required|date',
-            'time_of_bite' => 'required|date_format:H:i',
-            'location_of_incident' => 'nullable|string|max:255',
-            'exposure' => 'required|in:Bite,Non-Bite',
-            'selectedPart' => 'required|string|max:255',
-            'bite_category' => 'required|integer',
-            'pep_immunization_type' => 'required|in:Active,Passive/Active,None',
-            'bite_management' => 'nullable|string|max:255',
-
-            // Step 3: Animal Profile
-            'species' => 'required|string|max:255',
-            'clinical_status' => 'required|in:Healthy,Sick,Died,Killed,Lost',
-            'ownership_status' => 'required|in:Owned,Neighbor,Stray',
-            'brain_exam' => 'nullable|string|max:255',
-            'brain_exam_location' => 'nullable|string|max:255',
-            'brain_exam_results' => 'nullable|string|max:255',
-
-            // Step 4: A. Previous Anti-Tetanus Vaccination
-            // previous anti-tetanus vaccination
-            'year_last_dose_given' => 'nullable|date_format:Y',
-            'anti_tetanus_dose_given' => 'nullable|string|max:255',
-            'anti_tetanus_vaccine_id' => 'nullable|integer',
-            'anti_tetanus_date_dose_given' => 'nullable|date',
-
-            //previous rabies vaccination
-            'immunization_type' => 'nullable|string|max:255',
-            'date_dose_given' => 'nullable|date',
-            'place_of_immunization' => 'nullable|string|max:255',
-
-            // current vaccination details
-            //active vaccine category
-            'route_of_administration' => 'required|string|max:255',
-            'active_vaccine_category' => 'required|in:PVRV,PCEC',
-            'pvrv_vaccine_id' => 'nullable|integer',
-            'pcec_vaccine_id' => 'nullable|integer',
-
-            // passive vaccine category
-            'passive_rig_category' => 'nullable|in:ERIG,HRIG',
-            'erig_vaccine_id' => 'nullable|integer',
-            'hrig_vaccine_id' => 'nullable|integer',
-            'passive_dose_given' => 'nullable|numeric|min:0',
-            'passive_date_given' => 'nullable|date',
-
-            //nurse
-            'nurse_id' => 'required|integer',
-
-            //step 5: payment
-            'dateOfTransaction' => 'required|date',
-            'service_id' => 'nullable|integer',
-            'staff_id' => 'required|integer',
-            'total_amount' => 'required|numeric|min:0',
-
-
-        ]);
+        $request->validated();
 
         // Combine address fields into a single address string
         $address = $request->province . ', ' . $request->city . ', ' . $request->barangay . ', ' . $request->description;
@@ -272,7 +202,6 @@ class PepRegistration extends Controller
             ]);
         }
   
-
             // 1. Generate all schedules
             $serviceSchedules = ClinicServicesSchedules::where('service_id', 1)->get();
             $patientSchedules = collect(); // will hold all created schedules
@@ -338,7 +267,66 @@ class PepRegistration extends Controller
             'schedule_id' => $firstSchedule?->id, // <-- links to the first schedule
             'status' => 'Completed',
         ]);
-        
+
+        ClinicUserLogs::insert([
+            [
+                'user_id' => $request->nurse_id,
+                'role_id' => 2,
+                'action' => 'Administered PEP to patient',
+                'details' => 'Administered PEP to patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'date_and_time' => now(),
+                'created_at' => now(),
+            ],
+            [
+                'user_id' => $request->staff_id,
+                'role_id' => 3,
+                'action' => 'Handled payment for PEP patient',
+                'details' => 'Handled payment for PEP patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'date_and_time' => now(),
+                'created_at' => now(),
+            ],
+        ]);
+
+        Inventory_usage::insert([
+            [
+            'unit_id' => $request->anti_tetanus_vaccine_id,
+            'used' => 0.5,
+            'measurement_unit' => 'ml',
+            'usage_date' => now(),
+            'used_by' => $request->nurse_id,
+            'details' => 'Used for Anti-Tetanus vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
+            'created_at' => now(),
+            'updated_at' => now(),
+            ],
+            [
+            'unit_id' => $request->active_vaccine_category == 'PVRV'
+                    ? ($request->pvrv_vaccine_id ?? null)
+                    : ($request->pcec_vaccine_id ?? null),
+            'used' => 0.2,
+            'measurement_unit' => 'ml',
+            'usage_date' => now(),
+            'used_by' => $request->nurse_id,
+            'details' => 'Used for Rabies vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
+            'created_at' => now(),
+            'updated_at' => now(),
+            ],
+            [
+            'unit_id' => $request->passive_rig_category == 'ERIG'
+                    ? ($request->erig_vaccine_id ?? null)
+                    : ($request->hrig_vaccine_id ?? null),
+            'used' => $request->passive_dose_given ?? 0,
+            'measurement_unit' => 'ml',
+            'usage_date' => now(),
+            'used_by' => $request->nurse_id,
+            'details' => 'Used for RIG administration for patient ' . $patient->first_name . ' ' . $patient->last_name,
+            'created_at' => now(),
+            'updated_at' => now(),
+            ],
+        ]);
+
+    
+
+
 
 
         return redirect()->route('clinic.patients.register.pep')->with('success', 'Patient registered successfully.');

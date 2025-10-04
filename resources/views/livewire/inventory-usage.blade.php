@@ -64,7 +64,8 @@
                         <tr class="px-4">
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center rounded-l-lg hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('id')">ID</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('brand_name')">Brand Name</th>
-                            <th scope="col" class="px-6 border md:px-2 py-3 text-center ">Used</th>
+                            <th scope="col" class="px-6 border md:px-2 py-3 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('category')">Category</th>
+                            <th scope=" col" class="px-6 border md:px-2 py-3 text-center ">Used</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center  hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('user_name')">Used by</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center ">Details</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center rounded-r-lg hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('usage_date')">Usage Date</th>
@@ -82,7 +83,8 @@
                         @foreach ($inventory_usage as $usage)
                         <tr wire:key="{{ $usage->id }}" class="border-b dark:border-gray-700">
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->id }}</td>
-                            <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->item->brand_name }}</td>
+                            <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->brand_name ?? 'N/A' }}</td>
+                            <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->category ?? 'N/A' }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->used }} {{ $usage->measurement_unit }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->clinic_user->first_name }} {{ $usage->clinic_user->last_name }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->details }}</td>

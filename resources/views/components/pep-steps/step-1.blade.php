@@ -89,7 +89,6 @@
                             <input type="hidden" name="province" id="province_input">
                         </div>
                         <p id="error_province" class="text-end text-red-500 text-xs mt-1 hidden">*This field is required</p>
-
                     </div>
                 </div>
                 <!-- city  -->
@@ -109,7 +108,6 @@
                             <input type="hidden" name="city" id="city_input">
                         </div>
                         <p id="error_city" class="text-end text-red-500 text-xs mt-1 hidden">*This field is required</p>
-
                     </div>
                 </div>
                 <!-- barangay and purok  -->
@@ -131,7 +129,6 @@
                                 <input type="hidden" name="barangay" id="barangay_input">
                             </div>
                             <p id="error_barangay" class="text-end text-red-500 text-xs mt-1 hidden">*This field is required</p>
-
                         </div>
                         <!-- purok  -->
                         <div class="col-span-4 md:col-span-2 ">
@@ -148,12 +145,10 @@
             <div class="col-span-12 grid grid-cols-12 gap-2 ">
                 <div class="col-span-12 md:col-span-7">
                     <h2 class="md:text-lg text-gray-700 font-900 ">Contact & Demographics</h2>
-
                 </div>
                 <div class="col-span-5 hidden md:block">
                     <h2 class="md:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
                 </div>
-
                 <div class="col-span-12 md:col-span-7 grid grid-cols-6 gap-2 ">
                     <div class="col-span-6 md:col-span-2 ">
                         <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900">Phone Number</label>
@@ -168,9 +163,9 @@
                             id="sex"
                             placeholder="Select"
                             :options="[
-                                                        'Male' => 'Male',
-                                                        'Female' => 'Female',
-                                                    ]" />
+                                        'Male' => 'Male',
+                                        'Female' => 'Female',
+                                     ]" />
                         <p id="error_sex" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
 
@@ -195,7 +190,6 @@
                         <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-900">Weight (kg)</label>
                         <input type="text" name="heart_rate" id="heart_rate" placeholder="e.g 70"
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
-
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
                     <div class="col-span-6 md:col-span-2 ">

@@ -39,7 +39,6 @@
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
-
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
@@ -98,15 +97,12 @@
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
                             <p class="font-bold text-red-500">Registry</p>
                         </div>
-
                     </div>
                 </div>
-
                 <div class="grid grid-cols-12">
                     <div class="col-span-3 md:col-span-1 flex items-center justify-center">
                     </div>
                 </div>
-
                 <!-- Main Content -->
                 <div class="grid grid-cols-4  md:px-10 gap-2 ">
                     <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
@@ -120,7 +116,6 @@
                         <!-- Progress Bar -->
                         <div class="mb-8 overflow-x-auto  scrollbar-hidden ">
                             <div class="flex items-center justify-between ">
-
                                 <!-- Step 1 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step1-circle"
@@ -128,10 +123,8 @@
                                     </div>
                                     <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Personal Details</span>
                                 </div>
-
                                 <!-- Line between step 1 & 2 -->
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line1"></div>
-
                                 <!-- Step 2 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step2-circle"
@@ -139,10 +132,8 @@
                                     </div>
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">History Exposure</span>
                                 </div>
-
                                 <!-- Line between step 2 & 3 -->
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line2"></div>
-
                                 <!-- Step 3 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step3-circle"
@@ -151,7 +142,6 @@
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Animal Profile</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line3"></div>
-
                                 <div class="flex flex-col items-center ">
                                     <div id="step4-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
@@ -159,28 +149,64 @@
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Immunization</span>
                                 </div>
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line4"></div>
-
                                 <div class="flex flex-col items-center ">
                                     <div id="step5-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Payment</span>
                                 </div>
-                                <!-- <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line5"></div> -->
-
-                                <!-- <div class="flex flex-col items-center ">
-                                    <div id="step6-circle"
-                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400">Finalizing</span>
-                                </div> -->
                             </div>
                         </div>
                         @if (session('success'))
-                        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100">
-                            {{ session('success') }}
+                        <div
+                            x-data="{ show: true }"
+                            x-show="show"
+                            x-transition.opacity.duration.300ms
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            <!-- Modal content -->
+                            <div
+                                @click.outside="show = false"
+                                class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 text-center relative">
+                                <!-- Close button -->
+                                <button
+                                    @click="show = false"
+                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl leading-none">
+                                    &times;
+                                </button>
+                                <!-- Success Icon -->
+                                <div class="flex flex-col items-center justify-center gap-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="140"
+                                        viewBox="0 0 24 24" fill="#1AE820" stroke="white"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-circle-check-icon">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="m9 12 2 2 4-4" />
+                                    </svg>
+                                    <h2 class="text-2xl font-900 text-[#1AE820]">Transaction Completed</h2>
+                                    <p class="text-gray-800 font-bold text-sm mt-1">
+                                        You may proceed to view patient details or return to the home page.
+                                    </p>
+                                    <div class="flex flex-col gap-1 mt-4 text-sm">
+                                        <a href="{{ route('clinic.patients.profile', $recentlyAddedPatients->id) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                            View Patient Details
+                                        </a>
+                                        <a href="{{ route('clinic.dashboard') }}"
+                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                            Return to Home Page
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-end items-end w-full">
+                                        <button
+                                            @click="show = false"
+                                            class="mt-4 text-white bg-gray-600 font-semibold py-2 px-4 rounded-lg">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         @endif
+
                         <!-- Form Steps -->
                         <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.pep.register') }}">
                             @csrf
@@ -194,10 +220,6 @@
                             <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" :nurses="$nurses" />
                             <!-- Step 5: Payment -->
                             <x-pep-steps.step-5 :staffs="$staffs" :service_fee="$service_fee" />
-                             <!-- Step 6: Finalizing -->
-                            <x-pep-steps.step-6 /> 
-
-
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
                                 <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
@@ -205,7 +227,6 @@
                                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
                             </div>
                         </form>
-
 
                         <!-- Modal Dialog -->
                         <dialog
@@ -341,7 +362,6 @@
                                                     document.querySelector('#verifySuccess').classList.remove('hidden');
                                                     document.querySelector('#NotVerified').classList.add('hidden');
                                                     document.querySelector('#error_nurse').classList.add('hidden');
-                                                    d
                                                     
 
                                                 } else {
@@ -390,7 +410,6 @@
         <!-- Modals For Logout -->
         <x-logout-modal />
 </body>
-
 <script>
     let currentStep = 1;
     const totalSteps = 5;
@@ -439,16 +458,23 @@
     }
 
     function validateStep(step) {
-        // if (step === 1) return validateStep1();
-        // if (step === 2) return validateStep2();
-        // if (step === 3) return validateStep3();
-        // if (step === 4) return validateStep4();
-        // if (step === 5) return validateStep5();
-
-        return true;
+        switch (step) {
+            // case 1:
+            //     return validateStep1();
+            // case 2:
+            //     return validateStep2();
+            // case 3:
+            //     return validateStep3();
+            // case 4:
+            //     return validateStep4();
+            // case 5:
+            //     return validateStep5();
+            default:
+                return true;
+        }
     }
 
-
+    // Handle "Next" button
     nextBtn.addEventListener("click", () => {
         if (validateStep(currentStep)) {
             currentStep++;
@@ -456,15 +482,18 @@
         }
     });
 
+    // Handle "Previous" button
     prevBtn.addEventListener("click", () => {
         currentStep--;
         showStep(currentStep);
     });
 
+    // Handle form submission
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        if (validateStep(currentStep)) {
-            // Final submission only if step 5 passes
+
+        // Always validate final step before actual submit
+        if (validateStep(5)) {
             form.submit();
         }
     });
@@ -472,6 +501,7 @@
     // Initialize wizard
     showStep(currentStep);
 </script>
+
 
 
 

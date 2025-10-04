@@ -7,8 +7,6 @@ class Inventory_usage extends Model
 {
     protected $table = 'inventory_usage';
     protected $fillable = [
-    'item_id',
-    'stock_id',
     'unit_id', 
     'used', 
     'measurement_unit', 
@@ -27,15 +25,18 @@ class Inventory_usage extends Model
     {
         return $this->belongsTo(ClinicUser::class, 'used_by');
     }
+    // 🔗 Shortcut relation to get the item directly
     public function item()
     {
-        return $this->belongsTo(Inventory_items::class, 'item_id');
+        return $this->hasOneThrough(
+            Inventory_items::class,
+            Inventory_units::class,
+            'id',               // Foreign key on inventory_units
+            'id',               // Foreign key on inventory_items
+            'unit_id',          // Local key on inventory_usage
+            'item_id' // Local key on inventory_units
+        );
     }
-    public function stock()
-    {
-        return $this->belongsTo(Inventory_stock::class, 'stock_id');
-    }
-
     
 
 }

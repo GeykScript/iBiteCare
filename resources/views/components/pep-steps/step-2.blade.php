@@ -5,6 +5,7 @@
             <div class="col-span-12 md:col-span-7 md:px-6 ">
                 <h1 class="font-900  text-md md:text-lg mb-2">Bite Incident Details</h1>
                 <div class="grid grid-cols-8 gap-4">
+                    <!-- date, time, and location of incident -->
                     <div class="col-span-8 md:col-span-4">
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-2">
@@ -12,14 +13,12 @@
                                 <input type="date" id="date_of_bite" name="date_of_bite" required
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5  focus:ring-sky-500 focus:border-sky-500">
                                 <p id="error_date_of_bite" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-
                             </div>
                             <div class="col-span-4 md:col-span-2">
                                 <label for="time_of_bite" class=" mb-2 text-sm font-bold text-gray-900">Time of Bite</label>
                                 <input type="time" id="time_of_bite" name="time_of_bite" required
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5">
                                 <p id="error_time_of_bite" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-
                             </div>
                             <div class="col-span-4 md:col-span-4">
                                 <label for="location_of_incident" class=" mb-2 text-sm font-bold text-gray-900">Location of Incident <span class="text-gray-500 text-xs">( Leave blank if N/A )</span></label>
@@ -28,6 +27,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- type of exposure  -->
                     <div class="col-span-8 md:col-span-4">
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-4">
@@ -48,10 +48,10 @@
                                     </label>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
+                <!-- bite category and bite management -->
                 <h1 class="font-900 text-lg my-4">Bite Diagnosis</h1>
                 <div class="grid grid-cols-8 gap-4">
                     <div class="col-span-8">
@@ -62,8 +62,6 @@
                                     <p id="error_bite_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
                                 <div class="flex flex-col md:flex-row items-center justify-center md:space-x-6 p-2 ">
-
-                                    <!-- In blade with radio -->
                                     <label class="flex items-center space-x-2">
                                         <input type="radio" name="bite_category" value="1" required
                                             class="text-red-500 focus:ring-red-500"
@@ -82,14 +80,13 @@
                                             onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
                                         <span>Category 3</span>
                                     </label>
-                                    <input type="text" id="pep_immunization_type" name="pep_immunization_type" value="">
+                                    <input type="hidden" id="pep_immunization_type" name="pep_immunization_type" value="">
                                     <input type="hidden" id="biteCategoryInput" value="">
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
+                    <!-- bite management -->
                     <div class="col-span-8">
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-4">
@@ -122,6 +119,7 @@
                     </div>
                 </div>
             </div>
+            <!-- body part selector -->
             <div class="col-span-12 md:col-span-5">
                 <x-body-part-selector />
             </div>

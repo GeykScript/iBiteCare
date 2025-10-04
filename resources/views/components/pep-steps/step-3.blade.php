@@ -7,7 +7,6 @@
                     <div class="col-span-6 md:col-span-3">
                         <h2 class="text-sm md:text-md text-gray-500 font-900 mb-2">Species</h2>
                         <p id="error_species" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
-
                         <div class="flex flex-col gap-2 p-2">
                             <label class="flex items-center space-x-2">
                                 <input type="radio" name="species" value="Cat" required
@@ -24,7 +23,6 @@
                                     class="text-red-500 focus:ring-red-500">
                                 <span>Others</span>
                             </label>
-
                             <div class="flex flex-col">
                                 <label for="species_other" class="mb-2 text-sm font-bold text-gray-900">
                                     Others <span class="text-gray-500 text-xs">( Please specify if applicable )</span>
@@ -32,36 +30,12 @@
                                 <input type="text" id="species_other"
                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                             </div>
-
                         </div>
                     </div>
-                    <script>
-                        const radios = document.querySelectorAll("input[name='species']");
-                        const othersInput = document.getElementById("species_other");
 
-                        radios.forEach(radio => {
-                            radio.addEventListener("change", function() {
-                                if (this.value === "Other") {
-                                    othersInput.classList.remove("hidden");
-                                    othersInput.setAttribute("required", "required");
-
-                                    // Sync text input value into the radio whenever typed
-                                    othersInput.addEventListener("input", () => {
-                                        radio.value = othersInput.value;
-                                    });
-
-                                } else {
-                                    othersInput.classList.add("hidden");
-                                    othersInput.removeAttribute("required");
-                                    othersInput.value = "";
-                                }
-                            });
-                        });
-                    </script>
                     <div class="col-span-6 md:col-span-3">
                         <h2 class="text-sm md:text-md text-gray-500 font-900 mb-2">Ownership Status</h2>
                         <p id="error_ownership_status" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
-
                         <div class="flex flex-col p-2 ">
                             <label class="flex items-center space-x-2">
                                 <input type="radio" name="ownership_status" value="Owned" required
@@ -79,7 +53,6 @@
                                 <span>Stray</span>
                             </label>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -89,7 +62,6 @@
                     <div class="col-span-6 ">
                         <h2 class="text-sm md:text-md text-gray-500 font-900 mb-2">Clinical Status</h2>
                         <p id="error_clinical_status" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
-
                         <div class="flex flex-col md:flex-row gap-4 md:items-center p-2 ">
                             <label class="flex items-center space-x-2">
                                 <input type="radio" name="clinical_status" value="Healthy" required
@@ -111,13 +83,11 @@
                                     class="text-red-500 focus:ring-red-500">
                                 <span>Lost</span>
                             </label>
-
                         </div>
                     </div>
                     <div class="col-span-6">
                         <h2 class="text-sm md:text-md text-gray-500 font-900 mb-2">Brain Examination <span class="text-gray-500 text-xs font-normal">( Leave blank if N/A )</span></h2>
                         <p id="error_brain_exam" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-
                         <div class="flex gap-4  p-2 ">
                             <label class="flex items-center space-x-2">
                                 <input type="radio" name="brain_exam" value="Done"
@@ -133,7 +103,6 @@
                         <div class="flex flex-col mt-3">
                             <label class=" mb-2 text-sm font-bold text-gray-900">If Done <span class="text-gray-500 text-xs"> ( Please specify if applicable )</span></label>
                             <p id="error_brain_exam_location" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-
                             <div class="flex items-center gap-2 mb-2">
                                 <label for="brain_exam_location" class=" mb-2 text-sm font-bold text-gray-900">Location:</label>
                                 <input type="text" id="brain_exam_location" name="brain_exam_location"
@@ -141,7 +110,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <label for="brain_exam_results" class=" mb-2 text-sm font-bold text-gray-900">Results:</label>
-                                <input type="text" id="brain_exam_results" name="brain_exam_results" 
+                                <input type="text" id="brain_exam_results" name="brain_exam_results"
                                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                             </div>
                         </div>
@@ -152,7 +121,29 @@
     </div>
 </div>
 
+<script>
+    const radios = document.querySelectorAll("input[name='species']");
+    const othersInput = document.getElementById("species_other");
 
+    radios.forEach(radio => {
+        radio.addEventListener("change", function() {
+            if (this.value === "Other") {
+                othersInput.classList.remove("hidden");
+                othersInput.setAttribute("required", "required");
+
+                // Sync text input value into the radio whenever typed
+                othersInput.addEventListener("input", () => {
+                    radio.value = othersInput.value;
+                });
+
+            } else {
+                othersInput.classList.add("hidden");
+                othersInput.removeAttribute("required");
+                othersInput.value = "";
+            }
+        });
+    });
+</script>
 <script>
     function nameValidator(id) {
         document.getElementById(id).addEventListener("input", function() {
@@ -169,9 +160,7 @@
     // Apply to your fields
     nameValidator("species_other");
 
-
-
-
+// validation for step 3
     function validateStep3() {
         let isValid = true;
 
