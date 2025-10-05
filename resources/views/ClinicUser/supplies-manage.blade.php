@@ -270,7 +270,7 @@
                                             <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
                                                 <label for="brand_name" class="text-sm font-semibold">Product Name</label>
                                                 <input type="text" name="brand_name" placeholder="Brand Name"
-                                                    pattern="[A-Za-z ]+"
+                                                    pattern="[A-Za-z0-9 ]+"
                                                     value="{{ $inventoryItem->brand_name }}"
                                                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
                                             </div>

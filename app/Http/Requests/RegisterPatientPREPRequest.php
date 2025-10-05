@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterPatientPEPRequest extends FormRequest
+class RegisterPatientPREPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class RegisterPatientPEPRequest extends FormRequest
     {
         return [
             // Step 1: Personal Details
-            'service_id' => 'required|integer',
+            'service_id' => 'nullable|integer',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'middle_initial' => 'required|string|max:2',
@@ -45,36 +45,6 @@ class RegisterPatientPEPRequest extends FormRequest
             'weight' => 'nullable|numeric',
             'blood_pressure' => 'nullable|string|max:255',
 
-            // Step 2: Exposure Details
-            'date_of_bite' => 'required|date',
-            'time_of_bite' => 'required|date_format:H:i',
-            'location_of_incident' => 'nullable|string|max:255',
-            'exposure' => 'required|in:Bite,Non-Bite',
-            'selectedPart' => 'required|string|max:500',
-            'bite_category' => 'required|integer',
-            'pep_immunization_type' => 'required|in:Active,Passive/Active,None',
-            'bite_management' => 'nullable|string|max:255',
-
-            // Step 3: Animal Profile
-            'species' => 'required|string|max:255',
-            'clinical_status' => 'required|in:Healthy,Sick,Died,Killed,Lost',
-            'ownership_status' => 'required|in:Owned,Neighbor,Stray',
-            'brain_exam' => 'nullable|string|max:255',
-            'brain_exam_location' => 'nullable|string|max:255',
-            'brain_exam_results' => 'nullable|string|max:255',
-
-            // Step 4: A. Previous Anti-Tetanus Vaccination
-            // previous anti-tetanus vaccination
-            'year_last_dose_given' => 'nullable|date_format:Y',
-            'anti_tetanus_dose_given' => 'nullable|string|max:255',
-            'anti_tetanus_vaccine_id' => 'nullable|integer',
-            'anti_tetanus_date_dose_given' => 'nullable|date',
-
-            //previous rabies vaccination
-            'immunization_type' => 'nullable|string|max:255',
-            'date_dose_given' => 'nullable|date',
-            'place_of_immunization' => 'nullable|string|max:255',
-
             // current vaccination details
             //active vaccine category
             'route_of_administration' => 'required|string|max:255',
@@ -82,12 +52,12 @@ class RegisterPatientPEPRequest extends FormRequest
             'pvrv_vaccine_id' => 'nullable|integer',
             'pcec_vaccine_id' => 'nullable|integer',
 
-            // passive vaccine category
-            'passive_rig_category' => 'nullable|in:ERIG,HRIG',
-            'erig_vaccine_id' => 'nullable|integer',
-            'hrig_vaccine_id' => 'nullable|integer',
-            'passive_dose_given' => 'nullable|numeric|min:0',
-            'passive_date_given' => 'nullable|date',
+            //previous rabies vaccination
+            'immunization_type' => 'nullable|string|max:255',
+            'date_dose_given' => 'nullable|date',
+            'place_of_immunization' => 'nullable|string|max:255',
+
+
 
             //nurse
             'nurse_id' => 'required|integer',

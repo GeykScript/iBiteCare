@@ -128,8 +128,7 @@
                                     item_id: {{ $item->item_id }},
                                     stock_id: {{ $item->stock_id }},
                                     quantity: {{ $item->unit_quantity }},
-                                    remaining: {{ $item->remaining_quantity }},
-                                    status: '{{ $item->status }}'
+                                    remaining: {{ $item->remaining_quantity }}
                                 })"
                             class="text-blue-500 hover:underline underline-offset-4">
                             Edit

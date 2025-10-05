@@ -115,8 +115,8 @@
                         </div>
                         <!-- Progress Bar -->
                         <div class="mb-8 overflow-x-auto  scrollbar-hidden ">
-                            <div class="flex items-center justify-between ">
-                                <!-- Step 1 -->
+                            <div class="flex items-center justify-between min-w-[400px] md:min-w-full flex-nowrap">
+                                 <!-- Step 1 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step1-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
@@ -210,6 +210,7 @@
                         <!-- Form Steps -->
                         <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.pep.register') }}">
                             @csrf
+                            <input type="hidden" name="service_id" value="{{ $pepService }}">
                             <!-- Step 1: Personal Details -->
                             <x-pep-steps.step-1 />
                             <!-- Step 2: History of Exposure -->
@@ -249,7 +250,7 @@
                                 </div>
                             </div>
                             <div class="flex flex-col mb-4">
-                                <p>Nurse: <span x-text="staff_name"></span></p>
+                                <p>Staff: <span x-text="staff_name"></span></p>
                             </div>
                             <form
                                 x-data
@@ -459,16 +460,16 @@
 
     function validateStep(step) {
         switch (step) {
-            // case 1:
-            //     return validateStep1();
-            // case 2:
-            //     return validateStep2();
-            // case 3:
-            //     return validateStep3();
-            // case 4:
-            //     return validateStep4();
-            // case 5:
-            //     return validateStep5();
+            case 1:
+                return validateStep1();
+            case 2:
+                return validateStep2();
+            case 3:
+                return validateStep3();
+            case 4:
+                return validateStep4();
+            case 5:
+                return validateStep5();
             default:
                 return true;
         }

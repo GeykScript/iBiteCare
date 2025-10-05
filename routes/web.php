@@ -78,14 +78,32 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.patients.transactions');
 
     // register patient routes
-    Route::get('/clinic/patients/register/anti-tetanus', [AntiTetanuRegistration::class, 'showForm'])
+    // register anti-tetanus patient routes
+    Route::get('/clinic/patients/register/anti-tetanus/{id}', [AntiTetanuRegistration::class, 'showForm'])
         ->name('clinic.patients.register.anti-tetanus');
-    Route::get('/clinic/patients/register/booster', [BoosterRegistration::class, 'showForm'])
+    Route::post('/clinic/patients/register/anti-tetanus/verify-nurse', [AntiTetanuRegistration::class, 'verifyNurse'])
+        ->name('clinic.patients.register.anti-tetanus.verify-nurse');
+    Route::post('/clinic/patients/register/anti-tetanus/verify-staff', [AntiTetanuRegistration::class, 'verifyStaff'])
+        ->name('clinic.patients.register.anti-tetanus.verify-staff');
+    Route::post('/clinic/patients/register/anti-tetanus/register', [AntiTetanuRegistration::class, 'registerPatientAntiTetanu'])
+        ->name('clinic.patients.register.anti-tetanus.register');
+
+    // register booster patient routes
+    Route::get('/clinic/patients/register/booster/{id}', [BoosterRegistration::class, 'showForm'])
         ->name('clinic.patients.register.booster');
-    Route::get('/clinic/patients/register/other', [OtherRegistration::class, 'showForm'])
+    Route::post('/clinic/patients/register/booster/verify-nurse', [BoosterRegistration::class, 'verifyNurse'])
+        ->name('clinic.patients.register.booster.verify-nurse');
+    Route::post('/clinic/patients/register/booster/verify-staff', [BoosterRegistration::class, 'verifyStaff'])
+        ->name('clinic.patients.register.booster.verify-staff');
+    Route::post('/clinic/patients/register/booster/register', [BoosterRegistration::class, 'registerPatientBooster'])
+        ->name('clinic.patients.register.booster.register');
+
+
+    Route::get('/clinic/patients/register/other/{id}', [OtherRegistration::class, 'showForm'])
         ->name('clinic.patients.register.other');
 
-    Route::get('/clinic/patients/register/pep', [PepRegistration::class, 'showForm'])
+    // register pep patient routes
+    Route::get('/clinic/patients/register/pep/{id}', [PepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.pep');
     Route::post('/clinic/patients/register/pep/verify-nurse', [PepRegistration::class, 'verifyNurse'])
         ->name('clinic.patients.register.pep.verify-nurse');
@@ -95,9 +113,15 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.patients.register.pep.register');
 
 
-
-    Route::get('/clinic/patients/register/prep', [PrepRegistration::class, 'showForm'])
+    // register prep patient routes
+    Route::get('/clinic/patients/register/prep/{id}', [PrepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.prep');
+    Route::post('/clinic/patients/register/prep/verify-nurse', [PrepRegistration::class, 'verifyNurse'])
+        ->name('clinic.patients.register.prep.verify-nurse');
+    Route::post('/clinic/patients/register/prep/verify-staff', [PrepRegistration::class, 'verifyStaff'])
+        ->name('clinic.patients.register.prep.verify-staff');
+    Route::post('/clinic/patients/register/prep/register', [PrepRegistration::class, 'registerPatientPrep'])
+        ->name('clinic.patients.register.prep.register');
     
         
 

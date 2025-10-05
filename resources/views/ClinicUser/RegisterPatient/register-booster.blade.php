@@ -14,7 +14,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/alpine.js'])
     @endif
 </head>
 
@@ -39,7 +39,6 @@
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
-
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
@@ -60,7 +59,7 @@
             </nav>
             <div class="flex flex-col p-4 gap-2">
                 <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
-                    <i data-lucide="circle-user" class="w-8 h-8"></i>
+                    <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
                         <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
                         <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
@@ -98,180 +97,305 @@
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
                             <p class="font-bold text-red-500">Registry</p>
                         </div>
-
                     </div>
                 </div>
-
                 <div class="grid grid-cols-12">
                     <div class="col-span-3 md:col-span-1 flex items-center justify-center">
                     </div>
                 </div>
-
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 py-4  md:px-10 gap-2 ">
-                    <div class="col-span-4 bg-white rounded-lg shadow-lg w-full p-8  border border-gray-100">
-                        <div>
+                <div class="grid grid-cols-4  md:px-10 gap-2 ">
+                    <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
+                        <div class="flex flex-col gap-4 md:gap-0 ">
                             <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
-                            <div class="flex flex-col mb-6 gap-2">
-                                <h1 class="text-2xl font-900 text-center ">New Patient Registration</h1>
-                                <p class="text-gray-400 text-sm text-center">Service: Booster</p>
+                            <div class="flex flex-col mb-6 ">
+                                <h1 class="text-md  md:text-2xl font-900 text-center ">New Patient Registration</h1>
+                                <p class="text-gray-400 text-sm text-center">Service: Booster Vaccination</p>
                             </div>
                         </div>
-
                         <!-- Progress Bar -->
-                        <div class="mb-8">
-                            <div class="flex items-center justify-between ">
-
+                        <div class="mb-8 overflow-x-auto  scrollbar-hidden ">
+                            <div class="flex items-center justify-between md:px-32 ">
                                 <!-- Step 1 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step1-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-gray-900 text-center">Personal Details</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Personal Details</span>
                                 </div>
-
                                 <!-- Line between step 1 & 2 -->
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line1"></div>
-
                                 <!-- Step 2 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step2-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">History Exposure</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Immunization</span>
                                 </div>
-
                                 <!-- Line between step 2 & 3 -->
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line2"></div>
-
                                 <!-- Step 3 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step3-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
+                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">Animal Profile</span>
-                                </div>
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line3"></div>
-
-                                <div class="flex flex-col items-center ">
-                                    <div id="step4-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400 text-center">Past Immunizations</span>
-                                </div>
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line4"></div>
-                                <div class="flex flex-col items-center ">
-                                    <div id="step5-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400">Immunization</span>
-                                </div>
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line5"></div>
-
-                                <div class="flex flex-col items-center ">
-                                    <div id="step6-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400">Payment</span>
-                                </div>
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line6"></div>
-
-                                <div class="flex flex-col items-center ">
-                                    <div id="step7-circle"
-                                        class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
-                                    <span class="mt-2 text-sm font-bold text-red-400">Finalizing</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Payment</span>
                                 </div>
                             </div>
                         </div>
+                        @if (session('success'))
+                        <div
+                            x-data="{ show: true }"
+                            x-show="show"
+                            x-transition.opacity.duration.300ms
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            <!-- Modal content -->
+                            <div
+                                @click.outside="show = false"
+                                class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 text-center relative">
+                                <!-- Close button -->
+                                <button
+                                    @click="show = false"
+                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl leading-none">
+                                    &times;
+                                </button>
+                                <!-- Success Icon -->
+                                <div class="flex flex-col items-center justify-center gap-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="140"
+                                        viewBox="0 0 24 24" fill="#1AE820" stroke="white"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-circle-check-icon">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="m9 12 2 2 4-4" />
+                                    </svg>
+                                    <h2 class="text-2xl font-900 text-[#1AE820]">Transaction Completed</h2>
+                                    <p class="text-gray-800 font-bold text-sm mt-1">
+                                        You may proceed to view patient details or return to the home page.
+                                    </p>
+                                    <div class="flex flex-col gap-1 mt-4 text-sm">
+                                        <a href="{{ route('clinic.patients.profile', $recentlyAddedPatients->id) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                            View Patient Details
+                                        </a>
+                                        <a href="{{ route('clinic.dashboard') }}"
+                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                            Return to Home Page
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-end items-end w-full">
+                                        <button
+                                            @click="show = false"
+                                            class="mt-4 text-white bg-gray-600 font-semibold py-2 px-4 rounded-lg">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
                         <!-- Form Steps -->
-                        <form id="multi-step-form">
-                            <!-- Step 1: Personal Information -->
-                            <div id="step-1" class="step">
-                                <div class="mb-6">
-                                    <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
-                                    <input type="text" id="fullName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email Address</label>
-                                    <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
-                                    <input type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                            </div>
-
-                            <!-- Step 2: Account Details -->
-                            <div id="step-2" class="step hidden">
-                                <div class="mb-6">
-                                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                                    <input type="text" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                                    <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
-                                    <input type="password" id="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
-                                </div>
-                            </div>
-
-                            <!-- Step 3: Preferences -->
-                            <div id="step-3" class="step hidden">
-                                <div class="mb-6">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900">Preferred Contact Method</label>
-                                    <div class="flex items-center mb-4">
-                                        <input id="contact-email" type="radio" name="contact" value="email" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
-                                        <label for="contact-email" class="ml-2 text-sm font-medium text-gray-900">Email</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input id="contact-phone" type="radio" name="contact" value="phone" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 focus:ring-sky-500 focus:ring-2">
-                                        <label for="contact-phone" class="ml-2 text-sm font-medium text-gray-900">Phone</label>
-                                    </div>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="interests" class="block mb-2 text-sm font-medium text-gray-900">Interests (select all that apply)</label>
-                                    <select id="interests" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5">
-                                        <option value="technology">Technology</option>
-                                        <option value="finance">Finance</option>
-                                        <option value="health">Health & Wellness</option>
-                                        <option value="travel">Travel</option>
-                                        <option value="food">Food & Cooking</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-center mb-6">
-                                    <input id="newsletter" type="checkbox" class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500">
-                                    <label for="newsletter" class="ml-2 text-sm font-medium text-gray-900">Subscribe to newsletter</label>
-                                </div>
-                            </div>
-
+                        <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.booster.register') }}">
+                            @csrf
+                            <input type="hidden" name="service_id" value="{{ $boosterService }}">
+                            <!-- Step 1: Personal Details -->
+                            <x-booster-steps.step-1 />
+                            <!-- Step 4:  Immunizations -->
+                            <x-booster-steps.step-2 :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :nurses="$nurses" />
+                            <!-- Step 5: Payment -->
+                            <x-booster-steps.step-3 :staffs="$staffs" :service_fee="$service_fee" />
                             <!-- Navigation Buttons -->
-                            <div class="flex justify-end mt-8 gap-4">
+                            <div class="flex justify-end mt-6 gap-4">
                                 <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
-                                <button type="button" id="nextBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
+                                <button type="button" id="nextBtn" class="px-8 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
                                 <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
                             </div>
                         </form>
+
+                        <!-- Modal Dialog -->
+                        <dialog
+                            id="verifyPaymentModal"
+                            x-data="{
+                                        staff_id: null,
+                                        staff_name: null,
+                                        open() { this.$refs.modal.showModal() },
+                                        close() { this.$refs.modal.close() }
+                                    }"
+                            x-ref="modal"
+                            @booster-payment-modal.window="staff_id = $event.detail.staff_id; staff_name = $event.detail.staff_name; open()"
+                            class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
+
+                            <!-- Modal content -->
+                            <div class="flex justify-center items-center gap-2 mb-2">
+                                <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-10 h-10">
+                                <div class="flex flex-col items-center justify-center">
+                                    <h2 class="text-xl font-bold ">Verification</h2>
+                                </div>
+                            </div>
+                            <div class="flex flex-col mb-4">
+                                <p>Staff: <span x-text="staff_name"></span></p>
+                            </div>
+                            <form
+                                x-data
+                                @submit.prevent="
+                                            fetch('{{ route('clinic.patients.register.booster.verify-staff') }}', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({
+                                                    staff_id: staff_id,
+                                                    staff_password: $el.querySelector('#staff_password').value
+                                                })
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    close(); // close modal
+                                                    document.querySelector('#verifiedStaffLabel').classList.remove('hidden'); // show Verified
+                                                    document.querySelector('#verifyButtonPayment').classList.add('hidden'); // hide Verify button
+                                                    document.querySelector('#staffDropdownButton').disabled = true; // disable nurse dropdown button
+                                                    document.querySelector('#verifyStaffSuccess').classList.remove('hidden');
+                                                    document.querySelector('#NotVerifiedStaff').classList.add('hidden');
+                                                    document.querySelector('#error_staff').classList.add('hidden');
+                                                    document.querySelector('#staffDropdownButton').classList.remove('border-red-500');
+
+
+                                                } else {
+                                                    document.querySelector('#error_staff_password').classList.remove('hidden');
+                                                    document.querySelector('#staff_password').classList.add('border-red-500');
+
+                                                }
+                                            })
+                                            
+                                            .catch(err => console.error(err));
+                                        ">
+                                <input type="hidden" name="staff_id" :value="staff_id">
+
+                                <div class="flex flex-col gap-2">
+                                    <label for="password" class="font-bold">Password</label>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
+                                        <p id="error_staff_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
+                                    </div>
+                                    <input
+                                        type="password"
+                                        id="staff_password"
+                                        name="staff_password"
+                                        class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                                        required>
+                                </div>
+                                <div class="mt-4 flex justify-end gap-2">
+                                    <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
+                                        Verify
+                                    </button>
+                                    <!-- Close button -->
+                                    <button
+                                        class="px-4 py-2 bg-gray-200 rounded"
+                                        @click="close()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </dialog>
+                        <!-- Modal Dialog -->
+                        <dialog
+                            id="verfiyNurseModal"
+                            x-data="{
+                                        nurse_id: null,
+                                        nurse_name: null,
+                                        open() { this.$refs.modal.showModal() },
+                                        close() { this.$refs.modal.close() }
+                                    }"
+                            x-ref="modal"
+                            @booster-nurse-modal.window="nurse_id = $event.detail.nurse_id; nurse_name = $event.detail.nurse_name; open()"
+                            class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
+
+                            <!-- Modal content -->
+                            <div class="flex justify-center items-center gap-2 mb-2">
+                                <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-10 h-10">
+                                <div class="flex flex-col items-center justify-center">
+                                    <h2 class="text-xl font-bold ">Nurse Verification</h2>
+                                </div>
+                            </div>
+                            <div class="flex flex-col mb-4">
+                                <p>Nurse: <span x-text="nurse_name"></span></p>
+                            </div>
+                            <form
+                                x-data
+                                @submit.prevent="
+                                            fetch('{{ route('clinic.patients.register.booster.verify-nurse') }}', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({
+                                                    nurse_id: nurse_id,
+                                                    nurse_password: $el.querySelector('#nurse_password').value
+                                                })
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    close(); // close modal
+                                                    document.querySelector('#verifiedLabel').classList.remove('hidden'); // show Verified
+                                                    document.querySelector('#verifyButton').classList.add('hidden'); // hide Verify button
+                                                    document.querySelector('#nurseDropdownButton').disabled = true; // disable nurse dropdown button
+                                                    document.querySelector('#verifySuccess').classList.remove('hidden');
+                                                    document.querySelector('#NotVerified').classList.add('hidden');
+                                                    document.querySelector('#error_nurse').classList.add('hidden');
+                                                    
+
+                                                } else {
+                                                    document.querySelector('#error_nurse_password').classList.remove('hidden');
+                                                    document.querySelector('#nurse_password').classList.add('border-red-500');
+
+                                                }
+                                            })
+                                            
+                                            .catch(err => console.error(err));
+                                        ">
+                                <input type="hidden" name="nurse_id" :value="nurse_id">
+
+                                <div class="flex flex-col gap-2">
+                                    <label for="password" class="font-bold">Password</label>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
+                                        <p id="error_nurse_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
+                                    </div>
+                                    <input
+                                        type="password"
+                                        id="nurse_password"
+                                        name="nurse_password"
+                                        class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                                        required>
+                                </div>
+                                <div class="mt-4 flex justify-end gap-2">
+                                    <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
+                                        Verify
+                                    </button>
+                                    <!-- Close button -->
+                                    <button
+                                        class="px-4 py-2 bg-gray-200 rounded"
+                                        @click="close()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </dialog>
+
                     </div>
                 </div>
-
-
             </div>
-
-
-
-
         </section>
 
         <!-- Modals For Logout -->
         <x-logout-modal />
 </body>
-
 <script>
     let currentStep = 1;
-    const totalSteps = 7;
+    const totalSteps = 3;
 
     const form = document.getElementById("multi-step-form");
     const prevBtn = document.getElementById("prevBtn");
@@ -289,17 +413,14 @@
             const label = circle.parentElement.querySelector("span");
 
             if (i < step) {
-                // Completed step
-                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
-                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+                circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
             } else if (i === step) {
-                // Active step
-                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
-                label.className = "mt-2 text-sm font-bold text-gray-900 text-center";
+                circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
+                label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
             } else {
-                // Inactive step
-                circle.className = "w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
-                label.className = "mt-2 text-sm font-bold text-red-400 text-center";
+                circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
+                label.className = "mt-2 text-xs md:text-sm font-bold text-red-400 text-center";
             }
         }
 
@@ -320,22 +441,19 @@
     }
 
     function validateStep(step) {
-        const currentStepElement = document.getElementById(`step-${step}`);
-        const inputs = currentStepElement.querySelectorAll("input[required], select[required]");
-        let isValid = true;
-
-        inputs.forEach(input => {
-            if (!input.value) {
-                isValid = false;
-                input.classList.add("border-red-500");
-            } else {
-                input.classList.remove("border-red-500");
-            }
-        });
-
-        return isValid;
+        switch (step) {
+            // case 1:
+            //     return validateStep1();
+            case 2:
+                return validateStep2();
+            case 3:
+                return validateStep3();
+            default:
+                return true;
+        }
     }
 
+    // Handle "Next" button
     nextBtn.addEventListener("click", () => {
         if (validateStep(currentStep)) {
             currentStep++;
@@ -343,22 +461,27 @@
         }
     });
 
+    // Handle "Previous" button
     prevBtn.addEventListener("click", () => {
         currentStep--;
         showStep(currentStep);
     });
 
+    // Handle form submission
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        if (validateStep(currentStep)) {
-            alert("Form submitted successfully!");
-            // Here you’d typically send form data via AJAX or submit
+
+        // Always validate final step before actual submit
+        if (validateStep(3)) {
+            form.submit();
         }
     });
 
     // Initialize wizard
     showStep(currentStep);
 </script>
+
+
 
 
 

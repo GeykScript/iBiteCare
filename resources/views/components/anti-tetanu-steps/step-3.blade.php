@@ -1,4 +1,4 @@
-<div id="step-5" class="step hidden">
+<div id="step-3" class="step hidden">
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-2">
             <div class="col-span-12 grid grid-cols-12 md:px-4 gap-4 md:gap-12">
@@ -13,7 +13,7 @@
                         </div>
                         <div>
                             <h2 class="text-xs md:text-md text-gray-500 font-900 ">Service Received: </h2>
-                            <p>Post Exposure Prophylaxis (PEP) Treatment</p>
+                            <p>Anti-Tetanus Treatment</p>
                         </div>
                         <div class="flex gap-2  justify-between"
                             x-data="{ open: false, staff_id: null, staff_name: 'Select Staff', modalOpen: false}">
@@ -63,7 +63,7 @@
                                     id="verifyButtonPayment"
                                     type="button"
                                     :disabled="!staff_id"
-                                    @click="$dispatch('payment-modal', { staff_id: staff_id, staff_name: staff_name })"
+                                    @click="$dispatch('anti-tetanus-payment-modal', { staff_id: staff_id, staff_name: staff_name })"
                                     class="text-blue-500 flex items-center justify-center font-bold hover:underline underline-offset-4 hover:cursor-pointer ">
                                     Verify
                                 </button>
@@ -152,10 +152,10 @@
     dateOfTransactionToday();
 
 
-    function validateStep5() {
+    function validateStep3() {
         let isValid = true;
         // Special: Staff dropdown validation
-        const staffInput = document.querySelector("#step-5 input[name='staff_id']");
+        const staffInput = document.querySelector("#step-3 input[name='staff_id']");
         if (staffInput && !staffInput.value.trim()) {
             const staffBtn = document.getElementById("staffDropdownButton");
             if (staffBtn) {
@@ -213,14 +213,14 @@
     }
 
     // Attach to visible UI controls (not hidden inputs)
-    document.querySelectorAll("#step-5 input:not([type=hidden]), #step-5 select, #step-5 button").forEach(el => {
+    document.querySelectorAll("#step-3 input:not([type=hidden]), #step-3 select, #step-3 button").forEach(el => {
         el.addEventListener("input", () => clearFieldError(el));
         el.addEventListener("change", () => clearFieldError(el));
         el.addEventListener("click", () => clearFieldError(el));
     });
 
     // Also attach directly to hidden inputs (in case x-model changes their value)
-    document.querySelectorAll("#step-5 input[type=hidden]").forEach(el => {
+    document.querySelectorAll("#step-3 input[type=hidden]").forEach(el => {
         const observer = new MutationObserver(() => clearFieldError(el));
         observer.observe(el, {
             attributes: true,

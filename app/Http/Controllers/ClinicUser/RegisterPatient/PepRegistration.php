@@ -27,11 +27,11 @@ use App\Models\PaymentRecords;
 use Carbon\Carbon;
 
 use App\Http\Requests\RegisterPatientPEPRequest;
-use App\Models\Inventory;
+use App\Models\Inventory;           
 
 class PepRegistration extends Controller
 {
-    public function showForm()
+    public function showForm($id)
     {
         $clinicUser = Auth::guard('clinic_user')->user();
 
@@ -59,11 +59,12 @@ class PepRegistration extends Controller
             ->where('is_disabled', '!=', 1)
             ->get();
 
-        $service_fee = ClinicServices::where('id', 1)->first();
+        $service_fee = ClinicServices::where('id', $id)->first();
+        $pepService = $id;
 
         $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
 
-        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee', 'recentlyAddedPatients'));
+        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee', 'recentlyAddedPatients', 'pepService'));
     }
 
 
@@ -88,8 +89,6 @@ class PepRegistration extends Controller
 
         return response()->json(['success' => false, 'message' => 'Incorrect password.'], 422);
     }
-
-
 
     public function verifyStaff(Request $request)
     {
@@ -138,7 +137,7 @@ class PepRegistration extends Controller
         // Create new ClinicTransaction record
         $transaction = ClinicTransactions::create([
             'patient_id'       => $patient->id,
-            'service_id'       => 1,
+            'service_id'       => $request->service_id,
             'transaction_date' => $request->date_of_registration,
         ]);
         // Update the grouping field with the transaction's own ID
@@ -203,7 +202,7 @@ class PepRegistration extends Controller
         }
   
             // 1. Generate all schedules
-            $serviceSchedules = ClinicServicesSchedules::where('service_id', 1)->get();
+            $serviceSchedules = ClinicServicesSchedules::where('service_id', $request->service_id)->get();
             $patientSchedules = collect(); // will hold all created schedules
 
             foreach ($serviceSchedules as $serviceSchedule) {
@@ -218,7 +217,7 @@ class PepRegistration extends Controller
                     PatientImmunizationsSchedule::create([
                         'patient_id'       => $patient->id,
                         'transaction_id'   => $transaction->id,
-                        'service_id'      =>  1,
+                        'service_id'      =>  $request->service_id,
                         'service_sched_id' => $serviceSchedule->id,
                         'Day'              => $serviceSchedule->label,
                         'grouping'         => $transaction->id,
@@ -248,7 +247,7 @@ class PepRegistration extends Controller
         PatientImmunizations::create([
             'patient_id' => $patient->id,
             'transaction_id' => $transaction->id,
-            'service_id' => 1,
+            'service_id' => $request->service_id,
             'exposure_id' => $patientExposure->id,
             'vital_signs_id' => $patientVitalSigns->id,
             'immunization_type' => $request->pep_immunization_type,
@@ -324,16 +323,63 @@ class PepRegistration extends Controller
             ],
         ]);
 
-    
+        // Define vaccine IDs with their respective subtraction amounts
+        $vaccines = [];
 
+        //  Anti-Tetanus
+        if ($request->anti_tetanus_vaccine_id) {
+            $vaccines[] = [
+                'id' => $request->anti_tetanus_vaccine_id,
+                'reduce' => 0.5, // default ml to reduce 
+            ];
+        }
 
+        //  Passive RIG (ERIG or HRIG)
+        if ($request->passive_rig_category === 'ERIG' && $request->erig_vaccine_id) {
+            $vaccines[] = [
+                'id' => $request->erig_vaccine_id,
+                'reduce' => $request->passive_dose_given ?? 0, // use the given dose or 0 if not provided
+            ];
+        } elseif ($request->passive_rig_category === 'HRIG' && $request->hrig_vaccine_id) {
+            $vaccines[] = [
+                'id' => $request->hrig_vaccine_id,
+                'reduce' => $request->passive_dose_given ?? 0, // use the given dose or 0 if not provided
+            ];
+        }
 
+        //  Active vaccine (PVRV or PCEC)
+        if ($request->active_vaccine_category === 'PVRV' && $request->pvrv_vaccine_id) {
+            $vaccines[] = [
+                'id' => $request->pvrv_vaccine_id,
+                'reduce' => 0.2, // default ml to reduce
+            ];
+        } elseif ($request->active_vaccine_category === 'PCEC' && $request->pcec_vaccine_id) {
+            $vaccines[] = [
+                'id' => $request->pcec_vaccine_id,
+                'reduce' => 0.2, // default ml to reduce
+            ];
+        }
 
-        return redirect()->route('clinic.patients.register.pep')->with('success', 'Patient registered successfully.');
+        //  Update each unit
+        foreach ($vaccines as $vaccine) {
+            $unit = Inventory_units::find($vaccine['id']);
+
+            if ($unit) {
+                $newVolume = max(0, $unit->remaining_volume - $vaccine['reduce']); // prevent negative
+                $unit->update([
+                    'status' => $newVolume == 0 ? 'Used' : 'Opened',
+                    'remaining_volume' => $newVolume,
+                ]); 
+            }
+        }
+     
+        $id = $request->service_id;
+
+        return redirect()->route('clinic.patients.register.pep', ['id' => $id])->with('success', 'Patient registered successfully.');
 
     }  
 
-
+    
 
 
 

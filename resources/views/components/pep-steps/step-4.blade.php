@@ -144,7 +144,7 @@
                                     @props(['pvrvVaccines'])
                                     <div class="col-span-12 md:col-span-6 mt-2 " x-show="selectedCategory === 'PVRV'">
                                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PVRV Vaccine</h2>
-                                        <div x-data="{ open: false, selected_pvrv: null, selectedLabelPvrv: 'Select Vaccine' }" class="relative">
+                                        <div x-data="{ open: false, selected_pvrv: null, selectedLabelPvrv: 'Select Vaccine', volume: null }" class="relative">
                                             <!-- Hidden input to store the selected id -->
                                             <input type="hidden" name="pvrv_vaccine_id" x-model="selected_pvrv" :required="selectedCategory === 'PVRV'" :disabled="selectedCategory !== 'PVRV'">
                                             <!-- Button / Display -->
@@ -165,9 +165,9 @@
                                                 </div>
                                                 @else
                                                 @foreach ($pvrvVaccines as $vaccine)
-                                                <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; open = false"
+                                                <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )'; open = false"
                                                     class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                    {{ $vaccine->item->product_type }} - #{{ $vaccine->id }}
+                                                    {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )
                                                 </div>
                                                 @endforeach
                                                 @endif
@@ -179,7 +179,7 @@
                                     @props(['pcecVaccines'])
                                     <div class="col-span-12 md:col-span-6 mt-2" x-show="selectedCategory === 'PCEC'">
                                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PCEC Vaccine</h2>
-                                        <div x-data="{ open: false, selected_pcec: null, selectedLabelPcec: 'Select Vaccine' }" class="relative">
+                                        <div x-data="{ open: false, selected_pcec: null, selectedLabelPcec: 'Select Vaccine', volume: null }" class="relative">
                                             <!-- Hidden input to store the selected id -->
                                             <input type="hidden" name="pcec_vaccine_id" x-model="selected_pcec" :required="selectedCategory === 'PCEC'" :disabled="selectedCategory !== 'PCEC'">
                                             <!-- Button / Display -->
@@ -200,9 +200,9 @@
                                                 </div>
                                                 @else
                                                 @foreach ($pcecVaccines as $vaccine)
-                                                <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; open = false"
+                                                <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }} volume: {{ $vaccine->remaining_volume }}'; open = false"
                                                     class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                    {{ $vaccine->item->product_type }} - #{{ $vaccine->id }}
+                                                    {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )
                                                 </div>
                                                 @endforeach
                                                 @endif
