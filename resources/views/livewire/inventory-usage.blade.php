@@ -85,7 +85,10 @@
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->id }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->brand_name ?? 'N/A' }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->category ?? 'N/A' }}</td>
-                            <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->used }} {{ $usage->measurement_unit }}</td>
+
+                            <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">
+                                {{ rtrim(rtrim(number_format($usage->used, 2, '.', ''), '0'), '.') }} {{ $usage->measurement_unit }}
+                            </td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->clinic_user->first_name }} {{ $usage->clinic_user->last_name }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->details }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $usage->usage_date }}</td>

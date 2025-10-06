@@ -4,7 +4,7 @@
             <!-- divider border  -->
             <div class="col-span-12 border-2 border-gray-50 mt-4"></div>
             <div class="col-span-12  md:px-4">
-                <h2 class="md:text-lg text-gray-700 font-900 mb-2 text-center">Anti-Rabies Immunization</h2>
+                <h2 class="md:text-lg text-gray-700 font-900 mb-2 text-center">Anti-Tetanus Immunization</h2>
                 <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
                     <!-- ACTIVE IMMUNIZATION SECTION  -->
                     <div class=" items-center">

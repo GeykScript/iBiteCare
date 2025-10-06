@@ -109,8 +109,16 @@
                 <td class="border px-2 py-2 text-gray-700">{{ $item->unit_quantity }} {{ $item->measurement_unit }}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ $item->remaining_quantity }} {{ $item->measurement_unit }}</td>
                 @else
-                <td class="border px-2 py-2 text-gray-700">{{ $item->unit_volume }} {{ $item->measurement_unit }}</td>
-                <td class="border px-2 py-2 text-gray-700">{{ $item->remaining_volume }} {{ $item->measurement_unit }}</td>
+                @php
+
+                
+                $unitVolume = rtrim(rtrim(number_format($item->unit_volume, 2, '.', ''), '0'), '.');
+                $remainingVolume = rtrim(rtrim(number_format($item->remaining_volume, 2, '.', ''), '0'), '.');
+                @endphp
+
+                <td class="border px-2 py-2 text-gray-700">{{ $unitVolume }} {{ $item->measurement_unit }}</td>
+                <td class="border px-2 py-2 text-gray-700">{{ $remainingVolume }} {{ $item->measurement_unit }}</td>
+
                 @endif
                 <td class="border px-2 py-2 text-gray-700">{{ $item->status }} </td>
 
@@ -186,7 +194,7 @@
             </div>
         </div>
     </dialog>
-    
+
     <!-- table pagination -->
     <div class=" px-3 mt-5">
         {{ $inventoryItems->appends(['perPage' => $perPage])->links() }}

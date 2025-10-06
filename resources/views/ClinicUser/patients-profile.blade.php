@@ -331,7 +331,7 @@
                                                         ? optional(optional($immunization->antiTetanusUsed)->item)->brand_name . ' - ' . optional(optional($immunization->antiTetanusUsed)->item)->product_type 
                                                         : 'N/A' }}
                                                     </td>
-                                                    <td class="px-4 py-2 border">{{ $immunization->day_label}} </td>
+                                                    <td class="px-4 py-2 border">{{ $immunization->day_label ?? 'N/A' }} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->date_given}} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->administeredBy->last_name }}, {{ $immunization->administeredBy->first_name }} </td>
                                                     <td class="px-4 py-2 border"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $immunization->status }} </span></td>
@@ -509,6 +509,11 @@
                                 <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
                                 @endif
 
+                                @php
+                                $serviceName = strtolower($transaction->service->name);
+                                @endphp
+
+                                @if (str_contains($serviceName, 'booster') || str_contains($serviceName, 'pre') || str_contains($serviceName, 'post') || str_contains($serviceName, 'prophylaxis'))
                                 @foreach ($transactions2 as $transaction)
                                 <div class="flex flex-col justify-center " x-data="{ open: false }">
 
@@ -926,6 +931,9 @@
                                     </div>
                                 </div>
                                 @endforeach
+                                @else
+                                <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
+                                @endif
 
                             </div>
                         </div>

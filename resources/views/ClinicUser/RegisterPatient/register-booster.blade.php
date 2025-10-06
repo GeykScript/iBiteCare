@@ -442,8 +442,8 @@
 
     function validateStep(step) {
         switch (step) {
-            // case 1:
-            //     return validateStep1();
+            case 1:
+                return validateStep1();
             case 2:
                 return validateStep2();
             case 3:
