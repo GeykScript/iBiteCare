@@ -5,6 +5,8 @@ namespace App\Http\Controllers\ClinicUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use App\Models\ClinicServices;
+use App\Models\PatientImmunizationsSchedule;
 
 class PatientTransactionsController extends Controller
 {
@@ -17,7 +19,12 @@ class PatientTransactionsController extends Controller
         }
 
         $patient = Patient::find($id);
+        $services = ClinicServices::all();
 
-        return view('ClinicUser.patients-transaction', compact('clinicUser', 'patient'));
+        $schedules = PatientImmunizationsSchedule::where('patient_id', $id)
+            ->where('date_completed', Null )
+            ->get();
+
+        return view('ClinicUser.patients-transaction', compact('clinicUser', 'patient', 'services', 'schedules'));
     }
 }

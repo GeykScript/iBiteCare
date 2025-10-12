@@ -302,7 +302,6 @@
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Date Administered</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Status</th>
-                                                    <th class="px-4 py-2 border-l border-b  bg-gray-800 text-white rounded-tr-lg">Details</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -335,7 +334,6 @@
                                                     <td class="px-4 py-2 border">{{ $immunization->date_given}} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->administeredBy->last_name }}, {{ $immunization->administeredBy->first_name }} </td>
                                                     <td class="px-4 py-2 border"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $immunization->status }} </span></td>
-                                                    <td class="px-4 py-2 border-b"><a href="#" class="text-blue-500 hover:underline underline-offset-4 hover:text-blue-600 font-bold">View</a></td>
                                                 </tr>
                                                 @endforeach
                                                 @endif

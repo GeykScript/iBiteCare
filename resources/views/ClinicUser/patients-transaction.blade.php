@@ -125,25 +125,47 @@
                             <button onclick="document.getElementById('patientTransactionModal').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
-                        <!-- create new user form  -->
-                        <form action="#" method="POST" id="registerPatientForm">
-                            @csrf
+                        
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
 
                                 <div class="col-span-12 flex flex-col items-center justify-center">
                                     <h1 class="font-900 md:text-2xl text-xl">Patient Transactions</h1>
-                                    <p>Fill out the form below to add a new transaction for the patient. All fields are required.</p>
+                                </div>
+                                <div class="col-span-12 flex flex-col items-start">
+                                    <h1 class="font-bold md:text-sm">Complete Immunization: <span class="font-normal"> {{ $schedules->first()->service->name ?? ' ' }}</span>
+                                    </h1>
+                                    @if ($schedules->isEmpty())
+                                    <div class="w-full flex items-center justify-center p-4">
+                                        <p class=" text-center text-sm">No pending immunization schedules.</p>
+
+                                    </div>
+                                    @endif
+                                    <div class="grid grid-cols-4">
+                                        @foreach ($schedules as $schedule)
+                                        <div class="col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-gray-100 hover:cursor-pointer">
+                                            <a href="{{ $schedule->id }}" class="text-sm">{{ $schedule->Day }}</a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-span-12 flex flex-col items-start">
+                                    <h1 class="font-bold md:text-sm">New Transaction: </h1>
+                                    <div class="grid grid-cols-4">
+                                        @foreach ($services as $service)
+                                        <div class="col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-gray-100 hover:cursor-pointer">
+                                            <a href="{{$service->id}}" class="text-sm">{{$service->name}}</a>
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
 
                                 <div class="col-span-12 flex items-center justify-end gap-2">
-                                    <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Continue</button>
                                     <button type="button" onclick="document.getElementById('patientTransactionModal').close()"
                                         class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
-                                        Cancel
+                                        Back
                                     </button>
                                 </div>
                             </div>
-                        </form>
                     </dialog>
 
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
