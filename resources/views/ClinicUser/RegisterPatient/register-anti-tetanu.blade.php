@@ -197,6 +197,7 @@
                         <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.anti-tetanus.register') }}">
                             @csrf
                             <input type="hidden" name="service_id" value="{{ $antiTetanuService }}">
+                            <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
                             <!-- Step 1: Personal Details -->
                             <x-anti-tetanu-steps.step-1 />
                             <!-- Step 4:  Immunizations -->
@@ -483,6 +484,22 @@
 
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('datetime_today');
+        if (input) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            // Format: YYYY-MM-DDTHH:MM
+            const formatted = `${year}-${month}-${day}T${hours}:${minutes}`;
+            input.value = formatted;
+        }
+    });
+</script>
 
 
 </html>

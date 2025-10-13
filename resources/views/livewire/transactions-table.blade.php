@@ -83,10 +83,10 @@
             <tbody>
                 @if($transactions->isEmpty())
                 <tr class="table-row sm:hidden">
-                    <td colspan="4" class="text-center py-4">No Supply Records found.</td>
+                    <td colspan="4" class="text-center py-4">No transaction Records found.</td>
                 </tr>
                 <tr class="hidden sm:table-row">
-                    <td colspan="13" class="text-center py-4">No Supply Records found.</td>
+                    <td colspan="13" class="text-center py-4">No transaction Records found.</td>
                 </tr>
                 @else
                 @foreach($transactions as $transaction)

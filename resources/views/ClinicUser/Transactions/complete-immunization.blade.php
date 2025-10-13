@@ -91,11 +91,11 @@
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Patient Registration</h1>
+                        <h1 class="text-xl md:text-3xl font-900">Patient Transaction</h1>
                         <div class="flex items-center gap-2">
-                            <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
+                            <a href="{{ route('clinic.patients.transactions', $patient) }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">Registry</p>
+                            <p class="font-bold text-red-500">Complete Immunization</p>
                         </div>
                     </div>
                 </div>
@@ -107,10 +107,11 @@
                 <div class="grid grid-cols-4  md:px-10 gap-2 ">
                     <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
                         <div class="flex flex-col gap-4 md:gap-0 ">
-                            <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                            <a href="{{ route('clinic.patients.transactions', $patient) }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                             <div class="flex flex-col mb-6 ">
-                                <h1 class="text-md  md:text-2xl font-900 text-center ">New Patient Registration</h1>
-                                <p class="text-gray-400 text-sm text-center">Service: Booster Vaccination</p>
+                                <h1 class="text-md  md:text-2xl font-900 text-center ">Complete Immunization</h1>
+                                <p class="text-gray-400 text-sm text-center">Service: {{ $service_fee->name }}</p>
+                                <p class="text-gray-400 text-sm text-center">( {{ $schedules->Day }} )</p>
                             </div>
                         </div>
                         <!-- Progress Bar -->
@@ -121,7 +122,7 @@
                                     <div id="step1-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Personal Details</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Immunization</span>
                                 </div>
                                 <!-- Line between step 1 & 2 -->
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line1"></div>
@@ -130,80 +131,26 @@
                                     <div id="step2-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Immunization</span>
-                                </div>
-                                <!-- Line between step 2 & 3 -->
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line2"></div>
-                                <!-- Step 3 -->
-                                <div class="flex flex-col items-center ">
-                                    <div id="step3-circle"
-                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
                                     <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Payment</span>
                                 </div>
                             </div>
                         </div>
-                        @if (session('success'))
-                        <div
-                            x-data="{ show: true }"
-                            x-show="show"
-                            x-transition.opacity.duration.300ms
-                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                            <!-- Modal content -->
-                            <div
-                                @click.outside="show = false"
-                                class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 text-center relative">
-                                <!-- Close button -->
-                                <button
-                                    @click="show = false"
-                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl leading-none">
-                                    &times;
-                                </button>
-                                <!-- Success Icon -->
-                                <div class="flex flex-col items-center justify-center gap-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="140"
-                                        viewBox="0 0 24 24" fill="#1AE820" stroke="white"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-circle-check-icon">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="m9 12 2 2 4-4" />
-                                    </svg>
-                                    <h2 class="text-2xl font-900 text-[#1AE820]">Transaction Completed</h2>
-                                    <p class="text-gray-800 font-bold text-sm mt-1">
-                                        You may proceed to view patient details or return to the home page.
-                                    </p>
-                                    <div class="flex flex-col gap-1 mt-4 text-sm">
-                                        <a href="{{ route('clinic.patients.profile', $recentlyAddedPatients->id) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
-                                            View Patient Details
-                                        </a>
-                                        <a href="{{ route('clinic.dashboard') }}"
-                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
-                                            Return to Home Page
-                                        </a>
-                                    </div>
-                                    <div class="flex justify-end items-end w-full">
-                                        <button
-                                            @click="show = false"
-                                            class="mt-4 text-white bg-gray-600 font-semibold py-2 px-4 rounded-lg">
-                                            Close
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+
 
                         <!-- Form Steps -->
-                        <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.booster.register') }}">
+                        <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.complete-immunization.complete') }}">
                             @csrf
-                            <input type="hidden" name="service_id" value="{{ $boosterService }}">
+                            <input type="hidden" name="service_id" value="{{$service_id}}">
+                            <input type="hidden" name="patient_id" value="{{$patient->id}}">
+                            <input type="hidden" name="grouping" value="{{$grouping}}">
+                            <input type="hidden" name="schedule_id" value="{{$schedule_id}}">
+                            <input type="hidden" name="exposure_id" value="{{$old_immunization->exposure_id ?? ''}}">
                             <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
-                            <!-- Step 1: Personal Details -->
-                            <x-booster-steps.step-1 />
-                            <!-- Step 4:  Immunizations -->
-                            <x-booster-steps.step-2 :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :nurses="$nurses" />
-                            <!-- Step 5: Payment -->
-                            <x-booster-steps.step-3 :staffs="$staffs" :service_fee="$service_fee" />
+
+                            <!-- Step 1:  Immunizations -->
+                            <x-complete-steps.step-1 :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :nurses="$nurses" :old_immunization="$old_immunization" :service_fee="$service_fee" />
+                            <!-- Step 2: Payment -->
+                            <x-complete-steps.step-2 :staffs="$staffs" :service_fee="$service_fee" :schedules="$schedules" />
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
                                 <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
@@ -222,7 +169,7 @@
                                         close() { this.$refs.modal.close() }
                                     }"
                             x-ref="modal"
-                            @booster-payment-modal.window="staff_id = $event.detail.staff_id; staff_name = $event.detail.staff_name; open()"
+                            @complete-payment-modal.window="staff_id = $event.detail.staff_id; staff_name = $event.detail.staff_name; open()"
                             class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
 
                             <!-- Modal content -->
@@ -238,7 +185,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.booster.verify-staff') }}', {
+                                            fetch('{{ route('clinic.patients.complete-immunization.verify-staff') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',
@@ -260,7 +207,6 @@
                                                     document.querySelector('#NotVerifiedStaff').classList.add('hidden');
                                                     document.querySelector('#error_staff').classList.add('hidden');
                                                     document.querySelector('#staffDropdownButton').classList.remove('border-red-500');
-
 
                                                 } else {
                                                     document.querySelector('#error_staff_password').classList.remove('hidden');
@@ -309,7 +255,7 @@
                                         close() { this.$refs.modal.close() }
                                     }"
                             x-ref="modal"
-                            @booster-nurse-modal.window="nurse_id = $event.detail.nurse_id; nurse_name = $event.detail.nurse_name; open()"
+                            @complete-nurse-modal.window="nurse_id = $event.detail.nurse_id; nurse_name = $event.detail.nurse_name; open()"
                             class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
 
                             <!-- Modal content -->
@@ -325,7 +271,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.booster.verify-nurse') }}', {
+                                            fetch('{{ route('clinic.patients.complete-immunization.verify-nurse') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',
@@ -396,7 +342,7 @@
 </body>
 <script>
     let currentStep = 1;
-    const totalSteps = 3;
+    const totalSteps = 2;
 
     const form = document.getElementById("multi-step-form");
     const prevBtn = document.getElementById("prevBtn");
@@ -447,8 +393,6 @@
                 return validateStep1();
             case 2:
                 return validateStep2();
-            case 3:
-                return validateStep3();
             default:
                 return true;
         }
@@ -473,7 +417,7 @@
         e.preventDefault();
 
         // Always validate final step before actual submit
-        if (validateStep(3)) {
+        if (validateStep(2)) {
             form.submit();
         }
     });
@@ -481,6 +425,8 @@
     // Initialize wizard
     showStep(currentStep);
 </script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const input = document.getElementById('datetime_today');
@@ -497,7 +443,6 @@
         }
     });
 </script>
-
 
 
 

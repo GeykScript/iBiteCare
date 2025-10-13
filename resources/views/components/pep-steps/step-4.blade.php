@@ -34,7 +34,7 @@
                     @props(['antiTetanusVaccines'])
                     <div class="col-span-6 md:col-span-3 mt-2 md:px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Anti-Tetanus Vaccine</h2>
-                        <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine' }" class="relative">
+                        <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine', volume: null }" class="relative">
                             <!-- Hidden input to store the selected id -->
                             <input type="hidden" name="anti_tetanus_vaccine_id" x-model="selected" required>
                             <!-- Button / Display -->
@@ -50,9 +50,9 @@
                                 @click.outside="open = false"
                                 class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
                                 @foreach ($antiTetanusVaccines as $vaccine)
-                                <div @click="selected = '{{ $vaccine->id }}'; selectedLabel = '  {{ $vaccine->item->category }} - #{{ $vaccine->package_number }}'; open = false"
+                                <div @click="selected = '{{ $vaccine->id }}'; selectedLabel = '#{{ $vaccine->package_number }}'; volume = '{{ $vaccine->remaining_volume }}'; open = false"
                                     class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                    {{ $vaccine->item->category }} - #{{ $vaccine->package_number }}
+                                  #{{ $vaccine->package_number }} ( {{ $vaccine->remaining_volume }} ml )
                                 </div>
                                 @endforeach
                             </div>

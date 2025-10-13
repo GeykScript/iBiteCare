@@ -129,34 +129,39 @@
                                     <p>Select a service to register the patient for:</p>
                                 </div>
 
-                       @foreach ($services as $service)
-                                        @if ($service->name == 'Tetanus Toxoid')
-                                            <a href="{{ route('clinic.patients.register.anti-tetanus', ['id' => $service->id]) }}"
-                                            class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
-                                            {{ $service->name }}
-                                            </a>
-                                        @elseif ($service->name == 'Post Exposure Prophylaxis')
-                                            <a href="{{ route('clinic.patients.register.pep', ['id' => $service->id]) }}"
-                                            class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
-                                            {{ $service->name }}
-                                            </a>
-                                        @elseif ($service->name == 'Pre-Exposure Prophylaxis')
-                                            <a href="{{ route('clinic.patients.register.prep', ['id' => $service->id]) }}"
-                                            class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
-                                            {{ $service->name }}
-                                            </a>
-                                        @elseif ($service->name == 'Booster')
-                                            <a href="{{ route('clinic.patients.register.booster', ['id' => $service->id]) }}"
-                                            class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
-                                            {{ $service->name }}
-                                            </a>
-                                        @else
-                                            <a href="{{ route('clinic.patients.register.other', ['id' => $service->id]) }}"
-                                            class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
-                                            {{ $service->name }}
-                                            </a>
-                                        @endif
-                                    @endforeach
+                                @foreach ($services as $service)
+                                @php
+                                $name = strtolower($service->name);
+                                @endphp
+
+                                @if (str_contains($name, 'tetanus'))
+                                <a href="{{ route('clinic.patients.register.anti-tetanus', ['id' => $service->id]) }}"
+                                    class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
+                                    {{ $service->name }}
+                                </a>
+                                @elseif (str_contains($name, 'post'))
+                                <a href="{{ route('clinic.patients.register.pep', ['id' => $service->id]) }}"
+                                    class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
+                                    {{ $service->name }}
+                                </a>
+                                @elseif (str_contains($name, 'pre'))
+                                <a href="{{ route('clinic.patients.register.prep', ['id' => $service->id]) }}"
+                                    class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
+                                    {{ $service->name }}
+                                </a>
+                                @elseif (str_contains($name, 'booster'))
+                                <a href="{{ route('clinic.patients.register.booster', ['id' => $service->id]) }}"
+                                    class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
+                                    {{ $service->name }}
+                                </a>
+                                @else
+                                <a href="{{ route('clinic.patients.register.other', ['id' => $service->id]) }}"
+                                    class="col-span-12 md:col-span-6 hover:bg-sky-300 hover:border-sky-300 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer">
+                                    {{ $service->name }}
+                                </a>
+                                @endif
+                                @endforeach
+
 
                                 <div class="col-span-12 flex items-center justify-end gap-2">
                                     <button type="button" onclick="document.getElementById('registerPatientModal').close()"

@@ -101,6 +101,8 @@ class BoosterRegistration extends Controller
     public function registerPatientBooster(RegisterPatientBoosterRequest $request){
         $request->validated();
 
+        $date = str_replace('T', ' ', $request->datetime_today);
+
         // Combine address fields into a single address string
         $address = $request->province . ', ' . $request->city . ', ' . $request->barangay . ', ' . $request->description;
 
@@ -122,7 +124,7 @@ class BoosterRegistration extends Controller
         $transaction = ClinicTransactions::create([
             'patient_id'       => $patient->id,
             'service_id'       => $request->service_id,
-            'transaction_date' => $request->date_of_registration,
+            'transaction_date' => $date,
         ]);
         // Update the grouping field with the transaction's own ID
         ClinicTransactions::where('id', $transaction->id)

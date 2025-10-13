@@ -116,7 +116,7 @@
                         <!-- Progress Bar -->
                         <div class="mb-8 overflow-x-auto  scrollbar-hidden ">
                             <div class="flex items-center justify-between min-w-[400px] md:min-w-full flex-nowrap">
-                                 <!-- Step 1 -->
+                                <!-- Step 1 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step1-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
@@ -211,6 +211,8 @@
                         <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.pep.register') }}">
                             @csrf
                             <input type="hidden" name="service_id" value="{{ $pepService }}">
+                            <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
+
                             <!-- Step 1: Personal Details -->
                             <x-pep-steps.step-1 />
                             <!-- Step 2: History of Exposure -->
@@ -503,7 +505,22 @@
     showStep(currentStep);
 </script>
 
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('datetime_today');
+        if (input) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            // Format: YYYY-MM-DDTHH:MM
+            const formatted = `${year}-${month}-${day}T${hours}:${minutes}`;
+            input.value = formatted;
+        }
+    });
+</script>
 
 
 

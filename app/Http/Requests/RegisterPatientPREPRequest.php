@@ -63,6 +63,7 @@ class RegisterPatientPREPRequest extends FormRequest
             'nurse_id' => 'required|integer',
 
             //step 5: payment
+            'datetime_today' => 'required|date',
             'dateOfTransaction' => 'required|date',
             'service_id' => 'nullable|integer',
             'staff_id' => 'required|integer',

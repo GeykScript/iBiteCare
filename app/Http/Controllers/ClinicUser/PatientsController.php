@@ -158,6 +158,27 @@ class PatientsController extends Controller
             ->route('clinic.patients.profile', ['id' => $patient_user->id])
             ->with('profile-success', 'User account updated successfully!');
     }
+
+
+    public function viewImmunizationDetails($id, $transaction_id){
+        $clinicUser = Auth::guard('clinic_user')->user();
+
+        if (!$clinicUser) {
+            return redirect()->route('clinic.login')->with('error', 'You must be logged in to view patient profiles.');
+        }
+
+        $immunization = PatientImmunizations::find($id);
+
+        if (!$immunization) {
+            return redirect()->route('clinic.patients')->with('error', 'Immunization record not found.');
+        }
+
+        $patient = Patient::find($immunization->patient_id);
+
+        
+
+        return view('ClinicUser.patient-immune-info', compact('clinicUser', 'immunization', 'patient'));
+    }
 }
 
 

@@ -38,6 +38,8 @@ use App\Http\Controllers\ClinicUser\PatientTransactionsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 use App\Http\Controllers\ClinicUser\ReportsController;
 use App\Http\Controllers\Auth\ClinicUser\PasswordController;
+use App\Http\Controllers\ClinicUser\AddTransactions\CompleteImmunizations;
+use App\Http\Controllers\ClinicUser\AddTransactions\PepTransaction;
 use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
 use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
@@ -53,6 +55,7 @@ use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\OtherRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PepRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PrepRegistration;
+
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -73,6 +76,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/patients/profile/update', [PatientsController::class, 'updateProfile'])
         ->name('clinic.patients.profile.update');
+
+    Route::get('/clinic/patients/immunization_info/{id}/{transaction_id}', [PatientsController::class, 'viewImmunizationDetails'])
+        ->name('clinic.patients.profile.immunization_info');
 
     Route::get('/clinic/patients/transactions/{id}', [PatientTransactionsController::class, 'index'])
         ->name('clinic.patients.transactions');
@@ -122,12 +128,31 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.patients.register.prep.verify-staff');
     Route::post('/clinic/patients/register/prep/register', [PrepRegistration::class, 'registerPatientPrep'])
         ->name('clinic.patients.register.prep.register');
+
+    //Complete Transaction Immunization routes
+    Route::get('/clinic/patients/complete-immunization/{schedule_id}/{service_id}/{grouping}/{patient_id}', [CompleteImmunizations::class, 'index'])
+        ->name('clinic.patients.complete-immunization');
+    Route::post('/clinic/patients/complete-immunization/verify-nurse', [CompleteImmunizations::class, 'verifyNurse'])
+        ->name('clinic.patients.complete-immunization.verify-nurse');
+    Route::post('/clinic/patients/complete-immunization/verify-staff', [CompleteImmunizations::class, 'verifyStaff'])
+        ->name('clinic.patients.complete-immunization.verify-staff');
+    Route::post('/clinic/patients/complete-immunization/complete', [CompleteImmunizations::class, 'completeImmunization'])
+        ->name('clinic.patients.complete-immunization.complete');
     
+    // New Transaction routes
+    Route::get('/clinic/patients/new-transaction/{service_id}/{patient_id}', [PatientTransactionsController::class, 'newTransaction'])
+        ->name('clinic.patients.new-transaction');
+
+    Route::get('/clinic/patients/new-transaction/PEP/{service_id}/{patient_id}', [PepTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.pep');
         
+    Route::post('/clinic/patients/new-transaction/PEP/add', [PepTransaction::class, 'addPepTransaction'])
+        ->name('clinic.patients.new-transaction.pep.add');
+
+
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
-
 
     //CLINIC USER PROFILES PAGES
     Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
@@ -230,19 +255,3 @@ Route::post('/clinic/update-password', [UpdatePasswordController::class, 'update
 
     //--------------------------END----------------------------------------------//
 
-
-
-
-// Route::get('/preview-email', function () {
-//     return new \App\Mail\TwofactorCodeMail(123456);
-// });
-
-// Route::get('/preview-clinic-user-account-email', function () {
-//     $user_account = (object) [
-//         'account_id' => 'DrCare-2023-0001-0001',
-//         'email' => 'user@example.com'
-//     ];
-//     $user_default_password = 'DrCareABC-2023-0001-0001';
-
-//     return new \App\Mail\ClinicUserAccountMail($user_account, $user_default_password);
-// });

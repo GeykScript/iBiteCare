@@ -301,7 +301,7 @@
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Day</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Date Administered</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Status</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white rounded-tr-lg">Details</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -333,7 +333,24 @@
                                                     <td class="px-4 py-2 border">{{ $immunization->day_label ?? 'N/A' }} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->date_given}} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->administeredBy->last_name }}, {{ $immunization->administeredBy->first_name }} </td>
-                                                    <td class="px-4 py-2 border"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $immunization->status }} </span></td>
+
+                                                    @php
+                                                    $serviceName = strtolower($immunization->service->name);
+                                                    @endphp
+
+                                                    @if (str_contains($serviceName, 'booster') || str_contains($serviceName, 'pre') || str_contains($serviceName, 'post') || str_contains($serviceName, 'prophylaxis'))
+                                                    <td class="px-4 py-2 border">
+                                                        <a href="{{ route('clinic.patients.profile.immunization_info', [$immunization->id, $immunization->transaction_id]) }}"
+                                                            target="_blank"
+                                                            class="bg-sky-500 px-4 p-1 text-white font-bold rounded-lg hover:bg-sky-600">
+                                                            View
+                                                        </a>
+                                                    </td>
+                                                    @else
+                                                    <td class="px-4 py-2 border">
+                                                        <p class="italic">N/A</p>
+                                                    </td>
+                                                    @endif
                                                 </tr>
                                                 @endforeach
                                                 @endif
@@ -437,7 +454,7 @@
                                                     <td class="px-4 py-2 border-b">{{ $transaction->id }}</td>
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
                                                     <td class="px-4 py-2 border">{{ $transaction->Service->name }}</td>
-                                                    <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->date_given))}} </td>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->immunizations->date_given))}} </td>
                                                     <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $transaction->paymentRecords->amount_paid }}
                                                         </span></td>
                                                     <td class="px-4 py-2 border-b"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $transaction->immunizations->status }} </span></td>
@@ -507,12 +524,13 @@
                                 <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
                                 @endif
 
+
+                                @foreach ($transactions2 as $transaction)
                                 @php
                                 $serviceName = strtolower($transaction->service->name);
                                 @endphp
 
                                 @if (str_contains($serviceName, 'booster') || str_contains($serviceName, 'pre') || str_contains($serviceName, 'post') || str_contains($serviceName, 'prophylaxis'))
-                                @foreach ($transactions2 as $transaction)
                                 <div class="flex flex-col justify-center " x-data="{ open: false }">
 
                                     <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
@@ -590,7 +608,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
 
                                                 <div x-show="!showFirst" class="grid grid-cols-10 gap-2 border-2 border-gray-700 ">
@@ -608,7 +625,6 @@
                                                             <h2 class="text-lg font-bold">Place: <span class="ml-2 font-normal">{{ $transaction->patientExposures->place_of_bite}}</span></h2>
                                                             <h2 class="text-lg font-bold">Type of Animal: <span class="ml-2 font-normal">{{ $transaction->patientExposures->animalProfile->species }}</span></h2>
                                                             @endif
-
 
                                                             <!-- Type of Exposure -->
                                                             <div class="w-full flex  gap-2 ">
@@ -766,7 +782,10 @@
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
                                                                         <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->dose }}</td>
+                                                                        <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
+                                                                            {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
+                                                                            @endif
+                                                                        </td>
                                                                         @if ($schedule->nurse === null)
                                                                         <td class="px-4 py-2 border"></td>
                                                                         @else
@@ -817,7 +836,10 @@
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
                                                                         <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->dose }}</td>
+                                                                        <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
+                                                                            {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
+                                                                            @endif
+                                                                        </td>
                                                                         @if ($schedule->nurse === null)
                                                                         <td class="px-4 py-2 border"></td>
                                                                         @else
@@ -880,7 +902,10 @@
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
                                                                         <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->dose }}</td>
+                                                                        <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
+                                                                            {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
+                                                                            @endif
+                                                                        </td>
                                                                         @if ($schedule->nurse === null)
                                                                         <td class="px-4 py-2 border"></td>
                                                                         @else
@@ -928,10 +953,8 @@
 
                                     </div>
                                 </div>
-                                @endforeach
-                                @else
-                                <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
                                 @endif
+                                @endforeach
 
                             </div>
                         </div>

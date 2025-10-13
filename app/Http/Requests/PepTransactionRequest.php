@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterPatientPEPRequest extends FormRequest
+class PepTransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,23 +24,8 @@ class RegisterPatientPEPRequest extends FormRequest
         return [
             // Step 1: Personal Details
             'service_id' => 'required|integer',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'middle_initial' => 'required|string|max:2',
-            'suffix' => 'nullable|string|max:4',
-            'date_of_registration' => 'required|date',
-
-            'region' => 'string|max:255',
-            'province' => 'string|max:255',
-            'city' => 'string|max:255',
-            'barangay' => 'string|max:255',
-            'description' => 'string|max:255',
-
-            'contact_number' => 'required|string|max:13',
-            'sex' => 'string|max:255',
-            'date_of_birth' => 'required|date',
-            'age' => 'required|integer|min:0',
-
+            'patient_id' => 'required|integer',
+           
             'temperature' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
             'blood_pressure' => 'nullable|string|max:255',
