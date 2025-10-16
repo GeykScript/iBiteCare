@@ -212,7 +212,7 @@
                             </div>
                         </form>
 
-                        <!-- Modal Dialog -->
+                        <!-- ANTI TETANU STAFF VERIFICATION Dialog -->
                         <dialog
                             id="verifyPaymentModal"
                             x-data="{
@@ -238,7 +238,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.anti-tetanus.verify-staff') }}', {
+                                            fetch('{{ route('clinic.patients.verify-staff') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',
@@ -299,7 +299,7 @@
                                 </div>
                             </form>
                         </dialog>
-                        <!-- Modal Dialog -->
+                        <!-- ANTI TETANU NURSE VERIFICATION Dialog -->
                         <dialog
                             id="verfiyNurseModal"
                             x-data="{
@@ -325,7 +325,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.anti-tetanus.verify-nurse') }}', {
+                                            fetch('{{ route('clinic.patients.verify-nurse') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',

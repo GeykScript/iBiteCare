@@ -98,19 +98,19 @@
                     <td class="border px-2 py-2 text-gray-700">
                         {{ optional(optional($transaction->immunizations->vaccineUsed)->item)->brand_name 
         ? optional(optional($transaction->immunizations->vaccineUsed)->item)->brand_name . ' - ' . optional(optional($transaction->immunizations->vaccineUsed)->item)->product_type 
-        : 'N/A' }}
+        : 'n/a' }}
                     </td>
                     <td class="border px-2 py-2 text-gray-700">
                         {{ optional(optional($transaction->immunizations->rigUsed)->item)->brand_name 
         ? optional(optional($transaction->immunizations->rigUsed)->item)->brand_name . ' - ' . optional(optional($transaction->immunizations->rigUsed)->item)->product_type 
-        : 'N/A' }}
+        : 'n/a' }}
                     </td>
                     <td class="border px-2 py-2 text-gray-700">
                         {{ optional(optional($transaction->immunizations->antiTetanusUsed)->item)->brand_name 
         ? optional(optional($transaction->immunizations->antiTetanusUsed)->item)->brand_name . ' - ' . optional(optional($transaction->immunizations->antiTetanusUsed)->item)->product_type 
-        : 'N/A' }}
+        : 'n/a' }}
                     </td>
-                    <td class="border px-2 py-2 text-gray-700">{{ $transaction->immunizations->day_label }} </td>
+                    <td class="border px-2 py-2 text-gray-700">{{ $transaction->immunizations->day_label ?? 'n/a' }} </td>
 
                     <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo" class="w-3 h-3">{{ $transaction->paymentRecords->amount_paid }}</span> </td>
                     <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-2 p-1 text-green-500 font-bold rounded-md">{{ $transaction->immunizations->status }} </span></td>

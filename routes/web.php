@@ -38,8 +38,13 @@ use App\Http\Controllers\ClinicUser\PatientTransactionsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 use App\Http\Controllers\ClinicUser\ReportsController;
 use App\Http\Controllers\Auth\ClinicUser\PasswordController;
+
 use App\Http\Controllers\ClinicUser\AddTransactions\CompleteImmunizations;
 use App\Http\Controllers\ClinicUser\AddTransactions\PepTransaction;
+use App\Http\Controllers\ClinicUser\AddTransactions\PrepTransaction;
+use App\Http\Controllers\ClinicUser\AddTransactions\BoosterTransaction;
+use App\Http\Controllers\ClinicUser\AddTransactions\AntiTetanusTransaction;
+
 use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
 use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
@@ -55,7 +60,7 @@ use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\OtherRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PepRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PrepRegistration;
-
+use App\Http\Controllers\ClinicUser\StaffNurseVerificationController;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -87,20 +92,12 @@ Route::middleware('auth:clinic_user')->group(function () {
     // register anti-tetanus patient routes
     Route::get('/clinic/patients/register/anti-tetanus/{id}', [AntiTetanuRegistration::class, 'showForm'])
         ->name('clinic.patients.register.anti-tetanus');
-    Route::post('/clinic/patients/register/anti-tetanus/verify-nurse', [AntiTetanuRegistration::class, 'verifyNurse'])
-        ->name('clinic.patients.register.anti-tetanus.verify-nurse');
-    Route::post('/clinic/patients/register/anti-tetanus/verify-staff', [AntiTetanuRegistration::class, 'verifyStaff'])
-        ->name('clinic.patients.register.anti-tetanus.verify-staff');
     Route::post('/clinic/patients/register/anti-tetanus/register', [AntiTetanuRegistration::class, 'registerPatientAntiTetanu'])
         ->name('clinic.patients.register.anti-tetanus.register');
 
     // register booster patient routes
     Route::get('/clinic/patients/register/booster/{id}', [BoosterRegistration::class, 'showForm'])
         ->name('clinic.patients.register.booster');
-    Route::post('/clinic/patients/register/booster/verify-nurse', [BoosterRegistration::class, 'verifyNurse'])
-        ->name('clinic.patients.register.booster.verify-nurse');
-    Route::post('/clinic/patients/register/booster/verify-staff', [BoosterRegistration::class, 'verifyStaff'])
-        ->name('clinic.patients.register.booster.verify-staff');
     Route::post('/clinic/patients/register/booster/register', [BoosterRegistration::class, 'registerPatientBooster'])
         ->name('clinic.patients.register.booster.register');
 
@@ -111,10 +108,6 @@ Route::middleware('auth:clinic_user')->group(function () {
     // register pep patient routes
     Route::get('/clinic/patients/register/pep/{id}', [PepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.pep');
-    Route::post('/clinic/patients/register/pep/verify-nurse', [PepRegistration::class, 'verifyNurse'])
-        ->name('clinic.patients.register.pep.verify-nurse');
-    Route::post('/clinic/patients/register/pep/verify-staff', [PepRegistration::class, 'verifyStaff'])
-        ->name('clinic.patients.register.pep.verify-staff');
     Route::post('/clinic/patients/register/pep/register', [PepRegistration::class, 'registerPatientPEP'])
         ->name('clinic.patients.register.pep.register');
 
@@ -122,32 +115,44 @@ Route::middleware('auth:clinic_user')->group(function () {
     // register prep patient routes
     Route::get('/clinic/patients/register/prep/{id}', [PrepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.prep');
-    Route::post('/clinic/patients/register/prep/verify-nurse', [PrepRegistration::class, 'verifyNurse'])
-        ->name('clinic.patients.register.prep.verify-nurse');
-    Route::post('/clinic/patients/register/prep/verify-staff', [PrepRegistration::class, 'verifyStaff'])
-        ->name('clinic.patients.register.prep.verify-staff');
     Route::post('/clinic/patients/register/prep/register', [PrepRegistration::class, 'registerPatientPrep'])
         ->name('clinic.patients.register.prep.register');
 
     //Complete Transaction Immunization routes
     Route::get('/clinic/patients/complete-immunization/{schedule_id}/{service_id}/{grouping}/{patient_id}', [CompleteImmunizations::class, 'index'])
         ->name('clinic.patients.complete-immunization');
-    Route::post('/clinic/patients/complete-immunization/verify-nurse', [CompleteImmunizations::class, 'verifyNurse'])
-        ->name('clinic.patients.complete-immunization.verify-nurse');
-    Route::post('/clinic/patients/complete-immunization/verify-staff', [CompleteImmunizations::class, 'verifyStaff'])
-        ->name('clinic.patients.complete-immunization.verify-staff');
     Route::post('/clinic/patients/complete-immunization/complete', [CompleteImmunizations::class, 'completeImmunization'])
         ->name('clinic.patients.complete-immunization.complete');
-    
+        
+    // Staff and Nurse Verification routes
+    Route::post('/clinic/patients/verify-nurse', [StaffNurseVerificationController::class, 'verifyNurse'])
+        ->name('clinic.patients.verify-nurse');
+    Route::post('/clinic/patients/verify-staff', [StaffNurseVerificationController::class, 'verifyStaff'])
+        ->name('clinic.patients.verify-staff');
+
     // New Transaction routes
     Route::get('/clinic/patients/new-transaction/{service_id}/{patient_id}', [PatientTransactionsController::class, 'newTransaction'])
         ->name('clinic.patients.new-transaction');
-
+    // post exposure prophylaxis transaction
     Route::get('/clinic/patients/new-transaction/PEP/{service_id}/{patient_id}', [PepTransaction::class, 'showForm'])
         ->name('clinic.patients.new-transaction.pep');
-        
     Route::post('/clinic/patients/new-transaction/PEP/add', [PepTransaction::class, 'addPepTransaction'])
         ->name('clinic.patients.new-transaction.pep.add');
+    // pre exposure prophylaxis transaction
+    Route::get('/clinic/patients/new-transaction/PREP/{service_id}/{patient_id}', [PrepTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.prep');
+    Route::post('/clinic/patients/new-transaction/PREP/add', [PrepTransaction::class, 'addPrepTransaction'])
+        ->name('clinic.patients.new-transaction.prep.add');
+    // booster transaction
+    Route::get('/clinic/patients/new-transaction/Booster/{service_id}/{patient_id}', [BoosterTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.booster');
+    Route::post('/clinic/patients/new-transaction/Booster/add', [BoosterTransaction::class, 'addBoosterTransaction'])
+        ->name('clinic.patients.new-transaction.booster.add');
+    // anti-tetanus transaction
+    Route::get('/clinic/patients/new-transaction/Anti-Tetanus/{service_id}/{patient_id}', [AntiTetanusTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.antitetanus');
+    Route::post('/clinic/patients/new-transaction/Anti-Tetanus/add', [AntiTetanusTransaction::class, 'addAntiTetanusTransaction'])
+        ->name('clinic.patients.new-transaction.antitetanus.add');
 
 
 

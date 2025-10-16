@@ -3,29 +3,30 @@
 namespace App\Http\Controllers\ClinicUser\AddTransactions;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CompleteImmunization;
 use Illuminate\Http\Request;
-use App\Models\Inventory_units;
+use App\Http\Requests\PrepTransactionRequest;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Models\ClinicUser;
+use App\Models\Inventory_units;
 use App\Models\ClinicServices;
 use App\Models\Patient;
-use App\Models\PatientImmunizations;
-use App\Models\PatientImmunizationsSchedule;
 use App\Models\ClinicTransactions;
 use App\Models\PatientVitalSigns;
+use App\Models\ClinicServicesSchedules;
+use App\Models\PatientImmunizationsSchedule;
+use App\Models\PatientImmunizations;
 use App\Models\PaymentRecords;
 use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
+use App\Models\PatientPrevAntiRabies;
 
-class CompleteImmunizations extends Controller
+
+class PrepTransaction extends Controller
 {
-    public function index($schedule_id, $service_id, $grouping, $patient_id){
-        $clinicUser = auth()->guard('clinic_user')->user();
-
-        if (!$clinicUser) {
-            return redirect()->route('clinic.login')->with('error', 'You must be logged in to access patient transactions.');
-        }
-
+    public function showForm($service_id, $patient_id)
+    {
+        $clinicUser = Auth::guard('clinic_user')->user();
         $pvrvVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PVRV');
         })->where('status', '!=', 'used')->get();
@@ -41,41 +42,31 @@ class CompleteImmunizations extends Controller
             ->where('is_disabled', '!=', 1)
             ->get();
 
-        $service_fee = ClinicServices::where('id', $service_id)->first();
         $patient = Patient::find($patient_id);
+        $service_fee = ClinicServices::where('id', $service_id)->first();
+        $prepService = $service_id;
 
-        $old_immunization = PatientImmunizations::where('patient_id', $patient_id)
-            ->where('service_id', $service_id)
-            ->where('transaction_id', $grouping)
-            ->first();
-        
-        $schedules = PatientImmunizationsSchedule::where('id', $schedule_id)
-            ->where('patient_id', $patient_id)
-            ->where('date_completed', Null )
-            ->first();
-
-        return view('ClinicUser.Transactions.complete-immunization', compact('clinicUser', 'schedule_id', 'service_id', 'grouping', 'pvrvVaccines', 'pcecVaccines', 'nurses', 'staffs', 'service_fee', 'patient', 'old_immunization', 'schedules'));
+        return view('ClinicUser.Transactions.new-prep', compact('clinicUser', 'pvrvVaccines', 'pcecVaccines', 'nurses', 'staffs', 'patient', 'service_fee', 'prepService'));
     }
 
-
-
-
-    public function completeImmunization (CompleteImmunization $request)
-    {
+    public function addPrepTransaction(PrepTransactionRequest $request){
         $request->validated();
 
         $date = str_replace('T', ' ', $request->datetime_today);
-
         $patient = Patient::find($request->patient_id);
 
+
+        // Create new ClinicTransaction record
         $transaction = ClinicTransactions::create([
             'patient_id'       => $request->patient_id,
             'service_id'       => $request->service_id,
             'transaction_date' => $date,
         ]);
+        // Update the grouping field with the transaction's own ID
         ClinicTransactions::where('id', $transaction->id)
-            ->update(['grouping' => $request->grouping]);
+            ->update(['grouping' => $transaction->id]);
 
+        // Create new PatientVitalSigns record
         $patientVitalSigns = PatientVitalSigns::create([
             'patient_id' => $request->patient_id,
             'transaction_id' => $transaction->id,
@@ -85,19 +76,51 @@ class CompleteImmunizations extends Controller
             'blood_pressure' => $request->blood_pressure,
         ]);
 
-        $patientImmunizationSchedule = PatientImmunizationsSchedule::find($request->schedule_id);
+        if ($request->immunization_type && $request->place_of_immunization && $request->date_dose_given != null) {
+            PatientPrevAntiRabies::create([
+                'patient_id' => $request->patient_id,
+                'immunization_type' => $request->immunization_type,
+                'place_of_immunization' => $request->place_of_immunization,
+                'date_dose_given' => $request->date_dose_given,
+            ]);
+        }
 
-        $dayLabel = $patientImmunizationSchedule->Day; // safe now
 
-        $patientImmunizationSchedule->update([
-            'date_completed' => $request->dateOfTransaction,
-            'dose' => 0.2,
-            'administered_by' => $request->nurse_id,
-            'status' => 'Completed',
-        ]);
+        // 1. Generate all schedules
+        $serviceSchedules = ClinicServicesSchedules::where('service_id', $request->service_id)->get();
+        $patientSchedules = collect(); // will hold all created schedules
+
+        foreach ($serviceSchedules as $serviceSchedule) {
+            $scheduledDate = Carbon::parse($request->dateOfTransaction)
+                ->addDays($serviceSchedule->day_offset)
+                ->format('Y-m-d');
+
+            // Determine if this is the "Day 0" schedule
+            $isDay0 = $serviceSchedule->day_offset == 0;
+
+            $patientSchedules->push(
+                PatientImmunizationsSchedule::create([
+                    'patient_id'       => $patient->id,
+                    'transaction_id'   => $transaction->id,
+                    'service_id'      =>  $request->service_id,
+                    'service_sched_id' => $serviceSchedule->id,
+                    'Day'              => $serviceSchedule->label,
+                    'grouping'         => $transaction->id,
+                    'scheduled_date'   => $scheduledDate,
+                    'date_completed'   => $isDay0 ? $scheduledDate : null, // initially not completed
+                    'dose'             => $isDay0 ? 0.2 : null, // default dose
+                    'status'           => $isDay0 ? 'Completed' : 'Pending',
+                    'administered_by'  => $isDay0 ? $request->nurse_id : null,
+                ])
+            );
+        }
+
+        // 2. Grab the first schedule (Day 0)
+        $firstSchedule = $patientSchedules->first();
+
 
         $paymentRecord = PaymentRecords::create([
-            'patient_id' => $request->patient_id,
+            'patient_id' => $patient->id,
             'transaction_id' => $transaction->id,
             'receipt_number' => date('Y') . '-' . str_pad(mt_rand(1, 99999999), 8, '0', STR_PAD_LEFT),
             'payment_date' => $request->dateOfTransaction,
@@ -105,17 +128,16 @@ class CompleteImmunizations extends Controller
             'received_by_id' => $request->staff_id,
         ]);
 
-
         //immunization record
         PatientImmunizations::create([
-            'patient_id' => $request->patient_id,
+            'patient_id' => $patient->id,
             'transaction_id' => $transaction->id,
             'service_id' => $request->service_id,
-            'exposure_id' => $request->exposure_id ?? null,
+            'exposure_id' => null,
             'vital_signs_id' => $patientVitalSigns->id,
-            'immunization_type' => $request->immunization_type,
-            'date_given' => $request->dateOfTransaction,
-            'day_label' => $dayLabel,
+            'immunization_type' => 'Active',
+            'date_given' => $date,
+            'day_label' =>  'D0',
             'vaccine_used_id' => $request->active_vaccine_category == 'PVRV'
                 ? ($request->pvrv_vaccine_id ?? null)
                 : ($request->pcec_vaccine_id ?? null),
@@ -124,7 +146,7 @@ class CompleteImmunizations extends Controller
             'route_of_administration' => $request->route_of_administration,
             'administered_by_id' => $request->nurse_id,
             'payment_id' => $paymentRecord->id,
-            'schedule_id' => $request->schedule_id, 
+            'schedule_id' => $firstSchedule?->id, // <-- links to the first schedule
             'status' => 'Completed',
         ]);
 
@@ -132,16 +154,16 @@ class CompleteImmunizations extends Controller
             [
                 'user_id' => $request->nurse_id,
                 'role_id' => 2,
-                'action' => 'Administered Anti-Rabies vaccine to patient',
-                'details' => 'Administered Anti-Rabies vaccine to patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'action' => 'Administered PREP to patient',
+                'details' => 'Administered PREP to patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],
             [
                 'user_id' => $request->staff_id,
                 'role_id' => 3,
-                'action' => 'Handled payment for patient',
-                'details' => 'Handled payment for patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'action' => 'Handled payment for PREP patient',
+                'details' => 'Handled payment for PREP patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],
@@ -191,8 +213,7 @@ class CompleteImmunizations extends Controller
                 ]);
             }
         }
-
-
-        return redirect()->route('clinic.patients.transactions', ['id' => $patient->id])->with('success', 'Immunization completed successfully.');
+        return redirect()->route('clinic.patients.transactions', ['id' => $request->patient_id])->with('success', 'Immunization completed successfully.');
     }
-}
+    
+ }

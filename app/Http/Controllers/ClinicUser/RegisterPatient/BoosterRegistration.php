@@ -54,50 +54,6 @@ class BoosterRegistration extends Controller
     }
 
 
-    public function verifyNurse(Request $request)
-    {
-        $request->validate([
-            'nurse_id' => 'required|integer',
-            'nurse_password' => 'required|string',
-        ]);
-
-        $nurse = ClinicUser::where('id', $request->nurse_id)
-            ->where('role', 2)
-            ->first();
-
-        if (! $nurse) {
-            return response()->json(['success' => false, 'message' => 'Nurse not found.'], 404);
-        }
-
-        if (password_verify($request->nurse_password, $nurse->password)) {
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Incorrect password.'], 422);
-    }
-
-    public function verifyStaff(Request $request)
-    {
-        $request->validate([
-            'staff_id' => 'required|integer',
-            'staff_password' => 'required|string',
-        ]);
-
-        $staff = ClinicUser::where('id', $request->staff_id)
-            ->where('role', '=', 3)
-            ->first();
-
-        if (! $staff) {
-            return response()->json(['success' => false, 'message' => 'Staff not found.'], 404);
-        }
-
-        if (password_verify($request->staff_password, $staff->password)) {
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Incorrect password.'], 422);
-    }
-
     public function registerPatientBooster(RegisterPatientBoosterRequest $request){
         $request->validated();
 
@@ -218,16 +174,16 @@ class BoosterRegistration extends Controller
             [
                 'user_id' => $request->nurse_id,
                 'role_id' => 2,
-                'action' => 'Administered PREP to patient',
-                'details' => 'Administered PREP to patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'action' => 'Administered Booster to patient',
+                'details' => 'Administered Booster to patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],
             [
                 'user_id' => $request->staff_id,
                 'role_id' => 3,
-                'action' => 'Handled payment for PREP patient',
-                'details' => 'Handled payment for PREP patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'action' => 'Handled payment for  patient',
+                'details' => 'Handled payment for  patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],

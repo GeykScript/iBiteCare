@@ -231,7 +231,7 @@
                             </div>
                         </form>
 
-                        <!-- Modal Dialog -->
+                        <!-- STAFF VERIFICATION Modal Dialog -->
                         <dialog
                             id="verifyPaymentModal"
                             x-data="{
@@ -257,7 +257,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.pep.verify-staff') }}', {
+                                            fetch('{{ route('clinic.patients.verify-staff') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',
@@ -318,7 +318,8 @@
                                 </div>
                             </form>
                         </dialog>
-                        <!-- Modal Dialog -->
+
+                        <!-- NURSE Modal Dialog -->
                         <dialog
                             id="verfiyNurseModal"
                             x-data="{
@@ -344,7 +345,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.pep.verify-nurse') }}', {
+                                            fetch('{{ route('clinic.patients.verify-nurse') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',

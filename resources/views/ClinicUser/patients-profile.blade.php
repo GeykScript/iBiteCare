@@ -338,7 +338,7 @@
                                                     $serviceName = strtolower($immunization->service->name);
                                                     @endphp
 
-                                                    @if (str_contains($serviceName, 'booster') || str_contains($serviceName, 'pre') || str_contains($serviceName, 'post') || str_contains($serviceName, 'prophylaxis'))
+                                                    @if (str_contains($serviceName, 'post'))
                                                     <td class="px-4 py-2 border">
                                                         <a href="{{ route('clinic.patients.profile.immunization_info', [$immunization->id, $immunization->transaction_id]) }}"
                                                             target="_blank"
@@ -524,13 +524,16 @@
                                 <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
                                 @endif
 
-
+                                @php $hasVaccine = false; @endphp
+                                
                                 @foreach ($transactions2 as $transaction)
+
                                 @php
                                 $serviceName = strtolower($transaction->service->name);
                                 @endphp
 
                                 @if (str_contains($serviceName, 'booster') || str_contains($serviceName, 'pre') || str_contains($serviceName, 'post') || str_contains($serviceName, 'prophylaxis'))
+                                @php $hasVaccine = true; @endphp
                                 <div class="flex flex-col justify-center " x-data="{ open: false }">
 
                                     <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
@@ -955,6 +958,9 @@
                                 </div>
                                 @endif
                                 @endforeach
+                                @if (!$hasVaccine)
+                                <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
+                                @endif
 
                             </div>
                         </div>

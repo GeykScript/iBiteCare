@@ -196,7 +196,7 @@
                             </div>
                         </form>
 
-                        <!-- Modal Dialog -->
+                        <!-- staff verification Modal Dialog -->
                         <dialog
                             id="verifyPaymentModal"
                             x-data="{
@@ -222,7 +222,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.pep.verify-staff') }}', {
+                                            fetch('{{ route('clinic.patients.verify-staff') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',
@@ -283,7 +283,7 @@
                                 </div>
                             </form>
                         </dialog>
-                        <!-- Modal Dialog -->
+                        <!--nurse verification Modal Dialog -->
                         <dialog
                             id="verfiyNurseModal"
                             x-data="{
@@ -309,7 +309,7 @@
                             <form
                                 x-data
                                 @submit.prevent="
-                                            fetch('{{ route('clinic.patients.register.pep.verify-nurse') }}', {
+                                            fetch('{{ route('clinic.patients.verify-nurse') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',
@@ -386,11 +386,19 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const submitBtn = document.getElementById("submitBtn");
+    const vitalSigns = document.getElementById("vital-signs"); // reference to vital signs div
+
 
     function showStep(step) {
         // Hide all steps
         document.querySelectorAll(".step").forEach(s => s.classList.add("hidden"));
         document.getElementById(`step-${step}`).classList.remove("hidden");
+
+            if (step === 2) {
+            vitalSigns.classList.remove("hidden");
+        } else {
+            vitalSigns.classList.add("hidden");
+        }
 
         // Update step circles + labels
         for (let i = 2; i <= totalSteps; i++) {

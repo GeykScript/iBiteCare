@@ -28,7 +28,8 @@ class PatientTransactionsController extends Controller
         return view('ClinicUser.patients-transaction', compact('clinicUser', 'patient', 'services', 'schedules'));
     }
 
-    public function newTransaction($service_id, $patient_id){
+    public function newTransaction($service_id, $patient_id)
+    {
         $clinicUser = auth()->guard('clinic_user')->user();
 
         if (!$clinicUser) {
@@ -42,9 +43,19 @@ class PatientTransactionsController extends Controller
             return redirect()->back()->with('error', 'Invalid patient or service.');
         }
 
-        if ($service->id == $service_id) {
-            return redirect()->route('clinic.patients.new-transaction.pep', ['service_id' => $service_id, 'patient_id' => $patient_id]);
-        }
+        $serviceName = strtolower($service->name);
 
+        // 🔹 Match by service name or keyword
+        if (str_contains($serviceName, 'post') || str_contains($serviceName, 'pep')) {
+            return redirect()->route('clinic.patients.new-transaction.pep', compact('service_id', 'patient_id'));
+        } elseif (str_contains($serviceName, 'pre') || str_contains($serviceName, 'prep')) {
+            return redirect()->route('clinic.patients.new-transaction.prep', compact('service_id', 'patient_id'));
+        } elseif (str_contains($serviceName, 'tetanus')) {
+            return redirect()->route('clinic.patients.new-transaction.antitetanus', compact('service_id', 'patient_id'));
+        } elseif (str_contains($serviceName, 'booster')) {
+            return redirect()->route('clinic.patients.new-transaction.booster', compact('service_id', 'patient_id'));
+        } else {
+          
+        }
     }
 }

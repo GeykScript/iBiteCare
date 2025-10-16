@@ -1,29 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\ClinicUser\RegisterPatient;
+namespace App\Http\Controllers\ClinicUser\AddTransactions;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterPatientAntiTetanusRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\AntiTetanuTransactionRequest;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Models\ClinicUser;
-use App\Models\ClinicServices;
 use App\Models\Inventory_units;
+use App\Models\ClinicServices;
 use App\Models\Patient;
 use App\Models\ClinicTransactions;
 use App\Models\PatientVitalSigns;
-use App\Models\PatientPrevAntiRabies;
-use App\Models\PatientPrevAntiTetanus;
+use App\Models\ClinicServicesSchedules;
+use App\Models\PatientImmunizationsSchedule;
 use App\Models\PatientImmunizations;
-use App\Models\ClinicUserLogs;
 use App\Models\PaymentRecords;
+use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
+use App\Models\PatientPrevAntiTetanus;
 
-
-class AntiTetanuRegistration extends Controller
+class AntiTetanusTransaction extends Controller
 {
-    public function showForm($id)
-    {
+    //
+
+    public function showForm($service_id, $patient_id) {
         $clinicUser = Auth::guard('clinic_user')->user();
 
         $antiTetanusVaccines = Inventory_units::whereHas('item', function ($query) {
@@ -37,43 +39,22 @@ class AntiTetanuRegistration extends Controller
         $staffs = ClinicUser::where('role', '=', 3)
             ->where('is_disabled', '!=', 1)
             ->get();
+        $patient = Patient::find($patient_id);
+        $service_fee = ClinicServices::where('id', $service_id)->first();
+        $antiTetanuService = $service_id;
 
-        $service_fee = ClinicServices::where('id', $id)->first();
+        return view('ClinicUser.Transactions.new-anti-tetanu', compact('clinicUser', 'antiTetanusVaccines', 'nurses', 'staffs', 'patient', 'service_fee', 'antiTetanuService'));
 
-        $antiTetanuService = $id;
-
-        $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
-
-        return view('ClinicUser.RegisterPatient.register-anti-tetanu', compact('clinicUser', 'antiTetanusVaccines', 'nurses', 'staffs', 'service_fee', 'antiTetanuService', 'recentlyAddedPatients'));
     }
 
-
-    public function registerPatientAntiTetanu (RegisterPatientAntiTetanusRequest $request)
-    {
+    public function addAntiTetanusTransaction(AntiTetanuTransactionRequest $request){
         $request->validated();
 
         $date = str_replace('T', ' ', $request->datetime_today);
-
-        // Combine address fields into a single address string
-        $address = $request->province . ', ' . $request->city . ', ' . $request->barangay . ', ' . $request->description;
-
-        // Create new Patient record
-        $patient = Patient::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'middle_initial' => $request->middle_initial,
-            'suffix' => $request->suffix,
-            'birthdate' => $request->date_of_birth,
-            'age' => $request->age,
-            'sex' => $request->sex,
-            'registration_date' => $request->date_of_registration,
-            'address' => $address,
-            'contact_number' => $request->contact_number,
-        ]);
-
+        $patient = Patient::find($request->patient_id);
         // Create new ClinicTransaction record
         $transaction = ClinicTransactions::create([
-            'patient_id'       => $patient->id,
+            'patient_id'       => $request->patient_id,
             'service_id'       => $request->service_id,
             'transaction_date' => $date,
         ]);
@@ -83,15 +64,13 @@ class AntiTetanuRegistration extends Controller
 
         // Create new PatientVitalSigns record
         $patientVitalSigns = PatientVitalSigns::create([
-            'patient_id' => $patient->id,
+            'patient_id' => $request->patient_id,
             'transaction_id' => $transaction->id,
-            'recorded_date' => $request->date_of_registration,
+            'recorded_date' => $request->dateOfTransaction,
             'temperature' => $request->temperature,
             'weight' => $request->weight,
             'blood_pressure' => $request->blood_pressure,
         ]);
-
-      
 
         PatientPrevAntiTetanus::create([
             'patient_id' => $patient->id,
@@ -102,7 +81,6 @@ class AntiTetanuRegistration extends Controller
             'year_last_dose_given' => $request->year_last_dose_given,
         ]);
 
-
         $paymentRecord = PaymentRecords::create([
             'patient_id' => $patient->id,
             'transaction_id' => $transaction->id,
@@ -112,6 +90,7 @@ class AntiTetanuRegistration extends Controller
             'received_by_id' => $request->staff_id,
         ]);
 
+
         //immunization record
         PatientImmunizations::create([
             'patient_id' => $patient->id,
@@ -120,7 +99,7 @@ class AntiTetanuRegistration extends Controller
             'exposure_id' => null,
             'vital_signs_id' => $patientVitalSigns->id,
             'immunization_type' => 'None',
-            'date_given' => $request->date_of_registration,
+            'date_given' => $date,
             'day_label' =>  null,
             'vaccine_used_id' => null,
             'rig_used_id' => null,
@@ -187,9 +166,6 @@ class AntiTetanuRegistration extends Controller
                 ]);
             }
         }
-
-        $id = $request->service_id;
-
-        return redirect()->route('clinic.patients.register.anti-tetanus', ['id' => $id])->with('success', 'Patient registered successfully.');
+        return redirect()->route('clinic.patients.transactions', ['id' => $request->patient_id])->with('success', 'Immunization completed successfully.');
     }
 }

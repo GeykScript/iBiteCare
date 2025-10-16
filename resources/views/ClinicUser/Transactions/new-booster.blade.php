@@ -91,11 +91,11 @@
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Patient Registration</h1>
+                        <h1 class="text-xl md:text-3xl font-900">Patient Transaction</h1>
                         <div class="flex items-center gap-2">
-                            <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
+                            <a href="{{ route('clinic.patients.transactions', $patient) }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">Registry</p>
+                            <p class="font-bold text-red-500">New Prep Immunization</p>
                         </div>
                     </div>
                 </div>
@@ -107,10 +107,10 @@
                 <div class="grid grid-cols-4  md:px-10 gap-2 ">
                     <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
                         <div class="flex flex-col gap-4 md:gap-0 ">
-                            <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
+                            <a href="{{ route('clinic.patients.transactions', $patient) }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                             <div class="flex flex-col mb-6 ">
-                                <h1 class="text-md  md:text-2xl font-900 text-center ">New Patient Registration</h1>
-                                <p class="text-gray-400 text-sm text-center">Service: Pre Exposure Prophylaxis (PREP)</p>
+                                <h1 class="text-md  md:text-2xl font-900 text-center ">New Patient Transaction</h1>
+                                <p class="text-gray-400 text-sm text-center">Service: {{ $service_fee->name }}</p>
                             </div>
                         </div>
                         <!-- Progress Bar -->
@@ -118,23 +118,14 @@
                             <div class="flex items-center justify-between md:px-32 ">
                                 <!-- Step 1 -->
                                 <div class="flex flex-col items-center ">
-                                    <div id="step1-circle"
+                                    <div id="step2-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Personal Details</span>
+                                    <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Immunization</span>
                                 </div>
                                 <!-- Line between step 1 & 2 -->
-                                <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line1"></div>
-                                <!-- Step 2 -->
-                                <div class="flex flex-col items-center ">
-                                    <div id="step2-circle"
-                                        class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
-                                    </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Immunization</span>
-                                </div>
-                                <!-- Line between step 2 & 3 -->
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line2"></div>
-                                <!-- Step 3 -->
+                                <!-- Step 2 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step3-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
@@ -143,68 +134,43 @@
                                 </div>
                             </div>
                         </div>
-                        @if (session('success'))
-                        <div
-                            x-data="{ show: true }"
-                            x-show="show"
-                            x-transition.opacity.duration.300ms
-                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                            <!-- Modal content -->
-                            <div
-                                @click.outside="show = false"
-                                class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 text-center relative">
-                                <!-- Close button -->
-                                <button
-                                    @click="show = false"
-                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl leading-none">
-                                    &times;
-                                </button>
-                                <!-- Success Icon -->
-                                <div class="flex flex-col items-center justify-center gap-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="140"
-                                        viewBox="0 0 24 24" fill="#1AE820" stroke="white"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-circle-check-icon">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="m9 12 2 2 4-4" />
-                                    </svg>
-                                    <h2 class="text-2xl font-900 text-[#1AE820]">Transaction Completed</h2>
-                                    <p class="text-gray-800 font-bold text-sm mt-1">
-                                        You may proceed to view patient details or return to the home page.
-                                    </p>
-                                    <div class="flex flex-col gap-1 mt-4 text-sm">
-                                        <a href="{{ route('clinic.patients.profile', $recentlyAddedPatients->id) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
-                                            View Patient Details
-                                        </a>
-                                        <a href="{{ route('clinic.dashboard') }}"
-                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
-                                            Return to Home Page
-                                        </a>
-                                    </div>
-                                    <div class="flex justify-end items-end w-full">
-                                        <button
-                                            @click="show = false"
-                                            class="mt-4 text-white bg-gray-600 font-semibold py-2 px-4 rounded-lg">
-                                            Close
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+
 
                         <!-- Form Steps -->
-                        <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.prep.register') }}">
+                        <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.new-transaction.booster.add') }}">
                             @csrf
-                            <input type="hidden" name="service_id" value="{{ $prepService }}">
+                            <input type="hidden" name="service_id" value="{{ $boosterService }}">
+                            <input type="hidden" name="patient_id" value="{{ $patient->id }}">
                             <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
 
-                            <!-- Step 1: Personal Details -->
-                            <x-prep-steps.step-1 />
+
                             <!-- Step 4:  Immunizations -->
-                            <x-prep-steps.step-2 :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :nurses="$nurses" />
+                            <x-booster-steps.step-2 :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :nurses="$nurses" />
+                            <div class="md:w-1/3 grid grid-cols-6 gap-2 md:px-6 mb-2 pt-4" id="vital-signs">
+                                <div class="col-span-6 ">
+                                    <h2 class="md:text-lg text-gray-500 font-900">Vital Signs </h2>
+                                </div>
+                                <div class="col-span-6 md:col-span-2 ">
+                                    <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-500">Weight (kg)</label>
+                                    <input type="text" name="heart_rate" id="heart_rate" placeholder="e.g 70"
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                                <div class="col-span-6 md:col-span-2 ">
+                                    <label for="temperature" class="block mb-2 text-sm font-bold text-gray-500">Temperature</label>
+                                    <input type="text" name="temperature" id="temperature" placeholder="e.g 37.5"
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                                <div class="col-span-6 md:col-span-2 ">
+                                    <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-500">Blood Pressure</label>
+                                    <input type="text" name="blood_pressure" id="blood_pressure" placeholder="e.g 120/80"
+                                        oninput="this.value = this.value.replace(/[^0-9/]/g, '')"
+                                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                            </div>
                             <!-- Step 5: Payment -->
-                            <x-prep-steps.step-3 :staffs="$staffs" :service_fee="$service_fee" />
+                            <x-booster-steps.step-3 :staffs="$staffs" :service_fee="$service_fee" />
                             <!-- Navigation Buttons -->
                             <div class="flex justify-end mt-6 gap-4">
                                 <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
@@ -213,7 +179,7 @@
                             </div>
                         </form>
 
-                        <!--STAFF VERIFICATION Modal Dialog -->
+                        <!-- STAFF VERIFICATION Modal Dialog -->
                         <dialog
                             id="verifyPaymentModal"
                             x-data="{
@@ -223,7 +189,7 @@
                                         close() { this.$refs.modal.close() }
                                     }"
                             x-ref="modal"
-                            @prep-payment-modal.window="staff_id = $event.detail.staff_id; staff_name = $event.detail.staff_name; open()"
+                            @booster-payment-modal.window="staff_id = $event.detail.staff_id; staff_name = $event.detail.staff_name; open()"
                             class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
 
                             <!-- Modal content -->
@@ -300,8 +266,7 @@
                                 </div>
                             </form>
                         </dialog>
-
-                        <!--NURSE VERIFICATION Modal Dialog -->
+                        <!-- NURSE Modal Dialog -->
                         <dialog
                             id="verfiyNurseModal"
                             x-data="{
@@ -311,7 +276,7 @@
                                         close() { this.$refs.modal.close() }
                                     }"
                             x-ref="modal"
-                            @prep-nurse-modal.window="nurse_id = $event.detail.nurse_id; nurse_name = $event.detail.nurse_name; open()"
+                            @booster-nurse-modal.window="nurse_id = $event.detail.nurse_id; nurse_name = $event.detail.nurse_name; open()"
                             class="p-8 rounded-lg shadow-lg w-full max-w-xl backdrop:bg-black/30 focus:outline-none">
 
                             <!-- Modal content -->
@@ -397,21 +362,29 @@
         <x-logout-modal />
 </body>
 <script>
-    let currentStep = 1;
+    let currentStep = 2;
     const totalSteps = 3;
 
     const form = document.getElementById("multi-step-form");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const submitBtn = document.getElementById("submitBtn");
+    const vitalSigns = document.getElementById("vital-signs"); // reference to vital signs div
+
 
     function showStep(step) {
         // Hide all steps
         document.querySelectorAll(".step").forEach(s => s.classList.add("hidden"));
         document.getElementById(`step-${step}`).classList.remove("hidden");
 
+        if (step === 2) {
+            vitalSigns.classList.remove("hidden");
+        } else {
+            vitalSigns.classList.add("hidden");
+        }
+
         // Update step circles + labels
-        for (let i = 1; i <= totalSteps; i++) {
+        for (let i = 2; i <= totalSteps; i++) {
             const circle = document.getElementById(`step${i}-circle`);
             const label = circle.parentElement.querySelector("span");
 
@@ -428,7 +401,7 @@
         }
 
         // Update connecting lines
-        for (let i = 1; i < totalSteps; i++) {
+        for (let i = 2; i < totalSteps; i++) {
             const line = document.getElementById(`line${i}`);
             if (i < step) {
                 line.className = "bg-red-600 mx-2 border-2 h-1 w-full border-red-600";
@@ -438,15 +411,13 @@
         }
 
         // Toggle buttons
-        prevBtn.classList.toggle("hidden", step === 1);
+        prevBtn.classList.toggle("hidden", step === 2);
         nextBtn.classList.toggle("hidden", step === totalSteps);
         submitBtn.classList.toggle("hidden", step !== totalSteps);
     }
 
     function validateStep(step) {
         switch (step) {
-            case 1:
-                return validateStep1();
             case 2:
                 return validateStep2();
             case 3:
@@ -483,7 +454,6 @@
     // Initialize wizard
     showStep(currentStep);
 </script>
-
 
 
 <script>
