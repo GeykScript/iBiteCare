@@ -14,6 +14,7 @@ class Inventory_items extends Model
          'product_type',
          'immunity_type',
          'stock_status',
+         'service',
          'last_restocked_date',
          'created_at',
          'updated_at'

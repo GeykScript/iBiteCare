@@ -125,6 +125,11 @@
                                 </div>
 
                                 <div class="col-span-12  w-full  flex flex-col gap-3 mt-4">
+                                    <div class="w-full ">
+                                        <p class="text-sm text-gray-500 italic">
+                                            <span class="font-bold">Note:</span> When creating a new service, ensure that all products used for immunization procedures are added to its inventory.
+                                        </p>
+                                    </div>
                                     <div class="grid grid-cols-4 w-full gap-2 ">
                                         <div class="md:col-span-3 col-span-4">
                                             <label for="service_name" class="block mb-2 text-sm font-medium text-gray-900">Service Name</label>

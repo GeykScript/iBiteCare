@@ -150,7 +150,7 @@
                                 <div class="grid grid-cols-4">
                                     @foreach ($services as $service)
                                         <a href="{{ route('clinic.patients.new-transaction', ['service_id' => $service->id, 'patient_id' => $patient->id]) }}"
-                                            class="text-sm col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-gray-100 hover:cursor-pointer">{{ $service->name }}</a>
+                                            class="text-sm col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-sky-300 hover:cursor-pointer">{{ $service->name }}</a>
                                     @endforeach
                                 </div>
                             </div>

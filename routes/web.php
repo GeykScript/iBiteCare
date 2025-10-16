@@ -44,7 +44,7 @@ use App\Http\Controllers\ClinicUser\AddTransactions\PepTransaction;
 use App\Http\Controllers\ClinicUser\AddTransactions\PrepTransaction;
 use App\Http\Controllers\ClinicUser\AddTransactions\BoosterTransaction;
 use App\Http\Controllers\ClinicUser\AddTransactions\AntiTetanusTransaction;
-
+use App\Http\Controllers\ClinicUser\AddTransactions\OtherTransaction;
 use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
 use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
@@ -104,6 +104,8 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/patients/register/other/{id}', [OtherRegistration::class, 'showForm'])
         ->name('clinic.patients.register.other');
+    Route::post('/clinic/patients/register/other/register', [OtherRegistration::class, 'registerPatientOther'])
+        ->name('clinic.patients.register.other.register');
 
     // register pep patient routes
     Route::get('/clinic/patients/register/pep/{id}', [PepRegistration::class, 'showForm'])
@@ -153,6 +155,11 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.patients.new-transaction.antitetanus');
     Route::post('/clinic/patients/new-transaction/Anti-Tetanus/add', [AntiTetanusTransaction::class, 'addAntiTetanusTransaction'])
         ->name('clinic.patients.new-transaction.antitetanus.add');
+    // other transaction
+    Route::get('/clinic/patients/new-transaction/Other/{service_id}/{patient_id}', [OtherTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.other');
+    Route::post('/clinic/patients/new-transaction/Other/add', [OtherTransaction::class, 'addOtherTransaction'])
+        ->name('clinic.patients.new-transaction.other.add');
 
 
 

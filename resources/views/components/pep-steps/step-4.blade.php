@@ -568,4 +568,5 @@
         passiveDateInput.value = `${year}-${month}-${day}`;
     }
     dateOfTransactionToday();
+    
 </script>

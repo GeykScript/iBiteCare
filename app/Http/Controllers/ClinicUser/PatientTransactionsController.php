@@ -55,6 +55,7 @@ class PatientTransactionsController extends Controller
         } elseif (str_contains($serviceName, 'booster')) {
             return redirect()->route('clinic.patients.new-transaction.booster', compact('service_id', 'patient_id'));
         } else {
+            return redirect()->route('clinic.patients.new-transaction.other', compact('service_id', 'patient_id'));
           
         }
     }

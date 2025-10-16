@@ -95,7 +95,7 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients.transactions', $patient) }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">New Prep Immunization</p>
+                            <p class="font-bold text-red-500">New Booster Immunization</p>
                         </div>
                     </div>
                 </div>

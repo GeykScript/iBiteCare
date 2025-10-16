@@ -297,7 +297,7 @@
                                             <thead class="bg-gray-100">
                                                 <tr>
                                                     <th class="px-4 py-2 border-r border-b  bg-gray-800 text-white rounded-tl-lg">Service Provided</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white" colspan="3">Immunizations Used <br><span class="text-xs font-normal">(Vaccine, Rig, Anti-Tetanus)</span></th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white" colspan="3">Immunizations Used </th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Day</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Date Administered</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
@@ -315,21 +315,28 @@
                                                 @foreach ($currentImmunization as $immunization)
                                                 <tr>
                                                     <td class="px-4 py-2 border-b">{{ $immunization->service->name }}</td>
-                                                    <td class="px-4 py-2 border">
-                                                        {{ optional(optional($immunization->vaccineUsed)->item)->brand_name 
-                                                        ? optional(optional($immunization->vaccineUsed)->item)->brand_name . ' - ' . optional(optional($immunization->vaccineUsed)->item)->product_type 
-                                                        : 'N/A' }}
+                                                    @php
+                                                    $vaccine = optional(optional($immunization->vaccineUsed)->item);
+                                                    $rig = optional(optional($immunization->rigUsed)->item);
+                                                    $antiTetanus = optional(optional($immunization->antiTetanusUsed)->item);
+
+                                                    $items = [];
+
+                                                    if ($vaccine->brand_name) {
+                                                    $items[] = $vaccine->brand_name . ($vaccine->product_type ? ' (' . $vaccine->product_type . ')' : '');
+                                                    }
+                                                    if ($rig->brand_name) {
+                                                    $items[] = $rig->brand_name . ($rig->product_type ? ' (' . $rig->product_type . ')' : '');
+                                                    }
+                                                    if ($antiTetanus->brand_name) {
+                                                    $items[] = $antiTetanus->brand_name;
+                                                    }
+                                                    @endphp
+
+                                                    <td class="px-4 py-2 border" colspan="3">
+                                                        {{ implode(' - ', $items) }}
                                                     </td>
-                                                    <td class="px-4 py-2 border">
-                                                        {{ optional(optional($immunization->rigUsed)->item)->brand_name 
-                                                            ? optional(optional($immunization->rigUsed)->item)->brand_name . ' - ' . optional(optional($immunization->rigUsed)->item)->product_type 
-                                                            : 'N/A' }}
-                                                    </td>
-                                                    <td class="px-4 py-2 border">
-                                                        {{ optional(optional($immunization->antiTetanusUsed)->item)->brand_name 
-                                                        ? optional(optional($immunization->antiTetanusUsed)->item)->brand_name . ' - ' . optional(optional($immunization->antiTetanusUsed)->item)->product_type 
-                                                        : 'N/A' }}
-                                                    </td>
+
                                                     <td class="px-4 py-2 border">{{ $immunization->day_label ?? 'N/A' }} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->date_given}} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->administeredBy->last_name }}, {{ $immunization->administeredBy->first_name }} </td>
@@ -525,7 +532,7 @@
                                 @endif
 
                                 @php $hasVaccine = false; @endphp
-                                
+
                                 @foreach ($transactions2 as $transaction)
 
                                 @php

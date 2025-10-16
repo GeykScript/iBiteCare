@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ClinicUser;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClinicServices;
 use App\Models\Inventory;
 use App\Models\Inventory_items;
 use App\Models\Inventory_stock;
@@ -16,7 +17,8 @@ class InventorySupplies extends Controller
     public function index(){
 
         $clinicUser = Auth::user();
-        return view('ClinicUser.supplies', compact('clinicUser'));
+        $services = ClinicServices::all();
+        return view('ClinicUser.supplies', compact('clinicUser', 'services'));
     }
 
 
@@ -26,6 +28,7 @@ class InventorySupplies extends Controller
 
         $request->validate([
             'category' => 'required|string|max:255',
+            'service_id' => 'nullable|integer',
             'brand_name' => 'required|string|max:255',
             'product_type' => 'required|string|max:255',
             'immunity_type' => 'nullable|string|max:255',
@@ -44,6 +47,7 @@ class InventorySupplies extends Controller
             'brand_name' => $request->brand_name,
             'product_type' => $request->product_type,
             'immunity_type' => $request->immunity_type,
+            'service'=> $request->service_id,
             'stock_status' => 'In Stock',
             'last_restocked_date' => now(),
         ]);
