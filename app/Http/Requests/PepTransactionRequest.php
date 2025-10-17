@@ -51,8 +51,9 @@ class PepTransactionRequest extends FormRequest
             // Step 4: A. Previous Anti-Tetanus Vaccination
             // previous anti-tetanus vaccination
             'year_last_dose_given' => 'nullable|date_format:Y',
-            'anti_tetanus_dose_given' => 'nullable|string|max:255',
+            'anti_tetanus_dose_given' => 'nullable|string|max:255', //TT1,TT2,TT3
             'anti_tetanus_vaccine_id' => 'nullable|integer',
+            'anti_dose_given' => 'nullable|numeric|min:0', //0.2 ML
             'anti_tetanus_date_dose_given' => 'nullable|date',
 
             //previous rabies vaccination
@@ -66,6 +67,7 @@ class PepTransactionRequest extends FormRequest
             'active_vaccine_category' => 'required|in:PVRV,PCEC',
             'pvrv_vaccine_id' => 'nullable|integer',
             'pcec_vaccine_id' => 'nullable|integer',
+            'vaccine_dose_given' => 'nullable|numeric|min:0', //0.2 ML
 
             // passive vaccine category
             'passive_rig_category' => 'nullable|in:ERIG,HRIG',

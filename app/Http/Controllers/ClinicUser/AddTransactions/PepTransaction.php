@@ -34,20 +34,20 @@ class PepTransaction extends Controller
 
         $antiTetanusVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('category', 'Anti-Tetanus');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
 
         $pvrvVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PVRV');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
         $pcecVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PCEC');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
         $erigVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'ERIG');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
         $hrigVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'HRIG');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
 
         $nurses = ClinicUser::where('role', 2)
             ->where('is_disabled', '!=', 1)
@@ -126,14 +126,18 @@ class PepTransaction extends Controller
             'animal_profile_id' => $animalProfile->id
         ]);
 
-        PatientPrevAntiTetanus::create([
-            'patient_id' => $request->patient_id,
-            'dose_brand' => "Anti-Tetanus",
-            'dose_given' => $request->anti_tetanus_dose_given,
-            'date_dose_given' => $request->anti_tetanus_date_dose_given,
-            'rn_in_charge' => $request->nurse_id,
-            'year_last_dose_given' => $request->year_last_dose_given,
-        ]);
+
+        if ($request->anti_tetanus_vaccine_id && $request->anti_tetanus_dose_given && $request->anti_tetanus_date_dose_given && $request->anti_dose_given != null) {
+
+            PatientPrevAntiTetanus::create([
+                'patient_id' => $patient->id,
+                'dose_brand' => "Anti-Tetanus",
+                'dose_given' => $request->anti_tetanus_dose_given,
+                'date_dose_given' => $request->anti_tetanus_date_dose_given,
+                'rn_in_charge' => $request->nurse_id,
+                'year_last_dose_given' => $request->year_last_dose_given,
+            ]);
+        }
 
         if ($request->immunization_type && $request->place_of_immunization && $request->date_dose_given != null) {
             PatientPrevAntiRabies::create([
@@ -166,7 +170,7 @@ class PepTransaction extends Controller
                     'grouping'         => $transaction->id,
                     'scheduled_date'   => $scheduledDate,
                     'date_completed'   => $isDay0 ? $scheduledDate : null, // initially not completed
-                    'dose'             => $isDay0 ? 0.2 : null, // default dose
+                    'dose'             => $isDay0 ? ($request->vaccine_dose_given ?? null) : null,
                     'status'           => $isDay0 ? 'Completed' : 'Pending',
                     'administered_by'  => $isDay0 ? $request->nurse_id : null,
                 ])
@@ -210,10 +214,14 @@ class PepTransaction extends Controller
             'status' => 'Completed',
         ]);
 
+        $nurseClinicRole = ClinicUser::find($request->nurse_id);
+        $staffClinicRole = ClinicUser::find($request->staff_id);
+
+
         ClinicUserLogs::insert([
             [
                 'user_id' => $request->nurse_id,
-                'role_id' => 2,
+                'role_id' => $nurseClinicRole->role,
                 'action' => 'Administered PEP to patient',
                 'details' => 'Administered PEP to patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
@@ -221,7 +229,7 @@ class PepTransaction extends Controller
             ],
             [
                 'user_id' => $request->staff_id,
-                'role_id' => 3,
+                'role_id' => $staffClinicRole->role,
                 'action' => 'Handled payment for PEP patient',
                 'details' => 'Handled payment for PEP patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
@@ -229,56 +237,74 @@ class PepTransaction extends Controller
             ],
         ]);
 
-        Inventory_usage::insert([
-            [
+        //   an array to collect data
+        $inventoryData = [];
+
+        // 1. Anti-Tetanus (optional)
+        if ($request->anti_tetanus_vaccine_id && $request->anti_dose_given != null) {
+            $inventoryData[] = [
                 'unit_id' => $request->anti_tetanus_vaccine_id,
-                'used' => 0.5,
+                'used' => $request->anti_dose_given ?? 0,
                 'measurement_unit' => 'ml',
-                'usage_date' => now(),
+                'usage_date' => $date,
                 'used_by' => $request->nurse_id,
                 'details' => 'Used for Anti-Tetanus vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'unit_id' => $request->active_vaccine_category == 'PVRV'
-                    ? ($request->pvrv_vaccine_id ?? null)
-                    : ($request->pcec_vaccine_id ?? null),
-                'used' => 0.2,
-                'measurement_unit' => 'ml',
-                'usage_date' => now(),
-                'used_by' => $request->nurse_id,
-                'details' => 'Used for Rabies vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'unit_id' => $request->passive_rig_category == 'ERIG'
-                    ? ($request->erig_vaccine_id ?? null)
-                    : ($request->hrig_vaccine_id ?? null),
+            ];
+        }
+
+        // 2. Anti-Rabies (always)
+        $rabiesVaccineId = $request->active_vaccine_category == 'PVRV'
+            ? ($request->pvrv_vaccine_id ?? null)
+            : ($request->pcec_vaccine_id ?? null);
+
+        $inventoryData[] = [
+            'unit_id' => $rabiesVaccineId,
+            'used' => $request->vaccine_dose_given ?? 0,
+            'measurement_unit' => 'ml',
+            'usage_date' => $date,
+            'used_by' => $request->nurse_id,
+            'details' => 'Used for Rabies vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+
+        // 3. RIG (optional)
+        $rigVaccineId = $request->passive_rig_category == 'ERIG'
+            ? ($request->erig_vaccine_id ?? null)
+            : ($request->hrig_vaccine_id ?? null);
+
+        if ($rigVaccineId && $request->passive_dose_given != null) {
+            $inventoryData[] = [
+                'unit_id' => $rigVaccineId,
                 'used' => $request->passive_dose_given ?? 0,
                 'measurement_unit' => 'ml',
-                'usage_date' => now(),
+                'usage_date' => $date,
                 'used_by' => $request->nurse_id,
                 'details' => 'Used for RIG administration for patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-        ]);
+            ];
+        }
+
+        // 4. Insert everything
+        Inventory_usage::insert($inventoryData);
+
 
         // Define vaccine IDs with their respective subtraction amounts
         $vaccines = [];
 
         //  Anti-Tetanus
-        if ($request->anti_tetanus_vaccine_id) {
+        if ($request->anti_tetanus_vaccine_id != null) {
             $vaccines[] = [
                 'id' => $request->anti_tetanus_vaccine_id,
-                'reduce' => 0.5, // default ml to reduce 
+                'reduce' => $request->anti_dose_given ?? 0, // default ml to reduce
             ];
         }
 
         //  Passive RIG (ERIG or HRIG)
-        if ($request->passive_rig_category === 'ERIG' && $request->erig_vaccine_id) {
+        if ($request->passive_rig_category === 'ERIG' && $request->erig_vaccine_id != null) {
             $vaccines[] = [
                 'id' => $request->erig_vaccine_id,
                 'reduce' => $request->passive_dose_given ?? 0, // use the given dose or 0 if not provided
@@ -291,15 +317,15 @@ class PepTransaction extends Controller
         }
 
         //  Active vaccine (PVRV or PCEC)
-        if ($request->active_vaccine_category === 'PVRV' && $request->pvrv_vaccine_id) {
+        if ($request->active_vaccine_category === 'PVRV' && $request->pvrv_vaccine_id != null) {
             $vaccines[] = [
                 'id' => $request->pvrv_vaccine_id,
-                'reduce' => 0.2, // default ml to reduce
+                'reduce' => $request->vaccine_dose_given ?? 0, // default ml to reduce
             ];
-        } elseif ($request->active_vaccine_category === 'PCEC' && $request->pcec_vaccine_id) {
+        } elseif ($request->active_vaccine_category === 'PCEC' && $request->pcec_vaccine_id != null) {
             $vaccines[] = [
                 'id' => $request->pcec_vaccine_id,
-                'reduce' => 0.2, // default ml to reduce
+                'reduce' => $request->vaccine_dose_given ?? 0, // default ml to reduce
             ];
         }
 

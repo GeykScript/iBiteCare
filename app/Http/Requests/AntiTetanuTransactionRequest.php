@@ -34,6 +34,7 @@ class AntiTetanuTransactionRequest extends FormRequest
             'year_last_dose_given' => 'nullable|date_format:Y',
             'anti_tetanus_dose_given' => 'nullable|string|max:255',
             'anti_tetanus_vaccine_id' => 'nullable|integer',
+            'anti_dose_given' => 'nullable|numeric|min:0',
             'anti_tetanus_date_dose_given' => 'nullable|date',
      
             'route_of_administration' => 'required|string|max:255',

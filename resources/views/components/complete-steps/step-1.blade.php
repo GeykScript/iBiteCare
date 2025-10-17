@@ -8,32 +8,32 @@
                     <div class=" items-center">
                         <div class="flex flex-col">
                             <div class="grid grid-cols-12 gap-2">
-                                <div class="col-span-12 md:col-span-5">
-                                    <div class="flex flex-col md:px-10 gap-5">
+                                <div class="col-span-12 md:col-span-4">
+                                    <div class="flex flex-col md:px-10 gap-2">
                                         <h2 class="text-md text-gray-500 font-900 ">Vital Signs <span class="text-gray-500 text-xs font-normal">( Leave blank if N/A )</span></h2>
-                                        <div class="grid grid-cols-6 gap-2 ">
-                                            <div class="col-span-6 md:col-span-2 ">
+                                        <div class="flex flex-col gap-2">
+                                            <div>
                                                 <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-900">Weight (kg)</label>
                                                 <input type="text" name="heart_rate" id="heart_rate" placeholder="e.g 70"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
-                                                    class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                             </div>
-                                            <div class="col-span-6 md:col-span-2 ">
+                                            <div>
                                                 <label for="temperature" class="block mb-2 text-sm font-bold text-gray-900">Temperature</label>
                                                 <input type="text" name="temperature" id="temperature" placeholder="e.g 37.5"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
-                                                    class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                             </div>
-                                            <div class="col-span-6 md:col-span-2 ">
+                                            <div>
                                                 <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-900">Blood Pressure</label>
                                                 <input type="text" name="blood_pressure" id="blood_pressure" placeholder="e.g 120/80"
                                                     oninput="this.value = this.value.replace(/[^0-9/]/g, '')"
-                                                    class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-span-12 md:col-span-3 flex flex-col">
+                                <div class="col-span-12 md:col-span-5 flex flex-col">
                                     @props(['old_immunization'])
                                     @props(['service_fee'])
                                     <h2 class="text-gray-500 font-900 ">{{ $old_immunization->immunization_type}}</h2>
@@ -93,10 +93,12 @@
                                                     </div>
                                                     @else
                                                     @foreach ($pvrvVaccines as $vaccine)
-                                                    <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; open = false"
+                                                    @php
+                                                    $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                                    @endphp
+                                                    <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; volume = '{{ $formattedVolume }}'; open = false"
                                                         class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                        {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ({{ rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.') . (strpos(rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.'), '.') === false ? '.0' : '') }} ml)
-
+                                                        #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
                                                     </div>
                                                     @endforeach
                                                     @endif
@@ -129,9 +131,12 @@
                                                     </div>
                                                     @else
                                                     @foreach ($pcecVaccines as $vaccine)
-                                                    <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; open = false"
+                                                    @php
+                                                    $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                                    @endphp
+                                                    <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; open = false"
                                                         class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                        {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ({{ rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.') . (strpos(rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.'), '.') === false ? '.0' : '') }} ml)
+                                                        #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
                                                     </div>
                                                     @endforeach
                                                     @endif
@@ -139,14 +144,22 @@
                                             </div>
                                             <p id="error_pcec_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                         </div>
+
+                                        <div class="col-span-12 md:col-span-5 mt-2 md:px-4 ">
+                                            <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
+                                            <input type="number" id="vaccine_dose_given" name="vaccine_dose_given" required min="0" step="any"
+                                                class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 focus:ring-sky-500 focus:border-sky-500">
+                                            <p id="error_vaccine_dose_given" class="text-red-500 text-xs mt-1  hidden">*required</p>
+
+                                        </div>
                                     </div>
                                 </div>
+
                                 <!-- Nurse Verification Section -->
-                                <div class="col-span-12 md:col-span-4 ">
+                                <div class="col-span-12 md:col-span-3 flex flex-col justify-center items-center">
                                     <h2 class="md:text-lg text-gray-500 font-900 mb-2">Nurse In-charge</h2>
                                     <p id="verifySuccess" class="text-green-500 text-sm mt-1 hidden mb-2">Nurse verified successfully.</p>
-                                    <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                                    <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+
                                     <div class="flex gap-2 "
                                         x-data="{ open: false, nurse_id: null, nurse_name: 'Select Nurse', modalOpen: false, nursePassword: '' }">
                                         <!-- Nurse Dropdown -->
@@ -198,6 +211,8 @@
                                             <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                                         </div>
                                     </div>
+                                    <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                                    <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
                                 </div>
                             </div>
 

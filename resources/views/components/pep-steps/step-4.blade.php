@@ -12,7 +12,7 @@
                     <div class="col-span-6 md:col-span-3">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">No. of Dose Given</h2>
                         <p id="error_anti_tetanus_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                        <div class="flex  items-cente justify-center gap-4 p-2">
+                        <div class="flex  items-center justify-center gap-4 p-2">
                             <label class="flex items-center space-x-2">
                                 <input type="radio" name="anti_tetanus_dose_given" value="TT1" required
                                     class="text-red-500 focus:ring-red-500">
@@ -36,7 +36,7 @@
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Anti-Tetanus Vaccine</h2>
                         <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine', volume: null }" class="relative">
                             <!-- Hidden input to store the selected id -->
-                            <input type="hidden" name="anti_tetanus_vaccine_id" x-model="selected" required>
+                            <input type="hidden" name="anti_tetanus_vaccine_id" required x-model="selected">
                             <!-- Button / Display -->
                             <button type="button"
                                 @click="open = !open"
@@ -50,18 +50,30 @@
                                 @click.outside="open = false"
                                 class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
                                 @foreach ($antiTetanusVaccines as $vaccine)
-                                <div @click="selected = '{{ $vaccine->id }}'; selectedLabel = '#{{ $vaccine->package_number }}'; volume = '{{ $vaccine->remaining_volume }}'; open = false"
+                                @php
+                                $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                @endphp
+
+                                <div
+                                    @click="selected = '{{ $vaccine->id }}'; selectedLabel = '#{{ $vaccine->package_number }} ({{ $formattedVolume}} ml)'; volume = '{{ $formattedVolume }}'; open = false"
                                     class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                  #{{ $vaccine->package_number }} ( {{ $vaccine->remaining_volume }} ml )
+                                    #{{ $vaccine->package_number }} ({{ $formattedVolume }} ml)
                                 </div>
                                 @endforeach
+
                             </div>
                         </div>
                         <p id="error_anti_tetanus_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
-                    <div class="col-span-6 md:col-span-3 mt-2 md:px-4">
+                    <div class="col-span-6 md:col-span-1 mt-2 ">
+                        <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
+                        <input type="number" id="anti_dose_given" name="anti_dose_given" min="0" step="any" required
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                        <p id="error_anti_dose_given" class="text-red-500 text-xs mt-1  hidden">*required</p>
+                    </div>
+                    <div class="col-span-6 md:col-span-2 mt-2 md:px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Administered</h2>
-                        <input type="date" id="anti_tetanus_date_dose_given" name="anti_tetanus_date_dose_given" required
+                        <input type="date" id="anti_tetanus_date_dose_given" name="anti_tetanus_date_dose_given"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_anti_tetanus_date_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
@@ -107,7 +119,7 @@
                 <div class="grid grid-cols-12 gap-2  ">
                     <!-- ACTIVE IMMUNIZATION SECTION  -->
                     <div class="col-span-12 md:col-span-4 items-center" id="active_section">
-                        <h2 class="text-gray-500 font-900 ">Active</h2>
+                        <h2 class="text-gray-500 font-900 ">Active Immunization</h2>
                         <div class="flex flex-col">
                             <h2>Post Exposure Prophylaxis (PEP)</h2>
                             <div class="flex flex-col">
@@ -142,7 +154,7 @@
                                     </div>
                                     <!-- PVRV DROPDOWN  -->
                                     @props(['pvrvVaccines'])
-                                    <div class="col-span-12 md:col-span-6 mt-2 " x-show="selectedCategory === 'PVRV'">
+                                    <div class="col-span-12 md:col-span-8 mt-2 " x-show="selectedCategory === 'PVRV'">
                                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PVRV Vaccine</h2>
                                         <div x-data="{ open: false, selected_pvrv: null, selectedLabelPvrv: 'Select Vaccine', volume: null }" class="relative">
                                             <!-- Hidden input to store the selected id -->
@@ -165,9 +177,12 @@
                                                 </div>
                                                 @else
                                                 @foreach ($pvrvVaccines as $vaccine)
-                                                <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )'; open = false"
+                                                @php
+                                                $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                                @endphp
+                                                <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; volume = '{{ $formattedVolume }}'; open = false"
                                                     class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                    {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )
+                                                    #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
                                                 </div>
                                                 @endforeach
                                                 @endif
@@ -177,7 +192,7 @@
                                     </div>
                                     <!-- PCEC DROPDOWN  -->
                                     @props(['pcecVaccines'])
-                                    <div class="col-span-12 md:col-span-6 mt-2" x-show="selectedCategory === 'PCEC'">
+                                    <div class="col-span-12 md:col-span-8 mt-2" x-show="selectedCategory === 'PCEC'">
                                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PCEC Vaccine</h2>
                                         <div x-data="{ open: false, selected_pcec: null, selectedLabelPcec: 'Select Vaccine', volume: null }" class="relative">
                                             <!-- Hidden input to store the selected id -->
@@ -200,9 +215,12 @@
                                                 </div>
                                                 @else
                                                 @foreach ($pcecVaccines as $vaccine)
-                                                <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }} volume: {{ $vaccine->remaining_volume }}'; open = false"
+                                                @php
+                                                $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                                @endphp
+                                                <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; open = false"
                                                     class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                    {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )
+                                                    #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
                                                 </div>
                                                 @endforeach
                                                 @endif
@@ -210,13 +228,19 @@
                                         </div>
                                         <p id="error_pcec_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                     </div>
+                                    <div class="col-span-12 md:col-span-4 mt-2 md:px-4 ">
+                                        <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
+                                        <input type="number" id="vaccine_dose_given" name="vaccine_dose_given" required min="0" step="any"
+                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 focus:ring-sky-500 focus:border-sky-500">
+                                        <p id="error_vaccine_dose_given" class="text-red-500 text-xs mt-1  hidden">*required</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- PASSIVE IMMUNIZATION SECTION  -->
                     <div class="col-span-12 md:col-span-4" id="passive_section">
-                        <h2 class="text-lg  text-gray-500 font-900 mb-2">Passive </h2>
+                        <h2 class="text-sm md:text-md  text-gray-500 font-900 mb-2">Passive Immunization </h2>
                         <div class="grid grid-cols-12" x-data="{ PassiveCategory: 'ERIG' }">
                             <div class="col-span-12">
                                 <h2 class=" text-xs md:text-md text-gray-500 font-900 ">RIG Type</h2>
@@ -258,9 +282,12 @@
                                         </div>
                                         @else
                                         @foreach ($erigVaccines as $vaccine)
-                                        <div @click="selected_erig = '{{ $vaccine->id }}'; selectedLabelErig = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; volume = '{{ $vaccine->remaining_volume }}'; open = false"
+                                        @php
+                                        $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                        @endphp
+                                        <div @click="selected_erig = '{{ $vaccine->id }}'; selectedLabelErig = ' #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; volume = '{{ $formattedVolume }}'; open = false"
                                             class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                            {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ( {{ $vaccine->remaining_volume }} ml )
+                                            #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
                                         </div>
                                         @endforeach
                                         @endif
@@ -272,7 +299,7 @@
                             @props(['hrigVaccines'])
                             <div class="col-span-12 md:col-span-6 mt-2 " x-show="PassiveCategory === 'HRIG'">
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">HRIG Vaccine</h2>
-                                <div x-data="{ open: false, selected_hrig: null, selectedLabelHrig: 'Select Vaccine' }" class="relative">
+                                <div x-data="{ open: false, selected_hrig: null, selectedLabelHrig: 'Select Vaccine' , volume: null }" class="relative">
                                     <!-- Hidden input to store the selected id -->
                                     <input type="hidden" name="hrig_vaccine_id" x-model="selected_hrig" :required="PassiveCategory === 'HRIG'" :disabled="PassiveCategory !== 'HRIG'">
                                     <!-- Button / Display -->
@@ -293,9 +320,12 @@
                                         </div>
                                         @else
                                         @foreach ($hrigVaccines as $vaccine)
-                                        <div @click="selected_hrig = '{{ $vaccine->id }}'; selectedLabelHrig = '{{ $vaccine->item->product_type }} - #{{ $vaccine->id }}'; open = false"
+                                        @php
+                                        $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                        @endphp
+                                        <div @click="selected_hrig = '{{ $vaccine->id }}'; selectedLabelHrig = ' #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; volume = '{{ $formattedVolume }}'; open = false"
                                             class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                            {{ $vaccine->item->product_type }} - #{{ $vaccine->id }}
+                                            #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
                                         </div>
                                         @endforeach
                                         @endif
@@ -303,28 +333,28 @@
                                 </div>
                                 <p id="error_hrig_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                             </div>
-                            <div class="col-span-12 grid grid-cols-6 gap-2 mt-2 ">
+                            <div class="col-span-12 grid grid-cols-6 gap-2 mt-2">
                                 <div class="col-span-6 md:col-span-2 ">
-                                    <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose:</h2>
-                                    <p id="error_passive_dose_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
+                                    <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
                                     <input type="number" id="passive_dose_given" name="passive_dose_given" required min="0" step="any"
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                    <p id="error_passive_dose_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
+
                                 </div>
                                 <div class="col-span-6 md:col-span-3">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Given:</h2>
-                                    <p id="error_passive_date_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
                                     <input type="date" id="passive_date_given" name="passive_date_given" required
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                    <p id="error_passive_date_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Nurse Verification Section -->
-                    <div class="col-span-12 md:col-span-4 ">
+                    <div class="col-span-12 md:col-span-4 flex flex-col items-center justify-center">
                         <h2 class="md:text-lg text-gray-500 font-900 mb-2">Nurse In-charge</h2>
                         <p id="verifySuccess" class="text-green-500 text-sm mt-1 hidden mb-2">Nurse verified successfully.</p>
-                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
                         <div class="flex gap-2 "
                             x-data="{ open: false, nurse_id: null, nurse_name: 'Select Nurse', modalOpen: false, nursePassword: '' }">
                             <!-- Nurse Dropdown -->
@@ -376,6 +406,8 @@
                                 <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                             </div>
                         </div>
+                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
                     </div>
                 </div>
             </div>
@@ -530,7 +562,8 @@
         const category = document.getElementById("biteCategoryInput").value;
         const inputs = passiveSection.querySelectorAll("input, select, textarea, button");
 
-        if (category === "1" || category === "2") {
+
+        if (category === "2") {
             // Hide and disable all inputs
             pep_immunization_type.value = "Active";
             passiveSection.style.display = "none";
@@ -568,5 +601,4 @@
         passiveDateInput.value = `${year}-${month}-${day}`;
     }
     dateOfTransactionToday();
-    
 </script>

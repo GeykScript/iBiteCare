@@ -30,7 +30,7 @@ class AntiTetanusTransaction extends Controller
 
         $antiTetanusVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('category', 'Anti-Tetanus');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
 
 
         $nurses = ClinicUser::where('role', 2)
@@ -111,10 +111,13 @@ class AntiTetanusTransaction extends Controller
             'status' => 'Completed',
         ]);
 
+        $nurseClinicRole = ClinicUser::find($request->nurse_id);
+        $staffClinicRole = ClinicUser::find($request->staff_id);
+
         ClinicUserLogs::insert([
             [
                 'user_id' => $request->nurse_id,
-                'role_id' => 2,
+                'role_id' => $nurseClinicRole->role,
                 'action' => 'Administered Anti-Tetanus to patient',
                 'details' => 'Administered Anti-Tetanus to patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
@@ -122,7 +125,7 @@ class AntiTetanusTransaction extends Controller
             ],
             [
                 'user_id' => $request->staff_id,
-                'role_id' => 3,
+                'role_id' => $staffClinicRole->role,
                 'action' => 'Handled payment for Anti-Tetanus patient',
                 'details' => 'Handled payment for Anti-Tetanus patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
@@ -133,9 +136,9 @@ class AntiTetanusTransaction extends Controller
         Inventory_usage::insert([
             [
                 'unit_id' => $request->anti_tetanus_vaccine_id,
-                'used' => 0.5,
+                'used' => $request->anti_dose_given ?? 0,
                 'measurement_unit' => 'ml',
-                'usage_date' => now(),
+                'usage_date' => $date,
                 'used_by' => $request->nurse_id,
                 'details' => 'Used for Anti-Tetanus vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'created_at' => now(),
@@ -150,7 +153,7 @@ class AntiTetanusTransaction extends Controller
         if ($request->anti_tetanus_vaccine_id) {
             $vaccines[] = [
                 'id' => $request->anti_tetanus_vaccine_id,
-                'reduce' => 0.5, // default ml to reduce 
+                'reduce' => $request->anti_dose_given ?? 0,
             ];
         }
 

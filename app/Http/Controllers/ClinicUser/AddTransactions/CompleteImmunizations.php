@@ -28,10 +28,10 @@ class CompleteImmunizations extends Controller
 
         $pvrvVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PVRV');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
         $pcecVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PCEC');
-        })->where('status', '!=', 'used')->get();
+        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
 
 
         $nurses = ClinicUser::where('role', 2)
@@ -91,7 +91,7 @@ class CompleteImmunizations extends Controller
 
         $patientImmunizationSchedule->update([
             'date_completed' => $request->dateOfTransaction,
-            'dose' => 0.2,
+            'dose' => $request->vaccine_dose_given,
             'administered_by' => $request->nurse_id,
             'status' => 'Completed',
         ]);
@@ -128,20 +128,24 @@ class CompleteImmunizations extends Controller
             'status' => 'Completed',
         ]);
 
+        $nurseClinicRole = ClinicUser::find($request->nurse_id);
+        $staffClinicRole = ClinicUser::find($request->staff_id);
+
+
         ClinicUserLogs::insert([
             [
                 'user_id' => $request->nurse_id,
-                'role_id' => 2,
-                'action' => 'Administered Anti-Rabies vaccine to patient',
-                'details' => 'Administered Anti-Rabies vaccine to patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'role_id' => $nurseClinicRole->role,
+                'action' => 'Administered PEP to patient',
+                'details' => 'Administered PEP to patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],
             [
                 'user_id' => $request->staff_id,
-                'role_id' => 3,
-                'action' => 'Handled payment for patient',
-                'details' => 'Handled payment for patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'role_id' => $staffClinicRole->role,
+                'action' => 'Handled payment for PEP patient',
+                'details' => 'Handled payment for PEP patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],
@@ -152,9 +156,9 @@ class CompleteImmunizations extends Controller
                 'unit_id' => $request->active_vaccine_category == 'PVRV'
                     ? ($request->pvrv_vaccine_id ?? null)
                     : ($request->pcec_vaccine_id ?? null),
-                'used' => 0.2,
+                'used' => $request->vaccine_dose_given,
                 'measurement_unit' => 'ml',
-                'usage_date' => now(),
+                'usage_date' => $date,
                 'used_by' => $request->nurse_id,
                 'details' => 'Used for Rabies vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'created_at' => now(),
@@ -170,12 +174,12 @@ class CompleteImmunizations extends Controller
         if ($request->active_vaccine_category === 'PVRV' && $request->pvrv_vaccine_id) {
             $vaccines[] = [
                 'id' => $request->pvrv_vaccine_id,
-                'reduce' => 0.2, // default ml to reduce
+                'reduce' => $request->vaccine_dose_given, // default ml to reduce
             ];
         } elseif ($request->active_vaccine_category === 'PCEC' && $request->pcec_vaccine_id) {
             $vaccines[] = [
                 'id' => $request->pcec_vaccine_id,
-                'reduce' => 0.2, // default ml to reduce
+                'reduce' => $request->vaccine_dose_given, // default ml to reduce
             ];
         }
 

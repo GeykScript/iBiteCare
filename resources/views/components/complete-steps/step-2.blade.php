@@ -23,8 +23,7 @@
                             <div>
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">In-Charge in Payment: </h2>
                                 <p id="verifyStaffSuccess" class="text-green-500 text-sm mt-1 hidden mb-2">Verified successfully.</p>
-                                <p id="error_staff" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                                <p id="NotVerifiedStaff" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+
 
                                 @props(['staffs'])
                                 <div class="relative">
@@ -57,6 +56,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- Verify Button -->
                             <div class="flex flex-col ">
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-3">Verification</h2>
@@ -73,6 +73,8 @@
 
                             </div>
                         </div>
+                        <p id="error_staff" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        <p id="NotVerifiedStaff" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
                     </div>
                 </div>
                 <div class="col-span-12 md:col-span-2 flex flex-col gap-2">

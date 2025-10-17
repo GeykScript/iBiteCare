@@ -53,14 +53,14 @@
                             </div>
                             <div class="col-span-6 md:col-span-3 mt-2 md:px-4">
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose Given: <span class="font-normal">( ml )</span></h2>
-                                <p id="error_dose_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
                                 <input type="number" id="dose_given" name="dose_given" required min="0" step="any"
                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                <p id="error_dose_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
                             </div>
 
                             <!-- ANTI TETANUS VACCINE DROPDOWN  -->
                             @props(['vaccines'])
-                            <div class="col-span-6 md:col-span-3 mt-2 md:px-4">
+                            <div class="col-span-6 md:col-span-4 mt-2 md:px-4">
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Vaccine</h2>
                                 <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine', volume: null }" class="relative">
                                     <!-- Hidden input to store the selected id -->
@@ -78,9 +78,12 @@
                                         @click.outside="open = false"
                                         class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
                                         @foreach ($vaccines as $vaccine)
-                                        <div @click="selected = '{{ $vaccine->id }}'; selectedLabel = '#{{ $vaccine->package_number }} - {{ $vaccine->item->brand_name }}'; volume = '{{ $vaccine->remaining_volume }}'; open = false"
+                                        @php
+                                        $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
+                                        @endphp
+                                        <div @click="selected = '{{ $vaccine->id }}'; selectedLabel = '#{{ $vaccine->id }} - {{ $vaccine->item->brand_name }} ({{ $formattedVolume }} ml)'; volume = '{{ $vaccine->formattedVolume }}'; open = false"
                                             class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                            #{{ $vaccine->package_number }} {{ $vaccine->item->brand_name }} - {{ $vaccine->remaining_volume }} ml
+                                            #{{ $vaccine->package_number }} - {{ $vaccine->item->brand_name }} ({{ $formattedVolume }} ml)
                                         </div>
                                         @endforeach
                                     </div>
@@ -95,8 +98,7 @@
                     <div class=" ">
                         <h2 class="md:text-lg text-gray-500 font-900 mb-2">Nurse In-charge</h2>
                         <p id="verifySuccess" class="text-green-500 text-sm mt-1 hidden mb-2">Nurse verified successfully.</p>
-                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+
                         <div class="flex gap-2 "
                             x-data="{ open: false, nurse_id: null, nurse_name: 'Select Nurse', modalOpen: false, nursePassword: '' }">
                             <!-- Nurse Dropdown -->
@@ -148,6 +150,8 @@
                                 <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                             </div>
                         </div>
+                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
                     </div>
                 </div>
             </div>

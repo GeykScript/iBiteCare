@@ -41,6 +41,7 @@ class PrepTransactionRequest extends FormRequest
             'active_vaccine_category' => 'required|in:PVRV,PCEC',
             'pvrv_vaccine_id' => 'nullable|integer',
             'pcec_vaccine_id' => 'nullable|integer',
+            'vaccine_dose_given' => 'nullable|numeric|min:0', //0.2 ML
 
           
             //nurse

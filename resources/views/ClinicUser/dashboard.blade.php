@@ -228,10 +228,10 @@
                                         </p>
                                     </div>
                                     <!-- Scrollable container -->
-                                    <div class="overflow-y-auto max-h-[14.5rem]  mb-4 scrollbar-hidden px-2 ">
+                                    <div class="overflow-y-auto max-h-[14rem]  mb-4 scrollbar-hidden px-2 ">
 
                                         @foreach ($clinic_transactions as $transaction)
-                                        <div class="flex justify-between px-2 mt-2">
+                                        <div class="flex justify-between px-2 mt-3">
                                             <div class="flex items-center">
                                                 <div class="flex items-center justify-center">
                                                     <i data-lucide="circle-user" class="w-6 h-6 text-gray-500"></i>

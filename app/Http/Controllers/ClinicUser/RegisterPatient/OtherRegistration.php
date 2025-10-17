@@ -31,6 +31,7 @@ class OtherRegistration extends Controller
             $query->where('service', '=', $service_id);
         })
             ->where('status', '!=', 'used')
+            ->where('status', '!=', 'discard')
             ->get();
 
         $nurses = ClinicUser::where('role', 2)
@@ -120,10 +121,13 @@ class OtherRegistration extends Controller
             'status' => 'Completed',
         ]);
 
+        $nurseClinicRole = ClinicUser::find($request->nurse_id);
+        $staffClinicRole = ClinicUser::find($request->staff_id);
+
         ClinicUserLogs::insert([
             [
                 'user_id' => $request->nurse_id,
-                'role_id' => 2,
+                'role_id' => $nurseClinicRole->role,
                 'action' => 'Administered ' . $services->name . ' to patient',
                 'details' => 'Administered ' . $services->name . ' to patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
@@ -131,7 +135,7 @@ class OtherRegistration extends Controller
             ],
             [
                 'user_id' => $request->staff_id,
-                'role_id' => 3,
+                'role_id' => $staffClinicRole->role,
                 'action' => 'Handled payment for ' . $services->name . ' patient',
                 'details' => 'Handled payment for ' . $services->name . ' patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
@@ -144,7 +148,7 @@ class OtherRegistration extends Controller
                 'unit_id' => $request->vaccine_id,
                 'used' => $request->dose_given,
                 'measurement_unit' => 'ml',
-                'usage_date' => now(),
+                'usage_date' => $date,
                 'used_by' => $request->nurse_id,
                 'details' => 'Used for ' . $services->name . ' vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'created_at' => now(),
