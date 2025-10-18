@@ -70,6 +70,9 @@
                                             <div x-show="open"
                                                 @click.outside="open = false"
                                                 class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
+                                                @if (count($antiTetanusVaccines) === 0)
+                                                    <div class="px-3 py-2 text-sm text-gray-500">No vaccines available</div>
+                                                @endif
                                                 @foreach ($antiTetanusVaccines as $vaccine)
                                                 @php
                                                 $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');

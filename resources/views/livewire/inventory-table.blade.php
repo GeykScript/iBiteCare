@@ -15,13 +15,15 @@
         <div class="grid grid-cols-4 px-2 py-4 text-sm text-gray-700 text-center">
             <div>{{ $item->brand_name }}</div>
             <div>
-                {{ $item->vol_qty_total ?? 'N/A' }}
+                {{ $item->total_units ?? 'N/A' }}
             </div>
             <div>
-                {{ $item->vol_qty_remaining ?? 'N/A' }}
+                {{ $item->total_unit_remaining ?? 'N/A' }}
             </div>
             <div class="font-semibold 
                         @if(strtolower($item->stock_status) === 'in stock') text-green-500 
+                        @elseif(strtolower($item->stock_status) === 'out of stock') text-red-500 
+                        @elseif(strtolower($item->stock_status) === 'low stock') text-yellow-500
                         @else text-gray-600     
                         @endif">
                 {{ $item->stock_status }}

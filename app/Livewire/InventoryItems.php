@@ -4,10 +4,13 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Inventory_units;
+use Livewire\WithPagination;
 use App\Models\Inventory_stock;
 
 class InventoryItems extends Component
 {
+    use WithPagination;
+
     public $itemId;
     public $perPage = 5;
     public $sortBy = 'created_at';
@@ -40,18 +43,10 @@ class InventoryItems extends Component
         $item = Inventory_units::find($itemId);
 
         if ($item) {
-            $item->delete();
-
-            if ($item->item->category === 'Supply' || $item->item->category === 'Equipment') {
-                // Set remaining units to 0
-                Inventory_stock::where('id', $item->stock_id)
-                    ->update(['total_remaining_units' => 0]);
-            } else {
-                // Increment remaining units
-                Inventory_stock::where('id', $item->stock_id)
-                    ->decrement('total_remaining_units', 1);
-            }
-
+            // update item status to 'Disposed'
+            $item->status = 'Disposed';
+            $item->save();
+        
             //  success message
             session()->flash('remove-success', 'Item removed successfully.');
         }else{

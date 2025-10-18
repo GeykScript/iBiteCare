@@ -174,11 +174,17 @@
                             </div>
                             <div class="md:col-span-1 col-span-8">
                                 <p class="text-sm font-semibold text-gray-600">Status</p>
+                                @if(strtolower($inventoryRecords->stock_status) === 'in stock')
                                 <p class="text-green-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
+                                @elseif(strtolower($inventoryRecords->stock_status) === 'out of stock')
+                                <p class="text-red-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
+                                @elseif(strtolower($inventoryRecords->stock_status) === 'low stock')
+                                <p class="text-yellow-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
+                                @endif
                             </div>
                             <div class="md:col-span-2 col-span-8">
                                 <p class="text-sm font-semibold text-gray-600">Last Restocked Date</p>
-                                <p class="text-gray-800 font-bold text-md pt-1 ">{{ $inventoryRecords->last_restocked_date }} </p>
+                                <p class="text-gray-800 font-bold text-md pt-1 ">{{ \Carbon\Carbon::parse($inventoryRecords->last_restocked_date)->format('M d, Y h:i A') }} </p>
                             </div>
                             <div class="md:col-span-2 col-span-8 flex items-center ">
                                 <button
@@ -359,7 +365,7 @@
                                             <div class="md:col-span-6 col-span-12">
                                                 <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
                                                 <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml"
-                                                    pattern="^\d+(\.\d+)?$"
+                                                    min="0" step="any" 
                                                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
                                             </div>
                                         </div>

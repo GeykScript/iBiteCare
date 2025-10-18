@@ -31,10 +31,10 @@ class PrepRegistration extends Controller
 
         $pvrvVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PVRV');
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
         $pcecVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PCEC');
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
 
         $nurses = ClinicUser::where('role', 2)
             ->where('is_disabled', '!=', 1)

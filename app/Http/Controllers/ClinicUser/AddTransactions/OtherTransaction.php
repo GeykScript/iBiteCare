@@ -31,8 +31,8 @@ class OtherTransaction extends Controller
         $vaccines = Inventory_units::whereHas('item', function ($query) use ($service_id) {
             $query->where('service', '=', $service_id);
         })
-            ->where('status', '!=', 'used')
-            ->where('status', '!=', 'discard')
+            ->where('status', '!=', 'Used')
+            ->where('status', '!=', 'Disposed')
             ->get();
 
         $nurses = ClinicUser::where('role', 2)

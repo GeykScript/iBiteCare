@@ -37,20 +37,20 @@ class PepRegistration extends Controller
 
         $antiTetanusVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('category', 'Anti-Tetanus');  
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
 
         $pvrvVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PVRV');  
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
         $pcecVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PCEC');  
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
         $erigVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'ERIG');  
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
         $hrigVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'HRIG');  
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
 
         $nurses = ClinicUser::where('role', 2)
             ->where('is_disabled', '!=', 1)

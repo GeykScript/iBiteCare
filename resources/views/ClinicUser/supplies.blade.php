@@ -257,7 +257,7 @@
                                         <div class="md:col-span-6 col-span-12">
                                             <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
                                             <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml"
-                                                pattern="^\d+(\.\d+)?$"
+                                                min="0" step="any"
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
                                         </div>
                                     </div>

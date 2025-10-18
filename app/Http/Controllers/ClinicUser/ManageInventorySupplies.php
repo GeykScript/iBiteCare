@@ -153,6 +153,7 @@ class ManageInventorySupplies extends Controller
         $item->update([
             'quantity' => $request->quantity,
             'remaining_quantity' => $request->remaining_quantity,
+            'status' => 'Opened',
         ]);
 
         $stock = Inventory_stock::findOrFail($request->stock_id);

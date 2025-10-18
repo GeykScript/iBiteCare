@@ -28,7 +28,7 @@ class AntiTetanuRegistration extends Controller
 
         $antiTetanusVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('category', 'Anti-Tetanus');
-        })->where('status', '!=', 'used')->where('status', '!=', 'discard')->get();
+        })->where('status', '!=', 'Used')->where('status', '!=', 'Disposed')->get();
 
 
         $nurses = ClinicUser::where('role', 2)
