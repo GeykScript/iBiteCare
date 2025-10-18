@@ -24,6 +24,7 @@ use App\Models\PatientPrevAntiRabies;
 use App\Models\PatientPrevAntiTetanus;
 use App\Models\PatientVitalSigns;
 use App\Models\PaymentRecords;
+use App\Models\Messages;
 use Carbon\Carbon;
 
 use App\Http\Requests\RegisterPatientPEPRequest;
@@ -178,7 +179,7 @@ class PepRegistration extends Controller
             $isDay0 = $serviceSchedule->day_offset == 0;
 
                 $patientSchedules->push(
-                    PatientImmunizationsSchedule::create([
+                $newSchedule= PatientImmunizationsSchedule::create([
                         'patient_id'       => $patient->id,
                         'transaction_id'   => $transaction->id,
                         'service_id'      =>  $request->service_id,
@@ -192,7 +193,52 @@ class PepRegistration extends Controller
                         'administered_by'  => $isDay0 ? $request->nurse_id : null,
                     ])
                 );
+
+
+            // Skip reminders for Day 0 (already administered)
+            if (!$isDay0) {
+                $scheduledDateObj = Carbon::parse($scheduledDate);
+                $twoDaysBefore = $scheduledDateObj->copy()->subDays(2);
+
+                // 2 days before
+                if ($twoDaysBefore->isFuture()) {
+                    Messages::create([
+                        'patient_id' => $patient->id,
+                        'immunization_sched_id' => $newSchedule->id,
+                        'schedule' => $scheduledDate,
+                        'day_label' => $serviceSchedule->label,
+                        'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
+                        'display_message' => "Reminder: your ({$serviceSchedule->label}) PEP dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
+                        'message_text' =>
+                        "Good day, Ma'am/Sir.\n"
+                            . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your PEP schedule on "
+                            . $scheduledDateObj->format('M j, Y') . ".\n\n"
+                            . "Clinic hours: 8:00 AM to 5:00 PM.\n"
+                            . "Thank you!",
+                        'sender_id' => null,
+                        'status' => 'Pending',
+                    ]);
+                }
+
+                // On the day
+                Messages::create([
+                    'patient_id' => $patient->id,
+                    'immunization_sched_id' => $newSchedule->id,
+                    'schedule' => $scheduledDate,
+                    'day_label' => $serviceSchedule->label,
+                    'scheduled_send_date' => $scheduledDate,
+                    'display_message' => "Today is your PEP dose ({$serviceSchedule->label}).",
+                    'message_text' =>
+                    "Good day, Ma'am/Sir.\n"
+                        . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your PEP schedule today, "
+                        . $scheduledDateObj->format('M j, Y') . ".\n\n"
+                        . "Clinic hours: 8:00 AM to 5:00 PM.\n"
+                        . "Thank you!",
+                    'sender_id' => null,
+                    'status' => 'Pending',
+                ]);
             }
+        }
 
         // 2. Grab the first schedule (Day 0)
         $firstSchedule = $patientSchedules->first();

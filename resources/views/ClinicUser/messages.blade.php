@@ -16,11 +16,10 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js'])
 
-
-
     @endif
 
 </head>
+
 
 
 <body>
@@ -49,10 +48,10 @@
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
+                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
+                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
@@ -96,53 +95,56 @@
             <div class="flex flex-col flex-1  pt-[60px]">
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
-                    <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Inventory Supplies</h1>
-                        <div class="flex items-center gap-2">
-                            <a href="{{ route('clinic.supplies') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-8">Inventory </a>
-                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500 underline underline-offset-8">Usage History</p>
-                        </div>
-
+                    <div>
+                        <h1 class="text-xl md:text-3xl font-900">Patient Clinic Records</h1>
                     </div>
                 </div>
-
-                <div class="grid grid-cols-12">
-                    <div class="col-span-1 flex items-center justify-center">
-                        <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
-                    </div>
+                <!-- Header content -->
+                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
+                    <h1 class="md:text-2xl font-900 text-[#FF000D]">Message Patients</h1>
                 </div>
-
+                <div class="md:pl-12 pl-6">
+                    <h1 class="md:text-lg text-gray-800">List of Patients that need to be messaged</h1>
+                </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4 p-4  md:px-10 gap-2 ">
-                    <div class="col-span-4 md:col-span-4 px-2">
-
-                        <div class="flex items-center justify-center gap-4">
-                            <div class="flex items-center p-4 rounded-full bg-gray-800">
-                                <i data-lucide="file-box" class="w-4 h-4 text-white"></i>
-                            </div>
-                            <div class="flex flex-col items-start justify-start">
-                                <h1 class="font-900 text-lg">Inventory Usage History</h1>
-                                <p class="text-gray-600">View the details of each item's usage history.</p>
-                            </div>
+                <div class="grid grid-cols-4 p-4  md:px-10 ">
+                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
+                        <button
+                            onclick="document.getElementById('sendSMS').showModal()"
+                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Register Patient</button>
+                    </div>
+                    <dialog id="sendSMS" class="p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop:bg-black/30 focus:outline-none ">
+                        <!-- close modal button  -->
+                        <div class="w-full flex justify-end mb-5">
+                            <button onclick="document.getElementById('sendSMS').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
+                        <!-- create new user form  -->
+                        <div>
+                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
 
-                        <div class="col-span-4 border-2 border-gray-50 mt-2 mb-2"></div>
+                                <div class="col-span-12 flex items-center justify-end gap-2">
+                                    <button type="button" onclick="document.getElementById('sendSMS').close()"
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </dialog>
 
-                        <livewire:inventory-usage />
-                    </div>
+                    <livewire:message-patient-table />
+
+                  
                 </div>
             </div>
         </section>
 
-
         <!-- Modals For Logout -->
         <x-logout-modal />
 
+
 </body>
-
-
 
 
 </html>

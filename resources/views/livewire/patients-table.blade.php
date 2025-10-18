@@ -103,7 +103,7 @@
                     @endif
                     </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->contact_number }}</td>
-                    <td colspan="2" class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
+                    <td colspan="2" class="text-center md:text-start md:px-8 font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
                     <!-- <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->registration_date }}</td> -->
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 ">
                         <a href="{{ route('clinic.patients.profile', $patient->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold hover:underline underline-offset-4">

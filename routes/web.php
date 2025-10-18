@@ -54,6 +54,7 @@ use App\Http\Controllers\ClinicUser\ManageInventorySupplies;
 use App\Http\Controllers\ClinicUser\Services;
 use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
+use App\Http\Controllers\ClinicUser\MessagesController;
 
 use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
@@ -160,8 +161,16 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.patients.new-transaction.other');
     Route::post('/clinic/patients/new-transaction/Other/add', [OtherTransaction::class, 'addOtherTransaction'])
         ->name('clinic.patients.new-transaction.other.add');
+    //----------------END-----------------------//
 
+    // MESSAGES PAGE SMS---------------------------
 
+    Route::get('/clinic/messages', [MessagesController::class, 'index'])
+        ->name('clinic.messages');
+
+    Route::post('/clinic/messages/send', [MessagesController::class, 'sendMessage'])
+        ->name('clinic.messages.send');
+    //----------------END-----------------------//
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');

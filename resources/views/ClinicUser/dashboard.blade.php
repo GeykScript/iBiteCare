@@ -48,7 +48,7 @@
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
+                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
@@ -112,7 +112,7 @@
                 <!-- Main content grid -->
                 <div class="grid grid-cols-7 md:p-4 p-2 gap-4 md:gap-2 ">
                     <!-- div for First CHART -->
-                    <div class="col-span-7 md:col-span-3 w-full bg-white rounded-lg shadow-lg border-2 border-gray-200 ">
+                    <div class="col-span-7 md:col-span-3 w-full bg-white rounded-lg shadow-lg border p-2 border-gray-200 ">
                         <div class="flex flex-col gap-4 ">
                             <div class="w-full bg-white  p-2 md:p-6">
                                 <div class="flex items-center gap-2 p-2">

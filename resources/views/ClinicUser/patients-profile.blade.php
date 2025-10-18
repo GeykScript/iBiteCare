@@ -44,7 +44,7 @@
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
+                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
@@ -96,7 +96,7 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">{{ $patient->last_name }}'s Information</p>
+                            <p class="font-bold text-red-500">{{ $patient->first_name }} {{ $patient->last_name }} Information</p>
                         </div>
 
                     </div>
@@ -791,7 +791,7 @@
                                                                     @forelse ($schedules->where('service_id', 2) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
+                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -845,7 +845,7 @@
                                                                     @forelse ($schedules->where('service_id', 1) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
+                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -911,7 +911,7 @@
                                                                     @forelse ($schedules->where('service_id', 3) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
+                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
