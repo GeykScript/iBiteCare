@@ -15,7 +15,7 @@ class ClinicUserLogsTable extends Component
     public $search = '';
 
     public $sortBy = 'created_at';
-    public $sortDirection = 'ASC';
+    public $sortDirection = 'DESC';
 
     public function updatedPerPage()
     {
@@ -31,10 +31,10 @@ class ClinicUserLogsTable extends Component
     public function setSortBy($sortByField)
     {
         if ($this->sortBy === $sortByField) {
-            $this->sortDirection = $this->sortDirection === 'ASC' ? 'DESC' : 'ASC';
+            $this->sortDirection = $this->sortDirection === 'DESC' ? 'ASC' : 'DESC';
         } else {
             $this->sortBy = $sortByField;
-            $this->sortDirection = 'DESC';
+            $this->sortDirection = 'ASC';
         }
     }
 

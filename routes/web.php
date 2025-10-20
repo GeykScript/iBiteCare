@@ -38,6 +38,13 @@ use App\Http\Controllers\ClinicUser\PatientTransactionsController;
 use App\Http\Controllers\ClinicUser\ClinicUserProfileController;
 use App\Http\Controllers\ClinicUser\ReportsController;
 use App\Http\Controllers\Auth\ClinicUser\PasswordController;
+
+use App\Http\Controllers\ClinicUser\AddTransactions\CompleteImmunizations;
+use App\Http\Controllers\ClinicUser\AddTransactions\PepTransaction;
+use App\Http\Controllers\ClinicUser\AddTransactions\PrepTransaction;
+use App\Http\Controllers\ClinicUser\AddTransactions\BoosterTransaction;
+use App\Http\Controllers\ClinicUser\AddTransactions\AntiTetanusTransaction;
+use App\Http\Controllers\ClinicUser\AddTransactions\OtherTransaction;
 use App\Http\Controllers\ClinicUser\TwoFactorAuthenticationController;
 use App\Http\Controllers\ClinicUser\ForgotPasswordController;
 use App\Http\Controllers\ClinicUser\UpdatePasswordController;
@@ -47,12 +54,14 @@ use App\Http\Controllers\ClinicUser\ManageInventorySupplies;
 use App\Http\Controllers\ClinicUser\Services;
 use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
+use App\Http\Controllers\ClinicUser\MessagesController;
 
 use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\OtherRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PepRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PrepRegistration;
+use App\Http\Controllers\ClinicUser\StaffNurseVerificationController;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -74,26 +83,97 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::put('/clinic/patients/profile/update', [PatientsController::class, 'updateProfile'])
         ->name('clinic.patients.profile.update');
 
+    Route::get('/clinic/patients/immunization_info/{id}/{transaction_id}', [PatientsController::class, 'viewImmunizationDetails'])
+        ->name('clinic.patients.profile.immunization_info');
+
     Route::get('/clinic/patients/transactions/{id}', [PatientTransactionsController::class, 'index'])
         ->name('clinic.patients.transactions');
 
     // register patient routes
-    Route::get('/clinic/patients/register/anti-tetanus', [AntiTetanuRegistration::class, 'showForm'])
+    // register anti-tetanus patient routes
+    Route::get('/clinic/patients/register/anti-tetanus/{id}', [AntiTetanuRegistration::class, 'showForm'])
         ->name('clinic.patients.register.anti-tetanus');
-    Route::get('/clinic/patients/register/booster', [BoosterRegistration::class, 'showForm'])
+    Route::post('/clinic/patients/register/anti-tetanus/register', [AntiTetanuRegistration::class, 'registerPatientAntiTetanu'])
+        ->name('clinic.patients.register.anti-tetanus.register');
+
+    // register booster patient routes
+    Route::get('/clinic/patients/register/booster/{id}', [BoosterRegistration::class, 'showForm'])
         ->name('clinic.patients.register.booster');
-    Route::get('/clinic/patients/register/other', [OtherRegistration::class, 'showForm'])
+    Route::post('/clinic/patients/register/booster/register', [BoosterRegistration::class, 'registerPatientBooster'])
+        ->name('clinic.patients.register.booster.register');
+
+
+    Route::get('/clinic/patients/register/other/{id}', [OtherRegistration::class, 'showForm'])
         ->name('clinic.patients.register.other');
-    Route::get('/clinic/patients/register/pep', [PepRegistration::class, 'showForm'])
+    Route::post('/clinic/patients/register/other/register', [OtherRegistration::class, 'registerPatientOther'])
+        ->name('clinic.patients.register.other.register');
+
+    // register pep patient routes
+    Route::get('/clinic/patients/register/pep/{id}', [PepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.pep');
-    Route::get('/clinic/patients/register/prep', [PrepRegistration::class, 'showForm'])
+    Route::post('/clinic/patients/register/pep/register', [PepRegistration::class, 'registerPatientPEP'])
+        ->name('clinic.patients.register.pep.register');
+
+
+    // register prep patient routes
+    Route::get('/clinic/patients/register/prep/{id}', [PrepRegistration::class, 'showForm'])
         ->name('clinic.patients.register.prep');
-    
+    Route::post('/clinic/patients/register/prep/register', [PrepRegistration::class, 'registerPatientPrep'])
+        ->name('clinic.patients.register.prep.register');
+
+    //Complete Transaction Immunization routes
+    Route::get('/clinic/patients/complete-immunization/{schedule_id}/{service_id}/{grouping}/{patient_id}', [CompleteImmunizations::class, 'index'])
+        ->name('clinic.patients.complete-immunization');
+    Route::post('/clinic/patients/complete-immunization/complete', [CompleteImmunizations::class, 'completeImmunization'])
+        ->name('clinic.patients.complete-immunization.complete');
         
+    // Staff and Nurse Verification routes
+    Route::post('/clinic/patients/verify-nurse', [StaffNurseVerificationController::class, 'verifyNurse'])
+        ->name('clinic.patients.verify-nurse');
+    Route::post('/clinic/patients/verify-staff', [StaffNurseVerificationController::class, 'verifyStaff'])
+        ->name('clinic.patients.verify-staff');
+
+    // New Transaction routes
+    Route::get('/clinic/patients/new-transaction/{service_id}/{patient_id}', [PatientTransactionsController::class, 'newTransaction'])
+        ->name('clinic.patients.new-transaction');
+    // post exposure prophylaxis transaction
+    Route::get('/clinic/patients/new-transaction/PEP/{service_id}/{patient_id}', [PepTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.pep');
+    Route::post('/clinic/patients/new-transaction/PEP/add', [PepTransaction::class, 'addPepTransaction'])
+        ->name('clinic.patients.new-transaction.pep.add');
+    // pre exposure prophylaxis transaction
+    Route::get('/clinic/patients/new-transaction/PREP/{service_id}/{patient_id}', [PrepTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.prep');
+    Route::post('/clinic/patients/new-transaction/PREP/add', [PrepTransaction::class, 'addPrepTransaction'])
+        ->name('clinic.patients.new-transaction.prep.add');
+    // booster transaction
+    Route::get('/clinic/patients/new-transaction/Booster/{service_id}/{patient_id}', [BoosterTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.booster');
+    Route::post('/clinic/patients/new-transaction/Booster/add', [BoosterTransaction::class, 'addBoosterTransaction'])
+        ->name('clinic.patients.new-transaction.booster.add');
+    // anti-tetanus transaction
+    Route::get('/clinic/patients/new-transaction/Anti-Tetanus/{service_id}/{patient_id}', [AntiTetanusTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.antitetanus');
+    Route::post('/clinic/patients/new-transaction/Anti-Tetanus/add', [AntiTetanusTransaction::class, 'addAntiTetanusTransaction'])
+        ->name('clinic.patients.new-transaction.antitetanus.add');
+    // other transaction
+    Route::get('/clinic/patients/new-transaction/Other/{service_id}/{patient_id}', [OtherTransaction::class, 'showForm'])
+        ->name('clinic.patients.new-transaction.other');
+    Route::post('/clinic/patients/new-transaction/Other/add', [OtherTransaction::class, 'addOtherTransaction'])
+        ->name('clinic.patients.new-transaction.other.add');
+    //----------------END-----------------------//
+
+    // MESSAGES PAGE SMS---------------------------
+
+    Route::get('/clinic/messages', [MessagesController::class, 'index'])
+        ->name('clinic.messages');
+
+    Route::post('/clinic/messages/send', [MessagesController::class, 'sendMessage'])
+        ->name('clinic.messages.send');
+    //----------------END-----------------------//
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
-
 
     //CLINIC USER PROFILES PAGES
     Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
@@ -196,19 +276,3 @@ Route::post('/clinic/update-password', [UpdatePasswordController::class, 'update
 
     //--------------------------END----------------------------------------------//
 
-
-
-
-// Route::get('/preview-email', function () {
-//     return new \App\Mail\TwofactorCodeMail(123456);
-// });
-
-// Route::get('/preview-clinic-user-account-email', function () {
-//     $user_account = (object) [
-//         'account_id' => 'DrCare-2023-0001-0001',
-//         'email' => 'user@example.com'
-//     ];
-//     $user_default_password = 'DrCareABC-2023-0001-0001';
-
-//     return new \App\Mail\ClinicUserAccountMail($user_account, $user_default_password);
-// });

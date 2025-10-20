@@ -10,7 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -44,7 +44,7 @@
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
+                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
@@ -96,7 +96,7 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">{{ $patient->last_name }}'s  Information</p>
+                            <p class="font-bold text-red-500">{{ $patient->first_name }} {{ $patient->last_name }} Information</p>
                         </div>
 
                     </div>
@@ -238,7 +238,7 @@
                                                 <tr>
                                                     <td class="px-4 py-2 border">{{ $antitetanus->dose_brand }}</td>
                                                     <td class="px-4 py-2 border">{{ $antitetanus->dose_given }}</td>
-                                                    <td class="px-4 py-2 border">{{ $antitetanus->rn_in_charge }}</td>
+                                                    <td class="px-4 py-2 border">{{ $antitetanus->nurse->first_name }} {{ $antitetanus->nurse->middle_initial }} {{ $antitetanus->nurse->last_name }} </td>
                                                     <td class="px-4 py-2 border">{{ $antitetanus->date_dose_given }}</td>
                                                 </tr>
                                                 @endforeach
@@ -297,12 +297,11 @@
                                             <thead class="bg-gray-100">
                                                 <tr>
                                                     <th class="px-4 py-2 border-r border-b  bg-gray-800 text-white rounded-tl-lg">Service Provided</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white" colspan="3">Immunizations Used <br><span class="text-xs font-normal">(Vaccine, Rig, Anti-Tetanus)</span></th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white" colspan="3">Immunizations Used </th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Day</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Date Administered</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">In Charge</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white">Status</th>
-                                                    <th class="px-4 py-2 border-l border-b  bg-gray-800 text-white rounded-tr-lg">Details</th>
+                                                    <th class="px-4 py-2 border  bg-gray-800 text-white rounded-tr-lg">Details</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -316,26 +315,49 @@
                                                 @foreach ($currentImmunization as $immunization)
                                                 <tr>
                                                     <td class="px-4 py-2 border-b">{{ $immunization->service->name }}</td>
-                                                    <td class="px-4 py-2 border">
-                                                        {{ optional(optional($immunization->vaccineUsed)->item)->brand_name 
-                                                        ? optional(optional($immunization->vaccineUsed)->item)->brand_name . ' - ' . optional(optional($immunization->vaccineUsed)->item)->product_type 
-                                                        : 'N/A' }}
+                                                    @php
+                                                    $vaccine = optional(optional($immunization->vaccineUsed)->item);
+                                                    $rig = optional(optional($immunization->rigUsed)->item);
+                                                    $antiTetanus = optional(optional($immunization->antiTetanusUsed)->item);
+
+                                                    $items = [];
+
+                                                    if ($vaccine->brand_name) {
+                                                    $items[] = $vaccine->brand_name . ($vaccine->product_type ? ' (' . $vaccine->product_type . ')' : '');
+                                                    }
+                                                    if ($rig->brand_name) {
+                                                    $items[] = $rig->brand_name . ($rig->product_type ? ' (' . $rig->product_type . ')' : '');
+                                                    }
+                                                    if ($antiTetanus->brand_name) {
+                                                    $items[] = $antiTetanus->brand_name;
+                                                    }
+                                                    @endphp
+
+                                                    <td class="px-4 py-2 border" colspan="3">
+                                                        {{ implode(' - ', $items) }}
                                                     </td>
-                                                    <td class="px-4 py-2 border">
-                                                        {{ optional(optional($immunization->rigUsed)->item)->brand_name 
-                                                            ? optional(optional($immunization->rigUsed)->item)->brand_name . ' - ' . optional(optional($immunization->rigUsed)->item)->product_type 
-                                                            : 'N/A' }}
-                                                    </td>
-                                                    <td class="px-4 py-2 border">
-                                                        {{ optional(optional($immunization->antiTetanusUsed)->item)->brand_name 
-                                                        ? optional(optional($immunization->antiTetanusUsed)->item)->brand_name . ' - ' . optional(optional($immunization->antiTetanusUsed)->item)->product_type 
-                                                        : 'N/A' }}
-                                                    </td>
-                                                    <td class="px-4 py-2 border">{{ $immunization->day_label}} </td>
+
+                                                    <td class="px-4 py-2 border">{{ $immunization->day_label ?? 'N/A' }} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->date_given}} </td>
                                                     <td class="px-4 py-2 border">{{ $immunization->administeredBy->last_name }}, {{ $immunization->administeredBy->first_name }} </td>
-                                                    <td class="px-4 py-2 border"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $immunization->status }} </span></td>
-                                                    <td class="px-4 py-2 border-b"><a href="#" class="text-blue-500 hover:underline underline-offset-4 hover:text-blue-600 font-bold">View</a></td>
+
+                                                    @php
+                                                    $serviceName = strtolower($immunization->service->name);
+                                                    @endphp
+
+                                                    @if (str_contains($serviceName, 'post'))
+                                                    <td class="px-4 py-2 border">
+                                                        <a href="{{ route('clinic.patients.profile.immunization_info', [$immunization->id, $immunization->transaction_id]) }}"
+                                                            target="_blank"
+                                                            class="bg-sky-500 px-4 p-1 text-white font-bold rounded-lg hover:bg-sky-600">
+                                                            View
+                                                        </a>
+                                                    </td>
+                                                    @else
+                                                    <td class="px-4 py-2 border">
+                                                        <p class="italic">N/A</p>
+                                                    </td>
+                                                    @endif
                                                 </tr>
                                                 @endforeach
                                                 @endif
@@ -439,7 +461,7 @@
                                                     <td class="px-4 py-2 border-b">{{ $transaction->id }}</td>
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
                                                     <td class="px-4 py-2 border">{{ $transaction->Service->name }}</td>
-                                                    <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->date_given))}} </td>
+                                                    <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->immunizations->date_given))}} </td>
                                                     <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $transaction->paymentRecords->amount_paid }}
                                                         </span></td>
                                                     <td class="px-4 py-2 border-b"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $transaction->immunizations->status }} </span></td>
@@ -509,7 +531,16 @@
                                 <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
                                 @endif
 
+                                @php $hasVaccine = false; @endphp
+
                                 @foreach ($transactions2 as $transaction)
+
+                                @php
+                                $serviceName = strtolower($transaction->service->name);
+                                @endphp
+
+                                @if (str_contains($serviceName, 'booster') || str_contains($serviceName, 'pre') || str_contains($serviceName, 'post') || str_contains($serviceName, 'prophylaxis'))
+                                @php $hasVaccine = true; @endphp
                                 <div class="flex flex-col justify-center " x-data="{ open: false }">
 
                                     <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
@@ -587,7 +618,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
 
                                                 <div x-show="!showFirst" class="grid grid-cols-10 gap-2 border-2 border-gray-700 ">
@@ -605,7 +635,6 @@
                                                             <h2 class="text-lg font-bold">Place: <span class="ml-2 font-normal">{{ $transaction->patientExposures->place_of_bite}}</span></h2>
                                                             <h2 class="text-lg font-bold">Type of Animal: <span class="ml-2 font-normal">{{ $transaction->patientExposures->animalProfile->species }}</span></h2>
                                                             @endif
-
 
                                                             <!-- Type of Exposure -->
                                                             <div class="w-full flex  gap-2 ">
@@ -627,9 +656,9 @@
                                                                         disabled
                                                                         class="text-red-500"
                                                                         @if ($transaction->patientExposures !== null)
-                                                                    {{ strtolower($transaction->patientExposures->type_of_exposure) === 'scratch' ? 'checked' : '' }}
+                                                                    {{ strtolower($transaction->patientExposures->type_of_exposure) === 'non-bite' ? 'checked' : '' }}
                                                                     @endif>
-                                                                    Scratch
+                                                                    Non-Bite
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -762,8 +791,11 @@
                                                                     @forelse ($schedules->where('service_id', 2) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->dose }}</td>
+                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
+                                                                            {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
+                                                                            @endif
+                                                                        </td>
                                                                         @if ($schedule->nurse === null)
                                                                         <td class="px-4 py-2 border"></td>
                                                                         @else
@@ -813,8 +845,11 @@
                                                                     @forelse ($schedules->where('service_id', 1) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->dose }}</td>
+                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
+                                                                            {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
+                                                                            @endif
+                                                                        </td>
                                                                         @if ($schedule->nurse === null)
                                                                         <td class="px-4 py-2 border"></td>
                                                                         @else
@@ -876,8 +911,11 @@
                                                                     @forelse ($schedules->where('service_id', 3) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->date_completed }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->dose }}</td>
+                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
+                                                                            {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
+                                                                            @endif
+                                                                        </td>
                                                                         @if ($schedule->nurse === null)
                                                                         <td class="px-4 py-2 border"></td>
                                                                         @else
@@ -925,7 +963,11 @@
 
                                     </div>
                                 </div>
+                                @endif
                                 @endforeach
+                                @if (!$hasVaccine)
+                                <p class="text-gray-500 text-center p-4">No Vaccination Card found.</p>
+                                @endif
 
                             </div>
                         </div>
@@ -1215,17 +1257,13 @@
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
 
-    // Load saved tab from localStorage or default to tab1
-    let activeTab = localStorage.getItem("activeTab") || "tab1";
+    // Always default to tab1 on load
+    let activeTab = "tab1";
     showTab(activeTab);
 
     tabButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
             const target = btn.getAttribute("data-tab");
-
-            // Save active tab to localStorage
-            localStorage.setItem("activeTab", target);
-
             showTab(target);
         });
     });

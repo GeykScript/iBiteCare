@@ -103,14 +103,14 @@
                     @endif
                     </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->contact_number }}</td>
-                    <td colspan="2" class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
+                    <td colspan="2" class="text-center md:text-start md:px-8 font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
                     <!-- <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->registration_date }}</td> -->
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 ">
-                        <a href="{{ route('clinic.patients.profile', $patient->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold hover:underline underline-offset-2">
+                        <a href="{{ route('clinic.patients.profile', $patient->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold hover:underline underline-offset-4">
                             View <img src="{{asset('images/file-text.svg')}}" alt="Profile Details"></a>
                     </td>
                     <td class="px-2 py-4 text-center font-medium text-gray-900">
-                        <a href="{{ route('clinic.patients.transactions', $patient->id) }}" class="text-red-500 flex items-center justify-center gap-1 font-semibold">
+                        <a href="{{ route('clinic.patients.transactions', $patient->id) }}" class="text-red-500 hover:underline underline-offset-4 flex items-center justify-center gap-1 font-semibold">
                             Manage <img src="{{asset('images/align-justify.svg')}}" alt="Manage Transactions"></a>
                     </td>
                 </tr>

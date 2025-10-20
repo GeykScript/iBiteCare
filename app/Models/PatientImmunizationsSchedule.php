@@ -14,7 +14,7 @@ class PatientImmunizationsSchedule extends Model
         'service_id',
         'service_sched_id',
         'Day',
-        'schedule_date',
+        'scheduled_date',
         'date_completed',
         'status',
         'dose',

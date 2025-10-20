@@ -46,7 +46,7 @@
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
+                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
@@ -125,6 +125,11 @@
                                 </div>
 
                                 <div class="col-span-12  w-full  flex flex-col gap-3 mt-4">
+                                    <div class="w-full ">
+                                        <p class="text-sm text-gray-500 italic">
+                                            <span class="font-bold">Note:</span> When creating a new service, ensure that all products used for immunization procedures are added to its inventory.
+                                        </p>
+                                    </div>
                                     <div class="grid grid-cols-4 w-full gap-2 ">
                                         <div class="md:col-span-3 col-span-4">
                                             <label for="service_name" class="block mb-2 text-sm font-medium text-gray-900">Service Name</label>

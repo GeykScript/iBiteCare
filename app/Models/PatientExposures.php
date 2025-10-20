@@ -15,11 +15,11 @@ class PatientExposures extends Model
         'place_of_bite',
         'type_of_exposure',
         'site_of_bite',
-        'other_site_description',
         'bite_category',
+        'bite_management',
         'animal_profile_id',
         'created_at',
-        'modified_at',
+        'updated_at',
     ];
 
     public function patient()

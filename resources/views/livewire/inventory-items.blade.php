@@ -70,7 +70,6 @@
                 <th class="border-r  border-b  text-white rounded-tl-lg px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('id')">ID</th>
                 <th class="border  text-white  px-2 py-1">Name</th>
                 <th class="border  text-white  px-2 py-1">Stock No.</th>
-                <th class="border  text-white  px-2 py-1">Package No.</th>
                 <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('unit_number')">Unit No.</th>
                 @php
                 $category = $column->item->category ?? 'Other';
@@ -83,10 +82,13 @@
                 <th class="border  text-white  px-2 py-1">Remaining</th>
                 @endif
                 <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('status')">Status</th>
+                <th class="border  text-white  px-2 py-1 hover:cursor-pointer" wire:click="setSortBy('updated_at')">last_usage_at</th>
                 @if($category === 'Supply' || $category === 'Equipment')
-                <th class="border  text-white  px-2 py-1">Edit</th>
+                <th class="border  text-white  rounded-tr-lg px-2 py-1">Edit</th>
                 @endif
+                @if($category !== 'Supply' && $category !== 'Equipment')
                 <th class="border-l border-b  text-white rounded-tr-lg px-2 py-1">Action </th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -103,17 +105,26 @@
                 <td class="border-b px-2 py-2 text-gray-700">{{ $item->id }}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ $item->item->brand_name }}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ $item->stock_id }}</td>
-                <td class="border px-2 py-2 text-gray-700">{{ $item->package_number}}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ 'Item No. ' }}{{ $item->unit_number}}</td>
                 @if($column->item->category === 'Supply'|| $column->item->category === 'Equipment')
                 <td class="border px-2 py-2 text-gray-700">{{ $item->unit_quantity }} {{ $item->measurement_unit }}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ $item->remaining_quantity }} {{ $item->measurement_unit }}</td>
                 @else
-                <td class="border px-2 py-2 text-gray-700">{{ $item->unit_volume }} {{ $item->measurement_unit }}</td>
-                <td class="border px-2 py-2 text-gray-700">{{ $item->remaining_volume }} {{ $item->measurement_unit }}</td>
+                @php
+
+
+                $unitVolume = rtrim(rtrim(number_format($item->unit_volume, 2, '.', ''), '0'), '.');
+                $remainingVolume = rtrim(rtrim(number_format($item->remaining_volume, 2, '.', ''), '0'), '.');
+                @endphp
+
+                <td class="border px-2 py-2 text-gray-700">{{ $unitVolume }} {{ $item->measurement_unit }}</td>
+                <td class="border px-2 py-2 text-gray-700">{{ $remainingVolume }} {{ $item->measurement_unit }}</td>
+
                 @endif
                 <td class="border px-2 py-2 text-gray-700">{{ $item->status }} </td>
-
+                <td class="border px-2 py-2 text-gray-700">
+                    {{ \Carbon\Carbon::parse($item->updated_at)->format('M d, Y h:i A') }}
+                </td>
                 @if($column->item->category === 'Supply'|| $column->item->category === 'Equipment')
                 <td class="border px-2 py-2 text-sky-500">
                     <!-- click modal in supplies-manage.blade #updateInventoryItemModal -->
@@ -128,8 +139,7 @@
                                     item_id: {{ $item->item_id }},
                                     stock_id: {{ $item->stock_id }},
                                     quantity: {{ $item->unit_quantity }},
-                                    remaining: {{ $item->remaining_quantity }},
-                                    status: '{{ $item->status }}'
+                                    remaining: {{ $item->remaining_quantity }}
                                 })"
                             class="text-blue-500 hover:underline underline-offset-4">
                             Edit
@@ -138,6 +148,7 @@
 
                 </td>
                 @endif
+                @if($column->item->category !== 'Supply' && $column->item->category !== 'Equipment')
                 <!-- Remove button -->
                 <td class="border-b px-2 py-2 text-red-500 ">
                     <div class="flex justify-center">
@@ -146,10 +157,11 @@
                             @click="$dispatch('open-remove-modal', { id: {{ $item->id }} })"
                             class="text-red-500 hover:underline flex items-center underline-offset-4 ">
                             <img src="{{ asset('images/trash.svg') }}" alt="Trash icon" class="w-4 h-4 inline">
-                            Remove
+                            Dispose
                         </button>
                     </div>
                 </td>
+                @endif
             </tr>
             @endforeach
             @endif
@@ -169,7 +181,7 @@
 
             </div>
             <h2 class="text-lg font-semibold mb-4">Confirm Removal</h2>
-            <p class="text-gray-600 mb-6">Are you sure you want to remove this item?</p>
+            <p class="text-gray-600 mb-6">Are you sure you want to dispose of this item?</p>
 
             <div class="flex justify-center gap-5">
                 <!-- Cancel -->
@@ -187,7 +199,7 @@
             </div>
         </div>
     </dialog>
-    
+
     <!-- table pagination -->
     <div class=" px-3 mt-5">
         {{ $inventoryItems->appends(['perPage' => $perPage])->links() }}

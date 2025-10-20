@@ -40,7 +40,7 @@
             <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
                 <ul class="space-y-3">
 
-                    <li class="flex items-center px-2 mb-4 block md:hidden">
+                    <li class="flex items-center px-2 mb-2 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
@@ -48,9 +48,8 @@
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="syringe" class="w-5 h-5"></i>Immunizations</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
+                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
@@ -175,11 +174,17 @@
                             </div>
                             <div class="md:col-span-1 col-span-8">
                                 <p class="text-sm font-semibold text-gray-600">Status</p>
+                                @if(strtolower($inventoryRecords->stock_status) === 'in stock')
                                 <p class="text-green-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
+                                @elseif(strtolower($inventoryRecords->stock_status) === 'out of stock')
+                                <p class="text-red-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
+                                @elseif(strtolower($inventoryRecords->stock_status) === 'low stock')
+                                <p class="text-yellow-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
+                                @endif
                             </div>
                             <div class="md:col-span-2 col-span-8">
                                 <p class="text-sm font-semibold text-gray-600">Last Restocked Date</p>
-                                <p class="text-gray-800 font-bold text-md pt-1 ">{{ $inventoryRecords->last_restocked_date }} </p>
+                                <p class="text-gray-800 font-bold text-md pt-1 ">{{ \Carbon\Carbon::parse($inventoryRecords->last_restocked_date)->format('M d, Y h:i A') }} </p>
                             </div>
                             <div class="md:col-span-2 col-span-8 flex items-center ">
                                 <button
@@ -270,7 +275,7 @@
                                             <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
                                                 <label for="brand_name" class="text-sm font-semibold">Product Name</label>
                                                 <input type="text" name="brand_name" placeholder="Brand Name"
-                                                    pattern="[A-Za-z ]+"
+                                                    pattern="[A-Za-z0-9 ]+"
                                                     value="{{ $inventoryItem->brand_name }}"
                                                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
                                             </div>
@@ -360,7 +365,7 @@
                                             <div class="md:col-span-6 col-span-12">
                                                 <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
                                                 <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml"
-                                                    pattern="^\d+(\.\d+)?$"
+                                                    min="0" step="any"
                                                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
                                             </div>
                                         </div>

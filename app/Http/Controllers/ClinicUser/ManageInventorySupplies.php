@@ -147,25 +147,22 @@ class ManageInventorySupplies extends Controller
             'stock_id' => 'required|exists:inventory_stocks,id',
             'quantity' => 'required|integer|min:0',
             'remaining_quantity' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0',
         ]);
 
         $item = Inventory_units::findOrFail($request->id);
         $item->update([
             'quantity' => $request->quantity,
             'remaining_quantity' => $request->remaining_quantity,
-            'unit_price' => $request->price,
+            'status' => 'Opened',
         ]);
 
         $stock = Inventory_stock::findOrFail($request->stock_id);
 
-        $package_amount = $request->quantity * $request->price;
 
         $stock->update([
             'items_per_package' => $request->quantity,
             'total_units' => $request->quantity,
             'total_remaining_units' => $request->remaining_quantity,
-            'total_package_amount' => $package_amount,
         ]);
 
         return redirect()

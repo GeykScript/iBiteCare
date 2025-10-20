@@ -11,7 +11,6 @@ class PaymentRecords extends Model
     protected $fillable = [
         'patient_id',
         'transaction_id',
-        'invoice_id',
         'receipt_number',
         'amount_paid',
         'received_by_id',
@@ -27,10 +26,7 @@ class PaymentRecords extends Model
     {
         return $this->belongsTo(ClinicTransactions::class, 'transaction_id');
     }
-    public function invoice()
-    {
-        return $this->belongsTo(PaymentInvoice::class, 'invoice_id');
-    }
+
     public function receivedBy()
     {
         return $this->belongsTo(ClinicUser::class, 'received_by_id');

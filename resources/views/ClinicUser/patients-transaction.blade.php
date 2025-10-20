@@ -48,7 +48,7 @@
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
                     <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
+                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
                     <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
@@ -100,7 +100,7 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <p class="font-bold text-red-500">Clinic Transactions</p>
+                            <p class="font-bold text-red-500">{{ $patient->first_name }} {{ $patient->last_name }} </p>
                         </div>
 
                     </div>
@@ -125,25 +125,43 @@
                             <button onclick="document.getElementById('patientTransactionModal').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
-                        <!-- create new user form  -->
-                        <form action="#" method="POST" id="registerPatientForm">
-                            @csrf
-                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
 
-                                <div class="col-span-12 flex flex-col items-center justify-center">
-                                    <h1 class="font-900 md:text-2xl text-xl">Patient Transactions</h1>
-                                    <p>Fill out the form below to add a new transaction for the patient. All fields are required.</p>
+                        <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
+                            <div class="col-span-12 flex flex-col items-center justify-center">
+                                <h1 class="font-900 md:text-2xl text-xl">Patient Transactions</h1>
+                            </div>
+                            <div class="col-span-12 flex flex-col items-start">
+                                <h1 class="font-bold md:text-sm">Complete Immunization: <span class="font-normal text-center"> {{ $schedules->first()->service->name ?? ' ' }}</span>
+                                </h1>
+                                @if ($schedules->isEmpty())
+                                <div class="w-full flex items-center justify-center p-4">
+                                    <p class=" text-center text-sm">No pending immunization schedules.</p>
                                 </div>
-
-                                <div class="col-span-12 flex items-center justify-end gap-2">
-                                    <button type="submit" class="bg-sky-500 text-white px-4 py-2 rounded-lg">Continue</button>
-                                    <button type="button" onclick="document.getElementById('patientTransactionModal').close()"
-                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
-                                        Cancel
-                                    </button>
+                                @endif
+                                <div class="grid grid-cols-4">
+                                    @foreach ($schedules as $schedule)
+                                    <a href="{{ route('clinic.patients.complete-immunization', ['schedule_id' => $schedule->id, 'service_id' => $schedule->service_id, 'grouping' => $schedule->grouping, 'patient_id' => $patient->id]) }}"
+                                        class="text-sm col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-gray-100 hover:cursor-pointer">{{ $schedule->Day }}</a>
+                                    @endforeach
                                 </div>
                             </div>
-                        </form>
+                            <div class="col-span-12 flex flex-col items-start">
+                                <h1 class="font-bold md:text-sm">New Transaction: </h1>
+                                <div class="grid grid-cols-4">
+                                    @foreach ($services as $service)
+                                    <a href="{{ route('clinic.patients.new-transaction', ['service_id' => $service->id, 'patient_id' => $patient->id]) }}"
+                                        class="text-sm col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-sky-300 hover:cursor-pointer">{{ $service->name }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="col-span-12 flex items-center justify-end gap-2">
+                                <button type="button" onclick="document.getElementById('patientTransactionModal').close()"
+                                    class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
                     </dialog>
 
                     <div class="col-span-4 md:col-span-4 flex justify-end  px-2">

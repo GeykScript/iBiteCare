@@ -73,7 +73,7 @@
                     <th class="border-r border-b bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">ID</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('transaction_date')">Date of Transaction</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('service')">Service Provided</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2" colspan="3">Immunizations Used <br><span class="text-xs font-normal">(Vaccine, Rig, Anti-Tetanus)</span></th>
+                    <th class="border bg-gray-800 text-white px-2 py-2" colspan="3">Immunizations Used</th>
                     <th class="border bg-gray-800 text-white px-2 py-2">Day</th>
                     <th class="border bg-gray-800 text-white px-2 py-2">Paid Amount</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 ">Status</th>
@@ -95,22 +95,29 @@
                     <td class="border px-2 py-2 text-gray-700">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $transaction->Service->name }}</td>
 
-                    <td class="border px-2 py-2 text-gray-700">
-                        {{ optional(optional($transaction->immunizations->vaccineUsed)->item)->brand_name 
-        ? optional(optional($transaction->immunizations->vaccineUsed)->item)->brand_name . ' - ' . optional(optional($transaction->immunizations->vaccineUsed)->item)->product_type 
-        : 'N/A' }}
+                    @php
+                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed)->item);
+                    $rig = optional(optional($transaction->immunizations->rigUsed)->item);
+                    $antiTetanus = optional(optional($transaction->immunizations->antiTetanusUsed)->item);
+
+                    $items = [];
+
+                    if ($vaccine->brand_name) {
+                    $items[] = $vaccine->brand_name . ' (' . $vaccine->product_type . ')';
+                    }
+                    if ($rig->brand_name) {
+                    $items[] = $rig->brand_name . ' (' . $rig->product_type . ')';
+                    }
+                    if ($antiTetanus->brand_name) {
+                    $items[] = $antiTetanus->brand_name;
+                    }
+                    @endphp
+
+                    <td class="border px-2 py-2 text-gray-700" colspan="3">
+                        {{ implode(' - ', $items) }}
                     </td>
-                    <td class="border px-2 py-2 text-gray-700">
-                        {{ optional(optional($transaction->immunizations->rigUsed)->item)->brand_name 
-        ? optional(optional($transaction->immunizations->rigUsed)->item)->brand_name . ' - ' . optional(optional($transaction->immunizations->rigUsed)->item)->product_type 
-        : 'N/A' }}
-                    </td>
-                    <td class="border px-2 py-2 text-gray-700">
-                        {{ optional(optional($transaction->immunizations->antiTetanusUsed)->item)->brand_name 
-        ? optional(optional($transaction->immunizations->antiTetanusUsed)->item)->brand_name . ' - ' . optional(optional($transaction->immunizations->antiTetanusUsed)->item)->product_type 
-        : 'N/A' }}
-                    </td>
-                    <td class="border px-2 py-2 text-gray-700">{{ $transaction->immunizations->day_label }} </td>
+
+                    <td class="border px-2 py-2 text-gray-700">{{ $transaction->immunizations->day_label ?? 'n/a' }} </td>
 
                     <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo" class="w-3 h-3">{{ $transaction->paymentRecords->amount_paid }}</span> </td>
                     <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-2 p-1 text-green-500 font-bold rounded-md">{{ $transaction->immunizations->status }} </span></td>
