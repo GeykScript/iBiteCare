@@ -91,6 +91,7 @@ class PatientsController extends Controller
             'last_name'      => 'required|string|max:255',
             'middle_initial' => 'nullable|string|max:10',
             'suffix'         => 'nullable|string|max:50',
+            'sex'            => 'nullable|string|max:10',
             'contact_number' => 'required|string|max:20',
             'province'       => 'nullable|string|max:255',
             'city'           => 'nullable|string|max:255',
@@ -115,17 +116,17 @@ class PatientsController extends Controller
 
         // Build address
         if (
-            empty($request->barangay) &&
-            empty($request->city) &&
             empty($request->province) &&
+            empty($request->city) &&
+            empty($request->barangay) &&
             empty($request->description)
         ) {
             $address = $patient_user->address; // keep old address
         } else {
             $parts = array_filter([
-                $request->barangay,
-                $request->city,
                 $request->province,
+                $request->city,
+                $request->barangay,
                 $request->description,
             ]);
             $address = implode(', ', $parts);
@@ -138,6 +139,7 @@ class PatientsController extends Controller
             'middle_initial' => Str::upper($request->middle_initial),
             'suffix'         => $suffix,
             'contact_number' => $request->contact_number,
+            'sex'            => $request->sex,
             'address'        => $address,
         ];
 

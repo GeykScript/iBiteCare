@@ -2,106 +2,71 @@
 import ApexCharts from 'apexcharts';
 
 
-// Bar chart options
-document.addEventListener('DOMContentLoaded', () => {
-   const options = {
-        series: [{
-                name: "Male",
-                color: "#0ac4fdff",
-                data: ["1420", "1620", "1820", "1420", "1650", "2120"],
-            },
-            {
-                name: "Female",
-                data: ["788", "810", "866", "788", "1100", "1200"],
-                color: "#ff0a70ec",
-            }
-        ],
-        chart: {
-            sparkline: {
-                enabled: false,
-            },
-            type: "bar",
-            width: "100%",
-            height: 360,
-            toolbar: {
-                show: false,
-            }
-        },
-        fill: {
-            opacity: 1,
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                columnWidth: "100%",
-                borderRadiusApplication: "end",
-                borderRadius: 6,
-                dataLabels: {
-                    position: "top",
-                },
-            },
-        },
-        legend: {
-            show: true,
-            position: "bottom",
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        tooltip: {
-            shared: true,
-            intersect: false,
-            formatter: function(value) {
-                return value
-            }
-        },
-        xaxis: {
-            labels: {
-                show: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
-                },
-                formatter: function(value) {
-                    return  value
-                }
-            },
-            categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            axisTicks: {
-                show: false,
-            },
-            axisBorder: {
-                show: false,
-            },
-        },
-        yaxis: {
-            labels: {
-                show: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
-                }
-            }
-        },
-        grid: {
-            show: true,
-            strokeDashArray: 4,
-            padding: {
-                left: 2,
-                right: 2,
-                top: -20
-            },
-        },
-        fill: {
-            opacity: 1,
-        }
-    }
+const totalPatients = document.getElementById('totalPatients');
+const totalMale = document.getElementById('totalMale');
+const totalFemale = document.getElementById('totalFemale');
 
-    if (document.getElementById("bar-chart") && typeof ApexCharts !== 'undefined') {
-        const chart = new ApexCharts(document.getElementById("bar-chart"), options);
-        chart.render();
-    }
-});
+// Bar chart options
+let chartOptions = {
+    chart: {
+        type: 'bar',
+        height: 350,
+        toolbar: {
+            show: false
+        }
+    },
+        plotOptions: {
+        bar: {
+            horizontal: false, 
+            columnWidth: '100%' 
+        }
+    },
+    series: [],
+    xaxis: {
+        categories: []
+    },
+    colors: ['#0ac4fdff', '#ff0a70ec']
+};
+
+let chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
+chart.render();
+
+const filter = document.getElementById('filter');
+const serviceFilter = document.getElementById('serviceFilter');
+const ageFilter = document.getElementById('ageFilter');
+
+function fetchChartData() {
+    const params = new URLSearchParams({
+        filter: filter.value,
+        serviceFilter: serviceFilter.value,
+        ageFilter: ageFilter.value
+    });
+
+    fetch(`/clinic/chart-data?${params.toString()}`)
+        .then(res => res.json())
+        .then(data => {
+            // Update chart
+            chart.updateOptions({
+                series: data.series,
+                xaxis: {
+                    categories: data.categories
+                }
+            });
+
+            // Update totals
+            totalMale.textContent = data.totalMale;
+            totalFemale.textContent = data.totalFemale;
+            totalPatients.textContent = data.totalPatients;
+        });
+}
+
+// Update chart on dropdown change
+filter.addEventListener('change', fetchChartData);
+serviceFilter.addEventListener('change', fetchChartData);
+ageFilter.addEventListener('change', fetchChartData);
+
+// Initial load
+fetchChartData();
 
 
 

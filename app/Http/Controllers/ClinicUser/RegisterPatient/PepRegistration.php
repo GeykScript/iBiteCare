@@ -211,7 +211,7 @@ class PepRegistration extends Controller
                         'display_message' => "Reminder: your ({$serviceSchedule->label}) PEP dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
                         'message_text' =>
                         "Good day, Ma'am/Sir.\n"
-                            . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your PEP schedule on "
+                            . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your ({$serviceSchedule->label}) PEP schedule on "
                             . $scheduledDateObj->format('M j, Y') . ".\n\n"
                             . "Clinic hours: 8:00 AM to 5:00 PM.\n"
                             . "Thank you!",
@@ -230,7 +230,7 @@ class PepRegistration extends Controller
                     'display_message' => "Today is your PEP dose ({$serviceSchedule->label}).",
                     'message_text' =>
                     "Good day, Ma'am/Sir.\n"
-                        . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your PEP schedule today, "
+                        . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your ({$serviceSchedule->label}) PEP schedule today, "
                         . $scheduledDateObj->format('M j, Y') . ".\n\n"
                         . "Clinic hours: 8:00 AM to 5:00 PM.\n"
                         . "Thank you!",

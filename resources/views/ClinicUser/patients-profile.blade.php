@@ -1096,17 +1096,20 @@
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
                                         <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
                                         <div class="flex gap-5 items-center">
-                                            @if ($patient->sex == 'Male')
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                                <input type="radio" name="sex" value="Male"
+                                                    class="text-sky-500 focus:ring-sky-500"
+                                                    {{ $patient->sex == 'Male' ? 'checked' : '' }}>
                                                 <span>Male</span>
                                             </label>
-                                            @elseif ($patient->sex == 'Female')
+
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
+                                                <input type="radio" name="sex" value="Female"
+                                                    class="text-pink-500 focus:ring-pink-500"
+                                                    {{ $patient->sex == 'Female' ? 'checked' : '' }}>
                                                 <span>Female</span>
                                             </label>
-                                            @endif
+
 
                                         </div>
                                     </div>

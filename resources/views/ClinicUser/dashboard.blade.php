@@ -121,51 +121,60 @@
                                         <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Comprehensive view of patient records and activities</p>
                                     </div>
                                 </div>
-                                <div class="flex  justify-evenly items-center mb-4 mt-2 md:gap-4 gap-2 px-6">
-                                    <select id="filter" class="border rounded w-full p-1 text-sm ">
-                                        <option value="today">Today</option>
-                                        <option value="yesterday">Yesterday</option>
-                                        <option value="lastWeek">Last Week</option>
-                                        <option value="lastMonth">Last Month</option>
-                                        <option value="lastYear">Last Year</option>
-                                    </select>
-                                    <select id="serviceFilter" class="border rounded w-full  p-1 text-sm">
-                                        <option value="">Service</option>
-                                        <option value="">Anti-Rabies</option>
-                                        <option value="">Booster</option>
-                                        <option value="">Tetanus Toxiod</option>
-                                    </select>
-                                    <select id="ageFilter" class="border rounded p-1 w-full text-sm">
-                                        <option value="all">Age</option>
-                                        <option value="0-17">0-17</option>
-                                        <option value="18-64">18-64</option>
-                                        <option value="65+">65+</option>
-                                    </select>
+
+                                <div class="grid grid-cols-4 gap-4 ">
+                                    <div class="col-span-1">
+                                        <select id="filter" class="border rounded w-full p-1 text-sm ">
+                                            <option value="all">All Time</option>
+                                            <option value="today">Today</option>
+                                            <option value="yesterday">Yesterday</option>
+                                            <option value="lastWeek">Last Week</option>
+                                            <option value="lastMonth">Last Month</option>
+                                            <option value="lastYear">This Year</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-span-2">
+                                        <select id="serviceFilter" class="border rounded w-full  p-1 text-sm">
+                                            <option value="all">Service Type</option>
+                                            @foreach ($services as $service )
+                                            <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-span-1">
+                                        <select id="ageFilter" class="border rounded p-1 w-full text-sm">
+                                            <option value="all">Age</option>
+                                            <option value="0-17">0-17</option>
+                                            <option value="18-64">18-64</option>
+                                            <option value="65+">65+</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="flex items-center px-4 py-2">
+                                <div class="flex items-center px-6 py-2">
                                     <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
                                         <i data-lucide="users" class="w-6 h-6 text-white"></i>
                                     </div>
                                     <div>
-                                        <p class="text-gray-500 font-bold">Accomodated Patients</p>
-                                        <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">5,020</h5>
+                                        <p class="text-gray-500 font-bold">Accommodated Patients</p>
+                                        <h5 id="totalPatients" class="leading-none text-2xl font-900 text-gray-900 pb-1">0</h5>
                                         <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
                                     </div>
                                 </div>
+
                                 <div class="flex items-center justify-evenly">
                                     <div>
                                         <h1 class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Male</h1>
-                                        <h1 class="leading-none text-md font-bold text-green-500 text-sky-500">23,635</h1>
+                                        <h1 id="totalMale" class="leading-none text-xl font-bold text-green-500 text-sky-500">0</h1>
                                     </div>
                                     <div>
                                         <h1 class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Total Female</h1>
-                                        <h1 class="leading-none text-md font-bold text-red-600 text-[#ff0a70ec]">18,230</h1>
+                                        <h1 id="totalFemale" class="leading-none text-xl font-bold text-red-600 text-[#ff0a70ec]">0</h1>
                                     </div>
                                 </div>
-                                <div id="bar-chart"></div>
+                                <div id="chart" class="mt-4"></div>
                                 <div class="grid grid-cols-2  border-gray-200 border-t">
                                     <div class="col-span-2 mt-2 flex items-end justify-end">
-                                        <a href="{{ route('clinic.patients') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <a href="{{ route('clinic.transactions') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
                                             View Details
                                         </a>
@@ -209,12 +218,12 @@
                                                     <i data-lucide="notebook-pen" class="w-8 h-8 md:me-2"></i>
                                                 </div>
                                                 <div class="flex flex-col">
-                                                    <h1 class="font-bold">Appointments</h1>
-                                                    <a href="#" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
+                                                    <h1 class="font-bold">Expected Patients</h1>
+                                                    <a href="{{ route('clinic.messages') }}" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-center  bg-gray-400 rounded-full w-12 h-12">
-                                                <h1 class="text-white font-bold">5</h1>
+                                                <h1 class="text-white font-bold">{{ $clinic_expected_patients }}</h1>
                                             </div>
                                         </div>
                                     </div>

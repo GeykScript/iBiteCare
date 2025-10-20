@@ -20,6 +20,7 @@ use App\Models\PaymentRecords;
 use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
 use App\Models\PatientPrevAntiRabies;
+use App\Models\Messages;
 class BoosterTransaction extends Controller
 {
     public function showForm($service_id, $patient_id)
@@ -95,7 +96,7 @@ class BoosterTransaction extends Controller
             $isDay0 = $serviceSchedule->day_offset == 0;
 
             $patientSchedules->push(
-                PatientImmunizationsSchedule::create([
+               $newSchedule = PatientImmunizationsSchedule::create([
                     'patient_id'       => $request->patient_id,
                     'transaction_id'   => $transaction->id,
                     'service_id'      =>  $request->service_id,
@@ -109,6 +110,50 @@ class BoosterTransaction extends Controller
                     'administered_by'  => $isDay0 ? $request->nurse_id : null,
                 ])
             );
+
+            // Skip reminders for Day 0 (already administered)
+            if (!$isDay0) {
+                $scheduledDateObj = Carbon::parse($scheduledDate);
+                $twoDaysBefore = $scheduledDateObj->copy()->subDays(2);
+
+                // 2 days before
+                if ($twoDaysBefore->isFuture()) {
+                    Messages::create([
+                        'patient_id' => $patient->id,
+                        'immunization_sched_id' => $newSchedule->id,
+                        'schedule' => $scheduledDate,
+                        'day_label' => $serviceSchedule->label,
+                        'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
+                        'display_message' => "Reminder: your ({$serviceSchedule->label}) Booster dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
+                        'message_text' =>
+                        "Good day, Ma'am/Sir.\n"
+                            . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your ({$serviceSchedule->label}) Booster schedule on "
+                            . $scheduledDateObj->format('M j, Y') . ".\n\n"
+                            . "Clinic hours: 8:00 AM to 5:00 PM.\n"
+                            . "Thank you!",
+                        'sender_id' => null,
+                        'status' => 'Pending',
+                    ]);
+                }
+
+                // On the day
+                Messages::create([
+                    'patient_id' => $patient->id,
+                    'immunization_sched_id' => $newSchedule->id,
+                    'schedule' => $scheduledDate,
+                    'day_label' => $serviceSchedule->label,
+                    'scheduled_send_date' => $scheduledDate,
+                    'display_message' => "Today is your Booster dose ({$serviceSchedule->label}).",
+                    'message_text' =>
+                    "Good day, Ma'am/Sir.\n"
+                        . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your ({$serviceSchedule->label}) Booster schedule today, "
+                        . $scheduledDateObj->format('M j, Y') . ".\n\n"
+                        . "Clinic hours: 8:00 AM to 5:00 PM.\n"
+                        . "Thank you!",
+                    'sender_id' => null,
+                    'status' => 'Pending',
+                ]);
+            }
         }
 
         // 2. Grab the first schedule (Day 0)

@@ -68,6 +68,9 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/dashboard', [DashboardController::class, 'index'])
         ->name('clinic.dashboard');
 
+    Route::get('/clinic/chart-data', [DashboardController::class, 'getChartData'])->name('clinic.chartData');
+
+
     Route::post('/clinic/logout', function () {
         Auth::guard('clinic_user')->logout();
         return redirect()->route('clinic.login');
@@ -168,12 +171,21 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/messages', [MessagesController::class, 'index'])
         ->name('clinic.messages');
 
-    Route::post('/clinic/messages/send', [MessagesController::class, 'sendMessage'])
-        ->name('clinic.messages.send');
+    Route::post('/clinic/messages/send', [MessagesController::class, 'sendSingleMessage'])
+        ->name('clinic.messages.single.send');
+
+    Route::post('/clinic/messages/send-all', [MessagesController::class, 'sendAllMessages'])
+        ->name('clinic.messages.all.send');
     //----------------END-----------------------//
 
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
+
+    Route::get('/clinic-user/reports/guinobatan/pdf', [ReportsController::class, 'reportGuinobatan'])->name('clinic.reports.guinobatan.pdf');
+    Route::get('/clinic-user/reports/albay/pdf', [ReportsController::class, 'reportAlbay'])->name('clinic.reports.albay.pdf');
+
+
+
 
     //CLINIC USER PROFILES PAGES
     Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])

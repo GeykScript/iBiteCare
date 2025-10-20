@@ -14,8 +14,8 @@ class MessagePatientTable extends Component
     public $perPage = 5;
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
+    public $filter = 'today'; // default filter
 
-    // Reset pagination when search or perPage changes
     public function updatingSearch()
     {
         $this->resetPage();
@@ -26,7 +26,11 @@ class MessagePatientTable extends Component
         $this->resetPage();
     }
 
-    // Sorting logic
+    public function updatedFilter()
+    {
+        $this->resetPage();
+    }
+
     public function setSortBy($sortByField)
     {
         if ($this->sortBy === $sortByField) {
@@ -41,16 +45,31 @@ class MessagePatientTable extends Component
     {
         $messages = Messages::with('patient')
             ->when($this->search, function ($query) {
-                $query->where('message_text', 'like', '%' . $this->search . '%')
-                    ->orWhere('day_label', 'like', '%' . $this->search . '%')
-                    ->orWhere('status', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('patient', function ($q) {
-                        $q->where('first_name', 'like', '%' . $this->search . '%')
-                            ->orWhere('last_name', 'like', '%' . $this->search . '%');
-                    });
+                $query->where(function ($subQuery) {
+                    $subQuery->where('message_text', 'like', '%' . $this->search . '%')
+                        ->orWhere('day_label', 'like', '%' . $this->search . '%')
+                        ->orWhere('status', 'like', '%' . $this->search . '%')
+                        ->orWhereHas('patient', function ($q) {
+                            $q->where('first_name', 'like', '%' . $this->search . '%')
+                                ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                        });
+                });
             })
-            // ->where('scheduled_send_date', '<=', now()->toDateString())
-            ->orderBy($this->sortBy, $this->sortDirection)
+            ->when($this->filter === 'today', function ($query) {
+                // only scheduled for today
+                $query->whereDate('scheduled_send_date', now()->toDateString());
+            })
+            ->when($this->filter === 'sent', function ($query) {
+                // only sent messages
+                $query->where('status', 'Sent');
+            })
+            ->when($this->sortBy === 'name', function ($query) {
+                $query->join('registered_patients', 'messages.patient_id', '=', 'registered_patients.id')
+                    ->select('messages.*')
+                    ->orderByRaw("CONCAT(registered_patients.last_name, ' ', registered_patients.first_name) {$this->sortDirection}");
+            }, function ($query) {
+                $query->orderBy($this->sortBy, $this->sortDirection);
+            })
             ->paginate($this->perPage);
 
         return view('livewire.message-patient-table', [

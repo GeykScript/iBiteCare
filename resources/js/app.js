@@ -53,7 +53,9 @@ import {
         Boxes,
         StretchHorizontal,
         User,
-        CircleCheck
+        CircleCheck,
+        Send,
+        SendHorizontal
     } 
      from 'lucide';
 
@@ -108,7 +110,9 @@ createIcons({
     Boxes,
     StretchHorizontal,
     User,
-    CircleCheck
+    CircleCheck,
+    Send,
+    SendHorizontal
   }
 }); 
 
