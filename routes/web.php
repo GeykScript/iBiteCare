@@ -181,8 +181,18 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
 
+    Route::get('/clinic/revenue-chart-data', [ReportsController::class, 'getRevenueChartData'])->name('clinic.revenueChartData');
+
     Route::get('/clinic-user/reports/guinobatan/pdf', [ReportsController::class, 'reportGuinobatan'])->name('clinic.reports.guinobatan.pdf');
     Route::get('/clinic-user/reports/albay/pdf', [ReportsController::class, 'reportAlbay'])->name('clinic.reports.albay.pdf');
+    // Route::get('/report/albay/csv', [ReportsController::class, 'reportAlbayCSV']);
+    Route::get('/report/albay/csv', [ReportsController::class, 'exportAlbayExcel'])->name('clinic.reports.albay.excel');
+    Route::get('/report/guinobatan/csv', [ReportsController::class, 'exportGuinobatanExcel'])->name('clinic.reports.guinobatan.excel');
+
+
+    Route::get('/clinic-user/reports/revenue-expense/pdf', [ReportsController::class, 'reportRevenueExpenses'])->name('clinic.reports.revenue-expense.pdf');
+    Route::get('/report/revenue/csv', [ReportsController::class, 'exportRevenueExcel'])->name('clinic.reports.revenue.excel');
+
 
 
 

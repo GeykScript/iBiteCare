@@ -55,11 +55,12 @@
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -131,7 +132,7 @@
                                     <div class="max-h-64 overflow-y-auto p-4 scrollbar-hidden ">
                                         <ul class="list-disc list-inside space-y-1 px-4">
                                             @if ($messages->isEmpty())
-                                                <p class="text-center">No messages scheduled for today.</p>
+                                            <p class="text-center">No messages scheduled for today.</p>
                                             @endif
                                             @foreach ($messages as $message)
                                             <li>
@@ -144,23 +145,32 @@
                                     </div>
 
                                 </div>
-                                <form action="{{ route('clinic.messages.all.send') }}" method="POST" class="col-span-12">
+                                <form action="{{ route('clinic.messages.all.send') }}" method="POST" class="col-span-12" id="sendMessagesForm">
                                     @csrf
-                                    <input type="hidden" name="messages" value="{{ json_encode($messages->pluck('id')) }}">
-                                    <div class="flex justify-end gap-2 mt-6">
-                                        @if ($messages->isEmpty())
-                                        @php
-                                            $hidden = 'hidden'
-                                        @endphp
+                                    <input type="hidden" name="messages" id="messagesInput" value="{{ json_encode($messages->pluck('id')) }}">
 
-                                        <button type="submit" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg {{ $hidden }}">Send All<i data-lucide="send-horizontal" class="w-4 h-4"></i></button>
+                                    <div class="flex justify-end gap-2 mt-6">
+                                        <button type="submit" id="submitBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
+                                            Send All
+                                            <i data-lucide="send-horizontal" class="w-4 h-4"></i>
+                                        </button>
                                         <button type="button" onclick="document.getElementById('sendSMS').close()"
-                                            class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md ">
+                                            class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md">
                                             Cancel
                                         </button>
-                                        @endif
                                     </div>
                                 </form>
+
+                                <script>
+                                    const messagesInput = document.getElementById('messagesInput');
+                                    const submitBtn = document.getElementById('submitBtn');
+
+                                    // Check on page load
+                                    if (!messagesInput.value || messagesInput.value === '[]') {
+                                        submitBtn.style.display = 'none';
+                                    }
+                                </script>
+
                             </div>
                         </div>
                     </dialog>

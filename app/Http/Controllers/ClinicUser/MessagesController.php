@@ -20,7 +20,8 @@ class MessagesController extends Controller
         }
 
         $messages = Messages::all()
-            ->where('scheduled_send_date', now()->toDateString());
+            ->where('scheduled_send_date', now()->toDateString())
+            ->where('status', 'Pending');
             
         return view('ClinicUser.messages', compact('clinicUser', 'messages'));
     }
@@ -28,11 +29,22 @@ class MessagesController extends Controller
 
     public function sendSingleMessage(Request $request){
         // dd($request->all());
+        $request->merge([
+            'contact_number' => preg_replace(
+                ['/^\+63/', '/^0/'],  // Match +63 or leading 0
+                ['63', '63'],         // Replace both with 63
+                $request->contact_number
+            ),
+        ]);
+
         $request->validate([
             'message_id' => 'required|integer',
             'contact_number' => 'required|string',
             'message' => 'required|string',
         ]);
+
+        dd($request->contact_number);
+
 
 
         $response = Http::post('https://api.semaphore.co/api/v4/messages', [
@@ -40,6 +52,7 @@ class MessagesController extends Controller
             'number' => '639916863623',
             'message' => 'Hello! This is an appointment reminder from Dr. Care Guinobatan Clinic.',
         ]);
+      
 
         dd([
             'status' => $response->status(),
@@ -57,20 +70,20 @@ class MessagesController extends Controller
 
     public function sendAllMessages(Request $request)
     {
+
         $request->validate([
             'messages' => 'required|string',
         ]);
 
         $messageIds = json_decode($request->messages, true);
-
         // Get messages with related patient
         $messages = Messages::with('patient')->whereIn('id', $messageIds)->get();
 
         foreach ($messages as $message) {
             // Example: you can log or process values
             $messageId = $message->id;
-            $contactNumber = $message->patient->contact_number ?? 'No contact';
-            $contactNumber = preg_replace('/\s+/', '', $contactNumber);
+            $contactNumber = preg_replace(['/^\+?63/', '/^0/'], ['63', '63'], preg_replace('/\D/', '', $message->patient->contact_number));
+            dd($contactNumber);
 
             $displayMessage = $message->display_message;
             $messageText = $message->message_text;
@@ -82,8 +95,7 @@ class MessagesController extends Controller
             info("Message ID: $messageId, Contact: $contactNumber, Message: $messageText");
         }
 
-        // Optionally update all messages to 'Sent'
-        // Messages::whereIn('id', $messageIds)->update(['status' => 'Sent']);
+     Messages::whereIn('id', $messageIds)->update(['status' => 'Sent']);
 
         return redirect()->route('clinic.messages')->with('sent-success', 'All messages sent successfully!');
     }

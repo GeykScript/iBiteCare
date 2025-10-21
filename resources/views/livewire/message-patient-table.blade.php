@@ -48,14 +48,14 @@
                         <button
                             wire:click="$set('filter', 'today')"
                             class="px-4 py-2 rounded-lg text-sm font-semibold  focus:outline-none
-                            {{ $filter === 'today' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-600 text-gray-600 hover:bg-gray-100' }}">
+                            {{ $filter === 'today' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
                             Scheduled for Today
                         </button>
 
                         <button
                             wire:click="$set('filter', 'sent')"
                             class="px-4 py-2 rounded-lg text-sm font-semibold focus:outline-none
-                            {{ $filter === 'sent' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-600 text-gray-600 hover:bg-gray-100' }}">
+                            {{ $filter === 'sent' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
                             Sent Messages
                         </button>
                     </div>

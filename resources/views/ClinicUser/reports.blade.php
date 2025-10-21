@@ -55,10 +55,11 @@
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded  bg-gray-900 text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
-
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -103,13 +104,13 @@
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Reports</h1>
-                    <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i>
+                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
                 </div>
                 <!-- Main Content -->
                 <div class="grid grid-cols-12 md:p-4 p-2 gap-2">
 
-                    <div class="col-span-12 md:col-span-4 shadow-lg border-2 border-gray-200 ">
-                        <div class="flex flex-col gap-4 ">
+                    <div class="col-span-12 md:col-span-4  ">
+                        <div class="flex flex-col gap-4 p-2 rounded-lg shadow-lg border border-gray-200">
                             <div class="w-full bg-white  p-2 md:p-6">
                                 <div class="flex items-center gap-2 p-2">
                                     <div>
@@ -125,8 +126,8 @@
                                             <option value="today">Today</option>
                                             <option value="yesterday">Yesterday</option>
                                             <option value="lastWeek">Last Week</option>
-                                            <option value="lastMonth">Last Month</option>
-                                            <option value="lastYear">This Year</option>
+                                            <option value="thisYear">This Year</option>
+                                            <option value="lastYear">Last Year</option>
                                         </select>
                                     </div>
                                     <div class="col-span-2">
@@ -168,64 +169,113 @@
                                     </div>
                                 </div>
                                 <div id="chart" class="mt-4"></div>
-                                <div class="grid grid-cols-2  border-gray-200 border-t">
-                                    <div class="col-span-2 mt-2 flex items-end justify-end">
-                                        <a href="{{ route('clinic.reports.guinobatan.pdf') }}" target="_blank" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
-                                            Generate Guinobatan Report
-                                        </a>
+                                <div class="grid grid-cols-4 border-t border-gray-200 gap-3 p-3">
+                                    <!-- Label -->
+                                    <div class="col-span-4 flex items-center">
+                                        <label for="reportDropdowns" class="text-sm font-medium text-gray-700">
+                                            Generate Report:
+                                        </label>
                                     </div>
-                                    <div class="col-span-2 mt-2 flex items-end justify-end">
-                                        <a href="{{ route('clinic.reports.albay.pdf') }}" target="_blank" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
-                                            Generate Albay Report
+
+                                    <!-- Dropdown -->
+                                    <div class="col-span-4 md:col-span-2">
+                                        <select name="reportDropdowns" id="reportDropdowns"
+                                            class="w-full p-2 border-none rounded-lg focus:outline-none focus:ring-0">
+                                            <option value="AlbayReports" selected>Albay Report</option>
+                                            <option value="GuinobatanReports">Guinobatan Report</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Guinobatan Buttons (hidden by default) -->
+                                    <div class="col-span-4 md:col-span-2 flex items-center gap-2 hidden" id="GuinobatanReports">
+                                        <a href="{{ route('clinic.reports.guinobatan.pdf') }}" target="_blank"
+                                            class="flex items-center justify-center w-full px-4 py-2 text-sm font-900 text-red-500 border border-transparent hover:border-red-500 rounded-lg transition">
+                                            <i data-lucide="file-text" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
+                                            PDF
+                                        </a>
+                                        <a href="{{ route('clinic.reports.guinobatan.excel') }}" target="_blank"
+                                            class="flex items-center justify-center w-full px-4 py-2 text-sm font-900 text-green-600 border border-transparent hover:border-green-500 rounded-lg transition">
+                                            <i data-lucide="sheet" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
+                                            Excel
                                         </a>
                                     </div>
 
+                                    <!-- Albay Buttons (visible by default) -->
+                                    <div class="col-span-4 md:col-span-2 flex items-center gap-2" id="AlbayReports">
+                                        <a href="{{ route('clinic.reports.albay.pdf') }}" target="_blank"
+                                            class="flex items-center justify-center w-full px-4 py-2 text-sm font-900 text-red-500 border border-transparent hover:border-red-500 rounded-lg transition">
+                                            <i data-lucide="file-text" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
+                                            PDF
+                                        </a>
+                                        <a href="{{ route('clinic.reports.albay.excel') }}" target="_blank"
+                                            class="flex items-center justify-center w-full px-4 py-2 text-sm font-900 text-green-600 border border-transparent hover:border-green-500 rounded-lg transition">
+                                            <i data-lucide="sheet" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
+                                            Excel
+                                        </a>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                     <div class="col-span-12 md:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
-                            <h1 class="text-lg font-900 pb-8 px-2"> Clinic Revenue Overview</h1>
+                            <div class="flex items-center gap-2 p-2 mb-6">
+                                <div>
+                                    <h5 class="leading-none md:text-xl font-900 text-gray-900  pb-1">Clinic Revenue Overview</h5>
+                                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400"> A summary of all revenue generated by the clinic
+                                    </p>
+                                </div>
+                            </div>
                             <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center">
                                     <div class="w-12 h-12 rounded-full bg-[#1ac3daef] flex items-center justify-center me-3">
                                         <i data-lucide="philippine-peso" class="w-6 h-6 text-white"></i>
                                     </div>
                                     <div>
-                                        <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1">₱ 5,020</h5>
+                                        <h5 class="leading-none text-2xl font-900 text-gray-900  pb-1" id="totalRevenue">₱ 5,020</h5>
                                         <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Revenue</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2">
-                                <dl class="flex items-center">
-                                    <dt class="text-gray-500 text-sm font-normal me-1">Sales:</dt>
-                                    <dd class="text-gray-900 text-sm font-semibold">₱ 3,232</dd>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <dl class="flex items-center  justify-end ">
+                                    <dd class="text-gray-900 text-sm font-semibold">Filter Value:</dd>
                                 </dl>
-                                <select id="timeFilter" class="border rounded w-full p-1 text-sm ">
+                                <select id="filter2" class="border rounded w-full p-1 text-sm  focus:border-none focus:outline-none focus:ring-1  focus:ring-sky-500">
+                                    <option value="all">All Time</option>
                                     <option value="today">Today</option>
                                     <option value="yesterday">Yesterday</option>
                                     <option value="lastWeek">Last Week</option>
                                     <option value="lastMonth">Last Month</option>
+                                    <option value="thisYear">This Year</option>
                                     <option value="lastYear">Last Year</option>
                                 </select>
                             </div>
 
-                            <div id="column-chart"></div>
-                            <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                                <div class="flex justify-between items-center pt-5">
-                                    <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <i data-lucide="file-text" class="w-4 h-4 me-2"></i>
-                                        View Details
+                            <div id="revenueChart"></div>
+                            <div class="grid grid-cols-4 border-t border-gray-200 gap-2 ">
+                                <!-- Label -->
+                                <div class="col-span-4 md:col-span-2 flex justify-center items-center mt-2">
+                                    <p class="text-sm text-center font-medium text-gray-700">Generate Report:</p>
+                                </div>
+                                <!-- Buttons -->
+                                <div class="col-span-4 md:col-span-2 flex items-center gap-2 mt-2">
+                                    <a href="{{ route('clinic.reports.revenue-expense.pdf') }}" target="_blank"
+                                        class="w-full flex items-center justify-center px-4 py-2 text-sm font-900 text-red-500 border border-transparent hover:border-red-500 rounded-lg transition">
+                                        <i data-lucide="file-text" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
+                                        PDF
+                                    </a>
+
+                                    <a href="{{ route('clinic.reports.revenue.excel') }}" target="_blank"
+                                        class="w-full flex items-center justify-center px-4 py-2 text-sm font-900 text-green-600 border border-transparent hover:border-green-500 rounded-lg transition">
+                                        <i data-lucide="sheet" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
+                                        Excel
                                     </a>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-span-12 md:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
@@ -268,5 +318,22 @@
         <x-logout-modal />
 
 </body>
+<script>
+    const dropdown = document.getElementById('reportDropdowns');
+    const albayDiv = document.getElementById('AlbayReports');
+    const guinobatanDiv = document.getElementById('GuinobatanReports');
+
+    dropdown.addEventListener('change', () => {
+        const selected = dropdown.value;
+
+        if (selected === 'AlbayReports') {
+            albayDiv.classList.remove('hidden');
+            guinobatanDiv.classList.add('hidden');
+        } else if (selected === 'GuinobatanReports') {
+            albayDiv.classList.add('hidden');
+            guinobatanDiv.classList.remove('hidden');
+        }
+    });
+</script>
 
 </html>

@@ -17,6 +17,8 @@ class DashboardController extends Controller
 
         $clinicUser = Auth::guard('clinic_user')->user();
 
+        $admin = ClinicUser::with('UserRole')->where('account_id', 'admin');
+
         $clinic_transactions = ClinicTransactions::orderBy('transaction_date', 'desc')
             ->take(10)
             ->get();        
@@ -65,8 +67,11 @@ class DashboardController extends Controller
             case 'lastMonth':
                 $query->whereBetween('transaction_date', [now()->subMonth(), now()]);
                 break;
+            case 'thisYear':
+                $query->whereBetween('transaction_date', [now()->startOfYear(), now()->endOfYear()]);
+                break;
             case 'lastYear':
-                $query->whereBetween('transaction_date', [now()->subYear(), now()]);
+                $query->whereBetween('transaction_date', [now()->subYear()->startOfYear(), now()->subYear()->endOfYear()]);
                 break;
         }
 
@@ -82,7 +87,7 @@ class DashboardController extends Controller
         $femaleData = array_fill(0, 12, 0);
         $totalMale = 0;
         $totalFemale = 0;
-
+ 
         foreach ($results as $row) {
             $index = $row->month - 1;
             if (strtolower($row->sex) === 'male') {
@@ -110,65 +115,6 @@ class DashboardController extends Controller
     }
 
 
-    // public function getTotals(Request $request)
-    // {
-    //     $filter = $request->filter ?? 'all';
-    //     $serviceFilter = $request->serviceFilter ?? null;
-    //     $ageFilter = $request->ageFilter ?? null;
-
-    //     $query = DB::table('patient_transactions')
-    //         ->join('registered_patients', 'registered_patients.id', '=', 'patient_transactions.patient_id')
-    //         ->select('registered_patients.sex', DB::raw('COUNT(*) as total'));
-
-    //     // Apply service filter
-    //     if ($serviceFilter && $serviceFilter != 'all') {
-    //         $query->where('patient_transactions.service_id', $serviceFilter);
-    //     }
-
-    //     // Apply age filter
-    //     if ($ageFilter && $ageFilter != 'all') {
-    //         if ($ageFilter === '0-17') $query->whereBetween('registered_patients.age', [0, 17]);
-    //         if ($ageFilter === '18-64') $query->whereBetween('registered_patients.age', [18, 64]);
-    //         if ($ageFilter === '65+') $query->where('registered_patients.age', '>=', 65);
-    //     }
-
-    //     // Apply date filter
-    //     switch ($filter) {
-    //         case 'today':
-    //             $query->whereDate('patient_transactions.transaction_date', now());
-    //             break;
-    //         case 'yesterday':
-    //             $query->whereDate('patient_transactions.transaction_date', now()->subDay());
-    //             break;
-    //         case 'lastWeek':
-    //             $query->whereBetween('patient_transactions.transaction_date', [now()->subWeek(), now()]);
-    //             break;
-    //         case 'lastMonth':
-    //             $query->whereBetween('patient_transactions.transaction_date', [now()->subMonth(), now()]);
-    //             break;
-    //         case 'lastYear':
-    //             $query->whereBetween('patient_transactions.transaction_date', [now()->subYear(), now()]);
-    //             break;
-    //     }
-
-    //     $query->groupBy('registered_patients.sex');
-
-    //     $results = $query->get();
-
-    //     $totals = [
-    //         'male' => 0,
-    //         'female' => 0,
-    //         'total' => 0
-    //     ];
-
-    //     foreach ($results as $row) {
-    //         if (strtolower($row->sex) === 'male') $totals['male'] = $row->total;
-    //         if (strtolower($row->sex) === 'female') $totals['female'] = $row->total;
-    //         $totals['total'] += $row->total;
-    //     }
-
-    //     return response()->json($totals);
-    // }
 
 
 

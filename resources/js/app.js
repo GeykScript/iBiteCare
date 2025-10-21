@@ -55,7 +55,9 @@ import {
         User,
         CircleCheck,
         Send,
-        SendHorizontal
+        SendHorizontal,
+        FileSpreadsheet,
+        Sheet
     } 
      from 'lucide';
 
@@ -112,7 +114,9 @@ createIcons({
     User,
     CircleCheck,
     Send,
-    SendHorizontal
+    SendHorizontal,
+    FileSpreadsheet,
+    Sheet
   }
 }); 
 

@@ -51,11 +51,12 @@
                     <li><a href="{{ route('clinic.transactions') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -443,8 +444,7 @@
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white ">Date of Transaction</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Service Received</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Administration Date</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Paid Amount</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Status</th>
+                                                    <th colspan="2" class="px-4 py-2 border  bg-gray-800 text-white">Vaccines Used</th>
                                                     <th colspan="2" class="px-4 py-2 border  bg-gray-800 text-white rounded-tr-lg flex flex-col"> In Charge <span class="text-xs">(Administration & Payment)</span></th>
                                                 </tr>
                                             </thead>
@@ -462,9 +462,28 @@
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
                                                     <td class="px-4 py-2 border">{{ $transaction->Service->name }}</td>
                                                     <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->immunizations->date_given))}} </td>
-                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $transaction->paymentRecords->amount_paid }}
-                                                        </span></td>
-                                                    <td class="px-4 py-2 border-b"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $transaction->immunizations->status }} </span></td>
+                                                    @php
+                                                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed)->item);
+                                                    $rig = optional(optional($transaction->immunizations->rigUsed)->item);
+                                                    $antiTetanus = optional(optional($transaction->immunizations->antiTetanusUsed)->item);
+
+                                                    $items = [];
+
+                                                    if ($vaccine->brand_name) {
+                                                    $items[] = $vaccine->brand_name . ' (' . $vaccine->product_type . ')';
+                                                    }
+                                                    if ($rig->brand_name) {
+                                                    $items[] = $rig->brand_name . ' (' . $rig->product_type . ')';
+                                                    }
+                                                    if ($antiTetanus->brand_name) {
+                                                    $items[] = $antiTetanus->brand_name;
+                                                    }
+                                                    @endphp
+
+                                                    <td class="border px-2 py-2 text-gray-700" colspan="2">
+                                                        {{ implode(' - ', $items) }}
+                                                    </td>
+
                                                     <td class="px-4 py-2 border-b">{{ $transaction->immunizations->administeredBy->first_name }} {{ $transaction->immunizations->administeredBy->last_name }},
                                                         {{ $transaction->paymentRecords->receivedBy->first_name }} {{ $transaction->paymentRecords->receivedBy->last_name }}
                                                     </td>

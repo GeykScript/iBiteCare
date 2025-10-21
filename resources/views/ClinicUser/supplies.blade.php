@@ -56,11 +56,12 @@
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -110,27 +111,16 @@
                 </div>
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 gap-4">
-                    <div class="col-span-4 md:col-span-4 grid grid-cols-7 gap-4  px-2">
+                    <div class="col-span-7 md:col-span-4 flex flex-col md:flex-row items-start md:items-center justify-start md:justify-end gap-4 md:gap-10">
                         <div class="col-span-7 md:col-span-4 flex items-center justify-end gap-2 text-blue-500 hover:text-blue-600">
                             <i data-lucide="file-text" class="w-5 h-5"></i>
                             <a href="{{ route('clinic.supplies.view_usage') }}" class="font-bold underline underline-offset-8">View Usage History</a>
                         </div>
-                        <div class="col-span-7 md:col-span-3 flex flex-col md:flex-row items-start md:items-center justify-start md:justify-end gap-4 md:gap-10">
-                            <div class="flex items-center gap-1">
-                                <p class="font-semibold">Generate Report:</p>
-                                <button class="bg-red-500 rounded-md p-2">
-                                    <img src="{{asset('images/pdf.svg')}}" alt="PDF Icon" class="w-6 h-6">
-                                </button>
-                                <button class="bg-green-500 rounded-md p-2">
-                                    <img src="{{asset('images/csv.svg')}}" alt="CSV Icon" class="w-6 h-6">
-                                </button>
-                            </div>
-                            <div>
-                                <button
-                                    onclick="document.getElementById('AddNewSupplies').showModal()"
-                                    class="bg-red-600 hover:bg-red-500 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none">
-                                    <i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
-                            </div>
+                        <div>
+                            <button
+                                onclick="document.getElementById('AddNewSupplies').showModal()"
+                                class="bg-red-600 hover:bg-red-500 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none">
+                                <i data-lucide="plus" class="w-5 h-5"></i>Add New Supplies</button>
                         </div>
                     </div>
 
