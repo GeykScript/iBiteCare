@@ -3,26 +3,23 @@
 namespace App\Http\Controllers\ClinicUser;
 
 use App\Http\Controllers\Controller;
-use App\Models\barangay_patient_report;
-use App\Models\albay_patient_report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\ClinicTransactions;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf; 
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Models\ClinicServices;
 use App\Models\PaymentRecords;
-use Barryvdh\DomPDF\Facade\Pdf; 
-
-
-
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Inventory_stock;
+use App\Models\revenue_expenses_report;
+use App\Models\barangay_patient_report;
+use App\Models\albay_patient_report;
 
 use App\Exports\AlbayReportExport;
 use App\Exports\GuinobatanReportExport;
 use App\Exports\RevenueReport;
-
-use App\Models\revenue_expenses_report;
+USE App\Exports\InventoryReport;
 
 
 
@@ -39,8 +36,6 @@ class ReportsController extends Controller
             return redirect()->route('clinic.login')->with('error', 'You must be logged in to access the dashboard.');
         }
 
-
-        
         return view('ClinicUser.reports', compact('clinicUser', 'services'));
     }
 
@@ -142,9 +137,13 @@ class ReportsController extends Controller
                 $start = now()->subDay()->startOfDay();
                 $end = now()->subDay()->endOfDay();
                 break;
-            case 'lastWeek':
-                $start = now()->subWeek()->startOfWeek();
-                $end = now()->subWeek()->endOfWeek();
+            case 'weekly':
+                $start = now()->startOfWeek();
+                $end = now()->endOfWeek();
+                break;
+            case 'monthly':
+                $start = now()->startOfMonth();
+                $end = now()->endOfMonth();
                 break;
             case 'lastMonth':
                 $start = now()->subMonth()->startOfMonth();
@@ -228,5 +227,45 @@ class ReportsController extends Controller
     }
 
     
+    public function reportInventory()
+    {
+        $year = now()->year;
+
+        // Fetch inventory records for this year
+        $datas = Inventory_stock::whereYear('restock_date', $year)
+            ->orderBy('restock_date', 'asc')
+            ->get();
+
+        // Add computed "quarter" column
+        $datas->map(function ($item) {
+            $item->quarter = ceil(Carbon::parse($item->restock_date)->month / 3);
+            return $item;
+        });
+
+        // Group records by quarter
+        $grouped = $datas->groupBy('quarter');
+
+        // Ensure all 4 quarters exist even if empty
+        $quarters = collect([1, 2, 3, 4])->mapWithKeys(function ($q) use ($grouped) {
+            return [$q => $grouped->get($q, collect())];
+        });
+
+        // Generate the PDF (one PDF with multiple quarter sections)
+        $pdf = Pdf::loadView('ClinicUser.pdf.reports-inventory', compact('quarters', 'year'))
+            ->setPaper('letter', 'landscape');
+
+        $fileName = 'Inventory_Report_' . $year . '.pdf';
+
+        return $pdf->stream($fileName);
+    }
+
+
+    public function exportInventoryExcel()
+    {
+        $year = now()->year;
+        $fileName = 'Inventory_Report_' . $year . '.xlsx';
+
+        return Excel::download(new InventoryReport($year), $fileName);
+    }
 }
 

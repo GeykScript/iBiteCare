@@ -75,6 +75,8 @@ class BoosterRegistration extends Controller
             'registration_date' => $request->date_of_registration,
             'address' => $address,
             'contact_number' => $request->contact_number,
+            'email' => $request->email,
+
         ]);
 
         // Create new ClinicTransaction record

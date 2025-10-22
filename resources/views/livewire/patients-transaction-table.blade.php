@@ -96,7 +96,7 @@
                     <td class="border px-2 py-2 text-gray-700">{{ $transaction->Service->name }}</td>
 
                     @php
-                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed)->item);
+                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed ?? null)->item);
                     $rig = optional(optional($transaction->immunizations->rigUsed)->item);
                     $antiTetanus = optional(optional($transaction->immunizations->antiTetanusUsed)->item);
 

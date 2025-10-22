@@ -189,10 +189,17 @@
                                                 <div class="flex gap-4 justify-start items-start">
                                                     <div class="flex flex-col gap-2 items-start font-semibold">
                                                         <p>Phone:</p>
+                                                        @if ($patient->email)
+                                                        <p>Email:</p>
+                                                        @endif
                                                         <p>Address:</p>
                                                     </div>
                                                     <div class="flex flex-col gap-2">
                                                         <p>{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
+
+                                                        @if ($patient->email)
+                                                        <p>{{ $patient->email}}</p>
+                                                        @endif
                                                         <p>{{ $patient->address }}</p>
                                                     </div>
                                                 </div>
@@ -1128,15 +1135,11 @@
                                                     {{ $patient->sex == 'Female' ? 'checked' : '' }}>
                                                 <span>Female</span>
                                             </label>
-
-
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- contact number  -->
                                 <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
-
                                     <!-- phone number  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
@@ -1161,6 +1164,13 @@
                                                 value="{{  $patient->contact_number }}"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
+                                    </div>
+                                    <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
+                                        <div class="w-full flex items-center">
+                                            <label for="contact_number" class="text-sm font-semibold ">Email Address:
+                                            </label>
+                                        </div>
+                                        <p>{{ $patient->email ?? 'No email address'}}</p>
                                     </div>
                                 </div>
                                 <!-- divider border  -->

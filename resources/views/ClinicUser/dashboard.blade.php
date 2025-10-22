@@ -124,36 +124,108 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-4 gap-4 ">
-                                    <div class="col-span-1">
-                                        <select id="filter" class="border rounded w-full p-1 text-sm ">
-                                            <option value="all">All Time</option>
-                                            <option value="today">Today</option>
-                                            <option value="yesterday">Yesterday</option>
-                                            <option value="lastWeek">Last Week</option>
-                                            <option value="lastMonth">Last Month</option>
-                                            <option value="thisYear">This Year</option>
-                                            <option value="lastYear">Last Year</option>
-                                        </select>
+                                <div class="grid grid-cols-4 gap-2 ">
+                                    <!-- Date Filter -->
+                                    <div class="col-span-4 md:col-span-1">
+                                        <div x-data="{ open: false }" class="relative inline-block w-full text-left">
+                                            <input type="hidden" id="filter" value="all">
+                                            <button
+                                                @click="open = !open"
+                                                class="w-full bg-white text-gray-700 text-sm font-medium px-2 py-2 rounded-md 
+                                                    flex items-center justify-between border border-gray-700 hover:border-sky-500 
+                                                    focus:ring-1 focus:ring-sky-500 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                                <span id="filterLabel">All Time</span>
+                                                <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+
+                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
+                                                <ul class="py-1 text-sm text-gray-700">
+                                                    <li><button data-value="all" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">All
+                                                            Time</button></li>
+                                                    <li><button data-value="today" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">Today</button></li>
+                                                    <li><button data-value="yesterday" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">Yesterday</button></li>
+                                                    <li><button data-value="weekly" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">
+                                                            Weekly</button></li>
+                                                    <li><button data-value="monthly" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">
+                                                            Monthly</button></li>
+                                                    <li><button data-value="lastMonth" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">
+                                                            Last Month</button></li>
+                                                    <li><button data-value="thisYear" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">This
+                                                            Year</button></li>
+                                                    <li><button data-value="lastYear" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">Last
+                                                            Year</button></li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-span-2">
-                                        <select id="serviceFilter" class="border rounded w-full  p-1 text-sm">
-                                            <option value="all">Service Type</option>
-                                            @foreach ($services as $service )
-                                            <option value="{{ $service->id }}">{{ $service->name }}</option>
-                                            @endforeach
-                                        </select>
+
+                                    <!-- Service Type Filter -->
+                                    <div class="col-span-3 md:col-span-2">
+                                        <div x-data="{ open: false }" class="relative inline-block w-full text-left">
+                                            <input type="hidden" id="serviceFilter" value="all">
+                                            <button
+                                                @click="open = !open"
+                                                class="w-full bg-white text-gray-700 text-sm font-medium px-4 py-2 rounded-md 
+                                                    flex items-center justify-between border border-gray-700 hover:border-sky-500 
+                                                    focus:ring-1 focus:ring-sky-500 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                                <span id="serviceFilterLabel">Service Type</span>
+                                                <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+
+                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-y-auto scrollbar-hidden">
+                                                <ul class="py-1 text-sm text-gray-700 scrollbar-hidden">
+                                                    <li><button data-value="all" class="service-option w-full text-left px-4 py-2 hover:bg-gray-100">All
+                                                            Services</button></li>
+                                                    @foreach ($services as $service)
+                                                    <li><button data-value="{{ $service->id }}"
+                                                            class="service-option w-full text-left px-4 py-2 hover:bg-gray-100">{{ $service->name }}</button></li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-span-1">
-                                        <select id="ageFilter" class="border rounded p-1 w-full text-sm">
-                                            <option value="all">Age</option>
-                                            <option value="0-17">0-17</option>
-                                            <option value="18-64">18-64</option>
-                                            <option value="65+">65+</option>
-                                        </select>
+
+                                    <!-- Age Filter -->
+                                    <div class="col-span-1 md:col-span-1">
+                                        <div x-data="{ open: false }" class="relative inline-block w-full text-left">
+                                            <input type="hidden" id="ageFilter" value="all">
+                                            <button
+                                                @click="open = !open"
+                                                class="w-full bg-white text-gray-700 text-sm font-medium px-4 py-2 rounded-md 
+                                                    flex items-center justify-between border border-gray-700 hover:border-sky-500 
+                                                    focus:ring-1 focus:ring-sky-500 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                                <span id="ageFilterLabel">Age</span>
+                                                <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+
+                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
+                                                <ul class="py-1 text-sm text-gray-700">
+                                                    <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All
+                                                            Ages</button></li>
+                                                    <li><button data-value="0-17" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">0-17</button></li>
+                                                    <li><button data-value="18-64" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">18-64</button></li>
+                                                    <li><button data-value="65+" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">65+</button></li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex items-center px-6 py-2">
+                                <div class="flex items-center px-6 py-2 bg-gray-50 rounded-lg my-3">
                                     <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center me-3">
                                         <i data-lucide="users" class="w-6 h-6 text-white"></i>
                                     </div>
@@ -177,7 +249,7 @@
                                 <div id="chart" class="mt-4"></div>
                                 <div class="grid grid-cols-2  border-gray-200 border-t">
                                     <div class="col-span-2 mt-2 flex items-end justify-end">
-                                        <a href="{{ route('clinic.transactions') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <a href="{{ route('clinic.transactions') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-sky-500 hover:bg-sky-400 focus:ring-4 focus:outline-none focus:ring-sky-500 rounded-lg text-center">
                                             <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
                                             View Details
                                         </a>
@@ -240,10 +312,10 @@
                                         </p>
                                     </div>
                                     <!-- Scrollable container -->
-                                    <div class="overflow-y-auto max-h-[14rem]  mb-4 scrollbar-hidden px-2 ">
+                                    <div class="overflow-y-auto max-h-[18.5rem]  mb-4 scrollbar-hidden px-2 ">
 
                                         @foreach ($clinic_transactions as $transaction)
-                                        <div class="flex justify-between px-2 mt-3">
+                                        <div class="flex justify-between px-2 my-3">
                                             <div class="flex items-center">
                                                 <div class="flex items-center justify-center">
                                                     <i data-lucide="circle-user" class="w-6 h-6 text-gray-500"></i>
@@ -283,7 +355,7 @@
                                     </div>
                                     <div class="grid grid-cols-1 items-center border-gray-200 border-t mt-2 dark:border-gray-700 justify-between">
                                         <div class="flex justify-between items-center pt-5">
-                                            <a href="{{ route('clinic.supplies') }}" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <a href="{{ route('clinic.supplies') }}" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-sky-500 hover:bg-sky-400 focus:ring-4 focus:outline-none focus:ring-sky-300 rounded-lg text-center">
                                                 <i data-lucide="file-text" class="w-4 h-4 me-2"></i>
                                                 View Details
                                             </a>

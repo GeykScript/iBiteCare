@@ -1,112 +1,101 @@
-
 import ApexCharts from 'apexcharts';
-
 
 const totalPatients = document.getElementById('totalPatients');
 const totalMale = document.getElementById('totalMale');
 const totalFemale = document.getElementById('totalFemale');
 
-// Bar chart options
 let chartOptions = {
-    chart: {
-        type: 'bar',
-        height: 350,
-        toolbar: {
-            show: false
-        }
-    },
-        plotOptions: {
-        bar: {
-            horizontal: false, 
-            columnWidth: '100%' ,
-              borderRadiusApplication: 'end',
-          borderRadius: 3   
-        }
-    },
-    series: [],
-    xaxis: {
-        categories: []
-    },
-    colors: ['#0ac4fdff', '#ff0a70ec']
+  chart: { type: 'bar', height: 350, toolbar: { show: false } },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '100%',
+      borderRadiusApplication: 'end',
+      borderRadius: 3
+    }
+  },
+  series: [],
+  xaxis: { categories: [] },
+  colors: ['#0ac4fdff', '#ff0a70ec']
 };
 
 let chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
 chart.render();
 
-const filter = document.getElementById('filter');
-const serviceFilter = document.getElementById('serviceFilter');
-const ageFilter = document.getElementById('ageFilter');
+// Function to attach dropdown logic
+function setupDropdown(className, hiddenId, labelId) {
+  document.querySelectorAll(`.${className}`).forEach(option => {
+    option.addEventListener('click', e => {
+      e.preventDefault();
+      const value = option.getAttribute('data-value');
+      const text = option.textContent;
 
-function fetchChartData() {
-    const params = new URLSearchParams({
-        filter: filter.value,
-        serviceFilter: serviceFilter.value,
-        ageFilter: ageFilter.value
+      document.getElementById(hiddenId).value = value;
+      document.getElementById(labelId).textContent = text;
+
+      fetchChartData();
     });
-
-    fetch(`/clinic/chart-data?${params.toString()}`)
-        .then(res => res.json())
-        .then(data => {
-            // Update chart
-            chart.updateOptions({
-                series: data.series,
-                xaxis: {
-                    categories: data.categories
-                }
-            });
-
-            // Update totals
-            totalMale.textContent = data.totalMale;
-            totalFemale.textContent = data.totalFemale;
-            totalPatients.textContent = data.totalPatients;
-        });
+  });
 }
 
-// Update chart on dropdown change
-filter.addEventListener('change', fetchChartData);
-serviceFilter.addEventListener('change', fetchChartData);
-ageFilter.addEventListener('change', fetchChartData);
+// Attach dropdowns
+setupDropdown('filter-option', 'filter', 'filterLabel');
+setupDropdown('service-option', 'serviceFilter', 'serviceFilterLabel');
+setupDropdown('age-option', 'ageFilter', 'ageFilterLabel');
 
-// Initial load
+function fetchChartData() {
+  const params = new URLSearchParams({
+    filter: document.getElementById('filter').value,
+    serviceFilter: document.getElementById('serviceFilter').value,
+    ageFilter: document.getElementById('ageFilter').value
+  });
+
+  fetch(`/clinic/chart-data?${params}`)
+    .then(res => res.json())
+    .then(data => {
+      chart.updateOptions({
+        series: data.series,
+        xaxis: { categories: data.categories }
+      });
+
+      totalMale.textContent = data.totalMale;
+      totalFemale.textContent = data.totalFemale;
+      totalPatients.textContent = data.totalPatients;
+    });
+}
+
+// Initial chart load
 fetchChartData();
+
+
 
 
 
 const totalRevenue = document.getElementById('totalRevenue');
 const filter2 = document.getElementById('filter2');
 
+// Setup dropdown logic
+document.querySelectorAll('.filter2-option').forEach(option => {
+    option.addEventListener('click', e => {
+        e.preventDefault();
+        const value = option.getAttribute('data-value');
+        const text = option.textContent;
+
+        filter2.value = value;
+        document.getElementById('filterLabel2').textContent = text;
+
+        fetchRevenueData();
+    });
+});
+
+// ApexCharts setup
 let chartOptions2 = {
-    chart: {
-        type: 'area',  // ✅ changed to area chart
-        height: 380,
-        toolbar: { show: false }
-    },
-    dataLabels: {
-        enabled: false 
-    },
-    stroke: {
-        curve: 'smooth', // smooth line
-        width: 2
-    },
-    fill: {
-        type: 'gradient', // gradient fill for area
-        gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.4,
-            opacityTo: 0.1,
-            stops: [0, 90, 100]
-        }
-    },
-    markers: {
-        size: 4
-    },
-    tooltip: {
-        y: {
-            formatter: function(val) {
-                return '₱ ' + Number(val).toLocaleString();
-            }
-        }
-    },
+    chart: { type: 'area', height: 400, toolbar: { show: false } },
+    dataLabels: { enabled: false },
+    stroke: { curve: 'smooth', width: 2 },
+    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.1, stops: [0, 90, 100] } },
+    markers: { size: 4 },
+    tooltip: { y: { formatter: val => '₱ ' + Number(val).toLocaleString() } },
     series: [],
     xaxis: { categories: [] },
     colors: ['#ff0808ef']
@@ -121,21 +110,12 @@ function fetchRevenueData() {
     fetch(`/clinic/revenue-chart-data?${params.toString()}`)
         .then(res => res.json())
         .then(data => {
-            // Update chart
             chart2.updateOptions({ xaxis: { categories: data.categories } });
             chart2.updateSeries(data.series);
-
-            // Update total
             totalRevenue.textContent = `₱ ${Number(data.totalRevenue).toLocaleString()}`;
         })
         .catch(err => console.error('Error fetching revenue data:', err));
 }
 
-filter2.addEventListener('change', fetchRevenueData);
-
 // Initial load
 fetchRevenueData();
-
-
-
-

@@ -61,11 +61,14 @@ class DashboardController extends Controller
             case 'yesterday':
                 $query->whereDate('transaction_date', now()->subDay());
                 break;
-            case 'lastWeek':
-                $query->whereBetween('transaction_date', [now()->subWeek(), now()]);
+            case 'weekly':
+                $query->whereBetween('transaction_date', [now()->startOfWeek(), now()->endOfWeek()]);
+                break;
+            case 'monthly':
+                $query->whereBetween('transaction_date', [now()->startOfMonth(), now()->endOfMonth()]);
                 break;
             case 'lastMonth':
-                $query->whereBetween('transaction_date', [now()->subMonth(), now()]);
+                $query->whereBetween('transaction_date', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()]);
                 break;
             case 'thisYear':
                 $query->whereBetween('transaction_date', [now()->startOfYear(), now()->endOfYear()]);

@@ -12,7 +12,7 @@ class InventoryTable extends Component
 
     public $sortBy = 'created_at';
     public $sortDirection = 'ASC';
-    public $perPage = 6;
+    public $perPage = 7;
     
     public function updatedPerPage()
     {
