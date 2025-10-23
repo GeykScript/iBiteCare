@@ -37,6 +37,8 @@ class RegisterPatientBoosterRequest extends FormRequest
             'description' => 'string|max:255',
 
             'contact_number' => 'required|string|max:13',
+            'email' => 'nullable|string',
+
             'sex' => 'string|max:255',
             'date_of_birth' => 'required|date',
             'age' => 'required|integer|min:0',

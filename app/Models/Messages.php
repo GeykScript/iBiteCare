@@ -29,6 +29,10 @@ class Messages extends Model
     {
         return $this->belongsTo(PatientImmunizationsSchedule::class, 'immunization_sched_id');
     }
+    public function sender()
+    {
+        return $this->belongsTo(ClinicUser::class, 'sender_id');
+    }
 
    
 }

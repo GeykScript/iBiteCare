@@ -143,18 +143,23 @@
             </div>
             <!-- contact & demographics  -->
             <div class="col-span-12 grid grid-cols-12 gap-2 ">
-                <div class="col-span-12 md:col-span-7">
+                <div class="col-span-12 md:col-span-6">
                     <h2 class="md:text-lg text-gray-700 font-900 ">Contact & Demographics</h2>
                 </div>
                 <div class="col-span-5 hidden md:block">
                     <h2 class="md:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
                 </div>
-                <div class="col-span-12 md:col-span-7 grid grid-cols-6 gap-2 ">
+                <div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-2 ">
                     <div class="col-span-6 md:col-span-2 ">
                         <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900">Phone Number</label>
                         <input type="text" name="contact_number" id="contact_number" required placeholder="e.g 09xx xxx xxxx" maxlength="13"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_contact_number" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                    </div>
+                    <div class="col-span-6 md:col-span-2 ">
+                        <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email Address <span class="font-normal">( Optional )</span></label>
+                        <input type="email" name="email" id="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                            class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
                     </div>
                     <div class="col-span-6 md:col-span-1">
                         <label for="sex" class="block mb-2 text-sm font-bold text-gray-900">Sex</label>
@@ -168,7 +173,6 @@
                                      ]" />
                         <p id="error_sex" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
-
                     <div class="col-span-6 md:col-span-2 ">
                         <label for="phone" class="block mb-2 text-sm font-bold text-gray-900">Date of Birth</label>
                         <input type="date" name="date_of_birth" id="date_of_birth" required
@@ -182,7 +186,7 @@
                         <p id="error_age" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                 </div>
-                <div class="col-span-12 md:col-span-5 grid grid-cols-6 gap-2 md:px-10 ">
+                <div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-2 md:px-10 ">
                     <div class="col-span-6 block md:hidden">
                         <h2 class="md:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
                     </div>
@@ -325,6 +329,24 @@
     document.getElementById("suffix").addEventListener("input", function() {
         // Allow only letters, numbers, and dot
         this.value = this.value.replace(/[^A-Za-z0-9.]/g, "").toUpperCase();
+    });
+    
+    // EMAIL VALIDATOR
+    document.getElementById("email").addEventListener("input", function() {
+        // Allow only valid characters and force lowercase
+        this.value = this.value.replace(/[^a-zA-Z0-9@._+-]/g, "").toLowerCase();
+
+        // Simple email pattern check
+        const emailPattern = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+
+        // Validate email format
+        if (this.value.length > 0 && !emailPattern.test(this.value)) {
+            this.classList.remove("border-gray-300", "focus:border-sky-500");
+            this.classList.add("border-red-500", "focus:border-red-500");
+        } else {
+            this.classList.remove("border-red-500", "focus:border-red-500");
+            this.classList.add("border-gray-300", "focus:border-sky-500");
+        }
     });
 
 

@@ -51,11 +51,12 @@
                     <li><a href="{{ route('clinic.transactions') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
-
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
             <div class="flex flex-col p-4 gap-2">
@@ -188,10 +189,17 @@
                                                 <div class="flex gap-4 justify-start items-start">
                                                     <div class="flex flex-col gap-2 items-start font-semibold">
                                                         <p>Phone:</p>
+                                                        @if ($patient->email)
+                                                        <p>Email:</p>
+                                                        @endif
                                                         <p>Address:</p>
                                                     </div>
                                                     <div class="flex flex-col gap-2">
                                                         <p>{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
+
+                                                        @if ($patient->email)
+                                                        <p>{{ $patient->email}}</p>
+                                                        @endif
                                                         <p>{{ $patient->address }}</p>
                                                     </div>
                                                 </div>
@@ -443,8 +451,7 @@
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white ">Date of Transaction</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Service Received</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Administration Date</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Paid Amount</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Status</th>
+                                                    <th colspan="2" class="px-4 py-2 border  bg-gray-800 text-white">Vaccines Used</th>
                                                     <th colspan="2" class="px-4 py-2 border  bg-gray-800 text-white rounded-tr-lg flex flex-col"> In Charge <span class="text-xs">(Administration & Payment)</span></th>
                                                 </tr>
                                             </thead>
@@ -462,9 +469,28 @@
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
                                                     <td class="px-4 py-2 border">{{ $transaction->Service->name }}</td>
                                                     <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->immunizations->date_given))}} </td>
-                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $transaction->paymentRecords->amount_paid }}
-                                                        </span></td>
-                                                    <td class="px-4 py-2 border-b"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $transaction->immunizations->status }} </span></td>
+                                                    @php
+                                                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed)->item);
+                                                    $rig = optional(optional($transaction->immunizations->rigUsed)->item);
+                                                    $antiTetanus = optional(optional($transaction->immunizations->antiTetanusUsed)->item);
+
+                                                    $items = [];
+
+                                                    if ($vaccine->brand_name) {
+                                                    $items[] = $vaccine->brand_name . ' (' . $vaccine->product_type . ')';
+                                                    }
+                                                    if ($rig->brand_name) {
+                                                    $items[] = $rig->brand_name . ' (' . $rig->product_type . ')';
+                                                    }
+                                                    if ($antiTetanus->brand_name) {
+                                                    $items[] = $antiTetanus->brand_name;
+                                                    }
+                                                    @endphp
+
+                                                    <td class="border px-2 py-2 text-gray-700" colspan="2">
+                                                        {{ implode(' - ', $items) }}
+                                                    </td>
+
                                                     <td class="px-4 py-2 border-b">{{ $transaction->immunizations->administeredBy->first_name }} {{ $transaction->immunizations->administeredBy->last_name }},
                                                         {{ $transaction->paymentRecords->receivedBy->first_name }} {{ $transaction->paymentRecords->receivedBy->last_name }}
                                                     </td>
@@ -1096,25 +1122,24 @@
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
                                         <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
                                         <div class="flex gap-5 items-center">
-                                            @if ($patient->sex == 'Male')
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                                <input type="radio" name="sex" value="Male"
+                                                    class="text-sky-500 focus:ring-sky-500"
+                                                    {{ $patient->sex == 'Male' ? 'checked' : '' }}>
                                                 <span>Male</span>
                                             </label>
-                                            @elseif ($patient->sex == 'Female')
+
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
+                                                <input type="radio" name="sex" value="Female"
+                                                    class="text-pink-500 focus:ring-pink-500"
+                                                    {{ $patient->sex == 'Female' ? 'checked' : '' }}>
                                                 <span>Female</span>
                                             </label>
-                                            @endif
-
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- contact number  -->
                                 <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
-
                                     <!-- phone number  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
@@ -1139,6 +1164,13 @@
                                                 value="{{  $patient->contact_number }}"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
+                                    </div>
+                                    <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
+                                        <div class="w-full flex items-center">
+                                            <label for="contact_number" class="text-sm font-semibold ">Email Address:
+                                            </label>
+                                        </div>
+                                        <p>{{ $patient->email ?? 'No email address'}}</p>
                                     </div>
                                 </div>
                                 <!-- divider border  -->
