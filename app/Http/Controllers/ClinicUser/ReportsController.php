@@ -122,76 +122,110 @@ class ReportsController extends Controller
     public function getRevenueChartData(Request $request)
     {
         $filter = $request->filter ?? 'all';
+
         $query = PaymentRecords::query();
 
-        // Determine start and end dates based on filter
-        $start = null;
-        $end = now();
-
+        // Determine filter range
         switch ($filter) {
             case 'today':
-                $start = now()->startOfDay();
-                $end = now()->endOfDay();
+                $query->selectRaw('HOUR(payment_date) as hour, SUM(amount_paid) as total')
+                    ->whereDate('payment_date', now())
+                    ->groupBy('hour')
+                    ->orderBy('hour');
                 break;
+
             case 'yesterday':
-                $start = now()->subDay()->startOfDay();
-                $end = now()->subDay()->endOfDay();
+                $query->selectRaw('HOUR(payment_date) as hour, SUM(amount_paid) as total')
+                    ->whereDate('payment_date', now()->subDay())
+                    ->groupBy('hour')
+                    ->orderBy('hour');
                 break;
+
             case 'weekly':
-                $start = now()->startOfWeek();
-                $end = now()->endOfWeek();
+                $query->selectRaw('DATE(payment_date) as date, SUM(amount_paid) as total')
+                    ->whereBetween('payment_date', [now()->startOfWeek(), now()->endOfWeek()])
+                    ->groupBy('date')
+                    ->orderBy('date');
                 break;
+
             case 'monthly':
-                $start = now()->startOfMonth();
-                $end = now()->endOfMonth();
+                $query->selectRaw('DATE(payment_date) as date, SUM(amount_paid) as total')
+                    ->whereBetween('payment_date', [now()->startOfMonth(), now()->endOfMonth()])
+                    ->groupBy('date')
+                    ->orderBy('date');
                 break;
+
             case 'lastMonth':
-                $start = now()->subMonth()->startOfMonth();
-                $end = now()->subMonth()->endOfMonth();
+                $query->selectRaw('DATE(payment_date) as date, SUM(amount_paid) as total')
+                    ->whereBetween('payment_date', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])
+                    ->groupBy('date')
+                    ->orderBy('date');
                 break;
+
             case 'thisYear':
-                $start = now()->startOfYear();
-                $end = now()->endOfYear();
-                break;
             case 'lastYear':
-                $start = now()->subYear()->startOfYear();
-                $end = now()->subYear()->endOfYear();
+                $year = $filter === 'thisYear' ? now()->year : now()->subYear()->year;
+                $query->selectRaw('MONTH(payment_date) as month, SUM(amount_paid) as total')
+                    ->whereYear('payment_date', $year)
+                    ->groupBy('month')
+                    ->orderBy('month');
                 break;
-            case 'all':
+
             default:
-                $start = PaymentRecords::min('payment_date'); // optional, or leave null
-                $end = now();
+                $query->selectRaw('DATE(payment_date) as date, SUM(amount_paid) as total')
+                    ->groupBy('date')
+                    ->orderBy('date');
                 break;
         }
 
-        if ($start) {
-            $query->whereBetween('payment_date', [$start, $end]);
-        }
+        $results = $query->get();
 
-        // Group by month for chart (if filter is longer than a month)
-        $results = $query->selectRaw('MONTH(payment_date) as month, SUM(amount_paid) as total')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
+        $categories = [];
+        $data = [];
 
-        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        $data = array_fill(0, 12, 0);
+        if (in_array($filter, ['thisYear', 'lastYear'])) {
+            // Yearly chart: 12 months
+            $categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            $data = array_fill(0, 12, 0);
 
-        foreach ($results as $row) {
-            $data[$row->month - 1] = $row->total;
+            foreach ($results as $row) {
+                $index = $row->month - 1;
+                $data[$index] = $row->total;
+            }
+        } elseif (in_array($filter, ['today', 'yesterday'])) {
+            // Hourly chart (8 AM–5 PM)
+            $hourRange = range(8, 16);
+            $categories = array_map(fn($h) => date('g A', mktime($h, 0)), $hourRange);
+            $data = array_fill(0, count($hourRange), 0);
+
+            foreach ($results as $row) {
+                $hour = (int) $row->hour;
+                if ($hour >= 8 && $hour <= 16) {
+                    $index = $hour - 8;
+                    $data[$index] = $row->total;
+                }
+            }
+        } else {
+            // Daily or weekly data
+            $dates = $results->pluck('date')->unique()->values();
+            foreach ($dates as $date) {
+                $row = $results->firstWhere('date', $date);
+                $data[] = $row->total ?? 0;
+                $categories[] = date('M d', strtotime($date));
+            }
         }
 
         $totalRevenue = array_sum($data);
 
-
         return response()->json([
-            'categories' => $months,
+            'categories' => $categories,
             'series' => [
-                ['name' => 'Sales', 'data' => $data, 'color' => '#ff0808ef'],
+                ['name' => 'Revenue', 'data' => $data, 'color' => '#ff0808ef'],
             ],
             'totalRevenue' => $totalRevenue
         ]);
     }
+
 
 
     public function reportRevenueExpenses()

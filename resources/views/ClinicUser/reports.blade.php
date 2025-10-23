@@ -146,11 +146,7 @@
                                                             Weekly</button></li>
                                                     <li><button data-value="monthly" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">
                                                             Monthly</button></li>
-                                                    <li><button data-value="lastMonth" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">
-                                                            Last Month</button></li>
                                                     <li><button data-value="thisYear" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">This
-                                                            Year</button></li>
-                                                    <li><button data-value="lastYear" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">Last
                                                             Year</button></li>
                                                 </ul>
                                             </div>
@@ -367,9 +363,7 @@
                                             <li><button data-value="yesterday" class="filter2-option w-full text-left px-4 py-2 hover:bg-gray-100">Yesterday</button></li>
                                             <li><button data-value="weekly" class="filter2-option w-full text-left px-4 py-2 hover:bg-gray-100">Weekly</button></li>
                                             <li><button data-value="monthly" class="filter2-option w-full text-left px-4 py-2 hover:bg-gray-100">Monthly</button></li>
-                                            <li><button data-value="lastMonth" class="filter2-option w-full text-left px-4 py-2 hover:bg-gray-100">Last Month</button></li>
                                             <li><button data-value="thisYear" class="filter2-option w-full text-left px-4 py-2 hover:bg-gray-100">This Year</button></li>
-                                            <li><button data-value="lastYear" class="filter2-option w-full text-left px-4 py-2 hover:bg-gray-100">Last Year</button></li>
                                         </ul>
                                     </div>
                                 </div>

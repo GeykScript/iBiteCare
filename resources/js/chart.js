@@ -9,14 +9,15 @@ let chartOptions = {
   plotOptions: {
     bar: {
       horizontal: false,
-      columnWidth: '100%',
+      columnWidth: '80%',
       borderRadiusApplication: 'end',
       borderRadius: 3
     }
   },
-  series: [],
+  series: [{ name: 'Loading', data: [] }],
   xaxis: { categories: [] },
-  colors: ['#0ac4fdff', '#ff0a70ec']
+  colors: ['#0ac4fdff', '#ff0a70ec'],
+  noData: { text: 'Loading data...' }
 };
 
 let chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
@@ -71,6 +72,9 @@ fetchChartData();
 
 
 
+
+
+
 const totalRevenue = document.getElementById('totalRevenue');
 const filter2 = document.getElementById('filter2');
 
@@ -96,8 +100,10 @@ let chartOptions2 = {
     fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.1, stops: [0, 90, 100] } },
     markers: { size: 4 },
     tooltip: { y: { formatter: val => '₱ ' + Number(val).toLocaleString() } },
-    series: [],
-    xaxis: { categories: [] },
+      series: [{ name: 'Loading', data: [] }],
+  xaxis: { categories: [] },
+  colors: ['#0ac4fdff', '#ff0a70ec'],
+  noData: { text: 'Loading data...' },
     colors: ['#ff0808ef']
 };
 

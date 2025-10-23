@@ -31,91 +31,121 @@ class DashboardController extends Controller
         return view('ClinicUser.dashboard', compact('clinicUser', 'clinic_transactions', 'today_clinic_transactions', 'clinic_expected_patients', 'services'));
     }
 
-    public function getChartData(Request $request)
-    {
-        $filter = $request->filter ?? 'all';
-        $serviceFilter = $request->serviceFilter ?? null;
-        $ageFilter = $request->ageFilter ?? null;
+public function getChartData(Request $request)
+{
+    $filter = $request->filter ?? 'all';
+    $serviceFilter = $request->serviceFilter ?? null;
+    $ageFilter = $request->ageFilter ?? null;
 
-        $query = ClinicTransactions::query()
-            ->join('registered_patients', 'registered_patients.id', '=', 'patient_transactions.patient_id')
-        ->selectRaw('MONTH(transaction_date) as month, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total');
+    $query = ClinicTransactions::join('registered_patients', 'registered_patients.id', '=', 'patient_transactions.patient_id');
 
+    switch ($filter) {
+        case 'today':
+            $query->selectRaw('HOUR(transaction_date) as hour, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                  ->whereDate('transaction_date', now())
+                  ->groupBy('hour', 'registered_patients.sex')
+                  ->orderBy('hour');
+            break;
 
-        // Apply filters
-        if ($serviceFilter && $serviceFilter != 'all') {
-            $query->where('service_id', $serviceFilter);
-        }
+        case 'weekly':
+            $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                  ->whereBetween('transaction_date', [now()->startOfWeek(), now()->endOfWeek()])
+                  ->groupBy('date', 'registered_patients.sex')
+                  ->orderBy('date');
+            break;
 
-        if ($ageFilter && $ageFilter != 'all') {
-            if ($ageFilter === '0-17') $query->whereBetween('registered_patients.age', [0, 17]);
-            if ($ageFilter === '18-64') $query->whereBetween('registered_patients.age', [18, 64]);
-            if ($ageFilter === '65+') $query->where('registered_patients.age', '>=', 65);
-        }
+        case 'monthly':
+        case 'thisYear':
+            $query->selectRaw('MONTH(transaction_date) as month, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                  ->whereBetween('transaction_date', [now()->startOfYear(), now()->endOfYear()])
+                  ->groupBy('month', 'registered_patients.sex')
+                  ->orderBy('month');
+            break;
 
-        // Apply date filter
-        switch ($filter) {
-            case 'today':
-                $query->whereDate('transaction_date', now());
-                break;
-            case 'yesterday':
-                $query->whereDate('transaction_date', now()->subDay());
-                break;
-            case 'weekly':
-                $query->whereBetween('transaction_date', [now()->startOfWeek(), now()->endOfWeek()]);
-                break;
-            case 'monthly':
-                $query->whereBetween('transaction_date', [now()->startOfMonth(), now()->endOfMonth()]);
-                break;
-            case 'lastMonth':
-                $query->whereBetween('transaction_date', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()]);
-                break;
-            case 'thisYear':
-                $query->whereBetween('transaction_date', [now()->startOfYear(), now()->endOfYear()]);
-                break;
-            case 'lastYear':
-                $query->whereBetween('transaction_date', [now()->subYear()->startOfYear(), now()->subYear()->endOfYear()]);
-                break;
-        }
+        default:
+            $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                  ->groupBy('date', 'registered_patients.sex')
+                  ->orderBy('date');
+            break;
+    }
 
-        // Group and order
-        $results = $query->groupBy('month', 'registered_patients.sex')
-            ->orderBy('month')
-            ->get();
+    // Optional filters
+    if ($serviceFilter && $serviceFilter != 'all') {
+        $query->where('service_id', $serviceFilter);
+    }
 
+    if ($ageFilter && $ageFilter != 'all') {
+        if ($ageFilter === '0-17') $query->whereBetween('registered_patients.age', [0, 17]);
+        if ($ageFilter === '18-64') $query->whereBetween('registered_patients.age', [18, 64]);
+        if ($ageFilter === '65+') $query->where('registered_patients.age', '>=', 65);
+    }
 
-        // Prepare monthly arrays
-        $months = range(1, 12);
+    $results = $query->get();
+
+    // Chart data
+    $maleData = [];
+    $femaleData = [];
+    $categories = [];
+
+    if (in_array($filter, ['monthly', 'thisYear'])) {
+        // 12 months
+        $categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $maleData = array_fill(0, 12, 0);
         $femaleData = array_fill(0, 12, 0);
-        $totalMale = 0;
-        $totalFemale = 0;
- 
+
         foreach ($results as $row) {
             $index = $row->month - 1;
-            if (strtolower($row->sex) === 'male') {
-                $maleData[$index] = $row->total;
-                $totalMale += $row->total;
-            }
-            if (strtolower($row->sex) === 'female') {
-                $femaleData[$index] = $row->total;
-                $totalFemale += $row->total;
+            if (strtolower($row->sex) === 'male') $maleData[$index] = $row->total;
+            if (strtolower($row->sex) === 'female') $femaleData[$index] = $row->total;
+        }
+
+    } elseif ($filter === 'today') {
+        // ✅ Always show 8AM–5PM regardless of data
+        $hourRange = range(8, 16); // 8 to 16
+        $categories = array_map(fn($h) => date('g A', mktime($h, 0)), $hourRange);
+
+        // Default 0s
+        $maleData = array_fill(0, count($hourRange), 0);
+        $femaleData = array_fill(0, count($hourRange), 0);
+
+        foreach ($results as $row) {
+            $hour = (int)$row->hour;
+            if ($hour >= 8 && $hour <= 16) {
+                $index = $hour - 8;
+                if (strtolower($row->sex) === 'male') $maleData[$index] = $row->total;
+                if (strtolower($row->sex) === 'female') $femaleData[$index] = $row->total;
             }
         }
 
-        $totalPatients = $totalMale + $totalFemale;
-
-        return response()->json([
-            'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            'series' => [
-                ['name' => 'Male', 'data' => $maleData, 'color' => '#0ac4fdff'],
-                ['name' => 'Female', 'data' => $femaleData, 'color' => '#ff0a70ec'],
-            ],
-            'totalMale' => $totalMale,
-            'totalFemale' => $totalFemale,
-            'totalPatients' => $totalPatients
-        ]);
+    } else {
+        // Weekly or default daily
+        $dates = $results->pluck('date')->unique()->values();
+        foreach ($dates as $date) {
+            $male = $results->firstWhere(fn($r) => $r->date == $date && strtolower($r->sex) === 'male');
+            $female = $results->firstWhere(fn($r) => $r->date == $date && strtolower($r->sex) === 'female');
+            $maleData[] = $male->total ?? 0;
+            $femaleData[] = $female->total ?? 0;
+            $categories[] = date('M d', strtotime($date));
+        }
     }
+
+    $totalMale = array_sum($maleData);
+    $totalFemale = array_sum($femaleData);
+    $totalPatients = $totalMale + $totalFemale;
+
+    return response()->json([
+        'categories' => $categories,
+        'series' => [
+            ['name' => 'Male', 'data' => $maleData, 'color' => '#0ac4fdff'],
+            ['name' => 'Female', 'data' => $femaleData, 'color' => '#ff0a70ec'],
+        ],
+        'totalMale' => $totalMale,
+        'totalFemale' => $totalFemale,
+        'totalPatients' => $totalPatients
+    ]);
+}
+
+
 
 
 
