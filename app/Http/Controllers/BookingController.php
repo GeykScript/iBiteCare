@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingConfirmation;
+use App\Models\ClinicServices;
 
 class BookingController extends Controller
 {
@@ -32,8 +33,10 @@ class BookingController extends Controller
             ];
         });
 
+        $services = ClinicServices::all();
+
         // Pass both variables to the Blade view
-        return view('auth.booking', compact('appointments', 'appointmentsJson'));
+        return view('auth.booking', compact('appointments', 'appointmentsJson', 'services'));
     }
 
     public function store(Request $request)

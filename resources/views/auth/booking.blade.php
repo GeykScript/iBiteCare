@@ -113,9 +113,14 @@
                     <select id="treatment_type" name="treatment_type"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
                         <option value="">Select...</option>
-                        <option value="pep" {{ old('treatment_type') == 'pep' ? 'selected' : '' }}>PEP (Post-Exposure Prophylaxis)</option>
+                        @foreach($services as $service)
+                            <option value="{{ $service->name }}">
+                                {{ $service->name }}
+                            </option>
+                        @endforeach
+                        <!-- <option value="pep" {{ old('treatment_type') == 'pep' ? 'selected' : '' }}>PEP (Post-Exposure Prophylaxis)</option>
                         <option value="prep" {{ old('treatment_type') == 'prep' ? 'selected' : '' }}>PrEP (Pre-Exposure Prophylaxis)</option>
-                        <option value="boosters" {{ old('treatment_type') == 'boosters' ? 'selected' : '' }}>Boosters</option>
+                        <option value="boosters" {{ old('treatment_type') == 'boosters' ? 'selected' : '' }}>Boosters</option> -->
                     </select>
                     @error('treatment_type') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>

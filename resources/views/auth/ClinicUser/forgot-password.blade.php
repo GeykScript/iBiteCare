@@ -35,7 +35,7 @@
                             <span class="text-sm  ">Back</span>
                         </a>
                         <div class="flex items-center justify-between gap-3">
-                            <div id="datetime" class="md:text-md text-sm text-black font-bold"></div>
+                            <div id="datetime" class="md:text-md text-sm text-gray-700 font-bold"></div>
                         </div>
                     </div>
                     <div class="flex flex-col justify-center  gap-4">
@@ -47,8 +47,8 @@
                                 @csrf
 
                                 <!-- Email Address -->
-                                <h1 class="text-center text-xl font-bold text-black">Account Verification</h1>
-                                <h3 class="text-center text-xs font-bold text-black">(Two-Factor Authentication)</h3>
+                                <h1 class="text-center text-xl font-900 text-gray-700">Account Verification</h1>
+                                <h3 class="text-center text-xs font-bold text-gray-700">(Two-Factor Authentication)</h3>
 
                                 <p class="text-sm mt-6">Please enter your Account ID to reset your password. We’ll send a 2FAverification code to your registered personal email</p>
 
