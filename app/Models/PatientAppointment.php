@@ -12,6 +12,7 @@ class PatientAppointment extends Model
     protected $table = 'patient_appointments';
 
     protected $fillable = [
+        'booking_reference',
         'patient_account_id',
         'name',
         'contact_number',

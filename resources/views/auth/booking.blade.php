@@ -26,6 +26,10 @@
                 <table class="w-full text-left">
                     <tbody class="divide-y divide-gray-200">
                         <tr>
+                            <th class="py-2 w-1/3 font-medium text-gray-700">Booking Reference</th>
+                            <td id="detail_booking_reference" class="py-2"></td>
+                        </tr>
+                        <tr>
                             <th class="py-2 w-1/3 font-medium text-gray-700">Name</th>
                             <td id="detail_name" class="py-2"></td>
                         </tr>
@@ -82,6 +86,12 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-6 text-center">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @csrf
 
@@ -89,8 +99,8 @@
             <div class="space-y-6">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                    <input type="text" id="name" name="name" value="{{ old('name', Auth::user()->name) }}"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required readonly >
                     @error('name') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -103,8 +113,8 @@
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                    <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required readonly>
                     @error('email') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -270,6 +280,7 @@
             const appointment = appointments.find(a => a.id == selectedId);
             if (!appointment) return;
 
+            document.getElementById('detail_booking_reference').textContent = appointment.booking_reference;
             document.getElementById('detail_name').textContent = appointment.name;
             document.getElementById('detail_contact').textContent = appointment.contact_number;
             document.getElementById('detail_email').textContent = appointment.email;

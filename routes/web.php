@@ -15,7 +15,6 @@ Route::controller(SocialiteController::class)->group(function(){
     Route::get('auth/{provider}/callback', 'callback')->name('auth.provider-callback');
 });
 
-
 Route::get('/set-password', [PasswordSetupController::class, 'showForm'])->name('set.password');
 Route::post('/set-password', [PasswordSetupController::class, 'store'])->name('set.password.store');
 
@@ -24,12 +23,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::prefix('book')->group(function () {
-    Route::get('/', [BookingController::class, 'index'])->name('booking.index');
-    Route::post('/', [BookingController::class, 'store'])->name('booking.store');
-    Route::get('/slots', [BookingController::class, 'getAvailableSlots'])->name('booking.slots');
-    Route::post('/{id}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
-    Route::post('/{id}/reschedule', [BookingController::class, 'reschedule'])->name('booking.reschedule');
+Route::middleware('auth')->group(function () {
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/booking/slots', [BookingController::class, 'getAvailableSlots'])->name('booking.slots');
+    Route::post('/book/{id}/cancel', [BookingController::class, 'cancel']);
+    Route::post('/book/{id}/reschedule', [BookingController::class, 'reschedule']);
 });
 
 Route::middleware('auth')->group(function () {
