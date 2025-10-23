@@ -153,12 +153,11 @@
                                                             Weekly</button></li>
                                                     <li><button data-value="monthly" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">
                                                             Monthly</button></li>
-                                                    <li><button data-value="lastMonth" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">
-                                                            Last Month</button></li>
                                                     <li><button data-value="thisYear" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">This
                                                             Year</button></li>
                                                     <li><button data-value="lastYear" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">Last
                                                             Year</button></li>
+
                                                 </ul>
                                             </div>
                                         </div>
