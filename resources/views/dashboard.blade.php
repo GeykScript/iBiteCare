@@ -36,12 +36,34 @@
         }
 
         .bg-section {
-            background-image: url('/images/bg.png');
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .bg-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/images/background-image.png');
+            /* background-size: 100% 95%; */
             background-size: cover;
             background-repeat: no-repeat;
-            height: 100vh;
-            /* Full screen height */
-            width: 100%;
+            background-position: center;
+            filter: brightness(0.7);
+            /* ↓ makes image darker (0 = black, 1 = normal) */
+            transform: scale(1.05);
+            /* Slight enlarge to avoid edges showing */
+            z-index: 0;
+        }
+
+        .bg-section>* {
+            position: relative;
+            z-index: 1;
         }
     </style>
 
@@ -55,7 +77,7 @@
                             <img src="{{ asset('images/dark-logo.png') }}" alt="Dr-Care Dark Logo" class="md:w-full md:h-full  w-16 w-16" />
                         </a>
                         <div class="md:mt-4">
-                            <p class="md:text-8xl text-4xl dr-care text-[#FF000C]"> Dr.Care</p>
+                            <p class="md:text-8xl text-5xl dr-care text-[#FF000C]"> Dr.Care</p>
                             <p class="md:text-4xl text-md dr-care text-white "><span class="text-red-600">A</span>nimal <span class="text-green-600">B</span>ite <span class="text-indigo-800">C</span>enter</p>
                         </div>
                     </div>
