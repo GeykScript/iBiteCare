@@ -34,7 +34,7 @@
             <div class="md:h-[37.5rem] bg-white md:w-[38rem]  w-[20rem] h-[34rem] md:rounded-r-[15px] rounded-b-[10px] md:rounded-b-[0px] shadow-lg items-center justify-center p-5 md:p-20">
 
 
-                <div class="flex flex-col justify-center ">
+                <div class="flex flex-col justify-center -mt-12">
 
                     <div class="flex  justify-between mb-5">
                         <a href="{{url('/')}}" class="flex items-center justify-center gap-2 hover:underline text-red-500  underline-offset-4">
@@ -48,7 +48,7 @@
                     <!-- Session Status -->
                     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-                    <form method="POST" action="{{ route('login') }}" class="mt-5">
+                    <form method="POST" action="{{ route('login') }}" class="mt-4">
                         @csrf
                         <!-- Email Address -->
                         <h1 class="items-center justify-center gap-2 text-xl font-bold text-black flex"><img src="{{asset('drcare_logo.png')}}" alt="Dr.Care logo" class="w-8 h-8">Login Account</h1>
@@ -84,7 +84,6 @@
                                 {{ __('Forgot your password?') }}
                             </a>
                             @endif
-
                         </div>
                         <div class="mt-4">
                             <x-primary-button class="w-full justify-center bg-red-600 hover:bg-red-700 focus:bg-red-700">
@@ -94,9 +93,29 @@
                         <div class="mt-3 flex items-center justify-center hover:underline underline-offset-4 text-sm text-gray-700">
                             <a href="{{route('register')}}">Don't have an account?</a>
                         </div>
-                    </form>
+                        <!-- Social Login -->
+                        <div class="mt-6">
+                            <p class="text-center text-gray-500 text-sm mb-2">— Or sign in with —</p>
+                            <div class="flex items-center justify-center gap-4">
+                                
+                                <!-- Google -->
+                                <a title="Login with Google" href="{{ route('auth.provider', ['provider' => 'google']) }}"
+                                class="flex items-center justify-center w-8 h-8 bg-white border border-gray-300 
+                                        rounded-full shadow hover:bg-gray-200 transition">
+                                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-4 h-4">
+                                </a>
 
-                    <div class="flex items-end justify-end mt-8 text-sm text-gray-400 ">
+                                <!-- Facebook -->
+                                <a title="Login with Facebook" href="{{ route('auth.provider', ['provider' => 'facebook']) }}"
+                                class="flex items-center justify-center w-8 h-8 bg-white rounded-full 
+                                        shadow hover:bg-gray-200 transition">
+                                    <img src="{{asset('/socials/facebook.svg')}}" alt="Facebook" class="w-5 h-5 ">
+                                </a>
+
+                            </div>
+                        </div>
+                    </form>
+                    <div class="flex items-end justify-end -mt-1 text-sm text-gray-400 ">
                         <p>iBiteCare<sup>+</sup></p>
                     </div>
                 </div>

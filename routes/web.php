@@ -1,22 +1,43 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\PasswordSetupController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\BookingController;
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::controller(SocialiteController::class)->group(function(){
+    Route::get('auth/{provider}', 'redirect')->name('auth.provider');
+    Route::get('auth/{provider}/callback', 'callback')->name('auth.provider-callback');
+});
+
+
+Route::get('/set-password', [PasswordSetupController::class, 'showForm'])->name('set.password');
+Route::post('/set-password', [PasswordSetupController::class, 'store'])->name('set.password.store');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::prefix('book')->group(function () {
+    Route::get('/', [BookingController::class, 'index'])->name('booking.index');
+    Route::post('/', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/slots', [BookingController::class, 'getAvailableSlots'])->name('booking.slots');
+    Route::post('/{id}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
+    Route::post('/{id}/reschedule', [BookingController::class, 'reschedule'])->name('booking.reschedule');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 require __DIR__.'/auth.php';
 
@@ -61,7 +82,10 @@ use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\OtherRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PepRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PrepRegistration;
-use App\Http\Controllers\ClinicUser\StaffNurseVerificationController;
+use App\Http\Controllers\ClinicUser\StaffNurseVerificationController;use App\Http\Controllers\PatientTwoFactorAuthenticationController;
+use App\Http\Controllers\PatientForgotPasswordController;
+use App\Http\Controllers\PatientUpdatePasswordController;
+use App\Models\Patient;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
@@ -297,6 +321,28 @@ Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'up
     
 Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('clinic.update-password.update');
+
+
+// Patient Forgot Password
+
+Route::get('/patient/two-factor/{id}', [PatientTwoFactorAuthenticationController::class, 'index'])
+    ->name('patient.two-factor');
+
+Route::post('/patient/two-factor/send', [PatientTwoFactorAuthenticationController::class, 'send_code'])
+    ->name('patient.two-factor.send_code');
+
+Route::post('/patient/two-factor/verify', [PatientTwoFactorAuthenticationController::class, 'verify'])
+    ->name('patient.two-factor.verify');
+
+Route::get('/patient/forgot-password', [PatientForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('patient.forgot-password');
+
+
+Route::get('/patient/update-password/{id}', [PatientUpdatePasswordController::class, 'updatePasswordForm'])
+    ->name('patient.update-password');
+    
+Route::post('/patient/update-password', [PatientUpdatePasswordController::class, 'updatePassword'])
+    ->name('patient.update-password.update');
 
 
     //--------------------------END----------------------------------------------//

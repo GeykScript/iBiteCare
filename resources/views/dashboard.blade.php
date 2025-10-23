@@ -45,7 +45,7 @@
         }
     </style>
 
- 
+
     <body>
         <section class="bg-section bg-no-repeat bg-center w-full  h-screen bg-contain sm:bg-cover flex flex-col items-center justify-between">
             <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center h-[80%]   w-full gap-2">
@@ -157,7 +157,7 @@
                     <img src="{{asset('images/banner.png')}}" alt="Dr-Care Sign"
                         class="w-full h-[15rem] md:h-full rounded-t-xl md:rounded-l-xl md:rounded-r-none  rounded-r-none object-cover">
                 </div>
-                <div class="bg-white col-span-4 md:col-span-3 flex flex-col gap-0 md:gap-2">
+                <div class="bg-white col-span-6 md:col-span-4 flex flex-col gap-0 md:gap-2">
                     <div class="bg-red-600 h-2 md:h-5 rounded-l-sm"></div>
                     <div class="flex flex-col justify-center items-center py-6 px-4 md:p-4 bg-gray-900 text-white h-full rounded-l-sm gap-6 md:gap-10">
 
@@ -169,9 +169,11 @@
                             </p>
                             <p class="text-sm sm:text-base md:text-lg text-center">To book an appointment, please click the button below.</p>
                         </div>
-                        <a href="{{ url('/') }}" class="bg-red-600 px-6 sm:px-8 md:px-10 py-2 sm:py-3 rounded text-sm sm:text-base">
+                        <a href=""
+                            class="bg-red-600 px-6 sm:px-8 md:px-10 py-2 sm:py-3 rounded text-sm sm:text-base text-white hover:bg-red-700">
                             Book Now
                         </a>
+
                     </div>
                 </div>
             </div>

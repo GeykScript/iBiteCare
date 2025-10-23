@@ -44,7 +44,7 @@ class TwofactorCodeMail extends Mailable
             view: 'ClinicUser.emails.twofactor_code',
             with: [
                 'verificationCode' => $this->verificationCode,
-             
+            
             ],
         );
     }
@@ -57,7 +57,7 @@ class TwofactorCodeMail extends Mailable
     public function attachments(): array
     {
         return [
-     
+    
         ];
     }
 }
