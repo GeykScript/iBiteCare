@@ -324,7 +324,6 @@ Route::post('/clinic/update-password', [UpdatePasswordController::class, 'update
 
 
 // Patient Forgot Password
-
 Route::get('/patient/two-factor/{id}', [PatientTwoFactorAuthenticationController::class, 'index'])
     ->name('patient.two-factor');
 
