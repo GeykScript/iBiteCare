@@ -28,6 +28,8 @@ class User extends Authenticatable
         'password',
         'two_factor_code',
         'remember_token',
+        'auth_provider_id',
+        'auth_provider',
     ];
 
     /**

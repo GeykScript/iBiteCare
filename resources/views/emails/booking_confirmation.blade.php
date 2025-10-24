@@ -41,11 +41,19 @@
     
     <div style="padding:30px; color:#374151; font-size:15px; line-height:1.6;">
         <p style="margin:0 0 16px;">Hello, We are Dr. Care Guinobatan.</p>
-        <p style="margin:0 0 16px;">Thank you for booking with Animal Bite Center!</p>
+        <p style="margin:0 0 16px;">Thank you for booking with our Animal Bite Center!</p>
         <p style="margin:0 0 16px;">Your appointment details:</p>
 
         <!-- Appointment Details Table -->
         <table align="center" cellpadding="10" cellspacing="0" border="0" style="margin:30px auto; background:#FFECEC; border-radius:8px; text-align:left; width:auto; padding:10px;">
+            <tr>
+                <td style="font-size:16px; font-weight:bold; color:#EB1C24; padding:8px 15px;">
+                    Booking Reference:
+                </td>
+                <td style="font-size:14px; font-weight:600; color:#000000; padding:8px 15px; text-align:right;">
+                    {{ ($booking->booking_reference) }}
+                </td>
+            </tr>
             <tr>
                 <td style="font-size:16px; font-weight:bold; color:#EB1C24; padding:8px 15px;">
                     Date:
@@ -69,8 +77,16 @@
                 <td style="font-size:14px; font-weight:600; color:#000000; padding:8px 15px; text-align:right;">
                     {{ strtoupper($booking->treatment_type) }}
                 </td>
-            </tr>
+
         </table>
+
+        <div id="appointment_note" style="margin-top:16px; padding:16px; border-left:4px solid #EB1C24; background:#FFECEC; color:#B91C1C; border-radius:6px; font-size:14px;">
+            <strong style="color:#EB1C24">NOTE:</strong><br>
+            <p style="color: #ffffff;">
+                Be at the clinic at least 30 minutes <strong style="color: #EB1C24;">BEFORE</strong> the appointment schedule.<br>
+                If you do not show up, your appointment will be <strong style="color: #EB1C24;">REMOVED</strong> from the list and you will need to book again.
+            </p>
+        </div>
 
         <p style="margin:0 0 16px;">We will contact you if needed. See you soon!</p>
         <p style="margin:0 0 16px;">If you did not request this, you can safely ignore this email.</p>

@@ -28,14 +28,27 @@ class SocialiteController extends Controller
         try {
             $socialUser = Socialite::driver($provider)->user();
 
+            Log::info('Social user data', [
+                'provider' => $provider,
+                'social_id' => $socialUser->id,
+                'email' => $socialUser->email,
+                'name' => $socialUser->name,
+            ]);
+
             // Check if already exists
             $user = User::where('auth_provider', $provider)
                         ->where('auth_provider_id', $socialUser->id)
                         ->first();
 
+            Log::info('User lookup result', [
+                'user_found' => $user ? 'yes' : 'no',
+                'user_id' => $user ? $user->id : null,
+            ]);
+
             if ($user) {
                 Auth::login($user);
                 session(['auth_provider' => $provider]);
+                Log::info('Redirecting to dashboard for existing user');
                 return redirect()->route('dashboard');
             }
 
@@ -47,7 +60,7 @@ class SocialiteController extends Controller
                 'social_email'     => $socialUser->email,
             ]);
 
-            // Redirect to password setup without saving user yet
+            Log::info('Redirecting to set.password for new user');
             return redirect()->route('set.password');
 
         } catch (Exception $e) {
