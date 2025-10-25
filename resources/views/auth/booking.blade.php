@@ -128,9 +128,7 @@
                                 {{ $service->name }}
                             </option>
                         @endforeach
-                        <!-- <option value="pep" {{ old('treatment_type') == 'pep' ? 'selected' : '' }}>PEP (Post-Exposure Prophylaxis)</option>
-                        <option value="prep" {{ old('treatment_type') == 'prep' ? 'selected' : '' }}>PrEP (Pre-Exposure Prophylaxis)</option>
-                        <option value="boosters" {{ old('treatment_type') == 'boosters' ? 'selected' : '' }}>Boosters</option> -->
+                   
                     </select>
                     @error('treatment_type') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>

@@ -308,6 +308,15 @@ Route::middleware('auth:clinic_user')->group(function () {
     // CLINIC APPOINTMENTS ---------------------------//
     Route::get('/clinic/appointments', [AppointmentController::class, 'index'])
         ->name('clinic.appointments');
+
+    Route::post('/clinic/appointments/book', [AppointmentController::class, 'bookAppointment'])
+        ->name('clinic.appointments.book');
+
+    Route::post('/clinic/appointments/reschedule', [AppointmentController::class, 'reschedule'])
+        ->name('clinic.appointments.reschedule');
+    
+    Route::post('/clinic/appointments/change-status', [AppointmentController::class, 'changeStatus'])
+        ->name('clinic.appointments.change-status');
     //-----------------END-----------------------//
 
 }); 

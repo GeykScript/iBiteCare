@@ -70,13 +70,13 @@
         <table class="min-w-full  text-sm mt-2 ">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="border-r border-b bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tl-lg">ID</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer">Name</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer">Treatment</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2">Booking Channel</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2">Date</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2">Time</th>
-                    <th class="border bg-gray-800 text-white px-2 py-2">Status</th>
+                    <th class="border-r border-b bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">ID</th>
+                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('name')">Name</th>
+                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('treatment_type')">Treatment</th>
+                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('booking_channel')">Booking Channel</th>
+                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('appointment_date')">Date</th>
+                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('appointment_time')">Time</th>
+                    <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('status')">Status</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 rounded-tr-lg border-l border-b " colspan="2">Actions</th>
                 </tr>
             </thead>
@@ -102,14 +102,48 @@
                         {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
                     </td>
 
-                    <td class="border px-2 py-3 text-gray-700 text-center"> @if ($appointment->status == 'Complied')
+                    <td class="border px-2 py-3 text-gray-700 text-center"> @if ($appointment->status == 'Arrived')
                         <span class="text-green-500 font-bold p-2 px-5 rounded bg-green-200">{{ $appointment->status }}</span>
-                        @elseif ($appointment->status == 'Pending')
+                        @elseif ($appointment->status == 'Pending' || $appointment->status == 'Rescheduled')
                         <span class="text-orange-400 font-bold p-2 rounded bg-orange-100">{{ $appointment->status }}</span>
+                        @else
+                        <span class="text-red-500 font-bold p-2 rounded bg-red-200">{{ $appointment->status }}</span>
                         @endif
                     </td>
-                    <td class="border px-2 py-2 text-gray-700">Reschedule</td>
-                    <td class="border px-2 py-2 text-gray-700">Complied</td>
+                    <td class="border px-2 py-2 text-gray-700 text-center align-middle">
+                        @if ($appointment->status != 'Arrived' && $appointment->status != 'Cancelled')
+                        <div class="flex justify-center">
+                            <button
+                                @click="$dispatch('reschedule-modal', {
+                                    id: {{ $appointment->id }},
+                                    date: '{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d') }}',
+                                    time: '{{ $appointment->appointment_time }}'
+                                })"
+                                class="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg focus:outline-none">
+                                Reschedule
+                            </button>
+                        </div>
+                        @else
+                        <span>--</span>
+                        @endif
+                    </td>
+
+                    <td class="border px-2 py-2 text-gray-700 text-center align-middle">
+                        @if ($appointment->status == 'Arrived' || $appointment->status == 'Cancelled')
+                        <span>--</span>
+                        @else
+                        <div class="flex justify-center">
+                            <button
+                                @click="$dispatch('status-modal', {
+                                            id: {{ $appointment->id }},
+                                        })"
+                                class="text-sky-500 font-bold hover:text-sky-600 px-4 py-2 rounded-lg focus:outline-none">
+                                Update Status
+                            </button>
+                        </div>
+                        @endif
+                    </td>
+
                 </tr>
                 @endforeach
                 @endif
@@ -121,4 +155,146 @@
     <div class="px-3 mt-5">
         {{ $appointments->appends(['perPage' => $perPage])->links() }}
     </div>
+
+    <!-- Reschedule Modal -->
+    <dialog
+        id="rescheduleModal"
+        x-data="{
+                appointmentId: null,
+                appointmentDate: '',
+                appointmentTime: '',
+                open() { this.$refs.modal.showModal() },
+                close() { this.$refs.modal.close() }
+            }"
+        x-ref="modal"
+        @reschedule-modal.window="
+                appointmentId = $event.detail.id;
+                appointmentDate = $event.detail.date;
+                appointmentTime = $event.detail.time;
+                open();
+            "
+        class="p-8 rounded-lg shadow-lg w-full max-w-lg backdrop:bg-black/30 focus:outline-none">
+        <div class="w-full flex justify-end mb-2">
+            <button @click="close()" class="focus:outline-none">
+                <img src="{{ asset('images/x.svg') }}" alt="Cancel" class="w-6 h-6">
+            </button>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h2 class="text-xl font-bold text-gray-800 mb-2">Reschedule Appointment</h2>
+
+            <form action="{{ route('clinic.appointments.reschedule') }}" method="POST" class="flex flex-col gap-4">
+                @csrf
+                <input type="hidden" name="appointment_id" x-model="appointmentId">
+
+                <p class="text-sm text-gray-500">Please select a new date and time for the appointment.</p>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="col-span-2 md:col-span-1 flex flex-col">
+                        <label for="appointment_date" class="text-sm font-medium text-gray-700 mb-1">Date</label>
+                        <input
+                            type="date"
+                            id="appointment_date"
+                            name="appointment_date"
+                            x-model="appointmentDate"
+                            class="border border-gray-300 rounded-lg p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                    </div>
+
+                    <div class="col-span-2 md:col-span-1 flex flex-col">
+                        <label for="appointment_time" class="text-sm font-medium text-gray-700 mb-1">Time</label>
+                        <input
+                            type="time"
+                            id="appointment_time"
+                            name="appointment_time"
+                            x-model="appointmentTime"
+                            class="border border-gray-300 rounded-lg p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                    </div>
+                </div>
+
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">Save</button>
+                    <button
+                        type="button"
+                        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-lg"
+                        @click="close()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+
+    <!-- Status Modal -->
+    <dialog
+        id="statusModal"
+        x-data="{
+                appointmentId: null,
+                open() { this.$refs.modal.showModal() },
+                close() { this.$refs.modal.close() }
+            }"
+        x-ref="modal"
+        @status-modal.window="
+                appointmentId = $event.detail.id;
+                open();
+            "
+        class="p-8 rounded-lg shadow-lg w-full max-w-lg backdrop:bg-black/30 focus:outline-none">
+        <div class="w-full flex justify-end mb-2">
+            <button @click="close()" class="focus:outline-none">
+                <img src="{{ asset('images/x.svg') }}" alt="Cancel" class="w-6 h-6">
+            </button>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h2 class="text-xl font-bold text-gray-800 mb-2">Update Appointment Status</h2>
+
+            <form action="{{ route('clinic.appointments.change-status') }}" method="POST" class="flex flex-col gap-2">
+                @csrf
+                <input type="hidden" name="appointment_id" x-model="appointmentId">
+
+                <p class="text-sm text-gray-500">Please select the new status for the appointment.</p>
+                <p class="text-xs text-gray-500">If the patient has arrived, please select "Arrived". If the appointment is cancelled, select "Cancelled".</p>
+                <!-- Status Radio Buttons -->
+                <div class="flex flex-col items-center justify-center">
+
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center space-x-2">
+                            <input
+                                type="radio"
+                                name="status"
+                                value="Arrived"
+                                x-model="status"
+                                class="text-sky-600 focus:ring-sky-500">
+                            <span>Arrived</span>
+                        </label>
+
+                        <label class="flex items-center space-x-2">
+                            <input
+                                type="radio"
+                                name="status"
+                                value="Cancelled"
+                                x-model="status"
+                                class="text-sky-600 focus:ring-sky-500">
+                            <span>Cancel</span>
+                        </label>
+                    </div>
+                </div>
+
+
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">Save</button>
+                    <button
+                        type="button"
+                        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-lg"
+                        @click="close()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+
 </div>
