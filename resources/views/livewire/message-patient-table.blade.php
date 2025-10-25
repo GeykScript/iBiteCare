@@ -114,21 +114,30 @@
                 </tr>
             </thead>
             <tbody>
-                @if($messages->isEmpty())
+                @if($messages->isEmpty() && $filter === 'sent')
+                <tr class="table-row sm:hidden">
+                    <td colspan="8" class="text-center py-4">No messages sent.</td>
+                </tr>
+                <tr class="hidden sm:table-row">
+                    <td colspan="8" class="text-center py-4"> No messages sent.</td>
+                </tr>
+                @else
+                @if($messages->isEmpty() && $filter === 'today')
                 <tr class="table-row sm:hidden">
                     <td colspan="8" class="text-center py-4">No messages scheduled for today.</td>
                 </tr>
                 <tr class="hidden sm:table-row">
                     <td colspan="8" class="text-center py-4"> No messages scheduled for today.</td>
                 </tr>
-                @else
+                @endif
+
                 @foreach ($messages as $message)
                 <tr wire:key="{{ $message->id }}" class="border-b dark:border-gray-700">
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 ">{{ $message->id }}</td>
-                    <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 ">{{ $message->patient->last_name }} {{ $message->patient->first_name }}</td>
+                    <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 ">{{ $message->patient->first_name }} {{ $message->patient->last_name }}</td>
                     <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900"> {{ $message->patient->contact_number }}</th>
-                    <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900"> {{ $message->schedule }}</th>
-                    <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $message->day_label }}</td>
+                    <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900"> {{ $message->schedule ?? 'N/A' }}</th>
+                    <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $message->day_label ?? 'N/A' }}</td>
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 w-80">
                         <div class="flex justify-start">
                             {{ $message->display_message }}
@@ -188,7 +197,7 @@
                 }"
         x-ref="modal"
         @send-message-modal.window="messageId = $event.detail.id; messageContent = $event.detail.content; patientName = $event.detail.patientName; patientContact = $event.detail.patientContact; displayContact = $event.detail.displayContact; open()"
-        class="p-8 rounded-lg shadow-lg w-full max-w-3xl backdrop:bg-black/30 focus:outline-none">
+        class="p-8 rounded-lg shadow-lg w-full max-w-2xl backdrop:bg-black/30 focus:outline-none">
         <div class="w-full flex justify-end mb-2">
             <button @click="close()" class="focus:outline-none">
                 <img src="{{ asset('images/x.svg') }}" alt="Cancel" class="w-6 h-6">

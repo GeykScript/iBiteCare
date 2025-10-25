@@ -29,4 +29,16 @@ class PatientAppointment extends Model
     protected $casts = [
         'appointment_date' => 'date',
     ];
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->where(function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('email', 'like', "%{$searchTerm}%")
+                ->orWhere('contact_number', 'like', "%{$searchTerm}%")
+                ->orWhere('booking_channel', 'like', "%{$searchTerm}%")
+                ->orWhere('status', 'like', "%{$searchTerm}%");
+        });
+    }
+
+
 }

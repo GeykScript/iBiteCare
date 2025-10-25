@@ -127,12 +127,9 @@ class PrepTransaction extends Controller
                         'day_label' => $serviceSchedule->label,
                         'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
                         'display_message' => "Reminder: your ({$serviceSchedule->label}) PREP dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
-                        'message_text' =>
-                        "Good day, Ma'am/Sir.\n"
-                            . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your ({$serviceSchedule->label}) PREP schedule on "
-                            . $scheduledDateObj->format('M j, Y') . ".\n\n"
-                            . "Clinic hours: 8:00 AM to 5:00 PM.\n"
-                            . "Thank you!",
+                        'message_text' => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PREP schedule on "
+                            . $scheduledDateObj->format('M j, Y')
+                            . ". Clinic hours: 8AM to 5PM. Thank you!",
                         'sender_id' => null,
                         'status' => 'Pending',
                     ]);

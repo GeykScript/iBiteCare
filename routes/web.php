@@ -75,6 +75,7 @@ use App\Http\Controllers\ClinicUser\Services;
 use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
 use App\Http\Controllers\ClinicUser\MessagesController;
+use App\Http\Controllers\ClinicUser\AppointmentController;
 
 use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
@@ -199,6 +200,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::post('/clinic/messages/send-all', [MessagesController::class, 'sendAllMessages'])
         ->name('clinic.messages.all.send');
+    Route::post('/clinic/messages/send-new', [MessagesController::class, 'sendNewMessage'])
+        ->name('clinic.messages.new.send');
+
     //----------------END-----------------------//
 
 
@@ -298,6 +302,12 @@ Route::middleware('auth:clinic_user')->group(function () {
     // CLINIC TRANSACTIONS ---------------------------
     Route::get('/clinic/transactions', [Transactions::class, 'index'])
         ->name('clinic.transactions');
+    //-----------------END-----------------------//
+
+
+    // CLINIC APPOINTMENTS ---------------------------//
+    Route::get('/clinic/appointments', [AppointmentController::class, 'index'])
+        ->name('clinic.appointments');
     //-----------------END-----------------------//
 
 }); 

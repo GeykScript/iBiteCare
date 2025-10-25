@@ -256,7 +256,6 @@
     <section class="bg-gray-100">
         <div class="grid grid-cols-2 items-center justify-center md:gap-20 md:p-12 p-6">
             <div class="col-span-2 md:col-span-1 p-5 flex flex-col  gap-5">
-
                 <h1 class="text-xl md:text-2xl font-900  text-gray-500">Clinic Hours</h1>
                 <div class="flex flex-row gap-2 md:px-5 items-start justify-start">
                     <div class="flex items-center justify-center">
@@ -280,38 +279,18 @@
                     </div>
                 </div>
             </div>
+            <div class="col-span-2 flex justify-center hidden md:flex">
+                <iframe src="https://www.google.com/maps/embed?pb=!4v1761314083261!6m8!1m7!1su92fSLmnrPRP7oG_CpWi4g!2m2!1d13.19259527591199!2d123.5984813759736!3f247.298179839878!4f8.970605024564918!5f0.7820865974627469" width="1500" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="col-span-2 flex justify-center md:hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!4v1761314808558!6m8!1m7!1su92fSLmnrPRP7oG_CpWi4g!2m2!1d13.19259527591199!2d123.5984813759736!3f247.298179839878!4f8.970605024564918!5f0.7820865974627469" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
         </div>
     </section>
 
-    <section class="bg-[#5482B2] ">
-        <div class="grid grid-cols-2 items-center justify-center md:gap-10 md:p-20 p-6">
-            <div class="col-span-2">
-                <div class="flex flex-row items-center gap-2 px-0 md:px-12">
-                    <div>
-                        <img src="{{ asset('images/dark-logo.png') }}" class="w-16 h-13 md:h-auto md:w-auto " alt="Dr.Care Dark Logo" />
-                    </div>
-                    <div>
-                        <h1 class="md:text-5xl text-sm dr-care text-gray-200">Check Your Vaccination Schedules</h1>
-                        <h1 class="md:text-6xl text-xl font-900 text-red-600">Dr. Care</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="flex flex-col gap-5 text-white p-5 px-0 md:px-[15rem]">
-                    <p class="font-bold md:text-2xl text-md ">
-                        Please note that only patients who have previously received our services may proceed.
-                    </p>
-                    <p class="md:text-xl  text-xs">
-                        Kindly enter the provided ID number to view <br> your upcoming appointment or injection schedule.
-                    </p>
-                    <div class="flex flex-row text-black gap-2 w-full  ">
-                        <x-text-input placeholder="Please enter your ID number" class="w-[27rem] shadow-lg"></x-text-input>
-                        <button class="bg-red-600 text-white md:px-6 px-3 py-2 rounded-md shadow-lg text-sm">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="bg-[#5482B2] h-12 ">
+
+    </div>
 
     <footer class="bg-gray-100 shadow-md ">
         <div class="grid grid-cols-6 p-12">

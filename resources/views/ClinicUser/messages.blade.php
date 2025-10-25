@@ -17,6 +17,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js'])
 
     @endif
+    <!-- Tom Select CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+
+    <!-- Tom Select JS -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
 </head>
 
@@ -25,7 +30,7 @@
 <body>
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
+        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50  " id="sidebar">
             <div class="absolute top-20 right-[-0.6rem]  md:hidden">
                 <button id="closeSidebar" class="text-white text-2xl">
                     <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
@@ -47,7 +52,7 @@
                     <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
                     <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
+                    <li><a href="{{ route('clinic.appointments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
                     <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
@@ -109,17 +114,20 @@
                 </div>
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
-                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
+                    <div class="col-span-4 md:col-span-4 flex justify-end gap-2  px-2">
+                        <button
+                            onclick="document.getElementById('newSMS').showModal()"
+                            class="text-red-500 font-bold hover:text-red-600 px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Send New Message</button>
                         <button
                             onclick="document.getElementById('sendSMS').showModal()"
                             class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="send" class="w-5 h-5"></i>Send All SMS</button>
                     </div>
+                    <!-- // Send All SMS Modal -->
                     <dialog id="sendSMS" class="p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop:bg-black/30 focus:outline-none ">
                         <!-- close modal button  -->
                         <div class="w-full flex justify-end mb-5">
                             <button onclick="document.getElementById('sendSMS').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
-
                         <!-- create  sms message all form  -->
                         <div>
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
@@ -131,10 +139,10 @@
                                     <p class="font-semibold">Messages Scheduled for Today:</p>
                                     <div class="max-h-64 overflow-y-auto p-4 scrollbar-hidden ">
                                         <ul class="list-disc list-inside space-y-1 px-4">
-                                            @if ($messages->isEmpty())
+                                            @if ($todayMessages->isEmpty())
                                             <p class="text-center">No messages scheduled for today.</p>
                                             @endif
-                                            @foreach ($messages as $message)
+                                            @foreach ($todayMessages as $message)
                                             <li>
                                                 <span class="font-bold">{{ $message->patient->first_name }} {{ $message->patient->last_name }}</span>
                                                 - ({{ $message->patient->contact_number }})
@@ -147,7 +155,7 @@
                                 </div>
                                 <form action="{{ route('clinic.messages.all.send') }}" method="POST" class="col-span-12" id="sendMessagesForm">
                                     @csrf
-                                    <input type="hidden" name="messages" id="messagesInput" value="{{ json_encode($messages->pluck('id')) }}">
+                                    <input type="hidden" name="messages" id="messagesInput" value="{{ json_encode($todayMessages->pluck('id')) }}">
 
                                     <div class="flex justify-end gap-2 mt-6">
                                         <button type="submit" id="submitBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
@@ -160,20 +168,61 @@
                                         </button>
                                     </div>
                                 </form>
-
-                                <script>
-                                    const messagesInput = document.getElementById('messagesInput');
-                                    const submitBtn = document.getElementById('submitBtn');
-
-                                    // Check on page load
-                                    if (!messagesInput.value || messagesInput.value === '[]') {
-                                        submitBtn.style.display = 'none';
-                                    }
-                                </script>
-
                             </div>
                         </div>
                     </dialog>
+
+                    <!-- // New SMS Modal -->
+                    <dialog id="newSMS" class="p-8 rounded-lg shadow-lg w-full max-w-2xl backdrop:bg-black/30 focus:outline-none ">
+                        <!-- close modal button  -->
+                        <div class="w-full flex justify-end mb-5">
+                            <button onclick="document.getElementById('newSMS').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                        </div>
+                        <!-- create  sms message all form  -->
+                        <form action="{{ route('clinic.messages.new.send') }}" method="POST" class="col-span-12" id="sendNewMessagesForm">
+                            @csrf
+                            <div>
+                                <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
+                                    <div class="col-span-12 flex items-center gap-4 mb-4">
+                                        <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
+                                        <div class="flex flex-col w-full">
+                                            <h2 class="text-xl font-bold ">Send SMS message</h2>
+                                            <div class="flex items-center gap-2 mt-2">
+                                                <p>To: </p>
+                                                <div class="w-full max-w-md ">
+                                                    <select id="patientSelect" name="patient_id" class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                                                        <option value="">-- Search or select a patient --</option>
+                                                        @foreach ($patients as $patient)
+                                                        <option value="{{ $patient->id }}">
+                                                            {{ $patient->first_name }} {{ $patient->last_name }} ({{ $patient->contact_number }})
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-12 flex flex-col gap-2">
+                                        <label for="subject">Subject</label>
+                                        <input type="text" id="subject" name="subject" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" required>
+                                        <label for="message" class="mb-2 text-sm font-medium text-gray-900">Message Content</label>
+                                        <textarea id="message" name="message" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5 h-32"></textarea>
+                                        <div class="flex justify-end gap-2 mt-6">
+                                            <button type="submit"  class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
+                                                Send 
+                                                <i data-lucide="send-horizontal" class="w-4 h-4"></i>
+                                            </button>
+                                            <button type="button" onclick="document.getElementById('newSMS').close()"
+                                                class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+                    </dialog>
+
+                    <!-- Livewire Message Patient Table Component -->
                     <livewire:message-patient-table />
 
                 </div>
@@ -183,8 +232,35 @@
         <!-- Modals For Logout -->
         <x-logout-modal />
 
-
 </body>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new TomSelect("#patientSelect", {
+            create: false,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            placeholder: "Search for a patient...",
+            maxOptions: 5000,
+            render: {
+                option: function(data, escape) {
+                    return `<div class="py-1 px-2 hover:bg-blue-50">
+                    <span class="font-medium">${escape(data.text)}</span>
+                </div>`;
+                }
+            }
+        });
+    });
+
+    const messagesInput = document.getElementById('messagesInput');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Check on page load
+    if (!messagesInput.value || messagesInput.value === '[]') {
+        submitBtn.style.display = 'none';
+    }
+</script>
 
 </html>
