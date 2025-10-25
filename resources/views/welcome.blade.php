@@ -53,7 +53,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        filter: brightness(0.7);
+        filter: brightness(0.6);
         /* ↓ makes image darker (0 = black, 1 = normal) */
         transform: scale(1.05);
         /* Slight enlarge to avoid edges showing */
@@ -63,6 +63,10 @@
     .bg-section>* {
         position: relative;
         z-index: 1;
+    }
+
+    html {
+        scroll-behavior: smooth;
     }
 </style>
 
@@ -111,10 +115,10 @@
             class="hidden absolute top-full left-0 z-50 w-full  flex-col items-start rounded-b-lg bg-red-50 md:bg-white border-t md:static md:flex md:flex-row md:items-center  md:w-auto md:border-0">
             <ul
                 class="flex flex-col w-full font-medium  p-4 md:p-0 md:flex-row md:space-x-14 lg:text-lg">
-                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
-                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">About</a></li>
-                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Services</a></li>
-                <li><a href="{{ url('/') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Contact</a></li>
+                <li><a href="#home" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
+                <li><a href="#about" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">About</a></li>
+                <li><a href="#services" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Services</a></li>
+                <li><a href="#contact" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Contact</a></li>
             </ul>
         </div>
 
@@ -122,7 +126,7 @@
 </nav>
 
 <body>
-    <section class="bg-section bg-no-repeat bg-center w-full h-screen bg-contain sm:bg-cover flex flex-col items-center justify-between">
+    <section id="home" class="bg-section bg-no-repeat bg-center w-full h-screen bg-contain sm:bg-cover flex flex-col items-center justify-between">
         <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center h-[80%]   w-full gap-2">
             <div class="flex flex-col md:mt-5 mt-0">
                 <div class="flex gap-5 ml-10">
@@ -137,7 +141,13 @@
                 <div class="w-full flex flex-col md:ml-10 px-8 ">
                     <img src="{{asset('images/guinobatan.png')}}" alt="Guinobatan-text" class="md:w-full md:h-full  w-50 w-50 " />
                     <div class="w-full items-end justify-start flex px-2 py-2">
-                        <a href="" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
+                        @if (Route::has('login'))
+                        @auth
+                        <a href="{{ url('/dashboard') }}" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
+                        @else
+                        <a href="{{ route('login') }}" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
+                        @endauth
+                        @endif
                     </div>
                 </div>
             </div>
@@ -177,7 +187,7 @@
         </div>
     </section>
 
-    <section class="bg-white">
+    <section class="bg-white" id="services">
         <div class="grid grid-cols-2 md:gap-3 gap-1 md:p-20  p-6">
             <div class="md:col-span-1 col-span-2 flex flex-col justify-center items-center p-5 md:px-20 md:gap-10 gap-3">
                 <div>
@@ -194,14 +204,14 @@
                         <div class="items-center justify-center gap-2 flex bg-red-600 p-5  rounded-full ">
                             <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
                         </div>
-                        <h1 class="md:text-xl font-bold">Anti-Rabies Vaccine</h1>
+                        <h1 class="md:text-xl font-bold">Post Exposure Treatment</h1>
                         <h1 class="md:text-xl">₱ 600</h1>
                     </div>
                     <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl  gap-3 border border-gray-100">
                         <div class="items-center justify-center gap-2 flex bg-green-600 p-5 rounded-full ">
                             <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
                         </div>
-                        <h1 class="md:text-xl font-bold">Pre-Post Exposure Treatment</h1>
+                        <h1 class="md:text-xl font-bold">Pre Exposure Treatment</h1>
                         <h1 class="md:text-xl">₱ 600</h1>
 
                     </div>
@@ -209,7 +219,7 @@
                         <div class="items-center justify-center gap-2 flex bg-indigo-600 p-5 rounded-full ">
                             <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
                         </div>
-                        <h1 class="md:text-xl font-bold">ERIG</h1>
+                        <h1 class="md:text-xl font-bold">Boosters</h1>
                         <h1 class="md:text-xl">₱ 600</h1>
 
                     </div>
@@ -226,34 +236,64 @@
         </div>
     </section>
 
-    <section>
-        <div class="grid grid-cols-4 md:pl-4 gap-0 md:gap-0  shadow-xl ">
-            <div class="col-span-4 md:col-span-1 md:px-2 px-6 ">
+    <section id="contact">
+        <div class="grid grid-cols-4 md:pl-4 gap-0 md:gap-0 shadow-xl">
+            <div class="col-span-4 md:col-span-1 md:px-2 px-6">
                 <img src="{{asset('images/banner.png')}}" alt="Dr-Care Sign"
-                    class="w-full h-[15rem] md:h-full rounded-t-xl md:rounded-l-xl md:rounded-r-none  rounded-r-none object-cover">
+                    class="w-full h-[15rem] md:h-full rounded-t-xl md:rounded-l-xl md:rounded-r-none object-cover">
             </div>
             <div class="bg-white col-span-4 md:col-span-3 flex flex-col gap-0 md:gap-2">
                 <div class="bg-red-600 h-2 md:h-5 rounded-l-sm"></div>
-                <div class="flex flex-col justify-center items-center py-6 px-4 md:p-4 bg-gray-900 text-white h-full rounded-l-sm gap-6 md:gap-10">
-
-                    <h1 class="text-xl sm:text-4xl md:text-6xl font-900 text-center text-gray-200 ">Book Online Appointment</h1>
-                    <div class="text-sm sm:text-base md:text-xl justify-center flex flex-col gap-4 w-full md:w-[53rem] px-2 text-gray-300">
-                        <h3 class="font-900">Important Notice:</h3>
+                <div class="flex flex-col justify-center items-center py-6 px-4 md:p-4 bg-gray-900 text-white h-full rounded-l-sm gap-6 md:gap-5">
+                    <h1 class="text-xl sm:text-4xl md:text-5xl font-900 text-center text-gray-200">Book Online Appointment</h1>
+                    <div class="bg-gray-800/60 p-5 rounded-lg shadow-inner text-start space-y-4">
                         <p>
-                            This is your initial appointment. Failure to visit the clinic as scheduled may result in removal from our patient appointment list. Thank you for your understanding.
+                            📞 <span class="font-bold text-white">Call or text:</span>
+                            <span class="text-red-400 font-semibold">0954 195 2374</span>
                         </p>
-                        <p class="text-sm sm:text-base md:text-lg text-center">To book an appointment, please click the button below.</p>
+                        <p class="flex gap-2">
+                            <img src="{{asset('socials/facebook.svg')}}" alt="Facebook-logo" class="w-4 h-4 md:w-6 md:h-6">
+                            <span class="font-bold text-white">FB Page:</span>
+                            <a href="https://www.facebook.com/profile.php?id=61572542114201"
+                                target="_blank"
+                                class="text-blue-400 hover:underline">
+                                Dr. Care Animal Bite Center - Guinobatan
+                            </a>
+                        </p>
+                        <p>
+                            🌐 <span class="font-bold text-white">Or book directly using this website.</span>
+                        </p>
                     </div>
-                    <a href="{{ url('/') }}" class="bg-red-600 px-6 sm:px-8 md:px-10 py-2 sm:py-3 rounded text-sm sm:text-base">
-                        Book Now
-                    </a>
+                    <div class="bg-gray-800/60 p-6 sm:p-8 rounded-xl shadow-lg text-left space-y-5 text-gray-200 max-w-2xl w-full">
+                        <h3 class="text-lg sm:text-xl font-semibold text-red-400">Important Notice</h3>
+                        <p class="text-sm sm:text-base leading-relaxed">
+                            This is your initial appointment. Failure to visit the clinic as scheduled may result in removal from our patient appointment list.
+                            Thank you for your understanding.
+                        </p>
+                        <p class="text-sm sm:text-base italic text-gray-300">
+                            To book an appointment, please click the button below.
+                        </p>
+                        <div>
+                            @if (Route::has('login'))
+                            @auth
+                            <a href="{{ url('/dashboard') }}" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
+                            @else
+                            <a href="{{ route('login') }}" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
+                            @endauth
+                            @endif
+
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
     </section>
 
 
-    <section class="bg-gray-100">
+
+    <section class="bg-gray-100" id="about">
         <div class="grid grid-cols-2 items-center justify-center md:gap-20 md:p-12 p-6">
             <div class="col-span-2 md:col-span-1 p-5 flex flex-col  gap-5">
                 <h1 class="text-xl md:text-2xl font-900  text-gray-500">Clinic Hours</h1>
@@ -306,12 +346,13 @@
                 </div>
             </div>
             <div class="col-span-6 md:col-span-1">
-                <ul class="text-sm md:text-lg text-gray-900 space-y-2 mt-5">
-                    <li>Home</li>
-                    <li>About Us</li>
-                    <li>Appointment</li>
-                    <li>Schedules</li>
-                    <li>Services</li>
+                <ul class="text-sm md:text-lg text-gray-900 mt-2">
+                    <li><a href="#home" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
+                    <li><a href="{{ route('faqs') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">FAQs</a></li>
+                    <li><a href="{{ route('terms-and-conditions') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Terms & Conditions</a></li>
+                    <li><a href="{{ route('developers') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Developers</a></li>
+
+
                 </ul>
             </div>
             <div class="col-span-6 md:col-span-3 flex flex-col gap-2 md:gap-3 mt-5 text-gray-900">

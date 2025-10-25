@@ -6,9 +6,22 @@ use App\Http\Controllers\PasswordSetupController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BookingController;
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/faqs', function () {
+    return view('faqs');
+})->name('faqs');
+
+Route::get('/terms-and-conditions', function () {
+    return view('terms-condition');
+})->name('terms-and-conditions');
+
+Route::get('/developers', function () {
+    return view('developers');
+})->name('developers');
 
 Route::controller(SocialiteController::class)->group(function(){
     Route::get('auth/{provider}', 'redirect')->name('auth.provider');
