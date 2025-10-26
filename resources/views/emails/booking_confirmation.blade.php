@@ -50,7 +50,9 @@
                 <td style="font-size:16px; font-weight:bold; color:#EB1C24; padding:8px 15px;">
                     Booking Reference:
                 </td>
-                <td style="font-size:14px; font-weight:600; color:#000000; padding:8px 15px; text-align:right;">
+            </tr>
+            <tr>
+                <td style="font-size:14px; font-weight:600; color:#000000; padding:4px 15px 8px 15px;">
                     {{ ($booking->booking_reference) }}
                 </td>
             </tr>
@@ -58,7 +60,9 @@
                 <td style="font-size:16px; font-weight:bold; color:#EB1C24; padding:8px 15px;">
                     Date:
                 </td>
-                <td style="font-size:14px; font-weight:600; color:#000000; padding:8px 15px; text-align:right;">
+            </tr>
+            <tr>
+                <td style="font-size:14px; font-weight:600; color:#000000; padding:4px 15px 8px 15px;">
                     {{ \Carbon\Carbon::parse($booking->appointment_date)->format('F d, Y') }}
                 </td>
             </tr>
@@ -66,7 +70,9 @@
                 <td style="font-size:16px; font-weight:bold; color:#EB1C24; padding:8px 15px;">
                     Time:
                 </td>
-                <td style="font-size:14px; font-weight:600; color:#000000; padding:8px 15px; text-align:right;">
+            </tr>
+            <tr>
+                <td style="font-size:14px; font-weight:600; color:#000000; padding:4px 15px 8px 15px;">
                     {{ \Carbon\Carbon::parse($booking->appointment_time)->format('h:i A') }}
                 </td>
             </tr>
@@ -74,10 +80,12 @@
                 <td style="font-size:16px; font-weight:bold; color:#EB1C24; padding:8px 15px;">
                     Treatment Type:
                 </td>
-                <td style="font-size:14px; font-weight:600; color:#000000; padding:8px 15px; text-align:right;">
+            </tr>
+            <tr>
+                <td style="font-size:14px; font-weight:600; color:#000000; padding:4px 15px 8px 15px;">
                     {{ strtoupper($booking->treatment_type) }}
                 </td>
-
+            </tr>
         </table>
 
         <div id="appointment_note" style="margin-top:16px; padding:16px; border-left:4px solid #EB1C24; background:#FFECEC; color:#B91C1C; border-radius:6px; font-size:14px;">

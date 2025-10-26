@@ -41,7 +41,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $hasActiveAppointment = PatientAppointment::where('patient_account_id', Auth::id())
-            ->whereNotIn('status', ['Finished', 'Cancelled'])
+            ->whereNotIn('status', ['Completed', 'Cancelled'])
             ->exists();
 
         if ($hasActiveAppointment) {
@@ -74,7 +74,7 @@ class BookingController extends Controller
         $bookingReference = 'DrCare-' . $date . '-' . str_pad($sequence, 5, '0', STR_PAD_LEFT);
 
         $validated['patient_account_id'] = Auth::id();
-        $validated['booking_channel'] = 'online';
+        $validated['booking_channel'] = 'Online';
         $validated['status'] = 'Pending';
         $validated['booking_reference'] = $bookingReference;
 
