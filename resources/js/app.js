@@ -57,7 +57,8 @@ import {
         Send,
         SendHorizontal,
         FileSpreadsheet,
-        Sheet
+        Sheet,
+        Download
     } 
      from 'lucide';
 
@@ -116,7 +117,8 @@ createIcons({
     Send,
     SendHorizontal,
     FileSpreadsheet,
-    Sheet
+    Sheet,
+    Download
   }
 }); 
 

@@ -172,10 +172,10 @@
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
                                         </div>
                                         <div class="md:col-span-4 col-span-12">
-                                            <label for="category" class="text-sm font-semibold">Service Usage: </label>
+                                            <label for="category" class="text-sm font-semibold">Service Usage: <span class="font-normal">( Skip if n/a)</span> </label>
                                             <div x-data="{ open: false, selected: null, selectedLabel: 'Select Service' }" class="relative">
                                                 <!-- Hidden input to store the selected ID -->
-                                                <input type="hidden" name="service_id" x-model="selected" required>
+                                                <input type="hidden" name="service_id" x-model="selected" >
 
                                                 <!-- Button / Display -->
                                                 <button type="button"

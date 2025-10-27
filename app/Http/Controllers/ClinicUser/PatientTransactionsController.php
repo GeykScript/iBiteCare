@@ -21,8 +21,9 @@ class PatientTransactionsController extends Controller
         $patient = Patient::find($id);
         $services = ClinicServices::all();
 
+
         $schedules = PatientImmunizationsSchedule::where('patient_id', $id)
-            ->where('date_completed', Null )
+            ->where('status', 'Pending')
             ->get();
 
         return view('ClinicUser.patients-transaction', compact('clinicUser', 'patient', 'services', 'schedules'));

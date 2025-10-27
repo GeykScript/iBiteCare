@@ -142,7 +142,7 @@
                                 <div class="grid grid-cols-4">
                                     @foreach ($schedules as $schedule)
                                     <a href="{{ route('clinic.patients.complete-immunization', ['schedule_id' => $schedule->id, 'service_id' => $schedule->service_id, 'grouping' => $schedule->grouping, 'patient_id' => $patient->id]) }}"
-                                        class="text-sm col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-gray-100 hover:cursor-pointer">{{ $schedule->Day }}</a>
+                                        class="text-sm col-span-4 md:col-span-1 p-2 flex flex-col items-center justify-center border border-gray-300 rounded-lg m-2 font-bold hover:bg-gray-100 hover:cursor-pointer">{{ $schedule->Day }} <br><span class="text-xs font-normal"> {{ $schedule->scheduled_date}}</span> </a>
                                     @endforeach
                                 </div>
                             </div>

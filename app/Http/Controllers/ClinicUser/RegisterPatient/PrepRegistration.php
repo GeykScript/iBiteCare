@@ -22,7 +22,9 @@ use App\Models\PatientPrevAntiRabies;
 use App\Models\Messages;
 
 use App\Http\Requests\RegisterPatientPREPRequest;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VaccinationCardMail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PrepRegistration extends Controller
 {
@@ -284,6 +286,26 @@ class PrepRegistration extends Controller
             }
         }
 
+        if ($patient->email) {
+            // Send Vaccination Card Email
+            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
+                ->where('patient_id', $patient->id)
+                ->orderBy('transaction_date', 'asc')
+                ->get()
+                ->groupBy('grouping')
+                ->map(function ($group) {
+                    $first = $group->first();
+                    // merge all schedules from this grouping
+                    $first->allSchedules = $group->flatMap->patientSchedules;
+                    return $first;
+                })
+                ->sortByDesc('transaction_date');
+
+            $subject = "";
+            $messageBody = Null;
+
+            Mail::to($patient->email)->send(new VaccinationCardMail($transactions2, $patient, $subject, $messageBody));
+        }
 
         $id = $request->service_id;
 

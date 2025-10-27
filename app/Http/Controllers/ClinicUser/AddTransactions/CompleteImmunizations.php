@@ -16,7 +16,10 @@ use App\Models\PatientVitalSigns;
 use App\Models\PaymentRecords;
 use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VaccinationCardMail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 class CompleteImmunizations extends Controller
 {
     public function index($schedule_id, $service_id, $grouping, $patient_id){
@@ -85,16 +88,47 @@ class CompleteImmunizations extends Controller
             'blood_pressure' => $request->blood_pressure,
         ]);
 
-        $patientImmunizationSchedule = PatientImmunizationsSchedule::find($request->schedule_id);
 
-        $dayLabel = $patientImmunizationSchedule->Day; // safe now
+            $patientImmunizationSchedule = PatientImmunizationsSchedule::find($request->schedule_id);
 
-        $patientImmunizationSchedule->update([
-            'date_completed' => $request->dateOfTransaction,
-            'dose' => $request->vaccine_dose_given,
-            'administered_by' => $request->nurse_id,
-            'status' => 'Completed',
-        ]);
+            if ($patientImmunizationSchedule) {
+                $group = $patientImmunizationSchedule->grouping;
+
+                // Extract the numeric part (e.g., "Day 7" → 7)
+                $dayLabel = $patientImmunizationSchedule->Day;
+                $currentDayNumber = intval(preg_replace('/\D/', '', $dayLabel));
+
+                // Mark the current dose as completed
+                $patientImmunizationSchedule->update([
+                    'date_completed' => $request->dateOfTransaction,
+                    'dose' => $request->vaccine_dose_given,
+                    'administered_by' => $request->nurse_id,
+                    'status' => 'Completed',
+                ]);
+
+                // Adjust all future schedules within the same group
+                $futureSchedules = PatientImmunizationsSchedule::where('patient_id', $request->patient_id)
+                    ->where('grouping', $group)
+                    ->where('id', '>', $request->schedule_id)
+                    ->get();
+
+                foreach ($futureSchedules as $schedule) {
+                    $nextDayLabel = $schedule->Day;
+                    $nextDayNumber = intval(preg_replace('/\D/', '', $nextDayLabel));
+
+                    if ($nextDayNumber > $currentDayNumber) {
+                        // Compute new scheduled date properly using Carbon
+                        $newScheduledDate = Carbon::parse($request->dateOfTransaction)
+                            ->addDays($nextDayNumber - $currentDayNumber)
+                            ->toDateString(); // returns 'Y-m-d'
+
+                        $schedule->update([
+                            'scheduled_date' => $newScheduledDate,
+                        ]);
+                    }
+                }
+            }
+
 
         $paymentRecord = PaymentRecords::create([
             'patient_id' => $request->patient_id,
@@ -196,6 +230,33 @@ class CompleteImmunizations extends Controller
             }
         }
 
+
+        if ($patient->email) {
+            // Send Vaccination Card Email
+            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
+                ->where('patient_id', $request->patient_id)
+                ->orderBy('transaction_date', 'asc')
+                ->get()
+                ->groupBy('grouping')
+                ->map(function ($group) {
+                    $first = $group->first();
+                    // merge all schedules from this grouping
+                    $first->allSchedules = $group->flatMap->patientSchedules;
+                    return $first;
+                })
+                ->sortByDesc('transaction_date');
+
+            $subject = 'Updated Vaccination Card from Dr. Care Animal Bite Center';
+            $messageBody = "
+                <p>Dear {$patient->first_name},</p>
+                <p>Thank you for visiting <strong>Dr. Care Animal Bite Center</strong>. Here is your updated <strong>Vaccination Card</strong> for your recent immunization.</p>
+                <p>Please keep this document for your medical records. If you need any assistance, feel free to reach out to us anytime.</p>
+                <p>Warm regards,<br>
+                <strong>Dr. Care Animal Bite Center Team</strong></p>
+            ";
+
+            Mail::to($patient->email)->send(new VaccinationCardMail($transactions2, $patient, $subject, $messageBody));
+        }
 
         return redirect()->route('clinic.patients.transactions', ['id' => $patient->id])->with('success', 'Immunization completed successfully.');
     }

@@ -126,6 +126,10 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/patients/immunization_info/{id}/{transaction_id}', [PatientsController::class, 'viewImmunizationDetails'])
         ->name('clinic.patients.profile.immunization_info');
 
+    Route::get('/clinic/patients/vaccination_card/{id}/{grouping}',[PatientsController::class, 'pdfVaccinationCard']
+    )->name('clinic.patients.profile.vaccination_card');
+
+
     Route::get('/clinic/patients/transactions/{id}', [PatientTransactionsController::class, 'index'])
         ->name('clinic.patients.transactions');
 

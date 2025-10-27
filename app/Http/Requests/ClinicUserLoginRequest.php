@@ -10,6 +10,9 @@ use Illuminate\Auth\Events\Lockout;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ClinicUser;
+use App\Models\ClinicUserRole;
+use App\Models\ClinicUserLogs;
+
 class ClinicUserLoginRequest extends FormRequest
 {
     /**
@@ -67,6 +70,13 @@ class ClinicUserLoginRequest extends FormRequest
             ]);
         }
 
+        ClinicUserLogs::create([
+            'user_id' => $clinic_user->id,
+            'role_id' => $clinic_user->role,
+            'action' => 'Login to system',
+            'details' => 'Clinic user logged in.',
+            'date_and_time' => now(),
+        ]);
         // 4. If all checks pass, log in
         Auth::guard('clinic_user')->login($clinic_user, $this->boolean('remember'));
 

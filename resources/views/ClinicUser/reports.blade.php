@@ -285,7 +285,7 @@
                                     </div>
 
                                     <!-- Guinobatan Buttons (hidden by default) -->
-                                    <div class="col-span-4 md:col-span-2 flex items-center gap-2 hidden" id="GuinobatanReports">
+                                    <div class="col-span-4 md:col-span-2 flex items-center  hidden" id="GuinobatanReports">
                                         <a href="{{ route('clinic.reports.guinobatan.pdf') }}" target="_blank"
                                             class="flex items-center justify-center w-full px-4 py-2 text-sm font-900 text-red-500 border border-transparent hover:border-red-500 rounded-lg transition">
                                             <i data-lucide="file-text" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
@@ -299,7 +299,7 @@
                                     </div>
 
                                     <!-- Albay Buttons (visible by default) -->
-                                    <div class="col-span-4 md:col-span-2 flex items-center gap-2" id="AlbayReports">
+                                    <div class="col-span-4 md:col-span-2 flex items-center " id="AlbayReports">
                                         <a href="{{ route('clinic.reports.albay.pdf') }}" target="_blank"
                                             class="flex items-center justify-center w-full px-4 py-2 text-sm font-900 text-red-500 border border-transparent hover:border-red-500 rounded-lg transition">
                                             <i data-lucide="file-text" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
@@ -379,7 +379,7 @@
                                     <p class="text-sm text-center font-medium text-gray-700">Generate Report:</p>
                                 </div>
                                 <!-- Buttons -->
-                                <div class="col-span-4 md:col-span-2 flex items-center gap-2 mt-4">
+                                <div class="col-span-4 md:col-span-2 flex items-center  mt-4">
                                     <a href="{{ route('clinic.reports.revenue-expense.pdf') }}" target="_blank"
                                         class="w-full flex items-center justify-center px-4 py-2 text-sm font-900 text-red-500 border border-transparent hover:border-red-500 rounded-lg transition">
                                         <i data-lucide="file-text" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>
@@ -415,7 +415,7 @@
                                     <p class="text-sm text-center font-medium text-gray-700">Generate Report:</p>
                                 </div>
                                 <!-- Buttons -->
-                                <div class="col-span-4 md:col-span-2 flex items-center gap-2 mt-2">
+                                <div class="col-span-4 md:col-span-2 flex items-center mt-2">
                                     <a href="{{ route('clinic.reports.inventory.pdf') }}" target="_blank"
                                         class="w-full flex items-center justify-center px-4 py-2 text-sm font-900 text-red-500 border border-transparent hover:border-red-500 rounded-lg transition">
                                         <i data-lucide="file-text" class="w-5 h-5 me-1" style="stroke-width: 3;"></i>

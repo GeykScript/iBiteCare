@@ -577,9 +577,14 @@
                                             <path d="m6 9 6 6 6-6" />
                                         </svg>
                                     </button>
-
                                     <div>
                                         <div x-show="open" x-collapse class="overflow-x-auto shadow-lg px-20 flex flex-col gap-4 p-4">
+                                            <a href="{{ route('clinic.patients.profile.vaccination_card', ['id' => $transaction->patient_id, 'grouping' => $transaction->id]) }}"
+                                                target="_blank" class="flex items-center justify-end gap-1  text-blue-500 text-end hover:text-blue-600 font-semibold">
+                                                <span>Download</span>
+                                                <i data-lucide="download" class="w-5 h-5" style="stroke-width: 2.5;"></i>
+                                            </a>
+
                                             <div x-data="{ showFirst: true }">
                                                 <div x-show="showFirst" class="grid grid-cols-10 gap-2 border-2 border-gray-700 ">
                                                     <div class="col-span-5 bg-[#EB1C26] flex flex-col p-4">
@@ -602,7 +607,7 @@
                                                         <div class="w-full ">
                                                             <img src="{{ asset('images/vaccine-card-title.png') }}" alt="Title Logo">
                                                         </div>
-                                                        <h1 class="font-900 text-xl text-red-500">COVID-19 VACCINATION CARD</h1>
+                                                        <h1 class="font-900 text-xl text-red-500">VACCINATION CARD</h1>
                                                         <div class="w-full flex flex-col gap-2 px-2">
                                                             <h2 class="text-lg font-bold">Name: <span class="ml-2 font-normal">{{$transaction->Patient->first_name }} {{$transaction->Patient->last_name }}</span></h2>
                                                             <h2 class="text-lg font-bold">Age/Gender: <span class="ml-2 font-normal">{{$transaction->Patient->age }} / {{$transaction->Patient->sex }}</span></h2>
@@ -787,8 +792,29 @@
                                                                     IM
                                                                 </label>
                                                             </div>
-                                                            <h2 class="text-lg font-bold">Tetanus Toxoid: <span class="ml-2 font-normal">{{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}</span></h2>
-                                                            <h2 class="text-lg font-bold">RIG: <span class="ml-2 font-normal">{{ $transaction->immunizations->rigUsed->item->brand_name ?? '' }} - {{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}</span></h2>
+                                                            <h2 class="text-lg font-bold">
+                                                                Tetanus Toxoid:
+                                                                <span class="ml-2 font-normal">
+                                                                    @if(!empty($transaction->immunizations->antiTetanusUsed->item->brand_name) && !empty($transaction->immunizations->date_given))
+                                                                    {{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}
+                                                                    @else
+                                                                    N/A
+                                                                    @endif
+                                                                </span>
+                                                            </h2>
+
+                                                            <h2 class="text-lg font-bold">
+                                                                RIG:
+                                                                <span class="ml-2 font-normal">
+                                                                    @if(!empty($transaction->immunizations->rigUsed->item->brand_name) && !empty($transaction->immunizations->date_given))
+                                                                    {{ $transaction->immunizations->rigUsed->item->brand_name }} -
+                                                                    {{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}
+                                                                    @else
+                                                                    N/A
+                                                                    @endif
+                                                                </span>
+                                                            </h2>
+
                                                         </div>
 
                                                     </div>
@@ -810,14 +836,20 @@
                                                                         <th class="px-4 py-2 border">DAY</th>
                                                                         <th class="px-4 py-2 border">DATE</th>
                                                                         <th class="px-4 py-2 border">DOSE</th>
-                                                                        <th class="px-4 py-2 border">SIGNATURE</th>
+                                                                        <th class="px-4 py-2 border">NURSE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @forelse ($schedules->where('service_id', 2) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border">
+                                                                            @if ($schedule->date_completed)
+                                                                            {{$schedule->date_completed}}
+                                                                            @else
+                                                                            {{ $schedule->scheduled_date }}
+                                                                            @endif
+                                                                        </td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -864,14 +896,20 @@
                                                                         <th class="px-4 py-2 border">DAY</th>
                                                                         <th class="px-4 py-2 border">DATE</th>
                                                                         <th class="px-4 py-2 border">DOSE</th>
-                                                                        <th class="px-4 py-2 border">SIGNATURE</th>
+                                                                        <th class="px-4 py-2 border">NURSE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @forelse ($schedules->where('service_id', 1) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border">
+                                                                            @if ($schedule->date_completed)
+                                                                            {{$schedule->date_completed}}
+                                                                            @else
+                                                                            {{ $schedule->scheduled_date }}
+                                                                            @endif
+                                                                        </td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -930,14 +968,20 @@
                                                                         <th class="px-4 py-2 border">DAY</th>
                                                                         <th class="px-4 py-2 border">DATE</th>
                                                                         <th class="px-4 py-2 border">DOSE</th>
-                                                                        <th class="px-4 py-2 border">SIGNATURE</th>
+                                                                        <th class="px-4 py-2 border">NURSE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @forelse ($schedules->where('service_id', 3) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border">
+                                                                            @if ($schedule->date_completed)
+                                                                            {{$schedule->date_completed}}
+                                                                            @else
+                                                                            {{ $schedule->scheduled_date }}
+                                                                            @endif
+                                                                        </td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -982,13 +1026,13 @@
                                                         class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                                                         <i data-lucide="chevron-right"></i>
                                                     </button>
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
+
                                 @endif
                                 @endforeach
                                 @if (!$hasVaccine)
@@ -1165,12 +1209,22 @@
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
-                                    <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
-                                        <div class="w-full flex items-center">
-                                            <label for="contact_number" class="text-sm font-semibold ">Email Address:
-                                            </label>
+                                    <div class="col-span-4 md:col-span-2 flex flex-col  gap-2">
+                                        @if ($errors->has('email'))
+                                        <label for="email" class="text-sm font-semibold flex justify-between items-center w-full">Personal Email:
+                                            <span class="text-red-500 text-xs" id="email-error">
+                                                {{ $errors->first('email') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="email" class="text-sm font-semibold ">Personal Email:
+                                            <span class="text-red-500 text-xs" id="email-error">*</span>
+                                        </label>
+                                        @endif
+                                        <div class="w-full flex items-center gap-4">
+                                            <i data-lucide="mail"></i>
+                                            <input type="email" name="email" placeholder="example@gmail.com" value="{{  $patient->email }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                                class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
-                                        <p>{{ $patient->email ?? 'No email address'}}</p>
                                     </div>
                                 </div>
                                 <!-- divider border  -->

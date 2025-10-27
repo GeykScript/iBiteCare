@@ -26,6 +26,9 @@ use App\Models\PatientVitalSigns;
 use App\Models\PaymentRecords;
 use App\Models\Messages;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VaccinationCardMail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Http\Requests\RegisterPatientPEPRequest;
 use App\Models\Inventory;           
@@ -176,6 +179,7 @@ class PepRegistration extends Controller
                $scheduledDate = Carbon::parse($request->date_of_registration)
                             ->addDays($serviceSchedule->day_offset)
                             ->format('Y-m-d');
+                        
 
             // Determine if this is the "Day 0" schedule
             $isDay0 = $serviceSchedule->day_offset == 0;
@@ -402,6 +406,28 @@ class PepRegistration extends Controller
                     'remaining_volume' => $newVolume,
                 ]); 
             }
+        }
+
+
+        if ($patient->email) {
+            // Send Vaccination Card Email
+            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
+                ->where('patient_id', $patient->id)
+                ->orderBy('transaction_date', 'asc')
+                ->get()
+                ->groupBy('grouping')
+                ->map(function ($group) {
+                    $first = $group->first();
+                    // merge all schedules from this grouping
+                    $first->allSchedules = $group->flatMap->patientSchedules;
+                    return $first;
+                })
+                ->sortByDesc('transaction_date');
+
+            $subject = "";
+            $messageBody = Null;
+
+            Mail::to($patient->email)->send(new VaccinationCardMail($transactions2, $patient, $subject, $messageBody));
         }
      
         $id = $request->service_id;

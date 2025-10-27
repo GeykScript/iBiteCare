@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\ClinicUser;
+use App\Models\ClinicUserLogs;
 use App\Models\ClinicUserInfo;
 
 class ClinicUserProfileController extends Controller
@@ -93,6 +94,16 @@ class ClinicUserProfileController extends Controller
         // Perform updates
         $clinic_user->update($newUserData);
         $clinicUserInfo->update($newInfoData);
+
+        // Log the update action
+        $clinicUser = Auth::guard('clinic_user')->user();
+        ClinicUserLogs::create([
+            'user_id' => $clinicUser->id,
+            'role_id' => $clinicUser->role,
+            'action' => 'Update Information for ' . $clinic_user->first_name . ' ' . $clinic_user->last_name,
+            'details' => 'Clinic user updated account information.',
+            'date_and_time' => now(),
+        ]);
 
         return redirect()->route('clinic.profile')->with('profile-success', 'User account updated successfully!');
     }

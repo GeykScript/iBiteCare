@@ -15,6 +15,10 @@ use App\Models\PatientImmunizations;
 use App\Models\PatientImmunizationsSchedule;
 use App\Models\PaymentRecords;
 use App\Models\ClinicServices;
+use App\Mail\VaccinationCardMail;
+use COM;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PatientsController extends Controller
 {
@@ -75,9 +79,36 @@ class PatientsController extends Controller
             })
             ->sortByDesc('transaction_date');
 
+       // Mail::to($patient->email)->send(new VaccinationCardMail($transactions2, $patient));
+
+
 
 
         return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules'));
+    }
+
+
+    public function pdfVaccinationCard($id,$grouping){
+        $patient = Patient::find($id);
+        $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
+            ->where('patient_id', $id)
+            ->where('id', $grouping)
+            ->orderBy('transaction_date', 'asc')
+            ->get()
+            ->groupBy('grouping')
+            ->map(function ($group) {   
+                $first = $group->first();
+                // merge all schedules from this grouping
+                $first->allSchedules = $group->flatMap->patientSchedules;
+                return $first;
+            })
+            ->sortByDesc('transaction_date');
+
+        $pdf = Pdf::loadView('ClinicUser.pdf.pdf-vaccination-card', compact('transactions2'))
+            ->setPaper([0, 0, 612, 936], 'portrait');
+
+        $fileName = 'Vaccination_Card_' . $patient->first_name . '_' . $patient->last_name . '.pdf';
+        return $pdf->stream($fileName);
     }
 
 
@@ -93,6 +124,7 @@ class PatientsController extends Controller
             'suffix'         => 'nullable|string|max:50',
             'sex'            => 'nullable|string|max:10',
             'contact_number' => 'required|string|max:20',
+            'email'          => 'required|email|max:255|unique:registered_patients,email,' . $request->id,
             'province'       => 'nullable|string|max:255',
             'city'           => 'nullable|string|max:255',
             'barangay'       => 'nullable|string|max:255',
@@ -139,6 +171,7 @@ class PatientsController extends Controller
             'middle_initial' => Str::upper($request->middle_initial),
             'suffix'         => $suffix,
             'contact_number' => $request->contact_number,
+            'email'          => $request->email,
             'sex'            => $request->sex,
             'address'        => $address,
         ];

@@ -47,6 +47,12 @@ class DashboardController extends Controller
                     ->groupBy('hour', 'registered_patients.sex')
                     ->orderBy('hour');
                 break;
+            case 'yesterday':
+                $query->selectRaw('HOUR(transaction_date) as hour, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                    ->whereDate('transaction_date', now()->subDay())
+                    ->groupBy('hour', 'registered_patients.sex')
+                    ->orderBy('hour');
+                break;
 
             case 'weekly':
                 $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')

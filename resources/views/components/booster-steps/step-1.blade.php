@@ -156,7 +156,7 @@
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_contact_number" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
-                    <div class="col-span-6 md:col-span-2 ">
+                    <div class="col-span-6 md:col-span-3 ">
                         <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email Address <span class="font-normal">( Optional )</span></label>
                         <input type="email" name="email" id="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
