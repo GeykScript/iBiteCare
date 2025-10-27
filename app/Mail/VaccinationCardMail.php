@@ -7,6 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ClinicTransactions;
+use App\Models\Patient;
 
 class VaccinationCardMail extends Mailable
 {
@@ -20,12 +22,32 @@ class VaccinationCardMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($transactions2, $patient, $subjectLine, $messageBody = null)
+    public function __construct($patientId, $subjectLine, $messageBody = null)
     {
-        $this->transactions2 = $transactions2;
-        $this->patient = $patient;
+        // Load patient
+        $this->patient = Patient::findOrFail($patientId);
         $this->subjectLine = $subjectLine;
         $this->messageBody = $messageBody;
+
+        // Fetch patient transactions
+        $this->transactions2 = ClinicTransactions::with([
+            'patient',
+            'service',
+            'paymentRecords',
+            'immunizations',
+            'patientExposures',
+            'patientSchedules'
+        ])
+            ->where('patient_id', $patientId)
+            ->orderBy('transaction_date', 'asc')
+            ->get()
+            ->groupBy('grouping')
+            ->map(function ($group) {
+                $first = $group->first();
+                $first->allSchedules = $group->flatMap->patientSchedules;
+                return $first;
+            })
+            ->sortByDesc('transaction_date');
     }
 
     /**
@@ -43,10 +65,10 @@ class VaccinationCardMail extends Mailable
         // Default message if none is provided
         $body = $this->messageBody ?? "
             <p>Dear {$name},</p>
-            <p>We hope you are doing well. Here is your <strong>Vaccination Card</strong> in PDF format for your reference and safekeeping.</p>
-            <p>If you have any questions or need further assistance, please don’t hesitate to contact our clinic.</p>
-            <p>Best regards,<br>
-            <strong>iBiteCare+</strong></p>
+        <p>Thank you for visiting <strong>Dr. Care Animal Bite Center</strong>. Here is your <strong>Vaccination Card</strong> for your recent immunization.</p>
+        <p>Please keep this document for your medical records. If you need any assistance, feel free to reach out to us anytime.</p>
+        <p>Warm regards,<br>
+        <strong>Dr. Care Animal Bite Center Team</strong></p>
         ";
 
         return $this->subject($this->subjectLine)

@@ -115,7 +115,9 @@
 
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
-                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
+                    <div class="col-span-4 md:col-span-4 flex flex-col md:flex-row gap-5 md:gap-10 items-end md:items-center justify-end  px-2">
+                        <a href="{{ route('clinic.patients.profile', $patient->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold hover:text-blue-600 ">
+                            View Information <i data-lucide="file-text" class="w-4 h-4"></i></a>
                         <button
                             onclick="document.getElementById('patientTransactionModal').showModal()"
                             class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add Transaction</button>

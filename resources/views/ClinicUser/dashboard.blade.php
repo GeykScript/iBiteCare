@@ -134,7 +134,7 @@
                                                 class="w-full bg-white text-gray-700 text-sm font-medium px-2 py-2 rounded-md 
                                                     flex items-center justify-between border border-gray-700 hover:border-sky-500 
                                                     focus:ring-1 focus:ring-sky-500 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis">
-                                                <span id="filterLabel">All Time</span>
+                                                <span id="filterLabel">Time Range</span>
                                                 <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="grid grid-cols-4 gap-2 ">
                                     <!-- Date Filter -->
-                                    <div class="col-span-4 md:col-span-1">
+                                    <div class="col-span-4 md:col-span-4">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="filter" value="all">
                                             <button
@@ -127,7 +127,7 @@
                                                 class="w-full bg-white text-gray-700 text-sm font-medium px-2 py-2 rounded-md 
                                                     flex items-center justify-between border border-gray-700 hover:border-sky-500 
                                                     focus:ring-1 focus:ring-sky-500 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis">
-                                                <span id="filterLabel">All Time</span>
+                                                <span id="filterLabel">Select Period </span>
                                                 <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -136,7 +136,7 @@
                                             </button>
 
                                             <div x-show="open" @click.outside="open = false" @click="open = false"
-                                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
+                                                class="absolute z-10 mt-1 w-full  bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
                                                     <li><button data-value="all" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">All
                                                             Time</button></li>
@@ -156,7 +156,7 @@
                                     </div>
 
                                     <!-- Service Type Filter -->
-                                    <div class="col-span-3 md:col-span-2">
+                                    <div class="col-span-3 md:col-span-3">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="serviceFilter" value="all">
                                             <button
@@ -173,7 +173,7 @@
                                             </button>
 
                                             <div x-show="open" @click.outside="open = false" @click="open = false"
-                                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-y-auto scrollbar-hidden">
+                                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 max-w-64 overflow-y-auto scrollbar-hidden">
                                                 <ul class="py-1 text-sm text-gray-700 scrollbar-hidden">
                                                     <li><button data-value="all" class="service-option w-full text-left px-4 py-2 hover:bg-gray-100">All
                                                             Services</button></li>
@@ -349,7 +349,7 @@
                                         class="w-full bg-white text-gray-700 text-sm font-medium px-2 py-2 rounded-md 
                                             flex items-center justify-between border border-gray-700 hover:border-sky-500 
                                             focus:ring-1 focus:ring-sky-500 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis">
-                                        <span id="filterLabel2">All Time</span>
+                                        <span id="filterLabel2">Select Period</span>
                                         <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

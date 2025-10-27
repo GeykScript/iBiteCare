@@ -260,31 +260,12 @@ class PrepTransaction extends Controller
             }
         }
 
-        if($patient->email){
-        // Send Vaccination Card Email
-        $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
-            ->where('patient_id', $request->patient_id)
-            ->orderBy('transaction_date', 'asc')
-            ->get()
-            ->groupBy('grouping')
-            ->map(function ($group) {
-                $first = $group->first();
-                // merge all schedules from this grouping
-                $first->allSchedules = $group->flatMap->patientSchedules;
-                return $first;
-            })
-            ->sortByDesc('transaction_date');
+        if ($patient->email) {
 
-            $subject = 'Updated Vaccination Card from Dr. Care Animal Bite Center';
-            $messageBody = "
-        <p>Dear {$patient->first_name},</p>
-        <p>Thank you for visiting <strong>Dr. Care Animal Bite Center</strong>. Here is your updated <strong>Vaccination Card</strong> for your recent immunization.</p>
-        <p>Please keep this document for your medical records. If you need any assistance, feel free to reach out to us anytime.</p>
-        <p>Warm regards,<br>
-        <strong>Dr. Care Animal Bite Center Team</strong></p>
-    ";
+            $subject = "";
+            $messageBody = Null;
 
-        Mail::to($patient->email)->send(new VaccinationCardMail($transactions2, $patient, $subject, $messageBody));
+            Mail::to($patient->email)->send(new VaccinationCardMail($patient->id, $subject, $messageBody));
         }
 
 

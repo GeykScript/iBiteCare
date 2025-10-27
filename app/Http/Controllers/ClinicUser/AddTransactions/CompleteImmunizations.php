@@ -170,16 +170,16 @@ class CompleteImmunizations extends Controller
             [
                 'user_id' => $request->nurse_id,
                 'role_id' => $nurseClinicRole->role,
-                'action' => 'Administered PEP to patient',
-                'details' => 'Administered PEP to patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'action' => 'Completed immunization for patient',
+                'details' => 'Completed immunization for patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],
             [
                 'user_id' => $request->staff_id,
                 'role_id' => $staffClinicRole->role,
-                'action' => 'Handled payment for PEP patient',
-                'details' => 'Handled payment for PEP patient ' . $patient->first_name . ' ' . $patient->last_name,
+                'action' => 'Handled payment for patient',
+                'details' => 'Handled payment for patient ' . $patient->first_name . ' ' . $patient->last_name,
                 'date_and_time' => now(),
                 'created_at' => now(),
             ],
@@ -232,30 +232,17 @@ class CompleteImmunizations extends Controller
 
 
         if ($patient->email) {
-            // Send Vaccination Card Email
-            $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
-                ->where('patient_id', $request->patient_id)
-                ->orderBy('transaction_date', 'asc')
-                ->get()
-                ->groupBy('grouping')
-                ->map(function ($group) {
-                    $first = $group->first();
-                    // merge all schedules from this grouping
-                    $first->allSchedules = $group->flatMap->patientSchedules;
-                    return $first;
-                })
-                ->sortByDesc('transaction_date');
-
             $subject = 'Updated Vaccination Card from Dr. Care Animal Bite Center';
             $messageBody = "
-                <p>Dear {$patient->first_name},</p>
-                <p>Thank you for visiting <strong>Dr. Care Animal Bite Center</strong>. Here is your updated <strong>Vaccination Card</strong> for your recent immunization.</p>
-                <p>Please keep this document for your medical records. If you need any assistance, feel free to reach out to us anytime.</p>
-                <p>Warm regards,<br>
-                <strong>Dr. Care Animal Bite Center Team</strong></p>
-            ";
+        <p>Dear {$patient->first_name},</p>
+        <p>Thank you for visiting <strong>Dr. Care Animal Bite Center</strong>. Here is your updated <strong>Vaccination Card</strong> for your recent immunization.</p>
+        <p>Please keep this document for your medical records. If you need any assistance, feel free to reach out to us anytime.</p>
+        <p>Warm regards,<br>
+        <strong>Dr. Care Animal Bite Center Team</strong></p>
+    ";
 
-            Mail::to($patient->email)->send(new VaccinationCardMail($transactions2, $patient, $subject, $messageBody));
+            // Send email immediately
+            Mail::to($patient->email)->send(new VaccinationCardMail($patient->id, $subject, $messageBody));
         }
 
         return redirect()->route('clinic.patients.transactions', ['id' => $patient->id])->with('success', 'Immunization completed successfully.');
