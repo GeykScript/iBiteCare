@@ -147,11 +147,9 @@ class PrepTransaction extends Controller
                     'scheduled_send_date' => $scheduledDate,
                     'display_message' => "Today is your PREP dose ({$serviceSchedule->label}).",
                     'message_text' =>
-                    "Good day, Ma'am/Sir.\n"
-                        . "This is Dr. Care Animal Bite Center Guinobatan reminding you of your ({$serviceSchedule->label}) PREP schedule today, "
-                        . $scheduledDateObj->format('M j, Y') . ".\n\n"
-                        . "Clinic hours: 8:00 AM to 5:00 PM.\n"
-                        . "Thank you!",
+                    "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PREP today, " .
+                        $scheduledDateObj->format('M j, Y') .
+                        ".\nWe're open 8AM-5PM. Thank you!",
                     'sender_id' => null,
                     'status' => 'Pending',
                 ]);
@@ -262,7 +260,7 @@ class PrepTransaction extends Controller
 
         if ($patient->email) {
 
-            $subject = "";
+            $subject = "Your Vaccination Card from Dr. Care Animal Bite Center Guinobatan";
             $messageBody = Null;
 
             Mail::to($patient->email)->send(new VaccinationCardMail($patient->id, $subject, $messageBody));

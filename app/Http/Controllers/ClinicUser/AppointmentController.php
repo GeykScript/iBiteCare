@@ -7,6 +7,8 @@ use App\Models\ClinicServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PatientAppointment;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentRescheduleMail;
 
 class AppointmentController extends Controller
 {
@@ -64,6 +66,7 @@ class AppointmentController extends Controller
             'appointment_id' => 'required|integer',
             'appointment_date' => 'required|date',
             'appointment_time' => 'required|string',
+            'email' => 'nullable|email|max:255',
         ]);
 
         // Find the appointment by ID
@@ -76,8 +79,13 @@ class AppointmentController extends Controller
         // Update the appointment details
         $appointment->appointment_date = $request->appointment_date;
         $appointment->appointment_time = $request->appointment_time;
-        $appointment->status = 'Rescheduled';
+        $appointment->status = 'Pending';
         $appointment->save();
+
+        if($patientEmail = $request->email && !empty($request->email)) {
+            // Send reschedule email to patient
+            Mail::to($patientEmail)->send(new AppointmentRescheduleMail($appointment));
+        }
 
         return redirect()->back()->with('success', 'Appointment rescheduled successfully.');
     }

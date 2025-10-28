@@ -1338,6 +1338,14 @@
         <!-- Modals For Logout -->
         <x-logout-modal />
 </body>
+@if ($errors->any())
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('EditPatientProfile').showModal();
+    });
+</script>
+@endif
+
 
 <script>
     const tabButtons = document.querySelectorAll(".tab-btn");

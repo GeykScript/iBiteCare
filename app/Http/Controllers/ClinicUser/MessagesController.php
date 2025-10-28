@@ -34,91 +34,44 @@ class MessagesController extends Controller
     }
 
 
-    // public function sendSingleMessage(Request $request){
-    //     // dd($request->all());
-    //     $request->merge([
-    //         'contact_number' => preg_replace(
-    //             ['/^\+63/', '/^0/'],  // Match +63 or leading 0
-    //             ['63', '63'],         // Replace both with 63
-    //             $request->contact_number
-    //         ),
-    //     ]);
-
-    //     $request->validate([
-    //         'message_id' => 'required|integer',
-    //         'contact_number' => 'required|string',
-    //         'message' => 'required|string',
-    //     ]);
-
-    //     dd($request->contact_number);
-
-
-
-    //     // $response = Http::post('https://api.semaphore.co/api/v4/messages', [
-    //     //     'apikey' => env('SEMAPHORE_API_KEY'),
-    //     //     'number' => '639916863623',
-    //     //     'message' => 'Hello! This is an appointment reminder from Dr. Care Guinobatan Clinic.',
-    //     // ]);
-
-
-    //     dd([
-    //         'status' => $response->status(),
-    //         'body' => $response->body(),
-    //     ]);
-
-    //     // info("Sending message ID: {$request->message_id} to Contact: {$request->contact_number} with Message: {$request->message}");
-    //     Messages::where('id', $request->message_id)
-    //         ->update([
-    //             'status' => 'Sent',
-    //         ]);
-
-    //     return redirect()->route('clinic.messages')->with('sent-success', 'Message sent successfully!');
-    // }
-
-    public function sendSingleMessage(Request $request)
-    {
-        // Normalize contact number format
+    public function sendSingleMessage(Request $request){
+        // dd($request->all());
         $request->merge([
             'contact_number' => preg_replace(
-                ['/^\+63/', '/^0/'],
-                ['63', '63'],
+                ['/^\+63/', '/^0/'],  // Match +63 or leading 0
+                ['63', '63'],         // Replace both with 63
                 $request->contact_number
             ),
         ]);
 
-        // Validate request
         $request->validate([
             'message_id' => 'required|integer',
             'contact_number' => 'required|string',
             'message' => 'required|string',
         ]);
 
-        // Prepare SMS data
-        $data = [
-            'api_token' => env('IPROG_SMS_API_TOKEN'), // store your token in .env
+
+        $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+            'apikey' => env('SEMAPHORE_API_KEY'),
+            'number' => $request->contact_number,
             'message' => $request->message,
-            'phone_number' => $request->contact_number,
-        ];
+            'sendername' => env('SEMAPHORE_SENDER_NAME'),
+        ]);
 
-        // Send to iProg SMS API
-        $response = Http::asForm()->post('https://sms.iprogtech.com/api/v1/sms_messages', $data);
-
-        
-    
         if ($response->successful()) {
-           // Update message status
-            Messages::where('id', $request->message_id)->update([
-                'status' => 'Sent',
-            ]);
+            // Message sent successfully
+            Messages::where('id', $request->message_id)
+                ->update([
+                    'status' => 'Sent',
+                ]);
 
-            return redirect()->route('clinic.messages')
-                ->with('sent-success', 'Message sent successfully!');
         } else {
             return redirect()->back()
                 ->with('sent-error', 'Failed to send message: ' . $response->body());
         }
+     
+        return redirect()->route('clinic.messages')->with('sent-success', 'Message sent successfully!');
     }
-
 
     public function sendNewMessage(Request $request)
     {
@@ -132,28 +85,28 @@ class MessagesController extends Controller
 
         // Fetch patient contact number
         $patient = Patient::find($request->patient_id);
+
         if (!$patient) {
             return redirect()->back()->with('sent-error', 'Patient not found.');
         }
-        $contactNumber = preg_replace(
+
+        $contactNumber = str_replace(' ', '', preg_replace(
             ['/^\+63/', '/^0/'],
             ['63', '63'],
             $patient->contact_number
-        );
+        ));
 
-        // Prepare SMS data
-        $data = [
-            'api_token' => env('IPROG_SMS_API_TOKEN'), // store your token in .env
+        //Send message via Semaphore API
+        $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+            'apikey' => env('SEMAPHORE_API_KEY'),
+            'number' => $contactNumber,
             'message' => $request->message,
-            'phone_number' => $contactNumber,
-        ];
-
-        // Send to iProg SMS API
-        $response = Http::asForm()->post('https://sms.iprogtech.com/api/v1/sms_messages', $data);
+            'sendername' => env('SEMAPHORE_SENDER_NAME'),
+        ]);
 
 
         if ($response->successful()) {
-            // Update message status
+            // Add messages
             Messages::create([
                 'patient_id' => $request->patient_id,
                 'scheduled_send_date' => now()->toDateString(),
@@ -190,40 +143,29 @@ class MessagesController extends Controller
             // Message content
             $messageText = $message->message_text;
 
-            // Prepare data for API
-            $data = [
-                'api_token' => env('IPROG_SMS_API_TOKEN'),
+            // Send message (will throw an exception if not successful)
+            $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+                'apikey' => env('SEMAPHORE_API_KEY'),
+                'number' => $contactNumber,
                 'message' => $messageText,
-                'phone_number' => $contactNumber,
-            ];
+                'sendername' => env('SEMAPHORE_SENDER_NAME'),
+            ]);
 
-            try {
-                // Send message to iProg API
-                $response = Http::asForm()->post('https://sms.iprogtech.com/api/v1/sms_messages', $data);
-
-                if ($response->successful()) {
-                    // Log success for debugging
-                    Log::info("Sent Message ID: {$messageId} to {$contactNumber}");
-
-                    // Mark message as sent
-                    Messages::where('id', $messageId)->update([
+            if ($response->successful()) {
+                // Message sent successfully
+                Messages::where('id', $messageId)
+                    ->update([
                         'status' => 'Sent',
                     ]);
-                } else {
-                    // Log failure
-                    Log::error(" Failed to send Message ID: {$messageId}", [
-                        'response' => $response->body(),
-                    ]);
-                }
-            } catch (\Exception $e) {
-                // Log exceptions (e.g., network error)
-                Log::error("Error sending Message ID: {$messageId}", [
-                    'error' => $e->getMessage(),
-                ]);
+            } else {
+                return redirect()->back()
+                    ->with('sent-error', 'Failed to send message: ' . $response->body());
             }
+          
         }
 
         return redirect()->route('clinic.messages')
             ->with('sent-success', 'All messages processed and queued successfully!');
     }
+    
 }

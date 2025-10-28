@@ -232,7 +232,7 @@ class CompleteImmunizations extends Controller
 
 
         if ($patient->email) {
-            $subject = 'Updated Vaccination Card from Dr. Care Animal Bite Center';
+            $subject = 'Updated Vaccination Card from Dr. Care Animal Bite Center Guinobatan';
             $messageBody = "
         <p>Dear {$patient->first_name},</p>
         <p>Thank you for visiting <strong>Dr. Care Animal Bite Center</strong>. Here is your updated <strong>Vaccination Card</strong> for your recent immunization.</p>
