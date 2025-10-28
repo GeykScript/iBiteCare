@@ -6,6 +6,7 @@ use App\Http\Controllers\PasswordSetupController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PatientSchedules;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,6 +43,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/booking/slots', [BookingController::class, 'getAvailableSlots'])->name('booking.slots');
     Route::post('/book/{id}/cancel', [BookingController::class, 'cancel']);
     Route::post('/book/{id}/reschedule', [BookingController::class, 'reschedule']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/schedules', [PatientSchedules::class, 'index'])->name('schedules.index');
+    Route::get('/schedules/verify', [PatientSchedules::class, 'showVerificationForm'])->name('schedules.verifyForm');
+    Route::post('/schedules/send-otp', [PatientSchedules::class, 'sendOtpEmail'])->name('patient.schedules.sendOtp');
+    Route::post('/schedules/verify-otp', [PatientSchedules::class, 'verifyOtp'])->name('patient.schedules.verifyOtp');
+    Route::get('/schedules/vaccination_card/{id}/{grouping}',[PatientSchedules::class, 'pdfVaccinationCard'])->name('schedule.vaccination_card');
+
+    //ADVISORY ROUTE
+    Route::get('/frequently-asked-questions', function () {
+        return view('advisory');
+    })->name('advisory');
+    
 });
 
 Route::middleware('auth')->group(function () {

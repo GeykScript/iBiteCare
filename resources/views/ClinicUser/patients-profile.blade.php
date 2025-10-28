@@ -585,7 +585,7 @@
                                                 <i data-lucide="download" class="w-5 h-5" style="stroke-width: 2.5;"></i>
                                             </a>
 
-                                            <div x-data="{ showFirst: true }">
+                                            <div class="hidden md:block" x-data="{ showFirst: true }">
                                                 <div x-show="showFirst" class="grid grid-cols-10 gap-2 border-2 border-gray-700 ">
                                                     <div class="col-span-5 bg-[#EB1C26] flex flex-col p-4">
                                                         <h1 class="text-center font-900 text-xl text-white">MGA DAPAT TANDAAN</h1>

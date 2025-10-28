@@ -73,6 +73,7 @@
                     <th class="border-r border-b bg-gray-800 text-white px-2 py-1 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">ID</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('name')">Name</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('treatment_type')">Treatment</th>
+                    <th class="border bg-gray-800 text-white px-2 py-2">Contact</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('booking_channel')">Booking Channel</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('appointment_date')">Date</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('appointment_time')">Time</th>
@@ -94,6 +95,7 @@
                     <td class="border-b px-2 py-2 text-gray-700">{{ $appointment->id }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $appointment->name }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $appointment->treatment_type }}</td>
+                    <td class="border px-2 py-2 text-gray-700">{{ $appointment->contact_number }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $appointment->booking_channel }}</td>
                     <td class="border px-2 py-2 text-gray-700">
                         {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F j, Y') }}

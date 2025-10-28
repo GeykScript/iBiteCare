@@ -6,86 +6,79 @@
         <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4 sm:mb-6">Your Appointments</h2>
 
         @if($appointments->count() > 0)
-            <div class="text-center mb-6 px-2">
-                <label for="appointment_dropdown" class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                    Select an appointment to view details:
-                </label>
-                <select id="appointment_dropdown"
-                        class="block w-full md:w-3/4 lg:w-1/2 mx-auto px-2 sm:px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition">
-                    <option value="">-- Select Appointment --</option>
-                    @foreach($appointments as $appointment)
-                        @if($appointment->status === 'Pending' || $appointment->status === 'Completed')
-                            <option value="{{ $appointment->id }}" 
-                                    data-status="{{ $appointment->status }}"
-                                    class="appointment-option"
-                                    style="
-                                        @if($appointment->status === 'Completed')
-                                            color: #065f46; 
-                                            background-color: #d1fae5;
-                                            font-weight: 600;
-                                        @else
-                                            color: #000000;
-                                        @endif
-                                    ">
-                                {{ ucfirst($appointment->treatment_type) }} on {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F d, Y') }}
-                                
-                            </option>
-                        @endif
-                    @endforeach
-                </select>
+        <div class="text-center mb-6 px-2">
+            <label for="appointment_dropdown" class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                Select an appointment to view details:
+            </label>
+            <select id="appointment_dropdown"
+                class="block w-full md:w-3/4 lg:w-1/2 mx-auto px-2 sm:px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition">
+                <option value="">-- Select Appointment --</option>
+                @foreach($appointments as $appointment)
+                @if($appointment->status === 'Pending' || $appointment->status === 'Completed')
+                <option
+                    value="{{ $appointment->id }}"
+                    data-status="{{ $appointment->status }}"
+                    class="appointment-option {{ $appointment->status === 'Completed' ? 'bg-green-100 text-green-800 font-semibold' : 'text-black' }}">
+                    {{ ucfirst($appointment->treatment_type) }} on
+                    {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F d, Y') }}
+                </option>
+
+                @endif
+                @endforeach
+            </select>
+        </div>
+
+        <div id="appointment_details" class="hidden border border-gray-200 rounded-lg shadow-sm bg-gray-50 p-4 sm:p-6">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm sm:text-base">
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <th class="py-2 w-1/3 font-medium text-gray-700">Booking Reference</th>
+                            <td id="detail_booking_reference" class="py-2 break-words"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 w-1/3 font-medium text-gray-700">Name</th>
+                            <td id="detail_name" class="py-2 break-words"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 font-medium text-gray-700">Contact</th>
+                            <td id="detail_contact" class="py-2 break-words"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 font-medium text-gray-700">Email</th>
+                            <td id="detail_email" class="py-2 break-all"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 font-medium text-gray-700">Treatment</th>
+                            <td id="detail_treatment" class="py-2 break-words"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 font-medium text-gray-700">Date</th>
+                            <td id="detail_date" class="py-2"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 font-medium text-gray-700">Time</th>
+                            <td id="detail_time" class="py-2"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 font-medium text-gray-700">Status</th>
+                            <td id="detail_status" class="py-2 font-bold text-lg"></td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 font-medium text-gray-700">Notes</th>
+                            <td id="detail_notes" class="py-2 break-words"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div id="appointment_details" class="hidden border border-gray-200 rounded-lg shadow-sm bg-gray-50 p-4 sm:p-6">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm sm:text-base">
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <th class="py-2 w-1/3 font-medium text-gray-700">Booking Reference</th>
-                                <td id="detail_booking_reference" class="py-2 break-words"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 w-1/3 font-medium text-gray-700">Name</th>
-                                <td id="detail_name" class="py-2 break-words"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 font-medium text-gray-700">Contact</th>
-                                <td id="detail_contact" class="py-2 break-words"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 font-medium text-gray-700">Email</th>
-                                <td id="detail_email" class="py-2 break-all"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 font-medium text-gray-700">Treatment</th>
-                                <td id="detail_treatment" class="py-2 break-words"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 font-medium text-gray-700">Date</th>
-                                <td id="detail_date" class="py-2"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 font-medium text-gray-700">Time</th>
-                                <td id="detail_time" class="py-2"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 font-medium text-gray-700">Status</th>
-                                <td id="detail_status" class="py-2 font-bold text-lg"></td>
-                            </tr>
-                            <tr>
-                                <th class="py-2 font-medium text-gray-700">Notes</th>
-                                <td id="detail_notes" class="py-2 break-words"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
-                    <button id="cancelBtn" class="w-full sm:w-auto bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Cancel</button>
-                    <button id="rescheduleBtn" class="w-full sm:w-auto bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">Reschedule</button>
-                </div>
+            <div class="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
+                <button id="cancelBtn" class="w-full sm:w-auto bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Cancel</button>
+                <button id="rescheduleBtn" class="w-full sm:w-auto bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">Reschedule</button>
             </div>
+        </div>
         @else
-            <p class="text-center text-gray-500">No appointments found.</p>
+        <p class="text-center text-gray-500">No appointments found.</p>
         @endif
     </div>
 
@@ -94,15 +87,15 @@
         <h1 class="text-2xl sm:text-3xl font-bold text-center text-red-600 mb-6 sm:mb-8">Book an Appointment</h1>
 
         @if(session('success'))
-            <div class="bg-green-100 text-green-700 p-4 rounded-lg mb-6 text-center">
-                {{ session('success') }}
-            </div>
+        <div class="bg-green-100 text-green-700 p-4 rounded-lg mb-6 text-center">
+            {{ session('success') }}
+        </div>
         @endif
 
         @if(session('error'))
-            <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-6 text-center">
-                {{ session('error') }}
-            </div>
+        <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-6 text-center">
+            {{ session('error') }}
+        </div>
         @endif
 
         <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -113,13 +106,13 @@
                 <div>
                     <label for="name" class="block text-xs sm:text-sm font-medium text-gray-700">Full Name</label>
                     <input type="text" id="name" name="name" value="{{ old('name', Auth::user()->name) }}"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required readonly >
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required readonly>
                     @error('name') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="contact_number" class="block text-xs sm:text-sm font-medium text-gray-700">Contact Number</label>
-                    <input type="tel" id="contact_number" name="contact_number" value="{{ old('contact_number') }}"
+                    <input type="tel" id="contact_number" name="contact_number" value="{{ old('contact_number') }}" maxlength="13"
                         class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
                     @error('contact_number') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
@@ -134,12 +127,12 @@
                 <div>
                     <label for="treatment_type" class="block text-xs sm:text-sm font-medium text-gray-700">Type of Treatment</label>
                     <select id="treatment_type" name="treatment_type"
-                            class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
                         <option value="">Select...</option>
                         @foreach($services as $service)
-                            <option value="{{ $service->name }}">
-                                {{ $service->name }}
-                            </option>
+                        <option value="{{ $service->name }}">
+                            {{ $service->name }}
+                        </option>
                         @endforeach
                     </select>
                     @error('treatment_type') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
@@ -158,7 +151,7 @@
                 <div>
                     <label for="appointment_time" class="block text-xs sm:text-sm font-medium text-gray-700">Preferred Time</label>
                     <select id="appointment_time" name="appointment_time"
-                            class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
                         <option value="">Select a date first...</option>
                     </select>
                     @error('appointment_time') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
@@ -166,14 +159,14 @@
 
                 <div>
                     <label for="additional_notes" class="block text-xs sm:text-sm font-medium text-gray-700">Additional Notes (if none, just leave it blank)</label>
-                    <textarea id="additional_notes" name="additional_notes" rows="4" 
+                    <textarea id="additional_notes" name="additional_notes" rows="4"
                         class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition">{{ old('additional_notes') }}</textarea>
                     @error('additional_notes') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="pt-2 sm:pt-4">
                     <button type="submit" id="submitBtn"
-                            class="w-full bg-red-600 text-white py-2 sm:py-3 px-4 text-sm sm:text-base rounded-md hover:bg-red-700 transition transform hover:scale-105 font-medium">
+                        class="w-full bg-red-600 text-white py-2 sm:py-3 px-4 text-sm sm:text-base rounded-md hover:bg-red-700 transition transform hover:scale-105 font-medium">
                         Submit Booking
                     </button>
                 </div>
@@ -228,15 +221,41 @@
     </div>
 
     <script>
+        //PHONE NUMBER FORMATTER
+        function formatContactNumber(input) {
+            let value = input.value.replace(/\D/g, ""); // remove non-digits
+
+            if (value.length > 4 && value.length <= 7) {
+                value = value.replace(/(\d{4})(\d+)/, "$1 $2");
+            } else if (value.length > 7) {
+                value = value.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3");
+            }
+
+            input.value = value;
+        }
+        const contactInput = document.getElementById("contact_number");
+
+        // Format while typing
+        contactInput.addEventListener("input", function(e) {
+            formatContactNumber(e.target);
+        });
+        // Format immediately on page load if value exists
+        window.addEventListener("DOMContentLoaded", function() {
+            if (contactInput.value) {
+                formatContactNumber(contactInput);
+            }
+        });
+
+        
         // Modal Helper Functions
         function showAlert(message, type = 'success') {
             const modal = document.getElementById('alertModal');
             const title = document.getElementById('alertTitle');
             const messageEl = document.getElementById('alertMessage');
             const icon = document.getElementById('alertIcon');
-            
+
             messageEl.textContent = message;
-            
+
             if (type === 'success') {
                 title.textContent = 'Success';
                 icon.innerHTML = '<svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
@@ -244,7 +263,7 @@
                 title.textContent = 'Error';
                 icon.innerHTML = '<svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
             }
-            
+
             modal.classList.remove('hidden');
         }
 
@@ -253,15 +272,15 @@
             const messageEl = document.getElementById('confirmMessage');
             const okBtn = document.getElementById('confirmOkBtn');
             const cancelBtn = document.getElementById('confirmCancelBtn');
-            
+
             messageEl.textContent = message;
             modal.classList.remove('hidden');
-            
+
             okBtn.onclick = function() {
                 modal.classList.add('hidden');
                 callback(true);
             };
-            
+
             cancelBtn.onclick = function() {
                 modal.classList.add('hidden');
                 callback(false);
@@ -276,7 +295,11 @@
         function formatDate(isoString) {
             if (!isoString) return '';
             const date = new Date(isoString);
-            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+            return date.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
         }
 
         function formatTime(timeString) {
@@ -284,7 +307,11 @@
             const [hours, minutes] = timeString.split(':');
             const date = new Date();
             date.setHours(hours, minutes);
-            return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+            return date.toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
         }
 
         const datePicker = flatpickr("#appointment_date", {
@@ -329,7 +356,7 @@
         const cancelBtn = document.getElementById('cancelBtn');
         const rescheduleBtn = document.getElementById('rescheduleBtn');
 
-        document.getElementById('appointment_dropdown')?.addEventListener('change', function () {
+        document.getElementById('appointment_dropdown')?.addEventListener('change', function() {
             const selectedId = this.value;
             const detailsDiv = document.getElementById('appointment_details');
 
@@ -351,7 +378,7 @@
             document.getElementById('detail_date').textContent = formatDate(appointment.appointment_date);
             document.getElementById('detail_time').textContent = formatTime(appointment.appointment_time);
             document.getElementById('detail_notes').textContent = appointment.additional_notes || 'None';
-            
+
             // Set status with color coding
             if (appointment.status === 'Completed') {
                 statusCell.textContent = 'Completed';
@@ -360,7 +387,7 @@
                 statusCell.textContent = 'Pending';
                 statusCell.className = 'py-2 font-bold text-m text-yellow-600';
             }
-            
+
             detailsDiv.classList.remove('hidden');
 
             if (appointment.status === 'Pending') {
@@ -372,7 +399,7 @@
             }
         });
 
-        cancelBtn.addEventListener('click', function () {
+        cancelBtn.addEventListener('click', function() {
             const selectedId = document.getElementById('appointment_dropdown').value;
             if (!selectedId) return;
 
@@ -380,24 +407,24 @@
                 if (!confirmed) return;
 
                 fetch(`/book/${selectedId}/cancel`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    showAlert(data.message || 'Appointment cancelled', 'success');
-                })
-                .catch(err => {
-                    console.error(err);
-                    showAlert('Failed to cancel appointment', 'error');
-                });
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        showAlert(data.message || 'Appointment cancelled', 'success');
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showAlert('Failed to cancel appointment', 'error');
+                    });
             });
         });
 
-        rescheduleBtn.addEventListener('click', function () {
+        rescheduleBtn.addEventListener('click', function() {
             const selectedId = document.getElementById('appointment_dropdown').value;
             const appointment = appointments.find(a => a.id == selectedId);
             if (!appointment) {
@@ -428,36 +455,39 @@
 
             fetchAvailableRescheduleSlots(appointment.appointment_date, appointment.appointment_time);
 
-            document.getElementById('closeModalBtn').onclick = function () {
+            document.getElementById('closeModalBtn').onclick = function() {
                 modal.classList.add('hidden');
             };
 
-            document.getElementById('saveRescheduleBtn').onclick = function () {
+            document.getElementById('saveRescheduleBtn').onclick = function() {
                 const newDate = rescheduleDate.value;
                 const newTime = rescheduleTime.value;
-                
+
                 if (!newDate || !newTime) {
                     showAlert('Please select a new date and time', 'error');
                     return;
                 }
 
                 fetch(`/book/${selectedId}/reschedule`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ appointment_date: newDate, appointment_time: newTime })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    modal.classList.add('hidden');
-                    showAlert(data.message || 'Appointment rescheduled successfully', 'success');
-                })
-                .catch(err => {
-                    console.error(err);
-                    showAlert('Failed to reschedule appointment', 'error');
-                });
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            appointment_date: newDate,
+                            appointment_time: newTime
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        modal.classList.add('hidden');
+                        showAlert(data.message || 'Appointment rescheduled successfully', 'success');
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showAlert('Failed to reschedule appointment', 'error');
+                    });
             };
         });
 

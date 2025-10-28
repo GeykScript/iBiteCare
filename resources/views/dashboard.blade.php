@@ -1,26 +1,4 @@
 <x-app-layout>
-    <!DOCTYPE html>
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>{{ config('app.name') }}</title>
-        <link rel="icon" href="{{ asset('drcare_logo.png') }}" type="image/png">
-        <!-- Fonts -->
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        @endif
-    </head>
-
     <style>
         .dr-care {
             font-family: 'Geologica', sans-serif;
@@ -67,13 +45,12 @@
         }
     </style>
 
-
     <body>
         <section class="bg-section bg-no-repeat bg-center w-full  h-screen bg-contain sm:bg-cover flex flex-col items-center justify-between">
             <div class="flex md:flex-row flex-col flex-col-reverse justify-center items-center md:justify-evenly md:items-center h-[80%]   w-full gap-2">
                 <div class="flex flex-col md:mt-5 mt-0">
                     <div class="flex gap-5 ml-10">
-                        <a href="{{ url('/') }}" class="focus:outline-none hover:outline-none ">
+                        <a href="{{ route('dashboard') }}" class="focus:outline-none hover:outline-none ">
                             <img src="{{ asset('images/dark-logo.png') }}" alt="Dr-Care Dark Logo" class="md:w-full md:h-full  w-16 w-16" />
                         </a>
                         <div class="md:mt-4">
@@ -274,7 +251,7 @@
                 <div class="col-span-6 md:col-span-1">
                     <ul class="text-sm md:text-lg text-gray-900 mt-2">
                         <li><a href="#home" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
-                        <li><a href="{{ route('faqs') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">FAQs</a></li>
+                        <li><a href="{{ route('advisory') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">FAQs</a></li>
                         <li><a href="{{ route('terms-and-conditions') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Terms & Conditions</a></li>
                         <li><a href="{{ route('developers') }}" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Developers</a></li>
 
@@ -305,12 +282,6 @@
 
             </div>
         </footer>
-
-
-
-
-
-
     </body>
 
     <script>
@@ -330,5 +301,4 @@
         });
     </script>
 
-    </html>
 </x-app-layout>

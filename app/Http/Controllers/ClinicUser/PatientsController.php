@@ -79,11 +79,6 @@ class PatientsController extends Controller
             })
             ->sortByDesc('transaction_date');
 
-       // Mail::to($patient->email)->send(new VaccinationCardMail($transactions2, $patient));
-
-
-
-
         return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules'));
     }
 

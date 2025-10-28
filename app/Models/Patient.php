@@ -23,6 +23,8 @@ class Patient extends Model
         'email',
         'address',
         'registration_date',
+        'account_id',
+        'two_factor_code',
     ];
 
     public function scopeSearch($query, $searchTerm)

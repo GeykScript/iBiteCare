@@ -13,12 +13,8 @@
         <div style="background:#EB1C24; padding: 25px 35px; text-align:center;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                 <tr>
-                    <!-- Left Logo -->
+                    <!-- Left Logo (removed) -->
                     <td align="start" style="width:25%;">
-                        <!-- CHANGE THIS IN PRODUCITON  -->
-
-                        <img src="{{ $message->embed(public_path('drcare_logo.png')) }}" alt="Clinic Logo" style="height:120px; margin-bottom:10px; display:block;">
-                        <!-- <img src="{{ url('drcare_logo.png') }}" alt="Clinic Logo" style="height:120px; margin-bottom:10px; display:block;"> -->
                     </td>
 
                     <!-- Right Column -->
@@ -33,9 +29,9 @@
                             </tr>
                             <tr>
                                 <td style="padding-top:5px;">
-                                    <!-- CHANGE THIS IN PRODUCITON  -->
-                                    <img src="{{ $message->embed(public_path('images/guinobatan.png')) }}" alt="Clinic Logo" style="height:30px; margin-bottom:10px; display:block;">
-                                    <!-- <img src="{{ url('images/guinobatan.png') }}" alt="Clinic Logo" style="height:30px; margin-bottom:10px; display:block;"> -->
+                                    <p style="margin:0; color:#ffffff; font-size:16px; font-weight:600; font-family:'Segoe UI', Arial, sans-serif;">
+                                        Guinobatan Branch
+                                    </p>
                                 </td>
                             </tr>
                         </table>
@@ -43,6 +39,7 @@
                 </tr>
             </table>
         </div>
+
 
         <!-- Body -->
         <div style="padding:30px; color:#374151; font-size:15px; line-height:1.6;">
