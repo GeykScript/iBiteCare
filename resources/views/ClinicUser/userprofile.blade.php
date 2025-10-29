@@ -261,6 +261,7 @@
                                         <input type="text" id="first_name" name="first_name"
                                             placeholder="First Name"
                                             value="{{ ( $clinicUser->first_name) }}"
+                                            autocomplete="given-name"
                                             class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
                                     </div>
 
@@ -344,16 +345,16 @@
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
+                                        <p class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></p>
                                         <div class="flex gap-5 items-center">
                                             @if ($clinicUser->info->gender == 'Male')
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                                <input type="radio" name="gender" id="gender-male" value="male" checked disabled class="text-sky-500 focus:ring-sky-500">
                                                 <span>Male</span>
                                             </label>
                                             @elseif ($clinicUser->info->gender == 'Female')
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
+                                                <input type="radio" name="gender" id="gender-female" value="female" checked disabled class="text-pink-500 focus:ring-pink-500">
                                                 <span>Female</span>
                                             </label>
                                             @endif
@@ -382,7 +383,7 @@
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="email" placeholder="example@gmail.com" value="{{ old('email', $clinicUser->email) }}"
+                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email', $clinicUser->email) }}" autocomplete="email"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
@@ -418,7 +419,7 @@
 
                                 <!-- address label  -->
                                 <div class="col-span-12 p-2 ">
-                                    <label for="address" class="text-xl font-bold text-gray-800">Address</label>
+                                    <p class="text-xl font-bold text-gray-800">Address</p>
                                 </div>
 
                                 <div class="col-span-12 flex items-center gap-2 p-2">
@@ -494,7 +495,7 @@
                                             <div class="col-span-4 md:col-span-2 ">
                                                 <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
                                                 <button id="description_btn" type="button" class="hidden"> </button>
-                                                <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                                <input type="text" name="description" id="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                             </div>
                                         </div>
                                     </div>

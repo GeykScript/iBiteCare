@@ -115,14 +115,26 @@
                 </div>
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
-                    <div class="col-span-4 md:col-span-4 flex justify-end gap-2  px-2">
+                    <div class="col-span-4 md:col-span-4 flex justify-end gap-2 px-2">
+
+                        <!-- Open new SMS modal button -->
                         <button
                             onclick="document.getElementById('newSMS').showModal()"
-                            class="text-red-500 font-bold hover:text-red-600 px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Send New Message</button>
+                            class="text-red-500 font-bold hover:text-red-600 px-2 py-1.5 text-sm rounded-md flex items-center gap-2 md:px-7 md:py-2 md:text-base md:rounded-lg focus:outline-none">
+                            <i data-lucide="plus" class="w-4 h-4 md:w-5 md:h-5"></i>
+                            Send New Message
+                        </button>
+
+                        <!-- Open send all SMS modal button -->
                         <button
                             onclick="document.getElementById('sendSMS').showModal()"
-                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="send" class="w-5 h-5"></i>Send All SMS</button>
+                            class="bg-red-600 text-white px-2 py-1.5 text-sm rounded-md flex items-center gap-2 md:px-7 md:py-2 md:text-base md:rounded-lg focus:outline-none">
+                            <i data-lucide="send" class="w-4 h-4 md:w-5 md:h-5"></i>
+                            Send All SMS
+                        </button>
+
                     </div>
+
                     <!-- // Send All SMS Modal -->
                     <dialog id="sendSMS" class="p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop:bg-black/30 focus:outline-none ">
                         <!-- close modal button  -->
@@ -163,7 +175,7 @@
                                     <div class="flex justify-end gap-2 mt-6">
                                         <button type="submit"
                                             :disabled="loading"
-                                            id="submitBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
+                                            id="submitAllBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
                                             <!-- Spinner -->
                                             <svg x-show="loading" x-cloak aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
@@ -276,11 +288,11 @@
     });
 
     const messagesInput = document.getElementById('messagesInput');
-    const submitBtn = document.getElementById('submitBtn');
+    const submitAllBtn = document.getElementById('submitAllBtn');
 
     // Check on page load
     if (!messagesInput.value || messagesInput.value === '[]') {
-        submitBtn.style.display = 'none';
+        submitAllBtn.style.display = 'none';
     }
 </script>
 

@@ -142,19 +142,19 @@
                         </div>
                         @endif
                         <div class="grid grid-cols-8 gap-2 py-2">
-                            <div class="md:col-span-2 col-span-8">
+                            <div class="md:col-span-2 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Product Name</p>
                                 <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->brand_name }}</h1>
                             </div>
-                            <div class="md:col-span-2 col-span-8">
+                            <div class="md:col-span-2 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Category</p>
                                 <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->category }}</h1>
                             </div>
-                            <div class="md:col-span-2 col-span-8">
+                            <div class="md:col-span-2 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Product Type</p>
                                 <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->product_type }}</h1>
                             </div>
-                            <div class="md:col-span-2 col-span-8">
+                            <div class="md:col-span-2 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Immunity Type</p>
                                 <h1 class="text-gray-800 font-bold text-lg">{{ $inventoryItem->immunity_type ?? 'N/A' }}</h1>
                             </div>
@@ -166,11 +166,11 @@
                             <h1 class="font-900 text-lg">Stocks Details</h1>
                         </div>
                         <div class="col-span-8 grid grid-cols-8 gap-2 mt-2">
-                            <div class="md:col-span-1 col-span-8">
+                            <div class="md:col-span-1 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Total Stocks</p>
                                 <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_units }} </p>
                             </div>
-                            <div class="md:col-span-1 col-span-8">
+                            <div class="md:col-span-1 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Remaining Stocks</p>
                                 <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_unit_remaining }} </p>
                             </div>
@@ -261,13 +261,13 @@
 
                                         <div class="grid grid-cols-12 gap-2 py-2">
                                             <div class="md:col-span-6 col-span-12">
-                                                <label for="category" class="text-sm font-semibold">Category</label>
+                                                <p class="text-sm font-semibold mb-1">Category</p>
                                                 <p class="w-full p-2 border border-gray-50 rounded-lg focus:outline-none focus:border-none focus:ring-0   bg-gray-50">{{ $inventoryItem->category }}</p>
                                             </div>
 
                                             <div class="md:col-span-6 col-span-12">
                                                 <label for="product_type" class="text-sm font-semibold">Product Type</label>
-                                                <input type="text" name="product_type" placeholder="e.g PVRV, ERIG, syringe, etc."
+                                                <input type="text" name="product_type" id="product_type" placeholder="e.g PVRV, ERIG, syringe, etc."
                                                     pattern="[A-Za-z]+"
                                                     value="{{ $inventoryItem->product_type }}"
                                                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
@@ -276,7 +276,7 @@
                                         <div class="grid grid-cols-12 gap-4 py-2">
                                             <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
                                                 <label for="brand_name" class="text-sm font-semibold">Product Name</label>
-                                                <input type="text" name="brand_name" placeholder="Brand Name"
+                                                <input type="text" name="brand_name" id="brand_name" placeholder="Brand Name"
                                                     pattern="[A-Za-z0-9 ]+"
                                                     value="{{ $inventoryItem->brand_name }}"
                                                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 h-12" required />
@@ -323,7 +323,7 @@
                                     <!-- divider border  -->
                                     <div class="col-span-12 border-2 border-gray-100 mt-2 mb-2"></div>
                                     <div class="col-span-12 flex items-center justify-end gap-2">
-                                        <button type="submit" id="submitBtn" class="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600">Save Changes</button>
+                                        <button type="submit" id="submitEditBtn" class="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600">Save Changes</button>
                                         <button type="button" onclick="document.getElementById('EditProduct').close()"
                                             class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md hover:bg-gray-200">
                                             Cancel
@@ -357,7 +357,7 @@
                                         <h1 class="font-900 text-md">Stock Information</h1>
                                         <div class="grid grid-cols-12 gap-2 py-2">
                                             <div class="md:col-span-6 col-span-12">
-                                                <label for="package_type" class="text-sm font-semibold">Package Type</label>
+                                                <p class="text-sm font-semibold mb-1">Package Type</p>
                                                 <x-select-dropdown
                                                     name="package_type"
                                                     id="package_type_id"
@@ -365,7 +365,7 @@
                                                     :options="['Vial','Box','Piece','Pack']" />
                                             </div>
                                             <div class="md:col-span-6 col-span-12">
-                                                <label for="volume_per_item" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
+                                                <label for="volume_per_item_id" class="text-sm font-semibold">Volume (ml) per item <span class="text-gray-500 font-normal text-xs italic">(Leave blank if not a vaccine or rig)</span></label>
                                                 <input type="number" name="volume_per_item" id="volume_per_item_id" placeholder="e.g 5 ml"
                                                     min="0" step="any"
                                                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
@@ -373,12 +373,12 @@
                                         </div>
                                         <div class="grid grid-cols-12 gap-2 py-2">
                                             <div class="md:col-span-4 col-span-12">
-                                                <label for="packages_received" class="text-sm font-semibold">Package Quantity</label>
+                                                <label for="package_received_id" class="text-sm font-semibold">Package Quantity</label>
                                                 <p class="text-xs italic text-gray-500 mt-2"> No. of packages of the product</p>
                                                 <input type="number" name="packages_received" id="package_received_id" placeholder="e.g 10 vial, 2 box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
                                             </div>
                                             <div class="md:col-span-4 col-span-12">
-                                                <label for="items_per_package" class="text-sm font-semibold">Items Per Package</label>
+                                                <label for="items_per_package_id" class="text-sm font-semibold">Items Per Package</label>
                                                 <p class="text-xs italic text-gray-500 mt-2">No. of items per package. (If vial/pcs it should be 1)</p>
                                                 <input type="number" name="items_per_package" id="items_per_package_id" placeholder="e.g 10 pcs in box" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
                                             </div>
@@ -393,12 +393,12 @@
                                         </div>
                                         <div class="grid grid-cols-12 gap-2 py-2">
                                             <div class="md:col-span-6 col-span-12">
-                                                <label for="price_per_item" class="text-sm font-semibold">Price per Item</label>
+                                                <label for="price_per_item_id" class="text-sm font-semibold">Price per Item</label>
                                                 <input type="number" name="price_per_item" id="price_per_item_id" placeholder="e.g 100" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
 
                                             </div>
                                             <div class="md:col-span-6 col-span-12">
-                                                <label for="total_price" class="text-sm font-semibold">Total Amount</label>
+                                                <label for="total_price_id" class="text-sm font-semibold">Total Amount</label>
                                                 <div class="flex items-center ">
                                                     <i data-lucide="philippine-peso" class="w-5 h-5 "></i>
                                                     <input type="text" name="total_price" id="total_price_id" value="0.0" class="w-full p-2 border-none focus:ring-0 focus:border-none focus:outline-none" readonly />
@@ -409,7 +409,7 @@
 
                                         <div class="col-span-12">
                                             <label for="supplier" class="text-sm font-semibold">Supplier</label>
-                                            <input type="text" name="supplier" placeholder="e.g ABC Supplies" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
+                                            <input type="text" name="supplier" id="supplier" placeholder="e.g ABC Supplies" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" />
                                         </div>
                                     </div>
                                     <div class="col-span-12 flex items-center justify-end gap-2">
@@ -462,14 +462,14 @@
                                         <input type="hidden" name="item_id" x-model="item.item_id">
                                     </div>
                                     <div class="col-span-12 flex flex-col">
-                                        <label class="block text-sm font-medium">Quantity</label>
+                                        <p class="block text-sm font-medium">Quantity</p>
                                         <p class="text-xs text-gray-500">(Leave unchanged if no update is needed)</p>
                                         <input type="number" name="quantity" x-model="item.quantity"
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
                                     </div>
 
                                     <div class="col-span-12 flex flex-col">
-                                        <label class="block text-sm font-medium">Remaining Quantity</label>
+                                        <p class="block text-sm font-medium">Remaining Quantity</p>
                                         <p class="text-xs text-gray-500">(Leave unchanged if no update is needed)</p>
                                         <input type="number" name="remaining_quantity" x-model="item.remaining"
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
@@ -509,10 +509,10 @@
 </body>
 
 <script>
-    const submitBtn = document.getElementById("submitBtn");
+    const submitEditBtn = document.getElementById("submitEditBtn");
     document.getElementById('editProductForm').addEventListener('submit', function() {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
+        submitEditBtn.disabled = true;
+        submitEditBtn.innerHTML = `
             <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>

@@ -33,9 +33,9 @@
                         </ul>
                     </div>
                     <!-- Label -->
-                    <label class="text-sm font-medium text-gray-900 md:block hidden">
+                    <p class="text-sm font-medium text-gray-900 md:block hidden">
                         entries per page
-                    </label>
+                    </p>
                 </div>
             </div>
         </div>

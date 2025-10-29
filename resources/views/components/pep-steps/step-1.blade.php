@@ -10,7 +10,7 @@
             </div>
             <div class="col-span-12 md:col-span-4 ">
                 <label for="first_name" class="block mb-2 text-sm font-bold text-gray-900">First Name</label>
-                <input type="text" name="first_name" id="first_name" required placeholder="e.g Juan"
+                <input type="text" name="first_name" id="first_name" required placeholder="e.g Juan" autocomplete="given-name"
                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500 ">
                 <p id="error_first_name" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
             </div>
@@ -158,11 +158,11 @@
                     </div>
                     <div class="col-span-6 md:col-span-3 ">
                         <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email Address <span class="font-normal">( Optional )</span></label>
-                        <input type="email" name="email" id="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        <input type="email" name="email" id="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" autocomplete="email"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
                     </div>
                     <div class="col-span-6 md:col-span-1">
-                        <label for="sex" class="block mb-2 text-sm font-bold text-gray-900">Sex</label>
+                        <p class="block mb-2 text-sm font-bold text-gray-900">Sex</p>
                         <x-select-dropdown
                             name="sex"
                             id="sex"
@@ -174,7 +174,7 @@
                         <p id="error_sex" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                     <div class="col-span-6 md:col-span-2 ">
-                        <label for="phone" class="block mb-2 text-sm font-bold text-gray-900">Date of Birth</label>
+                        <label for="date_of_birth" class="block mb-2 text-sm font-bold text-gray-900">Date of Birth</label>
                         <input type="date" name="date_of_birth" id="date_of_birth" required
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_date_of_birth" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>

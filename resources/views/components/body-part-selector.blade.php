@@ -255,7 +255,7 @@
 
     <!-- Mode Selection -->
     <div class="flex flex-col gap-2 px-4">
-        <label class="text-sm font-bold text-gray-900">Selection Mode:</label>
+        <o class="text-sm font-bold text-gray-900">Selection Mode:</o>
         <div class="flex gap-4">
             <label class="flex items-center gap-2">
                 <input type="radio" name="selectionMode" value="single" checked class="text-sky-500 focus:ring-sky-500">

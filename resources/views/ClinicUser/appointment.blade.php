@@ -140,7 +140,7 @@
                                     <div class="grid grid-cols-12 gap-2 ">
                                         <div class="col-span-12 md:col-span-6">
                                             <label for="name" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Name</label>
-                                            <input type="text" name="name" id="name" placeholder="Name"
+                                            <input type="text" name="name" id="name" placeholder="Name" autocomplete="given-name"
                                                 class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500"
                                                 required>
                                             <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Phone Number</label>
@@ -148,7 +148,7 @@
                                                 class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
 
                                             <label for="email" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Email Address <span class="font-normal">( Optional )</span></label>
-                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                            <input type="email" name="email" id="email" autocomplete="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                 class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
 
                                         </div>
@@ -173,7 +173,7 @@
                                                 </div>
                                             </div>
                                             <div x-data="{ open: false, selected: null, selectedLabel: 'Select...', }" class="relative mt-2">
-                                                <label for="treatment_type" class="block text-sm font-medium text-gray-900">Type of Treatment</label>
+                                                <p class="block text-sm font-medium text-gray-900">Type of Treatment</p>
 
                                                 <!-- Hidden input for form submission -->
                                                 <input type="hidden" name="treatment_type" required x-model="selected">
@@ -201,7 +201,7 @@
                                                 </div>
                                             </div>
                                             <div class="flex flex-col mt-3">
-                                                <label class="text-sm font-medium text-gray-900 ">Booking Channel</label>
+                                                <p class="text-sm font-medium text-gray-900 ">Booking Channel</p>
                                                 <div class="flex items-center space-x-4 mt-3">
                                                     <label class="flex items-center space-x-2">
                                                         <input
@@ -212,7 +212,7 @@
                                                         <span>Phone Call</span>
                                                     </label>
 
-                                                    <label class="flex items-center space-x-2">
+                                                    <label  class="flex items-center space-x-2">
                                                         <input
                                                             type="radio"
                                                             name="channel"
@@ -231,7 +231,7 @@
                                     </div>
 
                                     <div class="flex justify-end gap-2 mt-6">
-                                        <button type="submit" id="submitBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
+                                        <button type="submit" id="submitAppointmentBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
                                             Submit
                                         </button>
                                         <button type="button" onclick="document.getElementById('addAppointment').close()"
@@ -254,7 +254,7 @@
         <!-- Modals For Logout -->
         <x-logout-modal />
         <script>
-            const submitBtn = document.getElementById("submitBtn");
+            const submitAppointmentBtn = document.getElementById("submitAppointmentBtn");
             document.getElementById('appointmentForm').addEventListener('submit', function() {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = `
