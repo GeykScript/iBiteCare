@@ -21,8 +21,9 @@
 <body>
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50  " id="sidebar">
-            <div class="absolute top-20 right-[-0.6rem]  md:hidden">
+        <div id="sidebar"
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 transform -translate-x-full md:translate-x-0 ">
+            <div class="absolute top-20 right-[-0.6rem] hidden md:hidden">
                 <button id="closeSidebar" class="text-white text-2xl">
                     <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
                 </button>

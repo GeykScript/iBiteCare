@@ -1,73 +1,80 @@
 import ApexCharts from 'apexcharts';
 
-const totalPatients = document.getElementById('totalPatients');
-const totalMale = document.getElementById('totalMale');
-const totalFemale = document.getElementById('totalFemale');
 
-let chartOptions = {
-  chart: { type: 'bar', height: 350, toolbar: { show: false } },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: '80%',
-      borderRadiusApplication: 'end',
-      borderRadius: 3
+document.addEventListener("DOMContentLoaded", () => {
+  const chartContainer = document.querySelector("#chart");
+  const filter = document.getElementById("filter");
+  const serviceFilter = document.getElementById("serviceFilter");
+  const ageFilter = document.getElementById("ageFilter");
+
+  // Only run if chart section exists
+  if (chartContainer && filter && serviceFilter && ageFilter) {
+    const totalPatients = document.getElementById('totalPatients');
+    const totalMale = document.getElementById('totalMale');
+    const totalFemale = document.getElementById('totalFemale');
+
+    let chartOptions = {
+      chart: { type: 'bar', height: 350, toolbar: { show: false } },
+      plotOptions: {
+        bar: { horizontal: false, columnWidth: '80%', borderRadiusApplication: 'end', borderRadius: 3 }
+      },
+      series: [{ name: 'Loading', data: [] }],
+      xaxis: { categories: [] },
+      colors: ['#0ac4fdff', '#ff0a70ec'],
+      noData: { text: 'Loading data...' }
+    };
+
+    let chart = new ApexCharts(chartContainer, chartOptions);
+    chart.render();
+
+    // Setup dropdowns
+    function setupDropdown(className, hiddenId, labelId) {
+      document.querySelectorAll(`.${className}`).forEach(option => {
+        option.addEventListener('click', e => {
+          e.preventDefault();
+          const value = option.getAttribute('data-value');
+          const text = option.textContent;
+          const hidden = document.getElementById(hiddenId);
+          const label = document.getElementById(labelId);
+          if (!hidden || !label) return;
+
+          hidden.value = value;
+          label.textContent = text;
+          fetchChartData();
+        });
+      });
     }
-  },
-  series: [{ name: 'Loading', data: [] }],
-  xaxis: { categories: [] },
-  colors: ['#0ac4fdff', '#ff0a70ec'],
-  noData: { text: 'Loading data...' }
-};
 
-let chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
-chart.render();
+    setupDropdown('filter-option', 'filter', 'filterLabel');
+    setupDropdown('service-option', 'serviceFilter', 'serviceFilterLabel');
+    setupDropdown('age-option', 'ageFilter', 'ageFilterLabel');
 
-// Function to attach dropdown logic
-function setupDropdown(className, hiddenId, labelId) {
-  document.querySelectorAll(`.${className}`).forEach(option => {
-    option.addEventListener('click', e => {
-      e.preventDefault();
-      const value = option.getAttribute('data-value');
-      const text = option.textContent;
-
-      document.getElementById(hiddenId).value = value;
-      document.getElementById(labelId).textContent = text;
-
-      fetchChartData();
-    });
-  });
-}
-
-// Attach dropdowns
-setupDropdown('filter-option', 'filter', 'filterLabel');
-setupDropdown('service-option', 'serviceFilter', 'serviceFilterLabel');
-setupDropdown('age-option', 'ageFilter', 'ageFilterLabel');
-
-function fetchChartData() {
-  const params = new URLSearchParams({
-    filter: document.getElementById('filter').value,
-    serviceFilter: document.getElementById('serviceFilter').value,
-    ageFilter: document.getElementById('ageFilter').value
-  });
-
-  fetch(`/clinic/chart-data?${params}`)
-    .then(res => res.json())
-    .then(data => {
-      chart.updateOptions({
-        series: data.series,
-        xaxis: { categories: data.categories }
+    function fetchChartData() {
+      if (!filter || !serviceFilter || !ageFilter) return;
+      const params = new URLSearchParams({
+        filter: filter.value,
+        serviceFilter: serviceFilter.value,
+        ageFilter: ageFilter.value
       });
 
-      totalMale.textContent = data.totalMale;
-      totalFemale.textContent = data.totalFemale;
-      totalPatients.textContent = data.totalPatients;
-    });
-}
+      fetch(`/clinic/chart-data?${params}`)
+        .then(res => res.json())
+        .then(data => {
+          chart.updateOptions({
+            series: data.series,
+            xaxis: { categories: data.categories }
+          });
 
-// Initial chart load
-fetchChartData();
+          totalMale.textContent = data.totalMale;
+          totalFemale.textContent = data.totalFemale;
+          totalPatients.textContent = data.totalPatients;
+        })
+        .catch(err => console.error("Fetch error:", err));
+    }
 
+    fetchChartData();
+  }
+});
 
 
 
