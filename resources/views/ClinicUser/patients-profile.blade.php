@@ -356,7 +356,9 @@
 
                                                     @if (str_contains($serviceName, 'post'))
                                                     <td class="px-4 py-2 border">
-                                                        <a href="{{ route('clinic.patients.profile.immunization_info', [$immunization->id, $immunization->transaction_id]) }}"
+                                                        <a href="{{ route('clinic.patients.profile.immunization_info', [
+                                                            Crypt::encrypt($immunization->id), Crypt::encrypt($immunization->transaction_id)
+                                                        ]) }}"
                                                             target="_blank"
                                                             class="bg-sky-500 px-4 p-1 text-white font-bold rounded-lg hover:bg-sky-600">
                                                             View
@@ -580,7 +582,8 @@
                                     </button>
                                     <div>
                                         <div x-show="open" x-collapse class="overflow-x-auto shadow-lg px-20 flex flex-col gap-4 p-4">
-                                            <a href="{{ route('clinic.patients.profile.vaccination_card', ['id' => $transaction->patient_id, 'grouping' => $transaction->id]) }}"
+                                            <a href="{{ route('clinic.patients.profile.vaccination_card', 
+                                            ['id' => Crypt::encrypt($transaction->patient_id), 'grouping' => Crypt::encrypt($transaction->id)]) }}"
                                                 target="_blank" class="flex items-center justify-end gap-1  text-blue-500 text-end hover:text-blue-600 font-semibold">
                                                 <span>Download</span>
                                                 <i data-lucide="download" class="w-5 h-5" style="stroke-width: 2.5;"></i>

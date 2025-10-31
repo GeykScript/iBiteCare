@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class barangay_patient_report extends Model
-{
-    protected $table = 'barangay_patient_report';
+{                       //MAIN VIEW TABLE FOR GUINOBATAN REPORT -- barangay_patient_report
+                        //THIS IS SAMPLE TABLE ONLY - guinobatan_test_data_report
+    protected $table = 'guinobatan_test_data_report';   
     protected $fillable = [
         'year',
         'quarter',

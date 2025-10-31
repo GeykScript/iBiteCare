@@ -117,7 +117,7 @@
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
                     <div class="col-span-4 md:col-span-4 flex flex-col md:flex-row gap-5 md:gap-10 items-end md:items-center justify-end  px-2">
-                        <a href="{{ route('clinic.patients.profile', $patient->id) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold hover:text-blue-600 ">
+                        <a href="{{ route('clinic.patients.profile', Crypt::encrypt($patient->id)) }}" class="text-blue-500 flex items-center  justify-center gap-1 font-semibold hover:text-blue-600 ">
                             View Information <i data-lucide="file-text" class="w-4 h-4"></i></a>
                         <button
                             onclick="document.getElementById('patientTransactionModal').showModal()"
@@ -144,7 +144,12 @@
                                 @endif
                                 <div class="grid grid-cols-4">
                                     @foreach ($schedules as $schedule)
-                                    <a href="{{ route('clinic.patients.complete-immunization', ['schedule_id' => $schedule->id, 'service_id' => $schedule->service_id, 'grouping' => $schedule->grouping, 'patient_id' => $patient->id]) }}"
+                                    <a href="{{ route('clinic.patients.complete-immunization', 
+                                    ['schedule_id' => Crypt::encrypt($schedule->id), 
+                                    'service_id' => Crypt::encrypt($schedule->service_id), 
+                                    'grouping' => Crypt::encrypt($schedule->grouping), 
+                                    'patient_id' => Crypt::encrypt($patient->id)]
+                                    ) }}"
                                         class="text-sm col-span-4 md:col-span-1 p-2 flex flex-col items-center justify-center border border-gray-300 rounded-lg m-2 font-bold hover:bg-gray-100 hover:cursor-pointer">{{ $schedule->Day }} <br><span class="text-xs font-normal"> {{ $schedule->scheduled_date}}</span> </a>
                                     @endforeach
                                 </div>
@@ -153,7 +158,10 @@
                                 <h1 class="font-bold md:text-sm">New Transaction: </h1>
                                 <div class="grid grid-cols-4">
                                     @foreach ($services as $service)
-                                    <a href="{{ route('clinic.patients.new-transaction', ['service_id' => $service->id, 'patient_id' => $patient->id]) }}"
+                                    <a href="{{ route('clinic.patients.new-transaction', 
+                                    ['service_id' => Crypt::encrypt($service->id), 
+                                    'patient_id' => Crypt::encrypt($patient->id)]
+                                    ) }}"
                                         class="text-sm col-span-4 md:col-span-1 p-2 flex items-center justify-center border border-gray-300 rounded-lg m-2 hover:bg-sky-300 hover:cursor-pointer">{{ $service->name }}</a>
                                     @endforeach
                                 </div>

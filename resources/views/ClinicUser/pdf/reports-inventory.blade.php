@@ -5,9 +5,11 @@
     <meta charset="utf-8">
     <title>Inventory Report - {{ $year }}</title>
     <style>
-           @page {
+        /* PDF or print margins */
+        @page {
             margin: 20px;
         }
+
         body {
             font-family: 'DejaVu Sans', sans-serif;
             font-size: 12px;
@@ -19,11 +21,30 @@
             font-size: 14px;
         }
 
+        /* ✅ main data tables */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+
+            /* allow natural pagination */
+            page-break-inside: auto;
+        }
+
+        thead {
+            /* ✅ ensures header repeats on new pages */
+            display: table-header-group;
+        }
+
+        tfoot {
+            /* optional — if you have a footer you want repeated */
+            display: table-footer-group;
+        }
+
+        tr {
+            /* prevent splitting rows across pages */
             page-break-inside: avoid;
+            page-break-after: auto;
         }
 
         th,
@@ -37,15 +58,14 @@
             background-color: #91f4b0;
         }
 
-
+        /* header section (logos + title) */
         .header-table {
             width: auto;
             margin: 0 auto 10px auto;
-            /* center table and add space below */
             border-collapse: collapse;
             text-align: center;
             margin-bottom: 50px;
-
+            page-break-inside: avoid;
         }
 
         .header-table td {
@@ -53,14 +73,14 @@
             vertical-align: middle;
             padding: 2px 4px;
             font-family: Arial, sans-serif;
-
         }
 
-
+        /* ✅ manual page break trigger between quarters or sections */
         .page-break {
             page-break-before: always;
         }
     </style>
+
 </head>
 
 <body>

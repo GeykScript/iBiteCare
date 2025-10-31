@@ -20,12 +20,15 @@ use App\Models\PaymentRecords;
 use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
 use App\Models\PatientPrevAntiTetanus;
+use Illuminate\Support\Facades\Crypt;
 
 class AntiTetanusTransaction extends Controller
 {
     //
 
     public function showForm($service_id, $patient_id) {
+        $service_id = Crypt::decrypt($service_id);
+        $patient_id = Crypt::decrypt($patient_id);
         $clinicUser = Auth::guard('clinic_user')->user();
 
         $antiTetanusVaccines = Inventory_units::whereHas('item', function ($query) {

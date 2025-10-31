@@ -20,9 +20,16 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\VaccinationCardMail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
+
+
 class CompleteImmunizations extends Controller
 {
     public function index($schedule_id, $service_id, $grouping, $patient_id){
+        $schedule_id = Crypt::decrypt($schedule_id);
+        $service_id = Crypt::decrypt($service_id);
+        $grouping = Crypt::decrypt($grouping);
+        $patient_id = Crypt::decrypt($patient_id);
         $clinicUser = auth()->guard('clinic_user')->user();
 
         if (!$clinicUser) {

@@ -19,6 +19,7 @@ use App\Mail\VaccinationCardMail;
 use COM;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Crypt;
 
 class PatientsController extends Controller
 {
@@ -38,6 +39,7 @@ class PatientsController extends Controller
 
 
     public function viewProfile($id){
+        $id = Crypt::decrypt($id);
         $clinicUser = Auth::guard('clinic_user')->user();
 
         if (!$clinicUser) {
@@ -84,6 +86,8 @@ class PatientsController extends Controller
 
 
     public function pdfVaccinationCard($id,$grouping){
+        $id = Crypt::decrypt($id);
+        $grouping = Crypt::decrypt($grouping);
         $patient = Patient::find($id);
         $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
             ->where('patient_id', $id)
@@ -191,6 +195,8 @@ class PatientsController extends Controller
 
 
     public function viewImmunizationDetails($id, $transaction_id){
+        $id = Crypt::decrypt($id);
+        $transaction_id = Crypt::decrypt($transaction_id);
         $clinicUser = Auth::guard('clinic_user')->user();
 
         if (!$clinicUser) {

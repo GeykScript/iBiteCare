@@ -17,14 +17,15 @@ use App\Models\PatientImmunizations;
 use App\Models\PaymentRecords;
 use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
+use Illuminate\Support\Facades\Crypt;
 
 
 class OtherTransaction extends Controller
 {
     public function showForm($service_id, $patient_id) {
+        $service_id = Crypt::decrypt($service_id);
+        $patient_id = Crypt::decrypt($patient_id);        
         $clinicUser = Auth::guard('clinic_user')->user();
-        $service_id = $service_id;
-        $patient_id = $patient_id;
 
         $services = ClinicServices::where('id', $service_id)->first();
 

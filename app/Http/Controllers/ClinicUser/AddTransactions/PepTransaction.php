@@ -30,11 +30,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 use Carbon\Carbon;
 use App\Http\Requests\PepTransactionRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class PepTransaction extends Controller
 {
     public function showForm($service_id, $patient_id)
     {
+        $service_id = Crypt::decrypt($service_id);
+        $patient_id = Crypt::decrypt($patient_id);
         $clinicUser = Auth::guard('clinic_user')->user();
 
         $antiTetanusVaccines = Inventory_units::whereHas('item', function ($query) {

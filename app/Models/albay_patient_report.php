@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class albay_patient_report extends Model
 {
-    protected $table = 'albay_patient_report';
+    //MAIN VIEW TABLE FOR ALBAY REPORT -- albay_patient_report
+    //THIS IS SAMPLE TABLE ONLY - albay_test_data_report
+    protected $table = 'albay_test_data_report';
     protected $fillable = [
         'year',
         'quarter',

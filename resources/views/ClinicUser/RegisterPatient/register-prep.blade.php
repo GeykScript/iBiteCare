@@ -175,7 +175,7 @@
                                         You may proceed to view patient details or return to the home page.
                                     </p>
                                     <div class="flex flex-col gap-1 mt-4 text-sm">
-                                        <a href="{{ route('clinic.patients.profile', $recentlyAddedPatients->id) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                        <a href="{{ route('clinic.patients.profile', Crypt::encrypt($recentlyAddedPatients->id)) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
                                             View Patient Details
                                         </a>
                                         <a href="{{ route('clinic.dashboard') }}"

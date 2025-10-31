@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ClinicServices;
 use App\Models\ClinicServicesSchedules;
+use Illuminate\Support\Facades\Crypt;
 
 class Services extends Controller
 {
@@ -20,6 +21,7 @@ class Services extends Controller
 
    //function to redirect to update service page
    public function update($id){
+      $id = Crypt::decrypt($id);
       $clinicUser = Auth::guard('clinic_user')->user();
       $service = ClinicServices::findOrFail($id);
 

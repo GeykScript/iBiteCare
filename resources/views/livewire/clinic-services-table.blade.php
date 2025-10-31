@@ -105,7 +105,7 @@
                     </td>
                     <td class="border-b px-2 py-2 text-gray-700 text-center">
                         <div class="flex items-center justify-center">
-                            <a href="{{ route('clinic.services.update', $service->id) }}"
+                            <a href="{{ route('clinic.services.update', Crypt::encrypt($service->id)) }}"
                                 class="text-red-500 flex items-center justify-center  font-semibold col-span-2 md:col-span-1 ">
                                 <img src="{{ asset('images/square-pen.svg') }}" alt="Manage Transactions"> </a>
                         </div>

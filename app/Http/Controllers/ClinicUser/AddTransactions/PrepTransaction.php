@@ -24,11 +24,14 @@ use App\Models\Messages;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VaccinationCardMail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Crypt;
 
 class PrepTransaction extends Controller
 {
     public function showForm($service_id, $patient_id)
     {
+        $service_id = Crypt::decrypt($service_id);
+        $patient_id = Crypt::decrypt($patient_id);
         $clinicUser = Auth::guard('clinic_user')->user();
         $pvrvVaccines = Inventory_units::whereHas('item', function ($query) {
             $query->where('product_type', 'PVRV');

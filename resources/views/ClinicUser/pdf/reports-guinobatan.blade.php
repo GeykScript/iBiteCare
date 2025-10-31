@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Guinobatan Report - {{ $year }}</title>
+    
 
     <style>
         body {
@@ -16,11 +17,9 @@
         .header-table {
             width: auto;
             margin: 0 auto 10px auto;
-            /* center table and add space below */
             border-collapse: collapse;
             text-align: center;
             margin-bottom: 50px;
-
         }
 
         .header-table td {
@@ -28,9 +27,7 @@
             vertical-align: middle;
             padding: 2px 4px;
             font-family: Arial, sans-serif;
-
         }
-
 
         .header-logo {
             width: 90px;
@@ -45,7 +42,24 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+
+            /* ✅ allow proper breaking in PDF */
+            page-break-inside: auto;
+        }
+
+        thead {
+            /* ✅ ensures header repeats on next page */
+            display: table-header-group;
+        }
+
+        tfoot {
+            /* optional — repeats footer if you have one */
+            display: table-footer-group;
+        }
+
+        tr {
             page-break-inside: avoid;
+            page-break-after: auto;
         }
 
         th,
@@ -63,6 +77,7 @@
             page-break-before: always;
         }
     </style>
+
 </head>
 
 <body>
