@@ -80,7 +80,18 @@
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                 <p><span class="font-medium text-gray-900">Administered By:</span> {{ $immunization->administeredBy->first_name }} {{ $immunization->administeredBy->last_name }}</p>
-                <p><span class="font-medium text-gray-900">Vaccine's Used:</span> {{ $immunization->vaccineUsed->item->brand_name ?? '' }}, {{ $immunization->rigUsed->item->brand_name ?? '' }}, {{ $immunization->antiTetanusUsed->item->brand_name ?? '' }}</p>
+                @php
+                $vaccines = array_filter([
+                $immunization->vaccineUsed->item->brand_name ?? null,
+                $immunization->rigUsed->item->brand_name ?? null,
+                $immunization->antiTetanusUsed->item->brand_name ?? null,
+                ]);
+                @endphp
+
+                <p>
+                    <span class="font-medium text-gray-900">Vaccine's Used:</span>
+                    {{ implode(', ', $vaccines) }}
+                </p>
             </div>
         </div>
 

@@ -37,14 +37,14 @@
                                 </div>
                                 <div class="flex items-center space-x-6 p-2 ">
                                     <p class="flex items-center space-x-2">
-                                        <input type="radio" name="exposure" value="Bite" required
+                                        <input type="radio" id="exposure_bite" name="exposure" value="Bite" required
                                             class="text-sky-500 focus:ring-sky-500">
-                                        <span>Bite</span>
+                                        <label for="exposure_bite">Bite</label>
                                     </p>
                                     <p class="flex items-center space-x-2">
-                                        <input type="radio" name="exposure" value="Non-Bite"
+                                        <input type="radio" id="exposure_non_bite" name="exposure" value="Non-Bite"
                                             class="text-sky-500 focus:ring-sky-500">
-                                        <span>Non-Bite</span>
+                                        <label for="exposure_non_bite">Non-Bite</label>
                                     </p>
                                 </div>
                             </div>
@@ -63,16 +63,16 @@
                                 </div>
                                 <div class="flex flex-col md:flex-row items-center justify-center md:space-x-6 p-2 ">
                                     <p class="flex items-center space-x-2">
-                                        <input type="radio" name="bite_category" value="2"
+                                        <input type="radio" name="bite_category" id="category2" value="2"
                                             class="text-red-500 focus:ring-red-500"
                                             onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
-                                        <span>Category 2</span>
+                                        <label for="category2">Category 2</label>
                                     </p>
                                     <p class="flex items-center space-x-2">
-                                        <input type="radio" name="bite_category" value="3"
+                                        <input type="radio" name="bite_category" id="category3" value="3"
                                             class="text-red-500 focus:ring-red-500"
                                             onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
-                                        <span>Category 3</span>
+                                        <label for="category3">Category 3</label>
                                     </p>
                                     <input type="hidden" id="pep_immunization_type" name="pep_immunization_type" value="">
                                     <input type="hidden" id="biteCategoryInput" value="">
