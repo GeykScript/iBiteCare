@@ -313,7 +313,7 @@
                     <div class="flex items-center justify-center">
                         <i data-lucide="map-pinned" class="w-10 h-10 md:w-16 md:h-16 text-[#FF000C] font-900"></i>
                     </div>
-                    <div class="flex flex-col text-sm md:text-3xl text-gray-800">
+                    <div class="flex flex-col text-sm md:text-3xl text-gray-800 shadow-none">
                         <h1 class="font-900 text-[#FF000C]">Dr.Care Guinobatan</h1>
                         <h1 class="font-bold text-xs md:text-xl">2nd Floor, CPD Building, Ilawod, Guinobatan, Albay, Philippines</h1>
                     </div>

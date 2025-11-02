@@ -287,21 +287,6 @@
         </footer>
     </body>
 
-    <script>
-        const toggleButton = document.getElementById('menu-toggle');
-        const menu = document.getElementById('navbar-dr-care');
 
-        toggleButton.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        document.querySelectorAll('#navbar-dr-care a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth < 768) {
-                    menu.classList.add('hidden');
-                }
-            });
-        });
-    </script>
 
 </x-app-layout>

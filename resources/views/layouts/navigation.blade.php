@@ -18,30 +18,30 @@
                         text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
-                            {{ __('Home') }}
+                        {{ __('Home') }}
                     </a>
 
                     <a href="{{ route('booking.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
                         text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
-                            {{ __('Appointments') }}
+                        {{ __('Appointments') }}
                     </a>
                     <a href="{{ route('schedules.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
                         text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
-                            {{ __('Schedules') }}
+                        {{ __('Schedules') }}
                     </a>
                     <a href="{{ route('advisory') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
                         text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
-                            {{ __('Faqs') }}
+                        {{ __('Faqs') }}
                     </a>
-                    </div>
-
                 </div>
+
+            </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -95,32 +95,33 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+<div :class="{'block': open, 'hidden': ! open}" 
+     class="hidden sm:hidden absolute top-16 left-0 w-full bg-white border-t border-gray-200 shadow-md z-50">
         <div class="pt-2 p-4 flex flex-col gap-2">
-            <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                        hover:border-red-300 focus:outline-none focus:text-red-600 
                        focus:border-red-300 hover:bg-red-100 focus:bg-red-100 transition">
                 {{ __('Home') }}
             </a>
 
-            <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
+            <a href="{{ route('booking.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                        hover:border-red-300 focus:outline-none focus:text-red-600 
                        focus:border-red-300 hover:bg-red-100 focus:bg-red-100 transition">
                 {{ __('Appointments') }}
             </a>
-            <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
+            <a href="{{ route('schedules.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                        hover:border-red-300 focus:outline-none focus:text-red-600 
                        focus:border-red-300 hover:bg-red-100 focus:bg-red-100 transition">
                 {{ __('Schedules') }}
             </a>
-            <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
+            <a href="{{ route('advisory') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
                        hover:border-red-300 focus:outline-none focus:text-red-600 
                        focus:border-red-300 hover:bg-red-100 focus:bg-red-100 transition">
-                {{ __('Messages') }}
+                {{ __('Faqs') }}
             </a>
         </div>
 
