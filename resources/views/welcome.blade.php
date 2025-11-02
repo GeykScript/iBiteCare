@@ -48,14 +48,14 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('/images/background-image.png');
+        background-image: url('/images/test2.jpg');
         /* background-size: 100% 95%; */
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        filter: brightness(0.6);
+        filter: brightness(0.4);
         /* ↓ makes image darker (0 = black, 1 = normal) */
-        transform: scale(1.05);
+        transform: scale(1);
         /* Slight enlarge to avoid edges showing */
         z-index: 0;
     }
