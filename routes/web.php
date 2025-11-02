@@ -75,6 +75,7 @@ use App\Http\Controllers\Auth\ClinicUser\ClinicUserAuthController;
 Route::middleware('guest.clinic')->group(function () {
     Route::get('/clinic/login', [ClinicUserAuthController::class, 'showLoginForm'])
         ->name('clinic.login');
+        
     Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])
         ->name('clinic.login.store');
 }); 

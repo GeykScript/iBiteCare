@@ -377,7 +377,8 @@
                 </div>
             </div>
             <div class="col-span-6 mt-5 text-center text-gray-700 md:mt-20 mt-16">
-                <p class="text-xs">© 2025 Dr.Care Guinobatan. All rights reserved.</p>
+                <a href="{{ route('clinic.login') }}" class="text-md text-gray-600 hover:text-red-600 font-bold">Admin Login</a>
+                <p class="text-xs mt-4">© 2025 Dr.Care Guinobatan. All rights reserved.</p>
             </div>
 
         </div>
