@@ -50,7 +50,7 @@
                                 <h1 class="text-center text-xl font-900 text-gray-700">Account Verification</h1>
                                 <h3 class="text-center text-xs font-bold text-gray-700">(Two-Factor Authentication)</h3>
 
-                                <p class="text-sm mt-6">Please enter your Account ID to reset your password. We’ll send a 2FAverification code to your registered personal email</p>
+                                <p class="text-sm mt-6">Please enter your Account ID to reset your password. We’ll send a 2FA verification code to your registered personal email</p>
 
                                 <div class="mt-6">
                                     <x-input-label for="account_id" :value="__('Account ID')" />

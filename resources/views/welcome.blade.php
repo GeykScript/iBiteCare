@@ -48,7 +48,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('/images/test2.jpg');
+        background-image: url('/images/background-image.png');
         /* background-size: 100% 95%; */
         background-size: cover;
         background-repeat: no-repeat;

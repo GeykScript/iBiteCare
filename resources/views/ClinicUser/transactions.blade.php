@@ -37,7 +37,7 @@
             </div>
             <!-- Navigation (scrollable) -->
             <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
-                <ul>
+                <ul class="space-y-0.5">
                     <li class="flex items-center px-2 mb-4 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>

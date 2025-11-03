@@ -25,7 +25,7 @@ class DashboardController extends Controller
             ->get();
 
         $today_clinic_transactions = ClinicTransactions::whereDate('transaction_date', now()->toDateString())->count();
-        $clinic_expected_patients = Messages::where('schedule', now()->toDateString())
+        $clinic_expected_patients = Messages::where('scheduled_send_date', now()->toDateString())
             ->count();
         $services = ClinicServices::all();
 
