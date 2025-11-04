@@ -58,14 +58,9 @@ A brief description of what this project does and who it's for
 
 ```bash
  http://127.0.0.1:8000/clinic/login
-
-Ex.DrCare-2025-0001-0001
-Pass: jakemorales
 ```
 **Visit the following URL to access the Patient login page:**
 
 ```bash
  http://127.0.0.1:8000/login
-johndoe12@gmail.com
-user12345
 ```
