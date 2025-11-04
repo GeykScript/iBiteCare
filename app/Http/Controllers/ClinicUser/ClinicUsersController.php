@@ -11,9 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ClinicUserAccountMail;
 use Illuminate\Support\Facades\Validator;
-
-
-
+use App\Models\ClinicUserLogs;
 class ClinicUsersController extends Controller
 {
     public function index()
@@ -129,6 +127,18 @@ class ClinicUsersController extends Controller
         $user_account = ClinicUser::where('account_id', $request->account_id)->first();
         $user_default_password = $user_account->default_password;
 
+        //log the creation of user account
+        $clinicUser = Auth::guard('clinic_user')->user();
+
+        ClinicUserLogs::create([
+            'user_id' => $clinicUser->id,
+            'role_id' => $clinicUser->role,
+            'action' => 'Create User Account for ' . $user->first_name . ' ' . $user->last_name,
+            'details' => 'Clinic user created a new account.',
+            'date_and_time' => now(),
+        ]);
+        
+
         //mail the defualt user account and password
         Mail::to($user->email)->send(new ClinicUserAccountMail($user_account, $user_default_password));
 
@@ -234,6 +244,16 @@ class ClinicUsersController extends Controller
         // Perform updates
         $clinic_user->update($newUserData);
         $clinicUserInfo->update($newInfoData);
+
+        //log the creation of user account
+        $clinicUser = Auth::guard('clinic_user')->user();
+        ClinicUserLogs::create([
+            'user_id' => $clinicUser->id,
+            'role_id' => $clinicUser->role,
+            'action' => 'Update Information for ' . $clinic_user->first_name . ' ' . $clinic_user->last_name,
+            'details' => 'Clinic user updated an account.',
+            'date_and_time' => now(),
+        ]);
 
         return redirect()->route('clinic.user-accounts')->with('update-success', 'User account updated successfully!');
     }

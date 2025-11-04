@@ -33,9 +33,9 @@
                         </ul>
                     </div>
                     <!-- Label -->
-                    <label class="text-sm font-medium text-gray-900 md:block hidden">
+                    <p class="text-sm font-medium text-gray-900 md:block hidden">
                         entries per page
-                    </label>
+                    </p>
                 </div>
             </div>
 
@@ -48,6 +48,7 @@
                     <input
                         wire:model.live.debounce.300ms="search"
                         type="text"
+                        name="search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full h-full pl-12 p-2 "
                         placeholder="Search" required="">
                 </div>
@@ -104,7 +105,7 @@
                     </td>
                     <td class="border-b px-2 py-2 text-gray-700 text-center">
                         <div class="flex items-center justify-center">
-                            <a href="{{ route('clinic.services.update', $service->id) }}"
+                            <a href="{{ route('clinic.services.update', Crypt::encrypt($service->id)) }}"
                                 class="text-red-500 flex items-center justify-center  font-semibold col-span-2 md:col-span-1 ">
                                 <img src="{{ asset('images/square-pen.svg') }}" alt="Manage Transactions"> </a>
                         </div>

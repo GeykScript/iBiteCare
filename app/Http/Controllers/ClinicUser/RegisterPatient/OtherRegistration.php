@@ -15,7 +15,9 @@ use App\Models\PatientImmunizations;
 use App\Models\PaymentRecords;
 use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
-
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\RegisterOtherRequest;
 
 class OtherRegistration extends Controller
@@ -56,130 +58,143 @@ class OtherRegistration extends Controller
 
         // Combine address fields into a single address string
         $address = $request->province . ', ' . $request->city . ', ' . $request->barangay . ', ' . $request->description;
+        try {
+            DB::beginTransaction();
+            // Create new Patient record
+            $patient = Patient::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'middle_initial' => $request->middle_initial,
+                'suffix' => $request->suffix,
+                'birthdate' => $request->date_of_birth,
+                'age' => $request->age,
+                'sex' => $request->sex,
+                'registration_date' => $request->date_of_registration,
+                'address' => $address,
+                'contact_number' => $request->contact_number,
+                'email' => $request->email,
 
-        // Create new Patient record
-        $patient = Patient::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'middle_initial' => $request->middle_initial,
-            'suffix' => $request->suffix,
-            'birthdate' => $request->date_of_birth,
-            'age' => $request->age,
-            'sex' => $request->sex,
-            'registration_date' => $request->date_of_registration,
-            'address' => $address,
-            'contact_number' => $request->contact_number,
-        ]);
+            ]);
 
-        // Create new ClinicTransaction record
-        $transaction = ClinicTransactions::create([
-            'patient_id'       => $patient->id,
-            'service_id'       => $request->service_id,
-            'transaction_date' => $date,
-        ]);
-        // Update the grouping field with the transaction's own ID
-        ClinicTransactions::where('id', $transaction->id)
-            ->update(['grouping' => $transaction->id]);
+            // Create new ClinicTransaction record
+            $transaction = ClinicTransactions::create([
+                'patient_id'       => $patient->id,
+                'service_id'       => $request->service_id,
+                'transaction_date' => $date,
+            ]);
+            // Update the grouping field with the transaction's own ID
+            ClinicTransactions::where('id', $transaction->id)
+                ->update(['grouping' => $transaction->id]);
 
-        // Create new PatientVitalSigns record
-        $patientVitalSigns = PatientVitalSigns::create([
-            'patient_id' => $patient->id,
-            'transaction_id' => $transaction->id,
-            'recorded_date' => $request->date_of_registration,
-            'temperature' => $request->temperature,
-            'weight' => $request->weight,
-            'blood_pressure' => $request->blood_pressure,
-        ]);
-    
+            // Create new PatientVitalSigns record
+            $patientVitalSigns = PatientVitalSigns::create([
+                'patient_id' => $patient->id,
+                'transaction_id' => $transaction->id,
+                'recorded_date' => $request->date_of_registration,
+                'temperature' => $request->temperature,
+                'weight' => $request->weight,
+                'blood_pressure' => $request->blood_pressure,
+            ]);
 
-       $paymentRecord = PaymentRecords::create([
-            'patient_id' => $patient->id,
-            'transaction_id' => $transaction->id,
-            'receipt_number' => date('Y') . '-' . str_pad(mt_rand(1, 99999999), 8, '0', STR_PAD_LEFT),
-            'payment_date' => $request->dateOfTransaction,
-            'amount_paid' => $request->total_amount,
-            'received_by_id' => $request->staff_id,
-        ]);
 
-        //immunization record
-        PatientImmunizations::create([
-            'patient_id' => $patient->id,
-            'transaction_id' => $transaction->id,
-            'service_id' => $request->service_id,
-            'exposure_id' => null,
-            'vital_signs_id' => $patientVitalSigns->id,
-            'immunization_type' => $request->immunization_type,
-            'date_given' => $request->date_of_registration,
-            'day_label' =>  null,
-            'vaccine_used_id' => $request->vaccine_id ?? null,
-            'rig_used_id' => null,
-            'anti_tetanus_id' => null,
-            'route_of_administration' => $request->route_of_administration,
-            'administered_by_id' => $request->nurse_id,
-            'payment_id' => $paymentRecord->id,
-            'schedule_id' => null, // <-- links to the first schedule
-            'status' => 'Completed',
-        ]);
+            $paymentRecord = PaymentRecords::create([
+                'patient_id' => $patient->id,
+                'transaction_id' => $transaction->id,
+                'receipt_number' => date('Y') . '-' . str_pad(mt_rand(1, 99999999), 8, '0', STR_PAD_LEFT),
+                'payment_date' => $request->dateOfTransaction,
+                'amount_paid' => $request->total_amount,
+                'received_by_id' => $request->staff_id,
+            ]);
 
-        $nurseClinicRole = ClinicUser::find($request->nurse_id);
-        $staffClinicRole = ClinicUser::find($request->staff_id);
+            //immunization record
+            PatientImmunizations::create([
+                'patient_id' => $patient->id,
+                'transaction_id' => $transaction->id,
+                'service_id' => $request->service_id,
+                'exposure_id' => null,
+                'vital_signs_id' => $patientVitalSigns->id,
+                'immunization_type' => $request->immunization_type,
+                'date_given' => $request->date_of_registration,
+                'day_label' =>  null,
+                'vaccine_used_id' => $request->vaccine_id ?? null,
+                'rig_used_id' => null,
+                'anti_tetanus_id' => null,
+                'route_of_administration' => $request->route_of_administration,
+                'administered_by_id' => $request->nurse_id,
+                'payment_id' => $paymentRecord->id,
+                'schedule_id' => null, // <-- links to the first schedule
+                'status' => 'Completed',
+            ]);
 
-        ClinicUserLogs::insert([
-            [
-                'user_id' => $request->nurse_id,
-                'role_id' => $nurseClinicRole->role,
-                'action' => 'Administered ' . $services->name . ' to patient',
-                'details' => 'Administered ' . $services->name . ' to patient ' . $patient->first_name . ' ' . $patient->last_name,
-                'date_and_time' => now(),
-                'created_at' => now(),
-            ],
-            [
-                'user_id' => $request->staff_id,
-                'role_id' => $staffClinicRole->role,
-                'action' => 'Handled payment for ' . $services->name . ' patient',
-                'details' => 'Handled payment for ' . $services->name . ' patient ' . $patient->first_name . ' ' . $patient->last_name,
-                'date_and_time' => now(),
-                'created_at' => now(),
-            ],
-        ]);
+            $nurseClinicRole = ClinicUser::find($request->nurse_id);
+            $staffClinicRole = ClinicUser::find($request->staff_id);
 
-        Inventory_usage::insert([
-            [
-                'unit_id' => $request->vaccine_id,
-                'used' => $request->dose_given,
-                'measurement_unit' => 'ml',
-                'usage_date' => $date,
-                'used_by' => $request->nurse_id,
-                'details' => 'Used for ' . $services->name . ' vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+            ClinicUserLogs::insert([
+                [
+                    'user_id' => $request->nurse_id,
+                    'role_id' => $nurseClinicRole->role,
+                    'action' => 'Administered ' . $services->name . ' to patient',
+                    'details' => 'Administered ' . $services->name . ' to patient ' . $patient->first_name . ' ' . $patient->last_name,
+                    'date_and_time' => now(),
+                    'created_at' => now(),
+                ],
+                [
+                    'user_id' => $request->staff_id,
+                    'role_id' => $staffClinicRole->role,
+                    'action' => 'Handled payment for ' . $services->name . ' patient',
+                    'details' => 'Handled payment for ' . $services->name . ' patient ' . $patient->first_name . ' ' . $patient->last_name,
+                    'date_and_time' => now(),
+                    'created_at' => now(),
+                ],
+            ]);
 
-        // Define vaccine IDs with their respective subtraction amounts
-        $vaccines = [];
+            Inventory_usage::insert([
+                [
+                    'unit_id' => $request->vaccine_id,
+                    'used' => $request->dose_given,
+                    'measurement_unit' => 'ml',
+                    'usage_date' => $date,
+                    'used_by' => $request->nurse_id,
+                    'details' => 'Used for ' . $services->name . ' vaccination for patient ' . $patient->first_name . ' ' . $patient->last_name,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+            ]);
 
-        //  Anti-Tetanus
-        if ($request->vaccine_id) {
-            $vaccines[] = [
-                'id' => $request->vaccine_id,
-                'reduce' => $request->dose_given ?? 0, // default ml to reduce
-            ];
-        }
+            // Define vaccine IDs with their respective subtraction amounts
+            $vaccines = [];
 
-        //  Update each unit
-        foreach ($vaccines as $vaccine) {
-            $unit = Inventory_units::find($vaccine['id']);
-
-            if ($unit) {
-                $newVolume = max(0, $unit->remaining_volume - $vaccine['reduce']); // prevent negative
-                $unit->update([
-                    'status' => $newVolume == 0 ? 'Used' : 'Opened',
-                    'remaining_volume' => $newVolume,
-                ]);
+            //  Anti-Tetanus
+            if ($request->vaccine_id) {
+                $vaccines[] = [
+                    'id' => $request->vaccine_id,
+                    'reduce' => $request->dose_given ?? 0, // default ml to reduce
+                ];
             }
-        }
 
-        return redirect()->route('clinic.patients.register.other', ['id' => $services->id])->with('success', 'Patient registered successfully.');
+            //  Update each unit
+            foreach ($vaccines as $vaccine) {
+                $unit = Inventory_units::find($vaccine['id']);
+
+                if ($unit) {
+                    $newVolume = max(0, $unit->remaining_volume - $vaccine['reduce']); // prevent negative
+                    $unit->update([
+                        'status' => $newVolume == 0 ? 'Used' : 'Opened',
+                        'remaining_volume' => $newVolume,
+                    ]);
+                }
+            }
+            DB::commit();
+            return redirect()->route('clinic.patients.register.other', ['id' => $services->id])->with('success', 'Patient registered successfully.');
+
+        } catch (\Throwable $e) {
+            DB::rollBack(); // ❌ Undo all partial changes
+            Log::error('Error registering Other patient: ' . $e->getMessage(), [
+                'stack' => $e->getTraceAsString()
+            ]);
+            $id = $request->service_id;
+            return redirect()->route('clinic.patients.register.other', ['id' => $id])->with('error', 'An error occurred while processing your request.');
+        }
+          
     }
 }

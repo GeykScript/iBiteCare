@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title>
+    <title>Admin - {{ config('app.name') }}</title>
     <link rel="icon" href="{{ asset('drcare_logo.png') }}" type="image/png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,11 +20,15 @@
 
 <body>
     <div class="flex h-screen">
+
         <!-- Sidebar -->
-        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
-            <div class="absolute top-20 right-[-0.6rem]  md:hidden">
-                <button id="closeSidebar" class="text-white text-2xl">
-                    <i data-lucide="circle-chevron-right" class="w-8 h-8 stroke-white fill-[#FF000D]"></i>
+        <div id="sidebar"
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
+
+            <div class="absolute top-20 right-[-0.6rem] ">
+                <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
+                    <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
                 </button>
             </div>
             <!-- Logo -->
@@ -32,32 +36,34 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
-                <ul class="space-y-3">
-
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+                <ul class="space-y-0.5">
                     <li class="flex items-center px-2 mb-4 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
-                    <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
-                    <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
+
+                    <li><a href="{{ route('clinic.dashboard') }}" class="mt-3 block px-4 py-2 rounded hover:bg-gray-900 hover:text-white  flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Patient Management</p>
+                    <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
+                    <li><a href="{{ route('clinic.appointments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
-                    <li><a href="{{ route('clinic.transactions') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Clinic Management</p>
+                    <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
+                    <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
-            <div class="flex flex-col p-4 gap-2">
+            <div class="flex flex-col px-4 py-2 gap-2">
                 <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
@@ -71,6 +77,7 @@
                         Logout
                     </button>
                 </div>
+
             </div>
         </div>
         <!-- Main Content -->
@@ -187,7 +194,7 @@
                                         You may proceed to view patient details or return to the home page.
                                     </p>
                                     <div class="flex flex-col gap-1 mt-4 text-sm">
-                                        <a href="{{ route('clinic.patients.profile', $recentlyAddedPatients->id) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                        <a href="{{ route('clinic.patients.profile', Crypt::encrypt($recentlyAddedPatients->id)) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
                                             View Patient Details
                                         </a>
                                         <a href="{{ route('clinic.dashboard') }}"
@@ -206,6 +213,58 @@
                             </div>
                         </div>
                         @endif
+                        @if (session('error'))
+                        <div
+                            x-data="{ show: true }"
+                            x-show="show"
+                            x-transition.opacity.duration.300ms
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            <!-- Modal content -->
+                            <div
+                                @click.outside="show = false"
+                                class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 text-center relative">
+                                <!-- Close button -->
+                                <button
+                                    @click="show = false"
+                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl leading-none">
+                                    &times;
+                                </button>
+                                <!-- Error Icon -->
+                                <div class="flex flex-col items-center justify-center gap-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="140"
+                                        viewBox="0 0 24 24" fill="#FF4B4B" stroke="white"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-alert-octagon">
+                                        <path d="M7.86 2h8.28l5.86 5.86v8.28L16.14 22H7.86L2 16.14V7.86z" />
+                                        <line x1="12" y1="8" x2="12" y2="12" />
+                                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                                    </svg>
+                                    <h2 class="text-2xl font-900 text-[#FF4B4B]">Transaction Failed</h2>
+                                    <p class="text-gray-800 font-bold text-sm mt-1">
+                                        Something went wrong while processing your request. Please try again or contact support.
+                                    </p>
+                                    <div class="flex flex-col gap-1 mt-4 text-sm">
+                                        <a href="{{ route('clinic.dashboard') }}"
+                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                            Return to Home Page
+                                        </a>
+                                        <a href="{{ route('clinic.patients') }}"
+                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                            Return to Patients List
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-end items-end w-full">
+                                        <button
+                                            @click="show = false"
+                                            class="mt-4 text-white bg-gray-600 font-semibold py-2 px-4 rounded-lg">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
 
                         <!-- Form Steps -->
                         <form id="multi-step-form" method="POST" action="{{ route('clinic.patients.register.pep.register') }}">
@@ -227,7 +286,7 @@
                             <div class="flex justify-end mt-6 gap-4">
                                 <button type="button" id="prevBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200  focus:outline-none focus:shadow-outline hidden">Previous</button>
                                 <button type="button" id="nextBtn" class="px-8 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline">Next</button>
-                                <button type="submit" id="submitBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
+                                <button type="submit" id="submitPePBtn" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:shadow-outline hidden">Submit</button>
                             </div>
                         </form>
 
@@ -293,7 +352,7 @@
                                 <input type="hidden" name="staff_id" :value="staff_id">
 
                                 <div class="flex flex-col gap-2">
-                                    <label for="password" class="font-bold">Password</label>
+                                    <label for="staff_password" class="font-bold">Password</label>
                                     <div class="flex justify-between items-center">
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_staff_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
@@ -380,7 +439,7 @@
                                 <input type="hidden" name="nurse_id" :value="nurse_id">
 
                                 <div class="flex flex-col gap-2">
-                                    <label for="password" class="font-bold">Password</label>
+                                    <label for="nurse_password" class="font-bold">Password</label>
                                     <div class="flex justify-between items-center">
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_nurse_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
@@ -410,7 +469,16 @@
                 </div>
             </div>
         </section>
-
+        <!-- Overlay -->
+        <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="text-white flex items-center">
+                <svg aria-hidden="true" role="status" class="inline w-6 h-6 mr-3 animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+                </svg>
+                <span>Processing...</span>
+            </div>
+        </div>
         <!-- Modals For Logout -->
         <x-logout-modal />
 </body>
@@ -421,7 +489,7 @@
     const form = document.getElementById("multi-step-form");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
-    const submitBtn = document.getElementById("submitBtn");
+    const submitPePBtn = document.getElementById("submitPePBtn");
 
     function showStep(step) {
         // Hide all steps
@@ -458,7 +526,7 @@
         // Toggle buttons
         prevBtn.classList.toggle("hidden", step === 1);
         nextBtn.classList.toggle("hidden", step === totalSteps);
-        submitBtn.classList.toggle("hidden", step !== totalSteps);
+        submitPePBtn.classList.toggle("hidden", step !== totalSteps);
     }
 
     function validateStep(step) {
@@ -498,6 +566,22 @@
 
         // Always validate final step before actual submit
         if (validateStep(5)) {
+
+            submitPePBtn.disabled = true;
+
+            // Show overlay
+            document.getElementById("overlay").classList.remove("hidden");
+
+            // Optional: change button text too
+            submitPePBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Processing...</span>
+        `;
+
+
             form.submit();
         }
     });

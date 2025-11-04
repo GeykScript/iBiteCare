@@ -23,7 +23,7 @@
             <div class="font-semibold 
                         @if(strtolower($item->stock_status) === 'in stock') text-green-500 
                         @elseif(strtolower($item->stock_status) === 'out of stock') text-red-500 
-                        @elseif(strtolower($item->stock_status) === 'low stock') text-yellow-500
+                        @elseif(strtolower($item->stock_status) === 'low stock') text-orange-500
                         @else text-gray-600     
                         @endif">
                 {{ $item->stock_status }}

@@ -66,6 +66,17 @@
         </button>
     </div>
     @endif
+    @if (session('error'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        class="w-full bg-red-100 border-2 rounded border-red-200 flex justify-between py-2 px-4 ">
+        <h1 class="text-md font-bold text-red-600">{{ session('error') }}</h1>
+        <button @click="show = false" class="text-lg font-bold text-red-600">
+            <i data-lucide="x"></i>
+        </button>
+    </div>
+    @endif
     <div class="overflow-x-auto md:overflow-hidden">
         <table class="min-w-full  text-sm mt-2 ">
             <thead class="bg-gray-100">
@@ -96,7 +107,7 @@
                     <td class="border px-2 py-2 text-gray-700">{{ $transaction->Service->name }}</td>
 
                     @php
-                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed)->item);
+                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed ?? null)->item);
                     $rig = optional(optional($transaction->immunizations->rigUsed)->item);
                     $antiTetanus = optional(optional($transaction->immunizations->antiTetanusUsed)->item);
 

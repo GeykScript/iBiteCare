@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title>
+    <title>Admin - {{ config('app.name') }}</title>
     <link rel="icon" href="{{ asset('drcare_logo.png') }}" type="image/png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,10 +20,14 @@
 
 <body>
     <div class="flex h-screen">
+
         <!-- Sidebar -->
-        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
-            <div class="absolute top-20 right-[-0.6rem]  md:hidden">
-                <button id="closeSidebar" class="text-white text-2xl">
+        <div id="sidebar"
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
+
+            <div class="absolute top-20 right-[-0.6rem] ">
+                <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
                     <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
                 </button>
             </div>
@@ -32,33 +36,34 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
-                <ul class="space-y-3">
-
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+                <ul class="space-y-0.5">
                     <li class="flex items-center px-2 mb-4 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
 
-                    <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
-                    <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
+                    <li><a href="{{ route('clinic.dashboard') }}" class="mt-3 block px-4 py-2 rounded hover:bg-gray-900 hover:text-white  flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Patient Management</p>
+                    <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
+                    <li><a href="{{ route('clinic.appointments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
-                    <li><a href="{{ route('clinic.transactions') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Clinic Management</p>
+                    <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
+                    <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
-            <div class="flex flex-col p-4 gap-2">
+            <div class="flex flex-col px-4 py-2 gap-2">
                 <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
@@ -72,6 +77,7 @@
                         Logout
                     </button>
                 </div>
+
             </div>
         </div>
         <!-- Main Content -->
@@ -188,10 +194,17 @@
                                                 <div class="flex gap-4 justify-start items-start">
                                                     <div class="flex flex-col gap-2 items-start font-semibold">
                                                         <p>Phone:</p>
+                                                        @if ($patient->email)
+                                                        <p>Email:</p>
+                                                        @endif
                                                         <p>Address:</p>
                                                     </div>
                                                     <div class="flex flex-col gap-2">
                                                         <p>{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
+
+                                                        @if ($patient->email)
+                                                        <p>{{ $patient->email}}</p>
+                                                        @endif
                                                         <p>{{ $patient->address }}</p>
                                                     </div>
                                                 </div>
@@ -347,7 +360,9 @@
 
                                                     @if (str_contains($serviceName, 'post'))
                                                     <td class="px-4 py-2 border">
-                                                        <a href="{{ route('clinic.patients.profile.immunization_info', [$immunization->id, $immunization->transaction_id]) }}"
+                                                        <a href="{{ route('clinic.patients.profile.immunization_info', [
+                                                            Crypt::encrypt($immunization->id), Crypt::encrypt($immunization->transaction_id)
+                                                        ]) }}"
                                                             target="_blank"
                                                             class="bg-sky-500 px-4 p-1 text-white font-bold rounded-lg hover:bg-sky-600">
                                                             View
@@ -443,8 +458,7 @@
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white ">Date of Transaction</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Service Received</th>
                                                     <th class="px-4 py-2 border  bg-gray-800 text-white">Administration Date</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Paid Amount</th>
-                                                    <th class="px-4 py-2 border  bg-gray-800 text-white ">Status</th>
+                                                    <th colspan="2" class="px-4 py-2 border  bg-gray-800 text-white">Vaccines Used</th>
                                                     <th colspan="2" class="px-4 py-2 border  bg-gray-800 text-white rounded-tr-lg flex flex-col"> In Charge <span class="text-xs">(Administration & Payment)</span></th>
                                                 </tr>
                                             </thead>
@@ -462,9 +476,28 @@
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
                                                     <td class="px-4 py-2 border">{{ $transaction->Service->name }}</td>
                                                     <td class="px-4 py-2 border">{{ date('F d, Y', strtotime($transaction->immunizations->date_given))}} </td>
-                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $transaction->paymentRecords->amount_paid }}
-                                                        </span></td>
-                                                    <td class="px-4 py-2 border-b"><span class="bg-green-500 px-2 p-1 text-white font-bold rounded-lg">{{ $transaction->immunizations->status }} </span></td>
+                                                    @php
+                                                    $vaccine = optional(optional($transaction->immunizations->vaccineUsed)->item);
+                                                    $rig = optional(optional($transaction->immunizations->rigUsed)->item);
+                                                    $antiTetanus = optional(optional($transaction->immunizations->antiTetanusUsed)->item);
+
+                                                    $items = [];
+
+                                                    if ($vaccine->brand_name) {
+                                                    $items[] = $vaccine->brand_name . ' (' . $vaccine->product_type . ')';
+                                                    }
+                                                    if ($rig->brand_name) {
+                                                    $items[] = $rig->brand_name . ' (' . $rig->product_type . ')';
+                                                    }
+                                                    if ($antiTetanus->brand_name) {
+                                                    $items[] = $antiTetanus->brand_name;
+                                                    }
+                                                    @endphp
+
+                                                    <td class="border px-2 py-2 text-gray-700" colspan="2">
+                                                        {{ implode(' - ', $items) }}
+                                                    </td>
+
                                                     <td class="px-4 py-2 border-b">{{ $transaction->immunizations->administeredBy->first_name }} {{ $transaction->immunizations->administeredBy->last_name }},
                                                         {{ $transaction->paymentRecords->receivedBy->first_name }} {{ $transaction->paymentRecords->receivedBy->last_name }}
                                                     </td>
@@ -551,10 +584,16 @@
                                             <path d="m6 9 6 6 6-6" />
                                         </svg>
                                     </button>
-
                                     <div>
                                         <div x-show="open" x-collapse class="overflow-x-auto shadow-lg px-20 flex flex-col gap-4 p-4">
-                                            <div x-data="{ showFirst: true }">
+                                            <a href="{{ route('clinic.patients.profile.vaccination_card', 
+                                            ['id' => Crypt::encrypt($transaction->patient_id), 'grouping' => Crypt::encrypt($transaction->id)]) }}"
+                                                target="_blank" class="flex items-center justify-end gap-1  text-blue-500 text-end hover:text-blue-600 font-semibold">
+                                                <span>Download</span>
+                                                <i data-lucide="download" class="w-5 h-5" style="stroke-width: 2.5;"></i>
+                                            </a>
+
+                                            <div class="hidden md:block" x-data="{ showFirst: true }">
                                                 <div x-show="showFirst" class="grid grid-cols-10 gap-2 border-2 border-gray-700 ">
                                                     <div class="col-span-5 bg-[#EB1C26] flex flex-col p-4">
                                                         <h1 class="text-center font-900 text-xl text-white">MGA DAPAT TANDAAN</h1>
@@ -576,7 +615,7 @@
                                                         <div class="w-full ">
                                                             <img src="{{ asset('images/vaccine-card-title.png') }}" alt="Title Logo">
                                                         </div>
-                                                        <h1 class="font-900 text-xl text-red-500">COVID-19 VACCINATION CARD</h1>
+                                                        <h1 class="font-900 text-xl text-red-500">VACCINATION CARD</h1>
                                                         <div class="w-full flex flex-col gap-2 px-2">
                                                             <h2 class="text-lg font-bold">Name: <span class="ml-2 font-normal">{{$transaction->Patient->first_name }} {{$transaction->Patient->last_name }}</span></h2>
                                                             <h2 class="text-lg font-bold">Age/Gender: <span class="ml-2 font-normal">{{$transaction->Patient->age }} / {{$transaction->Patient->sex }}</span></h2>
@@ -761,8 +800,29 @@
                                                                     IM
                                                                 </label>
                                                             </div>
-                                                            <h2 class="text-lg font-bold">Tetanus Toxoid: <span class="ml-2 font-normal">{{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}</span></h2>
-                                                            <h2 class="text-lg font-bold">RIG: <span class="ml-2 font-normal">{{ $transaction->immunizations->rigUsed->item->brand_name ?? '' }} - {{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}</span></h2>
+                                                            <h2 class="text-lg font-bold">
+                                                                Tetanus Toxoid:
+                                                                <span class="ml-2 font-normal">
+                                                                    @if(!empty($transaction->immunizations->antiTetanusUsed->item->brand_name) && !empty($transaction->immunizations->date_given))
+                                                                    {{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}
+                                                                    @else
+                                                                    N/A
+                                                                    @endif
+                                                                </span>
+                                                            </h2>
+
+                                                            <h2 class="text-lg font-bold">
+                                                                RIG:
+                                                                <span class="ml-2 font-normal">
+                                                                    @if(!empty($transaction->immunizations->rigUsed->item->brand_name) && !empty($transaction->immunizations->date_given))
+                                                                    {{ $transaction->immunizations->rigUsed->item->brand_name }} -
+                                                                    {{ date('F d, Y', strtotime($transaction->immunizations->date_given)) }}
+                                                                    @else
+                                                                    N/A
+                                                                    @endif
+                                                                </span>
+                                                            </h2>
+
                                                         </div>
 
                                                     </div>
@@ -784,14 +844,20 @@
                                                                         <th class="px-4 py-2 border">DAY</th>
                                                                         <th class="px-4 py-2 border">DATE</th>
                                                                         <th class="px-4 py-2 border">DOSE</th>
-                                                                        <th class="px-4 py-2 border">SIGNATURE</th>
+                                                                        <th class="px-4 py-2 border">NURSE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @forelse ($schedules->where('service_id', 2) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border">
+                                                                            @if ($schedule->date_completed)
+                                                                            {{$schedule->date_completed}}
+                                                                            @else
+                                                                            {{ $schedule->scheduled_date }}
+                                                                            @endif
+                                                                        </td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -838,14 +904,20 @@
                                                                         <th class="px-4 py-2 border">DAY</th>
                                                                         <th class="px-4 py-2 border">DATE</th>
                                                                         <th class="px-4 py-2 border">DOSE</th>
-                                                                        <th class="px-4 py-2 border">SIGNATURE</th>
+                                                                        <th class="px-4 py-2 border">NURSE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @forelse ($schedules->where('service_id', 1) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border">
+                                                                            @if ($schedule->date_completed)
+                                                                            {{$schedule->date_completed}}
+                                                                            @else
+                                                                            {{ $schedule->scheduled_date }}
+                                                                            @endif
+                                                                        </td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -904,14 +976,20 @@
                                                                         <th class="px-4 py-2 border">DAY</th>
                                                                         <th class="px-4 py-2 border">DATE</th>
                                                                         <th class="px-4 py-2 border">DOSE</th>
-                                                                        <th class="px-4 py-2 border">SIGNATURE</th>
+                                                                        <th class="px-4 py-2 border">NURSE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @forelse ($schedules->where('service_id', 3) as $schedule)
                                                                     <tr>
                                                                         <td class="px-4 py-2 border">{{ $schedule->Day }}</td>
-                                                                        <td class="px-4 py-2 border">{{ $schedule->scheduled_date }}</td>
+                                                                        <td class="px-4 py-2 border">
+                                                                            @if ($schedule->date_completed)
+                                                                            {{$schedule->date_completed}}
+                                                                            @else
+                                                                            {{ $schedule->scheduled_date }}
+                                                                            @endif
+                                                                        </td>
                                                                         <td class="px-4 py-2 border"> @if (!is_null($schedule->dose))
                                                                             {{ rtrim(rtrim(number_format($schedule->dose, 2, '.', ''), '0'), '.') }} ml
                                                                             @endif
@@ -956,13 +1034,13 @@
                                                         class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                                                         <i data-lucide="chevron-right"></i>
                                                     </button>
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
+
                                 @endif
                                 @endforeach
                                 @if (!$hasVaccine)
@@ -1096,25 +1174,24 @@
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
                                         <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
                                         <div class="flex gap-5 items-center">
-                                            @if ($patient->sex == 'Male')
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                                <input type="radio" name="sex" value="Male"
+                                                    class="text-sky-500 focus:ring-sky-500"
+                                                    {{ $patient->sex == 'Male' ? 'checked' : '' }}>
                                                 <span>Male</span>
                                             </label>
-                                            @elseif ($patient->sex == 'Female')
+
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
+                                                <input type="radio" name="sex" value="Female"
+                                                    class="text-pink-500 focus:ring-pink-500"
+                                                    {{ $patient->sex == 'Female' ? 'checked' : '' }}>
                                                 <span>Female</span>
                                             </label>
-                                            @endif
-
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- contact number  -->
                                 <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
-
                                     <!-- phone number  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
@@ -1137,6 +1214,23 @@
                                                 placeholder="e.g. 09xx xxx xxxx"
                                                 maxlength="13"
                                                 value="{{  $patient->contact_number }}"
+                                                class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                        </div>
+                                    </div>
+                                    <div class="col-span-4 md:col-span-2 flex flex-col  gap-2">
+                                        @if ($errors->has('email'))
+                                        <label for="email" class="text-sm font-semibold flex justify-between items-center w-full">Personal Email:
+                                            <span class="text-red-500 text-xs" id="email-error">
+                                                {{ $errors->first('email') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="email" class="text-sm font-semibold ">Personal Email:
+                                            <span class="text-red-500 text-xs" id="email-error">*</span>
+                                        </label>
+                                        @endif
+                                        <div class="w-full flex items-center gap-4">
+                                            <i data-lucide="mail"></i>
+                                            <input type="email" name="email" placeholder="example@gmail.com" value="{{  $patient->email }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
@@ -1252,6 +1346,14 @@
         <!-- Modals For Logout -->
         <x-logout-modal />
 </body>
+@if ($errors->any())
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('EditPatientProfile').showModal();
+    });
+</script>
+@endif
+
 
 <script>
     const tabButtons = document.querySelectorAll(".tab-btn");

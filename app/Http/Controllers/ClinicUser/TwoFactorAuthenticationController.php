@@ -25,7 +25,7 @@ class TwoFactorAuthenticationController extends Controller
         }
     }
 
-       
+    
     // function to send the verification code
     public function send_code(Request $request){
 

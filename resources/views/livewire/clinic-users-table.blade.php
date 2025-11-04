@@ -35,9 +35,9 @@
                     </div>
 
                     <!-- Label -->
-                    <label class="text-sm font-medium text-gray-900 md:block hidden">
+                    <p class="text-sm font-medium text-gray-900 md:block hidden">
                         entries per page
-                    </label>
+                    </p>
                 </div>
             </div>
 
@@ -50,6 +50,7 @@
                     <input
                         wire:model.live.debounce.300ms="search"
                         type="text"
+                        name="search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full h-full pl-12 p-2 "
                         placeholder="Search" required="">
                 </div>
@@ -237,28 +238,28 @@
                     <!-- FIRST NAME -->
                     <div class="col-span-12 md:col-span-5">
                         <p for="first_name" class="text-sm font-semibold">First Name:</p>
-                        <h1 name="first_name" x-text="user.first_name"
+                        <h1 name="first_name" id="first_name" x-text="user.first_name"
                             class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 uppercase "></h1>
                     </div>
 
                     <!-- LAST NAME -->
                     <div class="col-span-12 md:col-span-5">
                         <p for="last_name" class="text-sm font-semibold">Last Name:</p>
-                        <h1 name="last_name" x-text="user.last_name"
+                        <h1 name="last_name" id="last_name" x-text="user.last_name"
                             class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 uppercase "></h1>
                     </div>
 
                     <!-- MIDDLE INITIAL -->
                     <div class="col-span-6 md:col-span-1">
                         <p for="middle_initial" class="text-sm font-semibold">M.I:</p>
-                        <h1 name="middle_initial" x-text="user.middle_initial"
+                        <h1 name="middle_initial" id="middle_initial" x-text="user.middle_initial"
                             class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 uppercase "></h1>
                     </div>
 
                     <!-- SUFFIX -->
                     <div class="col-span-6 md:col-span-1">
                         <p for="suffix" class="text-sm font-semibold">Suffix:</p>
-                        <h1 name="suffix" x-text="user.suffix"
+                        <h1 name="suffix" id="suffix" x-text="user.suffix"
                             class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 uppercase "></h1>
                     </div>
                 </div>
@@ -268,19 +269,19 @@
                     <!-- date of birth  -->
                     <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
                         <p for="date_of_birth" class="text-sm font-semibold">Date of Birth:</p>
-                        <h1 name="date_of_birth" x-text="user.date_of_birth"
+                        <h1 name="date_of_birth" id="date_of_birth" x-text="user.date_of_birth"
                             class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 uppercase "></h1>
                     </div>
                     <!-- age  -->
                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
                         <p for="age" class=" text-sm font-bold text-gray-800">Age</p>
-                        <h1 name="age" x-text="user.age"
+                        <h1 name="age" id="age" x-text="user.age"
                             class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 uppercase "></h1>
                     </div>
                     <!-- gender  -->
                     <div class="col-span-6 md:col-span-3 flex flex-col gap-1">
                         <p class="text-sm font-bold text-gray-800">Gender </p>
-                        <h1 name="gender" x-text="user.gender"
+                        <h1 name="gender" id="gender" x-text="user.gender"
                             class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 uppercase "></h1>
                     </div>
                 </div>
@@ -315,7 +316,7 @@
 
                 <!-- address label  -->
                 <div class="col-span-12  ">
-                    <label for="address" class="text-xl font-bold text-gray-800">Address</label>
+                    <p class="text-xl font-bold text-gray-800">Address</p>
                 </div>
 
                 <div class="col-span-12 flex items-center gap-2 ">

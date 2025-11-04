@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title>
+    <title>Admin - {{ config('app.name') }}</title>
     <link rel="icon" href="{{ asset('drcare_logo.png') }}" type="image/png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,10 +22,14 @@
 <body>
     <div class="flex h-screen">
 
+
         <!-- Sidebar -->
-        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
-            <div class="absolute top-20 right-[-0.6rem]  md:hidden">
-                <button id="closeSidebar" class="text-white text-2xl">
+        <div id="sidebar"
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
+
+            <div class="absolute top-20 right-[-0.6rem] ">
+                <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
                     <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
                 </button>
             </div>
@@ -34,33 +38,34 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
-                <ul class="space-y-3">
-
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+                <ul class="space-y-0.5">
                     <li class="flex items-center px-2 mb-4 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
 
-                    <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
-                    <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
+                    <li><a href="{{ route('clinic.dashboard') }}" class="mt-3 block px-4 py-2 rounded hover:bg-gray-900 hover:text-white  flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Patient Management</p>
+                    <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
+                    <li><a href="{{ route('clinic.appointments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Clinic Management</p>
+                    <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
-            <div class="flex flex-col p-4 gap-2">
+            <div class="flex flex-col px-4 py-2 gap-2">
                 <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
@@ -127,23 +132,23 @@
                                 <!-- clinic role radio inputs  -->
                                 <div class="col-span-12 flex flex-col gap-2 mt-3">
                                     <p>Select the role for the new user</p>
-                                    <label for="address" class="text-md font-bold text-gray-800">Clinic Role: <span class="text-red-500" id="role-error">*</span></label>
+                                    <p class="text-md font-bold text-gray-800">Clinic Role: <span class="text-red-500" id="role-error">*</span></p>
                                     <div class="flex gap-7 md:px-6">
                                         <!-- admin role -->
-                                        <label class="flex items-center space-x-2">
+                                        <p class="flex items-center space-x-2">
                                             <input type="radio" name="role" value="1" class="text-red-500 focus:ring-red-500" required {{ old('role') == '1' ? 'checked' : '' }}>
                                             <span>Admin</span>
-                                        </label>
+                                        </p>
                                         <!-- nurse role  -->
-                                        <label class="flex items-center space-x-2">
+                                        <p class="flex items-center space-x-2">
                                             <input type="radio" name="role" value="2" class="text-green-600 focus:ring-green-600" {{ old('role') == '2' ? 'checked' : '' }}>
                                             <span>Nurse</span>
-                                        </label>
+                                        </p>
                                         <!-- staff role  -->
-                                        <label class="flex items-center space-x-2">
+                                        <p class="flex items-center space-x-2">
                                             <input type="radio" name="role" value="3" class="text-sky-600 focus:ring-sky-600" {{ old('role') == '3' ? 'checked' : '' }}>
                                             <span>Staff</span>
-                                        </label>
+                                        </p>
                                     </div>
                                 </div>
 
@@ -212,6 +217,7 @@
                                             oninput="this.value = this.value.toUpperCase()"
                                             title="Only  letters are allowed"
                                             value="{{ old('first_name') }}"
+                                            autocomplete="first_name"
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
                                     </div>
 
@@ -295,16 +301,16 @@
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
+                                        <p class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></p>
                                         <div class="flex gap-5 items-center">
-                                            <label class="flex items-center space-x-2">
-                                                <input type="radio" name="gender" value="male"
+                                            <label for="gender-male" class="flex items-center space-x-2">
+                                                <input type="radio" name="gender" id="gender-male" value="male"
                                                     class="text-sky-500 focus:ring-sky-500"
                                                     required {{ old('gender') == 'male' ? 'checked' : '' }}>
                                                 <span>Male</span>
                                             </label>
-                                            <label class="flex items-center space-x-2">
-                                                <input type="radio" name="gender" value="female"
+                                            <label for="gender_female" class="flex items-center space-x-2">
+                                                <input type="radio" name="gender" id="gender_female" value="female"
                                                     class="text-pink-500 focus:ring-pink-500"
                                                     {{ old('gender') == 'female' ? 'checked' : '' }}>
                                                 <span>Female</span>
@@ -332,7 +338,7 @@
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}"
+                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email') }}" autocomplete="email"
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
@@ -368,7 +374,7 @@
 
                                 <!-- address label  -->
                                 <div class="col-span-12 p-2 ">
-                                    <label for="address" class="text-xl font-bold text-gray-800">Address</label>
+                                    <p for="address" class="text-xl font-bold text-gray-800">Address</p>
                                 </div>
 
                                 <!-- region, province, city, barangay, purok div  -->
@@ -433,7 +439,7 @@
                                             <!-- purok  -->
                                             <div class="col-span-4 md:col-span-2 ">
                                                 <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
-                                                <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                                <input type="text" name="description" id="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                             </div>
                                         </div>
                                     </div>
@@ -444,7 +450,7 @@
 
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
+                                    <button type="submit" id="submitNewAccountBtn" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Create Account
                                     </button>
                                     <button type="button" onclick="document.getElementById('newClinicUserModal').close()"
@@ -483,7 +489,6 @@
                             @method('PUT')
 
                             <input type="hidden" name="id" x-model="user.id">
-
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
                                 <div class="col-span-12 flex items-center justify-center">
                                     <div class="flex items-center justify-center gap-4 ">
@@ -531,7 +536,7 @@
                                         <label for="update_first_name" class="text-sm font-semibold ">First Name:
                                         </label>
                                         @endif
-                                        <input type="text" name="update_first_name"
+                                        <input type="text" name="update_first_name" id="update_first_name"
                                             placeholder="First Name"
                                             :value="user.first_name"
                                             :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
@@ -553,7 +558,7 @@
                                         </label>
                                         @endif
 
-                                        <input type="text" name="update_last_name" placeholder="Last Name"
+                                        <input type="text" name="update_last_name" placeholder="Last Name" id="update_last_name"
                                             :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             pattern="[A-Za-z]+( [A-Za-z]+)*"
 
@@ -574,7 +579,7 @@
                                         </label>
                                         @endif
 
-                                        <input type="text" name="update_middle_initial" placeholder="M.I" maxlength="3"
+                                        <input type="text" name="update_middle_initial" id="update_middle_initial" placeholder="M.I" maxlength="3"
                                             pattern="[A-Z]\."
                                             oninput="this.value = this.value.toUpperCase()"
                                             title="Only one letter followed by a period is allowed (e.g., M.)"
@@ -586,7 +591,7 @@
                                     <!-- SUFFIX -->
                                     <div class="col-span-6 md:col-span-1">
                                         <label for="update_suffix" class="text-sm font-semibold">Suffix: </label>
-                                        <input type="text" id="update_suffix" name="update_suffix" placeholder="E.g., Jr."
+                                        <input type="text" id="update_suffix" name="update_suffix" placeholder="E.g., Jr." id="update_suffix"
                                             pattern="[A-Za-z]{1,5}"
                                             maxlength="5"
                                             title="Only letters are allowed, max 5 characters (e.g., Jr, Sr, III)"
@@ -626,7 +631,7 @@
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error"></span></label>
+                                        <p class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error"></span></p>
                                         <div class="flex gap-5 items-center">
 
                                             <label class="flex items-center space-x-2">
@@ -657,7 +662,7 @@
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="update_email" placeholder="example@gmail.com" :value="user.email" id="update-email"
+                                            <input type="email" name="update_email" id="update_email" placeholder="example@gmail.com" :value="user.email" id="update-email"
                                                 :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                                 class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
@@ -667,13 +672,13 @@
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
                                         <div class="w-full flex items-center">
                                             @if (session('update_errors') && session('update_errors')->has('update_contact_number'))
-                                            <label for="update_contact_number" class="text-sm font-semibold flex justify-between items-center w-full">Phone Number:
+                                            <label for="update-contact-number" class="text-sm font-semibold flex justify-between items-center w-full">Phone Number:
                                                 <span class="text-red-500 text-xs" id="update-contact-number-error">
                                                     {{ session('update_errors')->first('update_contact_number') }}
                                                     *</span>
                                             </label>
                                             @else
-                                            <label for="update_contact_number" class="text-sm font-semibold ">Phone Number:
+                                            <label for="update-contact-number" class="text-sm font-semibold ">Phone Number:
                                                 <span class="text-red-500 text-xs" id="update-contact-number-error">*</span>
                                             </label>
                                             @endif
@@ -681,7 +686,7 @@
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="phone-call"></i>
-                                            <input type="tel" id="update-contact_number" name="update_contact_number"
+                                            <input type="tel" id="update-contact-number" name="update_contact_number"
                                                 placeholder="e.g. 09xx xxx xxxx"
                                                 maxlength="13"
                                                 :value="user.phone"
@@ -694,7 +699,7 @@
                                 <div class="col-span-12 border-2 border-gray-100"></div>
                                 <!-- address label  -->
                                 <div class="col-span-12 p-2 ">
-                                    <label for="address" class="text-xl font-bold text-gray-800">Address</label>
+                                    <p class="text-xl font-bold text-gray-800">Address</p>
                                 </div>
                                 <div class="col-span-12 flex items-center gap-2 p-2">
                                     <i data-lucide="map-pin"></i>
@@ -810,7 +815,7 @@
 
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
+                                    <button type="submit" id="submitUpdateBtn" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Save Changes
                                     </button>
 
@@ -885,6 +890,32 @@
 
 
 <script>
+    const submitNewAccountBtn = document.getElementById("submitNewAccountBtn");
+    document.getElementById('create_account_form').addEventListener('submit', function() {
+        submitNewAccountBtn.disabled = true;
+        submitNewAccountBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Loading...</span>
+        `;
+
+    });
+
+    const submitUpdateBtn = document.getElementById("submitUpdateBtn");
+    document.getElementById('updateProfileForm').addEventListener('submit', function() {
+        submitUpdateBtn.disabled = true;
+        submitUpdateBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Loading...</span>
+        `;
+
+    });
+
     async function regenerateAccountId() {
         let response = await fetch("/clinic-users/generate-id");
         let data = await response.json();

@@ -21,9 +21,13 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
-        'patient_id',
         'email',
+        'auth_provider',
+        'auth_provider_id',
+        'email_verified_at',
         'password',
+        'two_factor_code',
+        'remember_token',
     ];
 
     /**

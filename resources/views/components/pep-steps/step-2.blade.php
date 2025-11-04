@@ -32,20 +32,20 @@
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-4">
                                 <div class="flex justify-between items-center">
-                                    <label class="mb-2 text-sm font-bold text-gray-900 block">Type of Exposure </label>
+                                    <p class="mb-2 text-sm font-bold text-gray-900 block">Type of Exposure </p>
                                     <p id="error_exposure" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
                                 </div>
                                 <div class="flex items-center space-x-6 p-2 ">
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="exposure" value="Bite" required
+                                    <p class="flex items-center space-x-2">
+                                        <input type="radio" id="exposure_bite" name="exposure" value="Bite" required
                                             class="text-sky-500 focus:ring-sky-500">
-                                        <span>Bite</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="exposure" value="Non-Bite"
+                                        <label for="exposure_bite">Bite</label>
+                                    </p>
+                                    <p class="flex items-center space-x-2">
+                                        <input type="radio" id="exposure_non_bite" name="exposure" value="Non-Bite"
                                             class="text-sky-500 focus:ring-sky-500">
-                                        <span>Non-Bite</span>
-                                    </label>
+                                        <label for="exposure_non_bite">Non-Bite</label>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -58,22 +58,22 @@
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-4">
                                 <div class="flex justify-between items-center">
-                                    <label class="mb-2 text-sm font-bold text-gray-900 block">Bite Category</label>
+                                    <p class="mb-2 text-sm font-bold text-gray-900 block">Bite Category</p>
                                     <p id="error_bite_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
                                 <div class="flex flex-col md:flex-row items-center justify-center md:space-x-6 p-2 ">
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="bite_category" value="2"
+                                    <p class="flex items-center space-x-2">
+                                        <input type="radio" name="bite_category" id="category2" value="2"
                                             class="text-red-500 focus:ring-red-500"
                                             onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
-                                        <span>Category 2</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="bite_category" value="3"
+                                        <label for="category2">Category 2</label>
+                                    </p>
+                                    <p class="flex items-center space-x-2">
+                                        <input type="radio" name="bite_category" id="category3" value="3"
                                             class="text-red-500 focus:ring-red-500"
                                             onchange="document.getElementById('biteCategoryInput').value=this.value; checkCategory();">
-                                        <span>Category 3</span>
-                                    </label>
+                                        <label for="category3">Category 3</label>
+                                    </p>
                                     <input type="hidden" id="pep_immunization_type" name="pep_immunization_type" value="">
                                     <input type="hidden" id="biteCategoryInput" value="">
                                 </div>
@@ -85,7 +85,7 @@
                         <div class="grid grid-cols-4 gap-2">
                             <div class="col-span-4 md:col-span-4">
                                 <div class="flex justify-between items-center">
-                                    <label class="mb-2 text-sm font-bold text-gray-900 block">Bite Management</label>
+                                    <p class="mb-2 text-sm font-bold text-gray-900 block">Bite Management</p>
                                     <p id="error_bite_management" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                 </div>
                                 <div class="flex flex-col p-2 gap-2 ">

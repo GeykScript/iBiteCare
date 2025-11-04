@@ -101,7 +101,7 @@
                             </label>
                         </div>
                         <div class="flex flex-col mt-3">
-                            <label class=" mb-2 text-sm font-bold text-gray-900">If Done <span class="text-gray-500 text-xs"> ( Please specify if applicable )</span></label>
+                            <p class="mb-2 text-sm font-bold text-gray-900">If Done <span class="text-gray-500 text-xs"> ( Please specify if applicable )</span></p>
                             <p id="error_brain_exam_location" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                             <div class="flex items-center gap-2 mb-2">
                                 <label for="brain_exam_location" class=" mb-2 text-sm font-bold text-gray-900">Location:</label>

@@ -33,9 +33,9 @@
                         </ul>
                     </div>
                     <!-- Label -->
-                    <label class="text-sm font-medium text-gray-900 md:block hidden">
+                    <p class="text-sm font-medium text-gray-900 md:block hidden">
                         entries per page
-                    </label>
+                    </p>
                 </div>
             </div>
         </div>
@@ -157,7 +157,9 @@
                             @click="$dispatch('open-remove-modal', { id: {{ $item->id }} })"
                             class="text-red-500 hover:underline flex items-center underline-offset-4 ">
                             <img src="{{ asset('images/trash.svg') }}" alt="Trash icon" class="w-4 h-4 inline">
-                            Dispose
+                            <span class="hidden md:block">
+                                Dispose
+                            </span>
                         </button>
                     </div>
                 </td>

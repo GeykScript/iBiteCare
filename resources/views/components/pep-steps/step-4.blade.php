@@ -1,7 +1,7 @@
 <div id="step-4" class="step hidden ">
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-2">
-            <div class="col-span-12 md:col-span-6 md:px-4">
+            <div class="col-span-12 md:col-span-6 md:px-4" id="anti_tetanus_section">
                 <h2 class="md:text-lg text-gray-700 font-900 mb-2"> Anti-Tetanus Immunization</h2>
                 <div class="grid grid-cols-6 ">
                     <div class="col-span-6 md:col-span-3 px-4">
@@ -559,8 +559,10 @@
     function checkCategory() {
         const pep_immunization_type = document.getElementById("pep_immunization_type");
         const passiveSection = document.getElementById("passive_section");
+        const antiTetanuSection = document.getElementById("anti_tetanus_section");
         const category = document.getElementById("biteCategoryInput").value;
         const inputs = passiveSection.querySelectorAll("input, select, textarea, button");
+        const antiTetanuInputs = antiTetanuSection.querySelectorAll("input, select, textarea, button");
 
 
         if (category === "2") {
@@ -572,6 +574,10 @@
                 el.disabled = true;
                 el.required = false;
                 el.value = ""; // optional: clear old values
+            });
+            // remove required from anti tetanus inputs
+            antiTetanuInputs.forEach(el => {
+                el.required = false;
             });
 
         } else if (category === "3") {
@@ -585,6 +591,10 @@
                 if (el.hasAttribute("data-required")) {
                     el.required = true;
                 }
+            });
+            // add required to anti tetanus inputs
+            antiTetanuInputs.forEach(el => {
+                el.required = true;
             });
         }
     }

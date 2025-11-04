@@ -1,22 +1,70 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\PasswordSetupController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PatientSchedules;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/faqs', function () {
+    return view('faqs');
+})->name('faqs');
+
+Route::get('/terms-and-conditions', function () {
+    return view('terms-condition');
+})->name('terms-and-conditions');
+
+Route::get('/developers', function () {
+    return view('developers');
+})->name('developers');
+
+Route::controller(SocialiteController::class)->group(function(){
+    Route::get('auth/{provider}', 'redirect')->name('auth.provider');
+    Route::get('auth/{provider}/callback', 'callback')->name('auth.provider-callback');
+});
+
+Route::get('/set-password', [PasswordSetupController::class, 'showForm'])->name('set.password');
+Route::post('/set-password', [PasswordSetupController::class, 'store'])->name('set.password.store');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/booking/slots', [BookingController::class, 'getAvailableSlots'])->name('booking.slots');
+    Route::post('/book/{id}/cancel', [BookingController::class, 'cancel']);
+    Route::post('/book/{id}/reschedule', [BookingController::class, 'reschedule']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/schedules', [PatientSchedules::class, 'index'])->name('schedules.index');
+    Route::get('/schedules/verify', [PatientSchedules::class, 'showVerificationForm'])->name('schedules.verifyForm');
+    Route::post('/schedules/send-otp', [PatientSchedules::class, 'sendOtpEmail'])->name('patient.schedules.sendOtp');
+    Route::post('/schedules/verify-otp', [PatientSchedules::class, 'verifyOtp'])->name('patient.schedules.verifyOtp');
+    Route::get('/schedules/vaccination_card/{id}/{grouping}',[PatientSchedules::class, 'pdfVaccinationCard'])->name('schedule.vaccination_card');
+
+    //ADVISORY ROUTE
+    Route::get('/frequently-asked-questions', function () {
+        return view('advisory');
+    })->name('advisory');
+    
+});
+
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 require __DIR__.'/auth.php';
 
@@ -27,6 +75,7 @@ use App\Http\Controllers\Auth\ClinicUser\ClinicUserAuthController;
 Route::middleware('guest.clinic')->group(function () {
     Route::get('/clinic/login', [ClinicUserAuthController::class, 'showLoginForm'])
         ->name('clinic.login');
+        
     Route::post('/clinic/login', [ClinicUserAuthController::class, 'store'])
         ->name('clinic.login.store');
 }); 
@@ -55,18 +104,25 @@ use App\Http\Controllers\ClinicUser\Services;
 use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
 use App\Http\Controllers\ClinicUser\MessagesController;
+use App\Http\Controllers\ClinicUser\AppointmentController;
 
 use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\OtherRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PepRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\PrepRegistration;
-use App\Http\Controllers\ClinicUser\StaffNurseVerificationController;
+use App\Http\Controllers\ClinicUser\StaffNurseVerificationController;use App\Http\Controllers\PatientTwoFactorAuthenticationController;
+use App\Http\Controllers\PatientForgotPasswordController;
+use App\Http\Controllers\PatientUpdatePasswordController;
+use App\Models\Patient;
 
 Route::middleware('auth:clinic_user')->group(function () {
     
     Route::get('/clinic/dashboard', [DashboardController::class, 'index'])
         ->name('clinic.dashboard');
+
+    Route::get('/clinic/chart-data', [DashboardController::class, 'getChartData'])->name('clinic.chartData');
+
 
     Route::post('/clinic/logout', function () {
         Auth::guard('clinic_user')->logout();
@@ -85,6 +141,10 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::get('/clinic/patients/immunization_info/{id}/{transaction_id}', [PatientsController::class, 'viewImmunizationDetails'])
         ->name('clinic.patients.profile.immunization_info');
+
+    Route::get('/clinic/patients/vaccination_card/{id}/{grouping}',[PatientsController::class, 'pdfVaccinationCard']
+    )->name('clinic.patients.profile.vaccination_card');
+
 
     Route::get('/clinic/patients/transactions/{id}', [PatientTransactionsController::class, 'index'])
         ->name('clinic.patients.transactions');
@@ -168,12 +228,37 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::get('/clinic/messages', [MessagesController::class, 'index'])
         ->name('clinic.messages');
 
-    Route::post('/clinic/messages/send', [MessagesController::class, 'sendMessage'])
-        ->name('clinic.messages.send');
+    Route::post('/clinic/messages/send', [MessagesController::class, 'sendSingleMessage'])
+        ->name('clinic.messages.single.send');
+
+    Route::post('/clinic/messages/send-all', [MessagesController::class, 'sendAllMessages'])
+        ->name('clinic.messages.all.send');
+    Route::post('/clinic/messages/send-new', [MessagesController::class, 'sendNewMessage'])
+        ->name('clinic.messages.new.send');
+
     //----------------END-----------------------//
 
+
+    // CLINIC REPORTS PAGES ---------------------------
     Route::get('/clinic/reports', [ReportsController::class, 'index'])
         ->name('clinic.reports');
+
+    Route::get('/clinic/revenue-chart-data', [ReportsController::class, 'getRevenueChartData'])->name('clinic.revenueChartData');
+
+    Route::get('/clinic-user/reports/guinobatan/pdf', [ReportsController::class, 'reportGuinobatan'])->name('clinic.reports.guinobatan.pdf');
+    Route::get('/clinic-user/reports/albay/pdf', [ReportsController::class, 'reportAlbay'])->name('clinic.reports.albay.pdf');
+    Route::get('/report/albay/csv', [ReportsController::class, 'exportAlbayExcel'])->name('clinic.reports.albay.excel');
+    Route::get('/report/guinobatan/csv', [ReportsController::class, 'exportGuinobatanExcel'])->name('clinic.reports.guinobatan.excel');
+    
+    Route::get('/clinic-user/reports/revenue-expense/pdf', [ReportsController::class, 'reportRevenueExpenses'])->name('clinic.reports.revenue-expense.pdf');
+    Route::get('/report/revenue/csv', [ReportsController::class, 'exportRevenueExcel'])->name('clinic.reports.revenue.excel');
+
+    Route::get('/clinic-user/reports/inventory/pdf', [ReportsController::class, 'reportInventory'])->name('clinic.reports.inventory.pdf');
+    Route::get('/report/inventory/csv', [ReportsController::class, 'exportInventoryExcel'])->name('clinic.reports.inventory.excel');
+
+    //----------------END-----------------------//
+
+
 
     //CLINIC USER PROFILES PAGES
     Route::get('/clinic/profile', [ClinicUserProfileController::class, 'index'])
@@ -252,6 +337,21 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.transactions');
     //-----------------END-----------------------//
 
+
+    // CLINIC APPOINTMENTS ---------------------------//
+    Route::get('/clinic/appointments', [AppointmentController::class, 'index'])
+        ->name('clinic.appointments');
+
+    Route::post('/clinic/appointments/book', [AppointmentController::class, 'bookAppointment'])
+        ->name('clinic.appointments.book');
+
+    Route::post('/clinic/appointments/reschedule', [AppointmentController::class, 'reschedule'])
+        ->name('clinic.appointments.reschedule');
+    
+    Route::post('/clinic/appointments/change-status', [AppointmentController::class, 'changeStatus'])
+        ->name('clinic.appointments.change-status');
+    //-----------------END-----------------------//
+
 }); 
 //---------CLINIC LOGIN FORGOT PASSOWORD --------------------------
 Route::get('/clinic/two-factor/{id}', [TwoFactorAuthenticationController::class, 'index'])
@@ -272,6 +372,27 @@ Route::get('/clinic/update-password/{id}', [UpdatePasswordController::class, 'up
     
 Route::post('/clinic/update-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('clinic.update-password.update');
+
+
+// Patient Forgot Password
+Route::get('/patient/two-factor/{id}', [PatientTwoFactorAuthenticationController::class, 'index'])
+    ->name('patient.two-factor');
+
+Route::post('/patient/two-factor/send', [PatientTwoFactorAuthenticationController::class, 'send_code'])
+    ->name('patient.two-factor.send_code');
+
+Route::post('/patient/two-factor/verify', [PatientTwoFactorAuthenticationController::class, 'verify'])
+    ->name('patient.two-factor.verify');
+
+Route::get('/patient/forgot-password', [PatientForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('patient.forgot-password');
+
+
+Route::get('/patient/update-password/{id}', [PatientUpdatePasswordController::class, 'updatePasswordForm'])
+    ->name('patient.update-password');
+    
+Route::post('/patient/update-password', [PatientUpdatePasswordController::class, 'updatePassword'])
+    ->name('patient.update-password.update');
 
 
     //--------------------------END----------------------------------------------//

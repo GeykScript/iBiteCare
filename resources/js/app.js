@@ -53,7 +53,12 @@ import {
         Boxes,
         StretchHorizontal,
         User,
-        CircleCheck
+        CircleCheck,
+        Send,
+        SendHorizontal,
+        FileSpreadsheet,
+        Sheet,
+        Download
     } 
      from 'lucide';
 
@@ -108,76 +113,69 @@ createIcons({
     Boxes,
     StretchHorizontal,
     User,
-    CircleCheck
+    CircleCheck,
+    Send,
+    SendHorizontal,
+    FileSpreadsheet,
+    Sheet,
+    Download
   }
 }); 
 
 
-// Sidebar toggle functionality
-const sidebar = document.getElementById('sidebar');
-const mainContent = document.getElementById('mainContent');
-const toggleSidebar = document.getElementById('toggleSidebar');
-const closeSidebar = document.getElementById('closeSidebar');
+document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("toggleSidebar");
+    const closeButton = document.getElementById("closeSidebar");
+    const mainContent = document.getElementById("mainContent");
 
-// Create overlay for mobile
-let overlay = document.getElementById('sidebarOverlay');
-if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'sidebarOverlay';
-    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-40 hidden';
-    document.body.appendChild(overlay);
-}
+    // If not all elements exist, stop running
+    if (!sidebar || !toggleButton || !closeButton || !mainContent) return;
 
-// Detect screen size
-function isMobile() {
-    return window.innerWidth < 768;
-}
+    const toggleSidebar = () => {
+        const isHidden = sidebar.classList.contains("-translate-x-full");
 
-// Open and close sidebar functions
-function openSidebar() {
-    sidebar.classList.remove('hidden');
-    if (isMobile()) {
-        overlay.classList.remove('hidden');
-        mainContent.classList.remove('md:ml-56');
-    } else {
-        mainContent.classList.add('md:ml-56');
-    }
-}
+        if (window.innerWidth >= 768) {
+            sidebar.classList.toggle("hidden");
+            mainContent.classList.toggle("md:ml-56");
+            closeButton.classList.toggle("hidden", sidebar.classList.contains("hidden"));
+        } else {
+            sidebar.classList.toggle("-translate-x-full");
+            sidebar.classList.toggle("translate-x-0");
+            closeButton.classList.toggle("hidden", !isHidden);
+        }
+    };
 
-function closeSidebarFunc() {
-    sidebar.classList.add('hidden');
-    overlay.classList.add('hidden');
-    mainContent.classList.remove('md:ml-56');
-}
+    toggleButton.addEventListener("click", toggleSidebar);
 
-// Event listeners for toggling sidebar
-toggleSidebar.addEventListener('click', () => {
-    if (sidebar.classList.contains('hidden')) {
-        openSidebar();
-    } else {
-        closeSidebarFunc();
-    }
+    closeButton.addEventListener("click", () => {
+        if (window.innerWidth < 768) {
+            sidebar.classList.add("-translate-x-full");
+            sidebar.classList.remove("translate-x-0");
+        } else {
+            sidebar.classList.add("hidden");
+            mainContent.classList.remove("md:ml-56");
+        }
+        closeButton.classList.add("hidden");
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth >= 768) {
+            sidebar.classList.remove("-translate-x-full", "translate-x-0", "hidden");
+            mainContent.classList.add("md:ml-56");
+            closeButton.classList.add("hidden");
+        } else {
+            sidebar.classList.add("-translate-x-full");
+            sidebar.classList.remove("hidden");
+            mainContent.classList.remove("md:ml-56");
+            closeButton.classList.add("hidden");
+        }
+    });
 });
 
-// Event listeners for closing sidebar
-closeSidebar.addEventListener('click', closeSidebarFunc);
-overlay.addEventListener('click', closeSidebarFunc);
-
-// Update sidebar visibility based on screen size
-function updateSidebarState() {
-    if (isMobile()) {
-        sidebar.classList.add('hidden');
-        overlay.classList.add('hidden');
-        mainContent.classList.remove('md:ml-56');
-    } else {
-        sidebar.classList.remove('hidden');
-        overlay.classList.add('hidden');
-        mainContent.classList.add('md:ml-56');
-    }
-}
-
-// Initial check for sidebar state
-window.addEventListener('load', updateSidebarState);
-window.addEventListener('resize', updateSidebarState);
-
-
+            function setVh() {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+            setVh();
+            window.addEventListener('resize', setVh);

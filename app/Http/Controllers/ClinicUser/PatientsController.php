@@ -15,6 +15,11 @@ use App\Models\PatientImmunizations;
 use App\Models\PatientImmunizationsSchedule;
 use App\Models\PaymentRecords;
 use App\Models\ClinicServices;
+use App\Mail\VaccinationCardMail;
+use COM;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Crypt;
 
 class PatientsController extends Controller
 {
@@ -34,6 +39,7 @@ class PatientsController extends Controller
 
 
     public function viewProfile($id){
+        $id = Crypt::decrypt($id);
         $clinicUser = Auth::guard('clinic_user')->user();
 
         if (!$clinicUser) {
@@ -75,9 +81,33 @@ class PatientsController extends Controller
             })
             ->sortByDesc('transaction_date');
 
-
-
         return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules'));
+    }
+
+
+    public function pdfVaccinationCard($id,$grouping){
+        $id = Crypt::decrypt($id);
+        $grouping = Crypt::decrypt($grouping);
+        $patient = Patient::find($id);
+        $transactions2 = ClinicTransactions::with(['patient', 'service', 'paymentRecords', 'immunizations', 'patientExposures', 'patientSchedules'])
+            ->where('patient_id', $id)
+            ->where('id', $grouping)
+            ->orderBy('transaction_date', 'asc')
+            ->get()
+            ->groupBy('grouping')
+            ->map(function ($group) {   
+                $first = $group->first();
+                // merge all schedules from this grouping
+                $first->allSchedules = $group->flatMap->patientSchedules;
+                return $first;
+            })
+            ->sortByDesc('transaction_date');
+
+        $pdf = Pdf::loadView('ClinicUser.pdf.pdf-vaccination-card', compact('transactions2'))
+            ->setPaper([0, 0, 612, 936], 'portrait');
+
+        $fileName = 'Vaccination_Card_' . $patient->first_name . '_' . $patient->last_name . '.pdf';
+        return $pdf->stream($fileName);
     }
 
 
@@ -91,7 +121,9 @@ class PatientsController extends Controller
             'last_name'      => 'required|string|max:255',
             'middle_initial' => 'nullable|string|max:10',
             'suffix'         => 'nullable|string|max:50',
+            'sex'            => 'nullable|string|max:10',
             'contact_number' => 'required|string|max:20',
+            'email'          => 'required|email|max:255|unique:registered_patients,email,' . $request->id,
             'province'       => 'nullable|string|max:255',
             'city'           => 'nullable|string|max:255',
             'barangay'       => 'nullable|string|max:255',
@@ -115,17 +147,17 @@ class PatientsController extends Controller
 
         // Build address
         if (
-            empty($request->barangay) &&
-            empty($request->city) &&
             empty($request->province) &&
+            empty($request->city) &&
+            empty($request->barangay) &&
             empty($request->description)
         ) {
             $address = $patient_user->address; // keep old address
         } else {
             $parts = array_filter([
-                $request->barangay,
-                $request->city,
                 $request->province,
+                $request->city,
+                $request->barangay,
                 $request->description,
             ]);
             $address = implode(', ', $parts);
@@ -138,6 +170,8 @@ class PatientsController extends Controller
             'middle_initial' => Str::upper($request->middle_initial),
             'suffix'         => $suffix,
             'contact_number' => $request->contact_number,
+            'email'          => $request->email,
+            'sex'            => $request->sex,
             'address'        => $address,
         ];
 
@@ -161,6 +195,8 @@ class PatientsController extends Controller
 
 
     public function viewImmunizationDetails($id, $transaction_id){
+        $id = Crypt::decrypt($id);
+        $transaction_id = Crypt::decrypt($transaction_id);
         $clinicUser = Auth::guard('clinic_user')->user();
 
         if (!$clinicUser) {

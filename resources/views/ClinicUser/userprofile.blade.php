@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title>
+    <title>Admin - {{ config('app.name') }}</title>
     <link rel="icon" href="{{ asset('drcare_logo.png') }}" type="image/png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -24,10 +24,14 @@
 <body>
     <div class="flex h-screen">
 
+
         <!-- Sidebar -->
-        <div class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 hidden " id="sidebar">
-            <div class="absolute top-20 right-[-0.6rem]  md:hidden">
-                <button id="closeSidebar" class="text-white text-2xl">
+        <div id="sidebar"
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
+
+            <div class="absolute top-20 right-[-0.6rem] ">
+                <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
                     <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
                 </button>
             </div>
@@ -36,33 +40,34 @@
                 <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
             </div>
             <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 md:py-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
-                <ul class="space-y-3">
-
+            <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
+                <ul class="space-y-0.5">
                     <li class="flex items-center px-2 mb-4 block md:hidden">
                         <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
                         <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
                     </li>
 
-                    <li><a href="{{ route('clinic.dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Patient Management</p>
-                    <li><a href="{{ route('clinic.patients') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="#" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
+                    <li><a href="{{ route('clinic.dashboard') }}" class="mt-3 block px-4 py-2 rounded hover:bg-gray-900 hover:text-white  flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Patient Management</p>
+                    <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
+                    <li><a href="{{ route('clinic.appointments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
                     <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">Clinic Management</p>
-                    <li><a href="{{ route('clinic.supplies') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Clinic Management</p>
+                    <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
                     <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
 
-                    <p class="text-xs font-bold text-gray-600 mt-4 uppercase">User Management</p>
+                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
+                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
                     <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
+                    @endif
                 </ul>
             </nav>
-            <div class="flex flex-col p-4 gap-2">
+            <div class="flex flex-col px-4 py-2 gap-2">
                 <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
                     <i data-lucide="circle-user" class="w-6 h-6"></i>
                     <div class="flex flex-col items-center">
@@ -259,6 +264,7 @@
                                         <input type="text" id="first_name" name="first_name"
                                             placeholder="First Name"
                                             value="{{ ( $clinicUser->first_name) }}"
+                                            autocomplete="given-name"
                                             class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:border-sky-300 uppercase">
                                     </div>
 
@@ -342,16 +348,16 @@
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <label class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></label>
+                                        <p class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></p>
                                         <div class="flex gap-5 items-center">
                                             @if ($clinicUser->info->gender == 'Male')
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-sky-500 focus:ring-sky-500">
+                                                <input type="radio" name="gender" id="gender-male" value="male" checked disabled class="text-sky-500 focus:ring-sky-500">
                                                 <span>Male</span>
                                             </label>
                                             @elseif ($clinicUser->info->gender == 'Female')
                                             <label class="flex items-center space-x-2">
-                                                <input type="radio" checked disabled class="text-pink-500 focus:ring-pink-500">
+                                                <input type="radio" name="gender" id="gender-female" value="female" checked disabled class="text-pink-500 focus:ring-pink-500">
                                                 <span>Female</span>
                                             </label>
                                             @endif
@@ -380,7 +386,7 @@
                                         </div>
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="email" placeholder="example@gmail.com" value="{{ old('email', $clinicUser->email) }}"
+                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email', $clinicUser->email) }}" autocomplete="email"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
@@ -416,7 +422,7 @@
 
                                 <!-- address label  -->
                                 <div class="col-span-12 p-2 ">
-                                    <label for="address" class="text-xl font-bold text-gray-800">Address</label>
+                                    <p class="text-xl font-bold text-gray-800">Address</p>
                                 </div>
 
                                 <div class="col-span-12 flex items-center gap-2 p-2">
@@ -492,7 +498,7 @@
                                             <div class="col-span-4 md:col-span-2 ">
                                                 <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-500" id="description-error">*</span></label>
                                                 <button id="description_btn" type="button" class="hidden"> </button>
-                                                <input type="text" name="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                                <input type="text" name="description" id="description" placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                             </div>
                                         </div>
                                     </div>

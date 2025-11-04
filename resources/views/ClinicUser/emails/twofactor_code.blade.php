@@ -13,29 +13,22 @@
         <div style="background:#EB1C24; padding: 25px 35px; text-align:center;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                 <tr>
-                    <!-- Left Logo -->
-                    <td align="start" style="width:25%;">
-                        <!-- CHANGE THIS IN PRODUCITON  -->
-
-                        <img src="{{ $message->embed(public_path('drcare_logo.png')) }}" alt="Clinic Logo" style="height:120px; margin-bottom:10px; display:block;">
-                        <!-- <img src="{{ url('drcare_logo.png') }}" alt="Clinic Logo" style="height:120px; margin-bottom:10px; display:block;"> -->
-                    </td>
-
+            
                     <!-- Right Column -->
                     <td align="start" style="width:100%; vertical-align:middle;">
                         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                             <tr>
                                 <td>
-                                    <h2 style="margin:0; color:#ffffff; font-size:50px; font-family: 'Geologica', sans-serif; font-weight:900; text-shadow: 1px 1px 4px rgba(0,0,0,0.4);">
-                                        Dr. Care
+                                    <h2 style="margin:0; color:#ffffff; font-size:35px; font-family: 'Geologica', sans-serif; font-weight:900; text-shadow: 1px 1px 4px rgba(0,0,0,0.4);">
+                                        Dr. Care Animal Bite Center
                                     </h2>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding-top:5px;">
-                                    <!-- CHANGE THIS IN PRODUCITON  -->
-                                    <img src="{{ $message->embed(public_path('images/guinobatan.png')) }}" alt="Clinic Logo" style="height:30px; margin-bottom:10px; display:block;">
-                                    <!-- <img src="{{ url('images/guinobatan.png') }}" alt="Clinic Logo" style="height:30px; margin-bottom:10px; display:block;"> -->
+                                <td style="padding-top:5px; text-align:center;">
+                                    <p style="margin:0; color:#ffffff; font-size:16px; font-weight:600; font-family:'Segoe UI', Arial, sans-serif;">
+                                        Guinobatan Branch
+                                    </p>
                                 </td>
                             </tr>
                         </table>
@@ -43,6 +36,7 @@
                 </tr>
             </table>
         </div>
+
 
         <!-- Body -->
         <div style="padding:30px; color:#374151; font-size:15px; line-height:1.6;">

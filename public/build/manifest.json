@@ -1,0 +1,87 @@
+{
+  "__commonjsHelpers-Cpj98o6Y.js": {
+    "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
+    "name": "_commonjsHelpers"
+  },
+  "_index-D_oLRT9X.js": {
+    "file": "assets/index-D_oLRT9X.js",
+    "name": "index",
+    "imports": [
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ]
+  },
+  "_index-ngrFHoWO.js": {
+    "file": "assets/index-ngrFHoWO.js",
+    "name": "index"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DE16u-an.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/address.js": {
+    "file": "assets/address-DfWlxbe-.js",
+    "name": "address",
+    "src": "resources/js/address.js",
+    "isEntry": true,
+    "imports": [
+      "_index-D_oLRT9X.js",
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ]
+  },
+  "resources/js/address2.js": {
+    "file": "assets/address2-CSGmiezh.js",
+    "name": "address2",
+    "src": "resources/js/address2.js",
+    "isEntry": true,
+    "imports": [
+      "_index-D_oLRT9X.js",
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ]
+  },
+  "resources/js/alpine.js": {
+    "file": "assets/alpine-CoCVS0U6.js",
+    "name": "alpine",
+    "src": "resources/js/alpine.js",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-B2Cq-kiR.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_index-ngrFHoWO.js"
+    ]
+  },
+  "resources/js/bootstrap.js": {
+    "file": "assets/bootstrap-9aYweeFC.js",
+    "name": "bootstrap",
+    "src": "resources/js/bootstrap.js",
+    "isEntry": true,
+    "imports": [
+      "_index-ngrFHoWO.js"
+    ]
+  },
+  "resources/js/chart.js": {
+    "file": "assets/chart-B8fD0XiA.js",
+    "name": "chart",
+    "src": "resources/js/chart.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ]
+  },
+  "resources/js/datetime.js": {
+    "file": "assets/datetime-BzGORJok.js",
+    "name": "datetime",
+    "src": "resources/js/datetime.js",
+    "isEntry": true
+  },
+  "resources/js/registeraddress.js": {
+    "file": "assets/registeraddress-l0sNRNKZ.js",
+    "name": "registeraddress",
+    "src": "resources/js/registeraddress.js",
+    "isEntry": true
+  }
+}

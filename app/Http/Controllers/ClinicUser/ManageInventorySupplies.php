@@ -9,12 +9,13 @@ use App\Models\Inventory_stock;
 use App\Models\Inventory_units;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Crypt;
 
 class ManageInventorySupplies extends Controller
 {
     public function index($id)
     {
+        $id = Crypt::decrypt($id);
         $inventoryItem = Inventory_items::findOrFail($id);
         $inventoryRecords = Inventory::findOrFail($id);
         $clinicUser = Auth::user();

@@ -33,9 +33,9 @@
                         </ul>
                     </div>
                     <!-- Label -->
-                    <label class="text-sm font-medium text-gray-900 md:block hidden">
+                    <p class="text-sm font-medium text-gray-900 md:block hidden">
                         entries per page
-                    </label>
+                    </p>
                 </div>
             </div>
 
@@ -48,6 +48,7 @@
                     <input
                         wire:model.live.debounce.300ms="search"
                         type="text"
+                        name="search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full h-full pl-12 p-2 "
                         placeholder="Search" required="">
                 </div>
@@ -75,7 +76,6 @@
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('patient')">Patient Name</th>
                     <th class="border bg-gray-800 text-white px-2 py-2 hover:cursor-pointer" wire:click="setSortBy('service')">Service Provided</th>
                     <th class="border bg-gray-800 text-white px-2 py-2" colspan="3">Immunizations Used </th>
-                    <th class="border bg-gray-800 text-white px-2 py-2">Paid Amount</th>
                     <!-- <th class="border bg-gray-800 text-white px-2 py-2 ">Status</th> -->
                     <th colspan="2" class="px-2 py-2 border-l border-b bg-gray-800 text-white rounded-tr-lg ">In Charge <br><span class="text-xs font-normal">(Administration & Payment)</span></th>
                 </tr>
@@ -119,7 +119,6 @@
                     </td>
 
 
-                    <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo" class="w-3 h-3">{{ $transaction->paymentRecords->amount_paid }}</span> </td>
                     <!-- <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-4 p-1 text-green-500 font-bold rounded-md">Paid</span></td> -->
                     <td class="border-b px-2 py-2 text-gray-700">{{ $transaction->immunizations->administeredBy->first_name }} {{ $transaction->immunizations->administeredBy->last_name }},
                         {{ $transaction->paymentRecords->receivedBy->first_name }} {{ $transaction->paymentRecords->receivedBy->last_name }}
