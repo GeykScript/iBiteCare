@@ -112,7 +112,7 @@
 
         <!-- Navigation Links -->
         <div id="navbar-dr-care"
-            class="hidden absolute top-full left-0 z-50 w-full  flex-col items-start rounded-b-lg bg-red-50 md:bg-white border-t md:static md:flex md:flex-row md:items-center  md:w-auto md:border-0">
+            class="hidden absolute top-full left-0 z-50 w-full  flex-col items-start rounded-b-lg bg-white border-t md:static md:flex md:flex-row md:items-center  md:w-auto md:border-0">
             <ul
                 class="flex flex-col w-full font-medium  p-4 md:p-0 md:flex-row md:space-x-14 lg:text-lg">
                 <li><a href="#home" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
