@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="col-span-12 md:col-span-7 flex justify-end ">
+            <div class="col-span-12 md:col-span-7 flex md:justify-end ">
 
                 <div class="grid grid-cols-7 gap-4">
                     <!-- filter  -->

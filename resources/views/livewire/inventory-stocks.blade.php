@@ -81,7 +81,7 @@
                 <td class="border px-2 py-2 text-gray-700">{{ $stock->items_per_package }} {{$stock->unit_type}}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ $stock->total_units }} {{ $stock->unit_type }}</td>
                 <td class="border px-2 py-2 text-gray-700">{{ $stock->total_remaining_units }} {{ $stock->unit_type }}</td>
-                <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo"class="w-3 h-3">{{ $stock->total_package_amount }}</span> </td>
+                <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center "><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo"class="w-3 h-3">{{ $stock->total_package_amount }}</span> </td>
                 <td class="border px-2 py-2 text-gray-700">{{ \Carbon\Carbon::parse($stock->restock_date)->format('M d, Y h:i A') }}</td>
                 <td class="border-b px-2 py-2 text-gray-700">{{ $stock->supplier }}</td>
             </tr>

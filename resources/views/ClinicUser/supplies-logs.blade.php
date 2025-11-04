@@ -113,7 +113,7 @@
                 </div>
 
                 <div class="grid grid-cols-12">
-                    <div class="col-span-1 flex items-center justify-center">
+                    <div class="col-span-1 flex items-center justify-center px-10 md:px-0">
                         <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                     </div>
                 </div>

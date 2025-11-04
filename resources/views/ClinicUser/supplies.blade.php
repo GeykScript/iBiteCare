@@ -305,8 +305,11 @@
                         </form>
                     </dialog>
 
-                    <!-- livewire/patient-table.php -->
-                    <livewire:inventory-records-table />
+                    <div class="col-span-7 md:col-span-4">
+                        <!-- livewire/patient-table.php -->
+                        <livewire:inventory-records-table />
+                    </div>
+
                 </div>
             </div>
         </section>

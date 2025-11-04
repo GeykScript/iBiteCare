@@ -28,8 +28,8 @@
                     <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
                 </a>
             </div>
-            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-8  ">
-                <div class="flex flex-col justify-start overflow-y-auto scrollbar-hidden h-full">
+            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-4 md:p-8  ">
+                <div class="flex flex-col justify-start overflow-y-auto scrollbar-hidden h-full px-4">
                     <div class="flex items-end justify-between md:px-8">
                         <div class="flex items-center justify-end md:mt-6 mt-2 text-sm text-gray-400 ">
                             <p class="hover:text-red-500 font-900">iBiteCare<sup>+</sup></p>

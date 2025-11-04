@@ -14,6 +14,8 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
     @endif
 </head>
@@ -171,41 +173,27 @@
                                                     class="w-full h-full text-gray-100 [stroke-width:1.55]"></i>
                                             </div>
                                             <div class="flex flex-col  gap-4">
-                                                <div class="flex gap-2 italic text-sm items-end justify-end">
+                                                <div class="flex gap-2 italic text-xs md:text-sm items-end justify-end">
                                                     <p>Registration Date:</p>
                                                     <p>{{ date('F d, Y', strtotime($patient->registration_date)) }}</p>
                                                 </div>
                                                 <div class="border-2 border-gray-50"></div>
                                                 <div class="flex gap-4 justify-start items-start">
-                                                    <div class="flex flex-col items-start gap-2 font-semibold">
-                                                        <p>Name:</p>
-                                                        <p>Birthdate:</p>
-                                                        <p>Gender:</p>
-                                                        <p>Age:</p>
-                                                    </div>
-                                                    <div class="flex flex-col gap-2">
-                                                        <p>{{ $patient->first_name }} {{ $patient->middle_initial }} {{ $patient->last_name }} {{$patient->suffix}} </p>
-                                                        <p>{{ date('F d, Y', strtotime($patient->birthdate)) }}</p>
-                                                        <p>{{ $patient->sex }}</p>
-                                                        <p>{{ $patient->age }} yrs old</p>
+                                                    <div class="flex flex-col items-start gap-2 font-normal">
+                                                        <p><span class="font-semibold">Name:</span> {{ $patient->first_name }} {{ $patient->middle_initial }} {{ $patient->last_name }} {{$patient->suffix}} </p>
+                                                        <p><span class="font-semibold">Birthdate:</span> {{ date('F d, Y', strtotime($patient->birthdate)) }}</p>
+                                                        <p><span class="font-semibold">Gender:</span> {{ $patient->sex }}</p>
+                                                        <p><span class="font-semibold">Age:</span> {{ $patient->age }} yrs old</p>
                                                     </div>
                                                 </div>
                                                 <div class="border-2 border-gray-50"></div>
                                                 <div class="flex gap-4 justify-start items-start">
-                                                    <div class="flex flex-col gap-2 items-start font-semibold">
-                                                        <p>Phone:</p>
+                                                    <div class="flex flex-col gap-2 items-start font-normal">
+                                                        <p><span class="font-semibold">Phone:</span> {{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
                                                         @if ($patient->email)
-                                                        <p>Email:</p>
+                                                        <p><span class="font-semibold">Email:</span> {{ $patient->email}}</p>
                                                         @endif
-                                                        <p>Address:</p>
-                                                    </div>
-                                                    <div class="flex flex-col gap-2">
-                                                        <p>{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
-
-                                                        @if ($patient->email)
-                                                        <p>{{ $patient->email}}</p>
-                                                        @endif
-                                                        <p>{{ $patient->address }}</p>
+                                                        <p><span class="font-semibold">Address:</span> {{ $patient->address }}</p>
                                                     </div>
                                                 </div>
 

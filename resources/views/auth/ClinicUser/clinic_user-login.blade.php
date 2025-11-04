@@ -26,8 +26,8 @@
                     <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
                 </a>
             </div>
-            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-8 ">
-                <div class="flex flex-col justify-between h-full  overflow-y-auto scrollbar-hidden">
+            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-4 md:p-8 ">
+                <div class="flex flex-col justify-between h-full  overflow-y-auto scrollbar-hidden px-4">
                     <div class="flex items-end justify-end md:px-8">
                         <div id="datetime" class="md:text-md text-sm text-gray-700 font-bold"></div>
                     </div>
