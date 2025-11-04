@@ -26,7 +26,8 @@
 
         <!-- Sidebar -->
         <div id="sidebar"
-            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 transform -translate-x-full md:translate-x-0 ">
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
 
             <div class="absolute top-20 right-[-0.6rem] ">
                 <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
@@ -82,6 +83,7 @@
 
             </div>
         </div>
+
         <!-- Main Content -->
         <section id="mainContent" class="flex-1 ml-0 md:ml-56 h-full   ">
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
