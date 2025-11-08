@@ -81,7 +81,10 @@ class PatientsController extends Controller
             })
             ->sortByDesc('transaction_date');
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules'));
+        $emails = Patient::all()->pluck('email')->toArray();
+
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules','emails'));
     }
 
 
@@ -181,7 +184,7 @@ class PatientsController extends Controller
         // Check if any changes exist
         if ($oldUserData == $newUserData) {
             return redirect()
-                ->route('clinic.patients.profile', ['id' => $patient_user->id])
+                ->route('clinic.patients.profile', ['id' => Crypt::encrypt($patient_user->id)])
                 ->with('profile-success', 'No changes made.');
         }
 
@@ -189,7 +192,7 @@ class PatientsController extends Controller
         $patient_user->update($newUserData);
 
         return redirect()
-            ->route('clinic.patients.profile', ['id' => $patient_user->id])
+            ->route('clinic.patients.profile', ['id' => Crypt::encrypt($patient_user->id)])
             ->with('profile-success', 'User account updated successfully!');
     }
 

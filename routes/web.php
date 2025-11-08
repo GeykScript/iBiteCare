@@ -269,6 +269,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/password', [PasswordController::class, 'update'])
         ->name('clinic.password.update');
+
+    Route::get('/clinic/user-manual', [ClinicUserProfileController::class, 'userManual'])
+        ->name('clinic.user-manual');
     //----------------END-----------------------//
         
     // CLINIC USER ACCOUNTS ---------------------------
@@ -393,6 +396,8 @@ Route::get('/patient/update-password/{id}', [PatientUpdatePasswordController::cl
     
 Route::post('/patient/update-password', [PatientUpdatePasswordController::class, 'updatePassword'])
     ->name('patient.update-password.update');
+
+
 
 
     //--------------------------END----------------------------------------------//

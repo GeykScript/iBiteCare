@@ -20,9 +20,11 @@
 
 <body>
     <div class="flex h-screen">
+
         <!-- Sidebar -->
         <div id="sidebar"
-            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 transform -translate-x-full md:translate-x-0 ">
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
 
             <div class="absolute top-20 right-[-0.6rem] ">
                 <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
@@ -257,7 +259,7 @@
                             <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
 
                             <!-- Step 1: Personal Details -->
-                            <x-prep-steps.step-1 />
+                            <x-prep-steps.step-1 :emails="$emails" />
                             <!-- Step 4:  Immunizations -->
                             <x-prep-steps.step-2 :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :nurses="$nurses" />
                             <!-- Step 5: Payment -->
@@ -322,7 +324,8 @@
 
                                                 } else {
                                                     document.querySelector('#error_staff_password').classList.remove('hidden');
-                                                    document.querySelector('#staff_password').classList.add('border-red-500');
+                                                    document.querySelector('#staff_password').classList.add('border-red-500', 'bg-white', 'focus:border-red-500', 'focus:ring-red-500');
+
 
                                                 }
                                             })
@@ -337,12 +340,14 @@
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_staff_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
                                     </div>
-                                    <input
+                                    <!-- <input
                                         type="password"
                                         id="staff_password"
                                         name="staff_password"
                                         class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                                        required>
+                                        required> -->
+                                    <x-password-input id="staff_password" name="staff_password" required class="mt-1" />
+
                                 </div>
                                 <div class="mt-4 flex justify-end gap-2">
                                     <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
@@ -409,7 +414,8 @@
 
                                                 } else {
                                                     document.querySelector('#error_nurse_password').classList.remove('hidden');
-                                                    document.querySelector('#nurse_password').classList.add('border-red-500');
+                                                    document.querySelector('#nurse_password').classList.add('border-red-500', 'bg-white', 'focus:border-red-500', 'focus:ring-red-500');
+
 
                                                 }
                                             })
@@ -424,12 +430,13 @@
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_nurse_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
                                     </div>
-                                    <input
+                                    <!-- <input
                                         type="password"
                                         id="nurse_password"
                                         name="nurse_password"
                                         class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                                        required>
+                                        required> -->
+                                    <x-password-input id="nurse_password" name="nurse_password" required class="mt-1" />
                                 </div>
                                 <div class="mt-4 flex justify-end gap-2">
                                     <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">

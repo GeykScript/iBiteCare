@@ -55,7 +55,10 @@ class PrepRegistration extends Controller
 
         $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
 
-        return view('ClinicUser.RegisterPatient.register-prep', compact('clinicUser', 'pvrvVaccines', 'pcecVaccines', 'nurses', 'staffs', 'service_fee', 'prepService', 'recentlyAddedPatients'));
+        $emails = Patient::all()->pluck('email')->toArray();
+
+
+        return view('ClinicUser.RegisterPatient.register-prep', compact('clinicUser', 'pvrvVaccines', 'pcecVaccines', 'nurses', 'staffs', 'service_fee', 'prepService', 'recentlyAddedPatients', 'emails'));
     }
 
   

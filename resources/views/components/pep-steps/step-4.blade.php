@@ -14,7 +14,7 @@
                         <p id="error_anti_tetanus_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                         <div class="flex  items-center justify-center gap-4 p-2">
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="anti_tetanus_dose_given" value="TT1" required
+                                <input type="radio" name="anti_tetanus_dose_given" id="anti_tetanus_dose_given" value="TT1" required
                                     class="text-red-500 focus:ring-red-500">
                                 <span>TT1</span>
                             </label>
@@ -36,7 +36,7 @@
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Anti-Tetanus Vaccine</h2>
                         <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine', volume: null }" class="relative">
                             <!-- Hidden input to store the selected id -->
-                            <input type="hidden" name="anti_tetanus_vaccine_id" required x-model="selected">
+                            <input type="hidden" name="anti_tetanus_vaccine_id" id="anti_tetanus_vaccine_id" required x-model="selected">
                             <!-- Button / Display -->
                             <button type="button"
                                 @click="open = !open"
@@ -559,11 +559,12 @@
     function checkCategory() {
         const pep_immunization_type = document.getElementById("pep_immunization_type");
         const passiveSection = document.getElementById("passive_section");
-        const antiTetanuSection = document.getElementById("anti_tetanus_section");
         const category = document.getElementById("biteCategoryInput").value;
         const inputs = passiveSection.querySelectorAll("input, select, textarea, button");
-        const antiTetanuInputs = antiTetanuSection.querySelectorAll("input, select, textarea, button");
-
+        const anti_tetanus_dose_given = document.getElementById("anti_tetanus_dose_given");
+        const anti_tetanus_vaccine_id = document.getElementById("anti_tetanus_vaccine_id");
+        const anti_tetanus_date_dose_given = document.getElementById("anti_tetanus_date_dose_given");
+        const anti_dose_given = document.getElementById("anti_dose_given");
 
         if (category === "2") {
             // Hide and disable all inputs
@@ -575,10 +576,13 @@
                 el.required = false;
                 el.value = ""; // optional: clear old values
             });
-            // remove required from anti tetanus inputs
-            antiTetanuInputs.forEach(el => {
-                el.required = false;
-            });
+            anti_tetanus_dose_given.required = false;
+            anti_tetanus_vaccine_id.required = false;
+            anti_dose_given.required = false;
+            anti_tetanus_date_dose_given.value = "";
+            anti_tetanus_date_dose_given.required = false;
+
+
 
         } else if (category === "3") {
             // Show and enable all inputs
@@ -592,12 +596,16 @@
                     el.required = true;
                 }
             });
-            // add required to anti tetanus inputs
-            antiTetanuInputs.forEach(el => {
-                el.required = true;
-            });
+            anti_tetanus_dose_given.required = true;
+            anti_tetanus_vaccine_id.required = true;
+            anti_dose_given.required = true;
+            anti_tetanus_date_dose_given.required = true;
+
         }
     }
+
+
+
 
 
     function dateOfTransactionToday() {

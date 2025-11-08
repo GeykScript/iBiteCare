@@ -17,7 +17,9 @@ class ClinicUserProfileController extends Controller
     {
         $clinicUser = Auth::guard('clinic_user')->user();
 
-        return view('ClinicUser.userprofile', compact('clinicUser'));
+        $emails = ClinicUser::all()->pluck('email')->toArray();
+
+        return view('ClinicUser.userprofile', compact('clinicUser', 'emails'));
     }
 
 
@@ -106,5 +108,9 @@ class ClinicUserProfileController extends Controller
         ]);
 
         return redirect()->route('clinic.profile')->with('profile-success', 'User account updated successfully!');
+    }
+
+    public function userManual(){
+        return view('ClinicUser.manual');
     }
 }

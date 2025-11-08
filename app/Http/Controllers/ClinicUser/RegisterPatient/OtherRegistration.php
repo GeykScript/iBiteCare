@@ -44,9 +44,12 @@ class OtherRegistration extends Controller
             ->get();
         $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
 
+        $emails = Patient::all()->pluck('email')->toArray();
 
 
-        return view('ClinicUser.RegisterPatient.register-other', compact('clinicUser', 'services', 'vaccines', 'nurses', 'staffs', 'recentlyAddedPatients'));
+
+
+    return view('ClinicUser.RegisterPatient.register-other', compact('clinicUser', 'services', 'vaccines', 'nurses', 'staffs', 'recentlyAddedPatients', 'emails'));
     }
 
     public function registerPatientOther(RegisterOtherRequest $request){

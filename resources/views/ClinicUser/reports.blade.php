@@ -23,10 +23,11 @@
 <body>
     <div class="flex h-screen">
 
+
         <!-- Sidebar -->
         <div id="sidebar"
-            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 transform -translate-x-full md:translate-x-0 ">
-
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
             <div class="absolute top-20 right-[-0.6rem] ">
                 <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
                     <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
@@ -158,7 +159,7 @@
                                     </div>
 
                                     <!-- Service Type Filter -->
-                                    <div class="col-span-3 md:col-span-3">
+                                    <div class="col-span-2 md:col-span-3">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="serviceFilter" value="all">
                                             <button
@@ -189,7 +190,7 @@
                                     </div>
 
                                     <!-- Age Filter -->
-                                    <div class="col-span-1 md:col-span-1">
+                                    <div class="col-span-2 md:col-span-1">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="ageFilter" value="all">
                                             <button
@@ -208,8 +209,8 @@
                                             <div x-show="open" @click.outside="open = false" @click="open = false"
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
-                                                    <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All
-                                                            Ages</button></li>
+                                                    <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All Ages
+                                                            </button></li>
                                                     <li><button data-value="0-17" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">0-17</button></li>
                                                     <li><button data-value="18-64" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">18-64</button></li>
                                                     <li><button data-value="65+" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">65+</button></li>

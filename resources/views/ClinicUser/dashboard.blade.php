@@ -167,7 +167,7 @@
                                     </div>
 
                                     <!-- Service Type Filter -->
-                                    <div class="col-span-3 md:col-span-2">
+                                    <div class="col-span-2 md:col-span-2">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="serviceFilter" value="all">
                                             <button
@@ -198,7 +198,7 @@
                                     </div>
 
                                     <!-- Age Filter -->
-                                    <div class="col-span-1 md:col-span-1">
+                                    <div class="col-span-2 md:col-span-1">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="ageFilter" value="all">
                                             <button
@@ -217,8 +217,8 @@
                                             <div x-show="open" @click.outside="open = false" @click="open = false"
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
-                                                    <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All
-                                                            Ages</button></li>
+                                                    <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All Ages
+                                                            </button></li>
                                                     <li><button data-value="0-17" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">0-17</button></li>
                                                     <li><button data-value="18-64" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">18-64</button></li>
                                                     <li><button data-value="65+" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">65+</button></li>
@@ -328,7 +328,7 @@
                                                     <p class="text-xs font-normal text-gray-500">Visited on: {{ $transaction->getDateOnlyAttribute() }}</p>
                                                 </div>
                                             </div>
-                                            <a href="{{ route('clinic.patients.profile', $transaction->Patient->id) }}" class="flex items-center justify-center text-sky-600">
+                                            <a href="{{ route('clinic.patients.profile', Crypt::encrypt($transaction->Patient->id)) }}" class="flex items-center justify-center text-sky-600">
                                                 <i data-lucide="chevron-right" class="w-5 h-5 hover:text-sky-800"></i>
                                             </a>
                                         </div>

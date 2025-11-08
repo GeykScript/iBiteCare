@@ -96,7 +96,7 @@
                     <td class="border px-2 py-2 text-gray-700">{{ $paymentRecord->patient->first_name }} {{ $paymentRecord->patient->middle_initial }} {{ $paymentRecord->patient->last_name }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $paymentRecord->transaction->service->name }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $paymentRecord->receipt_number }}</td>
-                    <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center gap-2"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo" class="w-3 h-3">{{ $paymentRecord->amount_paid }}</span> </td>
+                    <td class="border px-2 py-2 text-gray-700 "><span class="flex items-center"><img src="{{asset('images/philippine-peso.svg')}}" alt="Peso logo" class="w-3 h-3">{{ $paymentRecord->amount_paid }}</span> </td>
                     <td class="border px-2 py-2 text-gray-700">{{ date('F d, Y - g:i A', strtotime($paymentRecord->payment_date)) }}</td>
                     <!-- <td class="border px-2 py-2 text-gray-700 flex item-center justify-center"><span class="bg-green-200 px-4 p-1 text-green-500 font-bold rounded-md">Paid </span></td> -->
                     <td class="border-b px-2 py-2 text-gray-700">{{ $paymentRecord->receivedBy->first_name }} {{ $paymentRecord->receivedBy->last_name }}</td>

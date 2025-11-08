@@ -2,7 +2,7 @@
     <div class="overflow-hidden">
         <div class="grid grid-cols-12 gap-2 p-2 ">
             <!-- per page dropdown -->
-            <div class="col-span-12 md:col-span-5 flex ">
+            <div class="col-span-12 md:col-span-4 flex ">
                 <div class="flex gap-4 items-center">
                     <div
                         x-data="{ open: false, selected: @entangle('perPage') }"
@@ -39,46 +39,53 @@
                 </div>
             </div>
 
-            <div class="col-span-12 md:col-span-7 flex justify-end ">
+            <div class="col-span-12 md:col-span-8 grid grid-cols-7 gap-2">
 
-                <div class="grid grid-cols-7 gap-4">
+                <div class="md:col-span-4 col-span-7 grid grid-cols-7 gap-2">
                     <!-- filter  -->
-                    <div class="col-span-7 md:col-span-4 flex gap-2 items-center ">
-                        <h1 class="font-bold">Filter:</h1>
-                        <button
-                            wire:click="$set('filter', 'today')"
-                            class="md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
+                    <div class="col-span-7  flex flex-col md:flex-row gap-2  ">
+                        <h1 class="font-bold flex md:items-center md:justify-center">Filter:</h1>
+                        <div class="grid grid-cols-5 gap-2 items-center">
+                            <button
+                                wire:click="$set('filter', 'all')"
+                                class="col-span-1 md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
+                            {{ $filter === 'all' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
+                                All
+                            </button>
+                            <button
+                                wire:click="$set('filter', 'today')"
+                                class="col-span-2 md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
                             {{ $filter === 'today' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
-                            Scheduled for Today
-                        </button>
+                                Scheduled Today
+                            </button>
 
-                        <button
-                            wire:click="$set('filter', 'sent')"
-                            class="md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
+                            <button
+                                wire:click="$set('filter', 'sent')"
+                                class="col-span-2 md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
                             {{ $filter === 'sent' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
-                            Sent Messages
-                        </button>
-                    </div>
-                    <!-- search bar -->
-                    <div class="col-span-7 md:col-span-3 flex ">
-                        <div class="w-full">
-                            <div class="flex items-center  bg-gray-50 border border-gray-300 rounded-lg px-3  focus-within:ring-2 focus-within:ring-sky-500">
-                                <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 text-gray-500" />
-                                <input
-                                    wire:model.live.debounce.300ms="search"
-                                    type="text"
-                                    name="search"
-                                    class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0  text-sm text-gray-900"
-                                    placeholder="Search"
-                                    required />
-                            </div>
+                                Sent Messages
+                            </button>
                         </div>
 
                     </div>
+                    <!-- search bar -->
+
                 </div>
-
+                <div class="col-span-7 md:col-span-3 flex ">
+                    <div class="w-full">
+                        <div class="flex items-center  bg-gray-50 border border-gray-300 rounded-lg px-3  focus-within:ring-2 focus-within:ring-sky-500">
+                            <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 text-gray-500" />
+                            <input
+                                wire:model.live.debounce.300ms="search"
+                                type="text"
+                                name="search"
+                                class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0  text-sm text-gray-900"
+                                placeholder="Search"
+                                required />
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 

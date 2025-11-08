@@ -27,8 +27,8 @@
                     <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
                 </a>
             </div>
-            <div class="md:h-[40rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[40rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-8 ">
-                <div class="flex flex-col justify-between h-full  overflow-y-auto scrollbar-hidden">
+            <div class="md:h-[40rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[40rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-4 md:p-8 ">
+                <div class="flex flex-col justify-between h-full  overflow-y-auto scrollbar-hidden px-4">
                     <div class="flex  justify-between mb-5">
                         <a href="{{url('/')}}" class="flex items-center justify-center gap-2 hover:underline text-red-500  underline-offset-4">
                             <i data-lucide="circle-chevron-left" class="text-red-500"></i>
@@ -99,13 +99,6 @@
                                                 class="flex items-center justify-center w-8 h-8 bg-white border border-gray-300 
                                         rounded-full shadow hover:bg-gray-200 transition">
                                                 <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-4 h-4">
-                                            </a>
-
-                                            <!-- Facebook -->
-                                            <a title="Login with Facebook" href="{{ route('auth.provider', ['provider' => 'facebook']) }}"
-                                                class="flex items-center justify-center w-8 h-8 bg-white rounded-full 
-                                        shadow hover:bg-gray-200 transition">
-                                                <img src="{{asset('/socials/facebook.svg')}}" alt="Facebook" class="w-5 h-5 ">
                                             </a>
 
                                         </div>

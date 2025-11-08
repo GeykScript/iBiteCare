@@ -43,6 +43,10 @@
                 </table>
             </div>
 
+            <p style="margin:0 0 20px; color:#EB1C24;">
+                Note: If you are not available on the rescheduled date and time, kindly reschedule your appointment through our website.
+            </p>
+
             <p style="margin:0 0 20px;">
                 Click below to view more details about your appointment:
             </p>

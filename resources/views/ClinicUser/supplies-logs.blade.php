@@ -25,10 +25,11 @@
 
 <body>
     <div class="flex h-screen">
+
         <!-- Sidebar -->
         <div id="sidebar"
-            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 h-screen z-50 transform -translate-x-full md:translate-x-0 ">
-
+            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
+            style="height: calc(var(--vh, 1vh) * 100);">
             <div class="absolute top-20 right-[-0.6rem] ">
                 <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
                     <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
@@ -112,7 +113,7 @@
                 </div>
 
                 <div class="grid grid-cols-12">
-                    <div class="col-span-1 flex items-center justify-center">
+                    <div class="col-span-1 flex items-center justify-center px-10 md:px-0">
                         <a href="{{ route('clinic.supplies') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                     </div>
                 </div>

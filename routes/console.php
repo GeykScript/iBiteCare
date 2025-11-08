@@ -10,4 +10,4 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('cancel:old-schedules')->daily();
+Schedule::command('app:cancel-old-schedules')->daily();

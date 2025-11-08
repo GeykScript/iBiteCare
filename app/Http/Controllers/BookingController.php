@@ -41,7 +41,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $hasActiveAppointment = PatientAppointment::where('patient_account_id', Auth::id())
-            ->whereNotIn('status', ['Completed', 'Cancelled'])
+            ->whereNotIn('status', ['Arrived', 'Cancelled'])
             ->exists();
 
         if ($hasActiveAppointment) {

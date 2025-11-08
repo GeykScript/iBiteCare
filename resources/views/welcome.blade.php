@@ -48,12 +48,12 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('/images/background-image.png');
+        background-image: url('/images/bg-image.jpg');
         /* background-size: 100% 95%; */
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        filter: brightness(0.4);
+        filter: brightness(0.3);
         /* ↓ makes image darker (0 = black, 1 = normal) */
         transform: scale(1);
         /* Slight enlarge to avoid edges showing */
@@ -112,7 +112,7 @@
 
         <!-- Navigation Links -->
         <div id="navbar-dr-care"
-            class="hidden absolute top-full left-0 z-50 w-full  flex-col items-start rounded-b-lg bg-red-50 md:bg-white border-t md:static md:flex md:flex-row md:items-center  md:w-auto md:border-0">
+            class="hidden absolute top-full left-0 z-50 w-full  flex-col items-start rounded-b-lg bg-white border-t md:static md:flex md:flex-row md:items-center  md:w-auto md:border-0">
             <ul
                 class="flex flex-col w-full font-medium  p-4 md:p-0 md:flex-row md:space-x-14 lg:text-lg">
                 <li><a href="#home" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
