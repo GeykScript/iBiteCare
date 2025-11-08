@@ -1051,6 +1051,8 @@
                             @csrf
                             @method('PUT')
 
+                            <input type="hidden" id="existing-emails" value="{{ json_encode($emails) }}">
+
                             <input type="text" name="id" value="{{ $patient->id }}" hidden>
 
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
@@ -1218,7 +1220,7 @@
                                         @endif
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="email" placeholder="example@gmail.com" value="{{  $patient->email }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{  $patient->email }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                         </div>
                                     </div>
@@ -1315,7 +1317,7 @@
 
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
+                                    <button type="submit" id="edit-submit-btn" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Save Changes
                                     </button>
                                     <button type="button" onclick="document.getElementById('EditPatientProfile').close()"
@@ -1344,6 +1346,34 @@
 
 
 <script>
+    document.getElementById('email').addEventListener('input', function() {
+        const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+        const emailInput = this.value.trim();
+        const errorSpan = document.getElementById('email-error');
+
+        // Basic email regex format check
+        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Validate format first
+        if (emailInput.length > 0 && !emailFormat.test(emailInput)) {
+            errorSpan.textContent = "Invalid email format";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+            return;
+        }
+
+        // Check if email already exists
+        if (existingEmails.includes(emailInput)) {
+            errorSpan.textContent = "Email already exists";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+        } else {
+            errorSpan.textContent = "*";
+            this.classList.remove('border-red-500');
+        }
+    });
+
+
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
 
@@ -1464,6 +1494,8 @@
             if (btn) btn.classList.remove("border-red-500");
         }
 
+        const editSubmitProfileBtn = document.getElementById("edit-submit-btn");
+
         document.getElementById("EditPatientProfileForm").addEventListener("submit", function(e) {
             let isValid = true;
 
@@ -1499,7 +1531,20 @@
                 }
             });
 
-            if (!isValid) e.preventDefault();
+            if (!isValid) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+
+            editSubmitProfileBtn.disabled = true;
+            editSubmitProfileBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Loading...</span>
+        `;
         });
     });
 </script>

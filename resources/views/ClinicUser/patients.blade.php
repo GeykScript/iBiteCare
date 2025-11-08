@@ -106,7 +106,7 @@
                 </div>
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
-                    <h1 class="md:text-2xl font-900 text-[#FF000D]"> Registed Patients</h1>
+                    <h1 class="md:text-2xl font-900 text-[#FF000D]"> Registered Patients</h1>
                     <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
                 </div>
                 <div class="md:pl-12 pl-6">

@@ -156,10 +156,16 @@
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_contact_number" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
+
                     <div class="col-span-6 md:col-span-3 ">
+                        @props(['emails'])
+                        <input type="hidden" id="existing-emails" value="{{ json_encode($emails) }}">
+
                         <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email Address <span class="font-normal">( Optional )</span></label>
                         <input type="email" name="email" id="email" placeholder="example@gmail.com" autocomplete="email"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
+                        <p id="error_email" class="text-red-500 text-xs mt-1 hidden"></p>
+
                     </div>
                     <div class="col-span-6 md:col-span-1">
                         <label for="sex" class="block mb-2 text-sm font-bold text-gray-900">Sex</label>
@@ -331,23 +337,51 @@
         this.value = this.value.replace(/[^A-Za-z0-9.]/g, "").toUpperCase();
     });
 
-    // EMAIL VALIDATOR
+    // EMAIL VALIDATOR & EXIST CHECKER
     document.getElementById("email").addEventListener("input", function() {
-        // Allow only valid characters and force lowercase
-        this.value = this.value.replace(/[^a-zA-Z0-9@._+-]/g, "").toLowerCase();
 
-        // Simple email pattern check
+        const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+        const errorEl = document.getElementById("error_email");
+
+        // Only valid characters & lowercase
+        this.value = this.value.replace(/[^a-zA-Z0-9@._+-]/g, "").toLowerCase();
+        const emailValue = this.value.trim();
+
+        // Email regex
         const emailPattern = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
 
-        // Validate email format
-        if (this.value.length > 0 && !emailPattern.test(this.value)) {
-            this.classList.remove("border-gray-300", "focus:border-sky-500");
+        // If empty, optional → reset
+        if (emailValue.length === 0) {
+            errorEl.classList.add("hidden");
+            this.classList.remove("border-red-500", "focus:border-red-500");
+            this.classList.add("border-gray-300", "focus:border-sky-500");
+            return;
+        }
+
+        // Invalid format
+        if (!emailPattern.test(emailValue)) {
+            errorEl.textContent = "Invalid email format";
+            errorEl.classList.remove("hidden");
             this.classList.add("border-red-500", "focus:border-red-500");
+            this.classList.remove("border-gray-300", "focus:border-sky-500");
+            return;
+        }
+
+        // Check if email exists
+        if (existingEmails.includes(emailValue)) {
+            errorEl.textContent = "Email already exists";
+            errorEl.classList.remove("hidden");
+            this.classList.add("border-red-500", "focus:border-red-500");
+            this.classList.remove("border-gray-300", "focus:border-sky-500");
         } else {
+            // Valid & not exists
+            errorEl.classList.add("hidden");
             this.classList.remove("border-red-500", "focus:border-red-500");
             this.classList.add("border-gray-300", "focus:border-sky-500");
         }
     });
+
+
 
 
 

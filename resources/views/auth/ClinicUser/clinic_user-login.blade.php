@@ -49,10 +49,8 @@
                                     <!-- Password -->
                                     <div class="mt-4">
                                         <x-input-label for="password" :value="__('Password')" />
-                                        <x-text-input id="password" class="block mt-1 w-full py-2 text-lg"
-                                            type="password"
-                                            name="password"
-                                            required autocomplete="current-password" />
+                                        <x-password-input id="password" name="password" required class="mt-1" />
+
                                         <x-input-error :messages="$errors->get('password')" class="bg-red-200 px-4 py-2 mt-2 rounded-sm font-bold text-red-500" />
                                     </div>
 

@@ -101,13 +101,6 @@
                                                 <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-4 h-4">
                                             </a>
 
-                                            <!-- Facebook -->
-                                            <a title="Login with Facebook" href="{{ route('auth.provider', ['provider' => 'facebook']) }}"
-                                                class="flex items-center justify-center w-8 h-8 bg-white rounded-full 
-                                        shadow hover:bg-gray-200 transition">
-                                                <img src="{{asset('/socials/facebook.svg')}}" alt="Facebook" class="w-5 h-5 ">
-                                            </a>
-
                                         </div>
                                     </div>
                                 </form>

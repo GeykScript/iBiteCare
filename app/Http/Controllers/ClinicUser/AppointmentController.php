@@ -43,6 +43,12 @@ class AppointmentController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        // Generate unique booking reference (DrCare-YYYYMMDD-XXX)
+        $date = now()->format('Ymd');
+        $lastAppointment = PatientAppointment::whereDate('created_at', today())->orderBy('id', 'desc')->first();
+        $sequence = $lastAppointment ? (intval(substr($lastAppointment->booking_reference, -5)) + 1) : 1;
+        $bookingReference = 'DrCare-' . $date . '-' . str_pad($sequence, 5, '0', STR_PAD_LEFT);
+
         // Create a new appointment
         PatientAppointment::create([
             'name' => $request->name,
@@ -54,6 +60,7 @@ class AppointmentController extends Controller
             'booking_channel' => $request->channel,
             'additional_notes' => $request->notes,
             'status' => 'Pending',
+            'booking_reference' => $bookingReference,
         ]);
 
         return redirect()->back()->with('success', 'Appointment booked successfully.');
@@ -82,10 +89,11 @@ class AppointmentController extends Controller
         $appointment->status = 'Pending';
         $appointment->save();
 
-        if($patientEmail = $request->email && !empty($request->email)) {
-            // Send reschedule email to patient
-            Mail::to($patientEmail)->send(new AppointmentRescheduleMail($appointment));
-        }
+       if (!empty($request->email)) {
+    $patientEmail = $request->email;
+    Mail::to($patientEmail)->send(new AppointmentRescheduleMail($appointment));
+}
+
 
         return redirect()->back()->with('success', 'Appointment rescheduled successfully.');
     }

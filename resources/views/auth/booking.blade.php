@@ -14,11 +14,11 @@
                 class="block w-full md:w-3/4 lg:w-1/2 mx-auto px-2 sm:px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition">
                 <option value="">-- Select Appointment --</option>
                 @foreach($appointments as $appointment)
-                @if($appointment->status === 'Pending' || $appointment->status === 'Completed')
+                @if($appointment->status === 'Pending' || $appointment->status === 'Arrived' || $appointment->status === 'Rescheduled')
                 <option
                     value="{{ $appointment->id }}"
                     data-status="{{ $appointment->status }}"
-                    class="appointment-option {{ $appointment->status === 'Completed' ? 'bg-green-100 text-green-800 font-semibold' : 'text-black' }}">
+                    class="appointment-option {{ $appointment->status === 'Arrived' ? 'bg-green-100 text-green-800 font-semibold' : 'text-black' }}">
                     {{ ucfirst($appointment->treatment_type) }} on
                     {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F d, Y') }}
                 </option>
@@ -380,17 +380,22 @@
             document.getElementById('detail_notes').textContent = appointment.additional_notes || 'None';
 
             // Set status with color coding
-            if (appointment.status === 'Completed') {
-                statusCell.textContent = 'Completed';
+            if (appointment.status === 'Arrived') {
+                statusCell.textContent = 'Arrived';
                 statusCell.className = 'py-2 font-bold text-m text-green-600';
-            } else {
+            } 
+            else if (appointment.status === 'Rescheduled') {
+                statusCell.textContent = 'Rescheduled';
+                statusCell.className = 'py-2 font-bold text-m text-blue-600';
+            }
+            else {
                 statusCell.textContent = 'Pending';
                 statusCell.className = 'py-2 font-bold text-m text-yellow-600';
             }
 
             detailsDiv.classList.remove('hidden');
 
-            if (appointment.status === 'Pending') {
+            if (appointment.status === 'Pending' || appointment.status === 'Rescheduled') {
                 cancelBtn.style.display = 'inline-block';
                 rescheduleBtn.style.display = 'inline-block';
             } else {

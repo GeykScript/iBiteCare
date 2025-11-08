@@ -112,6 +112,8 @@
                             onclick="document.getElementById('newClinicUserModal').showModal()"
                             class=" bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none font-bold hover:bg-red-700"><i data-lucide="plus" class="w-5 h-5 stroke-[2]"></i>New User Account</button>
                     </div>
+                    <input type="hidden" id="existing-emails" value="{{ json_encode($emails) }}">
+
 
                     <!-- New Clinic User Modal -->
                     <dialog id="newClinicUserModal" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
@@ -136,18 +138,18 @@
                                     <div class="flex gap-7 md:px-6">
                                         <!-- admin role -->
                                         <p class="flex items-center space-x-2">
-                                            <input type="radio" name="role" value="1" class="text-red-500 focus:ring-red-500" required {{ old('role') == '1' ? 'checked' : '' }}>
-                                            <span>Admin</span>
+                                            <input type="radio" id="radio1" name="role" value="1" class="text-red-500 focus:ring-red-500" required {{ old('role') == '1' ? 'checked' : '' }}>
+                                            <label for="radio1">Admin</label>
                                         </p>
                                         <!-- nurse role  -->
                                         <p class="flex items-center space-x-2">
-                                            <input type="radio" name="role" value="2" class="text-green-600 focus:ring-green-600" {{ old('role') == '2' ? 'checked' : '' }}>
-                                            <span>Nurse</span>
+                                            <input type="radio" id="radio2" name="role" value="2" class="text-green-600 focus:ring-green-600" {{ old('role') == '2' ? 'checked' : '' }}>
+                                            <label for="radio2">Nurse</label>
                                         </p>
                                         <!-- staff role  -->
                                         <p class="flex items-center space-x-2">
-                                            <input type="radio" name="role" value="3" class="text-sky-600 focus:ring-sky-600" {{ old('role') == '3' ? 'checked' : '' }}>
-                                            <span>Staff</span>
+                                            <input type="radio" id="radio3" name="role" value="3" class="text-sky-600 focus:ring-sky-600" {{ old('role') == '3' ? 'checked' : '' }}>
+                                            <label for="radio3">Staff</label>
                                         </p>
                                     </div>
                                 </div>
@@ -323,6 +325,7 @@
                                 <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
                                     <!-- email  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
+
                                         <div class="w-full flex items-center">
                                             @if ($errors->has('email'))
                                             <label for="email" class="text-sm font-semibold flex justify-between items-center w-full">Personal Email:
@@ -890,31 +893,39 @@
 
 
 <script>
-    const submitNewAccountBtn = document.getElementById("submitNewAccountBtn");
-    document.getElementById('create_account_form').addEventListener('submit', function() {
-        submitNewAccountBtn.disabled = true;
-        submitNewAccountBtn.innerHTML = `
-            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-            </svg>
-            <span>Loading...</span>
-        `;
+    const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    });
+    function validateEmail(inputId, errorId) {
+        const input = document.getElementById(inputId);
+        const errorSpan = document.getElementById(errorId);
 
-    const submitUpdateBtn = document.getElementById("submitUpdateBtn");
-    document.getElementById('updateProfileForm').addEventListener('submit', function() {
-        submitUpdateBtn.disabled = true;
-        submitUpdateBtn.innerHTML = `
-            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-            </svg>
-            <span>Loading...</span>
-        `;
+        input.addEventListener('input', function() {
+            const email = input.value.trim();
 
-    });
+            // Format validation
+            if (email && !emailFormat.test(email)) {
+                errorSpan.textContent = "Invalid email format";
+                input.classList.add('border-red-500');
+                return;
+            }
+
+            // Duplicate validation
+            if (existingEmails.includes(email)) {
+                errorSpan.textContent = "Email already exists";
+                input.classList.add('border-red-500');
+            } else {
+                errorSpan.textContent = "*";
+                input.classList.remove('border-red-500');
+            }
+        });
+    }
+
+    // Call function for each field
+    validateEmail('email', 'email-error');
+    validateEmail('update_email', 'update-email-error');
+
+
 
     async function regenerateAccountId() {
         let response = await fetch("/clinic-users/generate-id");
@@ -1024,6 +1035,9 @@
             if (btn) btn.classList.remove("border-red-500");
         }
 
+        const submitNewAccountBtn = document.getElementById("submitNewAccountBtn");
+
+
         // Run validation on submit
         document.getElementById("create_account_form").addEventListener("submit", function(e) {
             let isValid = true;
@@ -1047,7 +1061,18 @@
             if (!isValid) {
                 e.preventDefault(); // 🚫 stops submission
                 e.stopPropagation();
+                return; // ⛔ stop here — don't show loader
             }
+
+            submitNewAccountBtn.disabled = true;
+            submitNewAccountBtn.innerHTML = `
+        <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+        </svg>
+        <span>Loading...</span>
+    `;
+
         });
 
         // Real-time validation
@@ -1078,6 +1103,10 @@
 
     // error handling for update modal
     document.addEventListener("DOMContentLoaded", function() {
+
+        const submitUpdateBtn = document.getElementById("submitUpdateBtn");
+
+
         let fields = [{
                 name: "update_region",
                 label: "update-region-error",
@@ -1172,7 +1201,21 @@
                 }
             });
 
-            if (!isValid) e.preventDefault();
+            if (!isValid) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+
+            submitUpdateBtn.disabled = true;
+            submitUpdateBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Loading...</span>
+        `;
+
         });
     });
 </script>

@@ -328,7 +328,7 @@
                                                     <p class="text-xs font-normal text-gray-500">Visited on: {{ $transaction->getDateOnlyAttribute() }}</p>
                                                 </div>
                                             </div>
-                                            <a href="{{ route('clinic.patients.profile', $transaction->Patient->id) }}" class="flex items-center justify-center text-sky-600">
+                                            <a href="{{ route('clinic.patients.profile', Crypt::encrypt($transaction->Patient->id)) }}" class="flex items-center justify-center text-sky-600">
                                                 <i data-lucide="chevron-right" class="w-5 h-5 hover:text-sky-800"></i>
                                             </a>
                                         </div>

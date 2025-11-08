@@ -71,6 +71,7 @@
                 <p><span class="font-medium text-gray-900">Bite Category:</span> {{ $immunization->exposure->bite_category }}</p>
                 <p><span class="font-medium text-gray-900">Clinical Status:</span> {{ $immunization->exposure->animalProfile->clinical_status }}</p>
                 <p><span class="font-medium text-gray-900">Ownership Status:</span> {{ $immunization->exposure->animalProfile->ownership_status }}</p>
+                <p><span class="font-medium text-gray-900">Bite Management:</span> {{ $immunization->exposure->bite_management ?? 'N/A' }}</p>
             </div>
         </div>
 

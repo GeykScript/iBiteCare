@@ -20,9 +20,10 @@ class ClinicUsersController extends Controller
 
         $clinic_users = ClinicUser::all();
         [$generated_id, $default_password] = $this->generateUniqueIdAndPassword();
-        
 
-        return view('ClinicUser.user-accounts', compact('clinicUser', 'clinic_users', 'generated_id', 'default_password'));
+        $emails = ClinicUser::all()->pluck('email')->toArray();
+
+        return view('ClinicUser.user-accounts', compact('clinicUser', 'clinic_users', 'generated_id', 'default_password', 'emails'));
     }
 
 

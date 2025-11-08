@@ -56,7 +56,10 @@ class BoosterRegistration extends Controller
 
         $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
 
-        return view('ClinicUser.RegisterPatient.register-booster', compact('clinicUser', 'pvrvVaccines', 'pcecVaccines', 'nurses', 'staffs', 'service_fee', 'boosterService', 'recentlyAddedPatients'));
+        $emails = Patient::all()->pluck('email')->toArray();
+
+
+      return view('ClinicUser.RegisterPatient.register-booster', compact('clinicUser', 'pvrvVaccines', 'pcecVaccines', 'nurses', 'staffs', 'service_fee', 'boosterService', 'recentlyAddedPatients', 'emails'));
     }
 
 

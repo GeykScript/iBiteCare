@@ -52,7 +52,8 @@ class MessagePatientTable extends Component
                         ->orWhereHas('patient', function ($q) {
                             $q->where('first_name', 'like', '%' . $this->search . '%')
                                 ->orWhere('last_name', 'like', '%' . $this->search . '%');
-                        });
+                        })
+                        ->orWhere('scheduled_send_date', 'like', '%' . $this->search . '%');
                 });
             })
             ->when($this->filter === 'today', function ($query) {

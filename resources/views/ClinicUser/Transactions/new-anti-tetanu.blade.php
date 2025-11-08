@@ -241,7 +241,7 @@
 
                                                 } else {
                                                     document.querySelector('#error_staff_password').classList.remove('hidden');
-                                                    document.querySelector('#staff_password').classList.add('border-red-500');
+                                                    document.querySelector('#staff_password').classList.add('border-red-500', 'bg-white', 'focus:border-red-500', 'focus:ring-red-500');
 
                                                 }
                                             })
@@ -256,12 +256,13 @@
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_staff_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
                                     </div>
-                                    <input
+                                    <!-- <input
                                         type="password"
                                         id="staff_password"
                                         name="staff_password"
                                         class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                                        required>
+                                        required> -->
+                                    <x-password-input id="staff_password" name="staff_password" required class="mt-1" />
                                 </div>
                                 <div class="mt-4 flex justify-end gap-2">
                                     <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
@@ -327,7 +328,8 @@
 
                                                 } else {
                                                     document.querySelector('#error_nurse_password').classList.remove('hidden');
-                                                    document.querySelector('#nurse_password').classList.add('border-red-500');
+                                                    document.querySelector('#nurse_password').classList.add('border-red-500', 'bg-white', 'focus:border-red-500', 'focus:ring-red-500');
+
 
                                                 }
                                             })
@@ -342,12 +344,13 @@
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_nurse_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
                                     </div>
-                                    <input
+                                    <!-- <input
                                         type="password"
                                         id="nurse_password"
                                         name="nurse_password"
                                         class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                                        required>
+                                        required> -->
+                                    <x-password-input id="nurse_password" name="nurse_password" required class="mt-1" />
                                 </div>
                                 <div class="mt-4 flex justify-end gap-2">
                                     <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
