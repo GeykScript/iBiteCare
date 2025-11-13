@@ -9,7 +9,7 @@
                         <input type="number" id="year_last_dose_given" name="year_last_dose_given"
                             min="1900" max="2099" step="1"
                             placeholder="YYYY"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 focus:ring-sky-500 focus:border-sky-500">
 
                     </div>
                     <div class="col-span-6 md:col-span-3">
