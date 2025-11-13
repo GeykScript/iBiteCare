@@ -80,11 +80,15 @@ class PepRegistration extends Controller
     public function registerPatientPEP(RegisterPatientPEPRequest  $request)
     {
         $request->validated();
+        dd($request->all()); // 👈 must be here, before anything else
+
+
 
         $date = str_replace('T', ' ', $request->datetime_today);
         
         // Combine address fields into a single address string
         $address = $request->province . ', ' . $request->city . ', ' . $request->barangay . ', ' . $request->description;
+
 
         try {
 
@@ -132,8 +136,8 @@ class PepRegistration extends Controller
                 'clinical_status' => $request->clinical_status,
                 'ownership_status' => $request->ownership_status,
                 'brain_exam' => $request->brain_exam,
-                'brain_exam_location' => $request->brain_exam_location,
-                'brain_exam_results' => $request->brain_exam_results,
+                'brain_exam_location' => $request->brain_exam_location ?? null,
+                'brain_exam_results' => $request->brain_exam_results ?? null,
             ]);
 
 
@@ -164,7 +168,7 @@ class PepRegistration extends Controller
                     'dose_given' => $request->anti_tetanus_dose_given,
                     'date_dose_given' => $request->anti_tetanus_date_dose_given,
                     'rn_in_charge' => $request->nurse_id,
-                    'year_last_dose_given' => $request->year_last_dose_given,
+                    'year_last_dose_given' => $request->year_last_dose_given ?? null,
                 ]);
             }
 

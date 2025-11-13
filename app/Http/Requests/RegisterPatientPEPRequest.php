@@ -67,7 +67,7 @@ class RegisterPatientPEPRequest extends FormRequest
 
             // Step 4: A. Previous Anti-Tetanus Vaccination
             // previous anti-tetanus vaccination
-            'year_last_dose_given' => 'nullable|date_format:Y',
+            'year_last_dose_given' => 'nullable',
             'anti_tetanus_dose_given' => 'nullable|string|max:255', //TT1,TT2,TT3
             'anti_tetanus_vaccine_id' => 'nullable|integer',
             'anti_dose_given' => 'nullable|numeric|min:0', //0.2 ML

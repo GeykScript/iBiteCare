@@ -6,8 +6,11 @@
                 <div class="grid grid-cols-6 ">
                     <div class="col-span-6 md:col-span-3 px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Year last Dose Given <br> <span class="text-gray-500 text-xs font-normal">( Leave blank if unknown )</span></h2>
-                        <input type="date" id="year_last_dose_given" name="year_last_dose_given"
+                        <input type="number" id="year_last_dose_given" name="year_last_dose_given"
+                            min="1900" max="2099" step="1"
+                            placeholder="YYYY"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+
                     </div>
                     <div class="col-span-6 md:col-span-3">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">No. of Dose Given</h2>
