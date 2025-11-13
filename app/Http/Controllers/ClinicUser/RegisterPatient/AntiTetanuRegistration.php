@@ -111,7 +111,7 @@ class AntiTetanuRegistration extends Controller
                 'dose_given' => $request->anti_tetanus_dose_given,
                 'date_dose_given' => $request->anti_tetanus_date_dose_given,
                 'rn_in_charge' => $request->nurse_id,
-                'year_last_dose_given' => $request->year_last_dose_given,
+                'year_last_dose_given' => $request->year_last_dose_given ?? null,
             ]);
 
 
