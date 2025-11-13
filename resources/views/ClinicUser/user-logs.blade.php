@@ -118,7 +118,11 @@
                             </div>
                             <div class="flex flex-col items-start justify-start">
                                 <h1 class="font-900 text-lg text-red-600">Clinic Users Activity Logs</h1>
-                                <p class="text-gray-600">View the details of each user's activity logs.</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-gray-600">View the details of each user's activity logs.</p>
+                                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+
+                                </div>
                             </div>
                         </div>
 

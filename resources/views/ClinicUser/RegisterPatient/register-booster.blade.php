@@ -117,7 +117,10 @@
                             <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                             <div class="flex flex-col mb-6 ">
                                 <h1 class="text-md  md:text-2xl font-900 text-center ">New Patient Registration</h1>
-                                <p class="text-gray-400 text-sm text-center">Service: Booster Vaccination</p>
+                                <div class="flex items-center justify-center gap-2">
+                                    <p class="text-gray-400 text-sm text-center">Service: Booster Vaccination</p>
+                                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-red-400"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                                </div>
                             </div>
                         </div>
                         <!-- Progress Bar -->

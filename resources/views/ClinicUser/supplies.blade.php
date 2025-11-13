@@ -107,13 +107,12 @@
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
+                <div class="md:pl-12 pl-6 flex items-center gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Inventory</h1>
-                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
+                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+
                 </div>
-                <div class="md:pl-12 pl-6">
-                    <h1 class="md:text-lg text-gray-800">All vaccines, rigs, supplies and equipment available at the clinic.</h1>
-                </div>
+
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 gap-4">
                     <div class="col-span-7 md:col-span-4 flex flex-col md:flex-row items-end md:items-center justify-end gap-4 md:gap-10">

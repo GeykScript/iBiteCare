@@ -107,7 +107,8 @@
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]"> Registered Patients</h1>
-                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
+                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+
                 </div>
                 <div class="md:pl-12 pl-6">
                     <h1 class="md:text-lg text-gray-800">All individuals who have been officially registered to receive care at the clinic.</h1>

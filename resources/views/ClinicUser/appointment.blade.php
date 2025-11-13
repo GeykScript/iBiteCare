@@ -107,8 +107,11 @@
                 </div>
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
-                    <h1 class="md:text-2xl font-900 text-[#FF000D]">Booked Patients Lists</h1>
+                    <h1 class="md:text-2xl font-900 text-[#FF000D]">Booked Patients Lists</h1> 
+                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i>
+                    </a>
                 </div>
+                
                 <div class="md:pl-12 pl-6">
                     <h1 class="md:text-lg text-gray-800"> This list shows all patients who have made an appointment.
                     </h1>

@@ -107,8 +107,11 @@
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
-                    <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Overview</h1>
+                <div class="md:pl-12 pl-6 flex items-center gap-2 ">
+                    <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Overview
+                    </h1>
+                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i>
+                    </a>
                 </div>
                 <div class="md:pl-12 pl-6">
                     <h1 class="md:text-lg text-gray-800"> Overview of patient records, clinic activities, and inventory status.
@@ -218,7 +221,7 @@
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
                                                     <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All Ages
-                                                            </button></li>
+                                                        </button></li>
                                                     <li><button data-value="0-17" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">0-17</button></li>
                                                     <li><button data-value="18-64" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">18-64</button></li>
                                                     <li><button data-value="65+" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">65+</button></li>

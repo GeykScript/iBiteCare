@@ -59,7 +59,8 @@ import {
         FileSpreadsheet,
         Sheet,
         Download,
-        FileSliders
+        FileSliders,
+        
     } 
      from 'lucide';
 
@@ -120,7 +121,8 @@ createIcons({
     FileSpreadsheet,
     Sheet,
     Download,
-    FileSliders
+    FileSliders,
+    
 }
 }); 
 

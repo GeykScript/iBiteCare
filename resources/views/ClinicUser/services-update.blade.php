@@ -103,7 +103,10 @@
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Clinic Services</h1>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-xl md:text-3xl font-900">Clinic Services</h1>
+                            <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                        </div>
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.services') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Services </a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
