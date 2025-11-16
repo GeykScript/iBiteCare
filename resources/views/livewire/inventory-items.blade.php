@@ -149,6 +149,14 @@
                 </td>
                 @endif
                 @if($column->item->category !== 'Supply' && $column->item->category !== 'Equipment')
+
+                @if ($item->status == 'Used' || $item->status == 'Disposed')
+                <td class="border-b px-2 py-2 text-red-500 ">
+                    <div class="flex justify-center">
+                      <p> -- </p>
+                    </div>
+                </td>
+                @else
                 <!-- Remove button -->
                 <td class="border-b px-2 py-2 text-red-500 ">
                     <div class="flex justify-center">
@@ -163,6 +171,7 @@
                         </button>
                     </div>
                 </td>
+                @endif
                 @endif
             </tr>
             @endforeach

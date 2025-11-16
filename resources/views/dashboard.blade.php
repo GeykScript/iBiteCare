@@ -61,7 +61,7 @@
                     <div class="w-full flex flex-col md:ml-10 px-8 ">
                         <img src="{{asset('images/guinobatan.png')}}" alt="Guinobatan-text" class="md:w-full md:h-full  w-50 w-50 " />
                         <div class="w-full items-end justify-start flex px-2 py-2">
-                            <a href="" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
+                            <a href="{{ route('booking.index') }}" class="text-white bg-red-600 md:p-3 p-2 rounded-md font-bold text-sm md:text-md">Book Now!</a>
                         </div>
                     </div>
                 </div>

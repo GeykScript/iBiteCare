@@ -98,7 +98,7 @@ class ManageInventorySupplies extends Controller
                 }
             }
         }
-        $id = $request->item_id;
+        $id = Crypt::encrypt($request->item_id);
 
         return redirect()
             ->route('clinic.supplies.manage', $id)
@@ -128,12 +128,12 @@ class ManageInventorySupplies extends Controller
             $item->save();
 
             return redirect()
-                ->route('clinic.supplies.manage', $request->item_id)
+                ->route('clinic.supplies.manage', Crypt::encrypt($request->item_id))
                 ->with('edit-success', 'Product details updated successfully.');
         }
 
         return redirect()
-            ->route('clinic.supplies.manage', $request->item_id)
+            ->route('clinic.supplies.manage', Crypt::encrypt($request->item_id))
             ->with('edit-success', 'No changes were made.');
     }
 
@@ -167,7 +167,7 @@ class ManageInventorySupplies extends Controller
         ]);
 
         return redirect()
-            ->route('clinic.supplies.manage', $request->item_id)
+            ->route('clinic.supplies.manage', Crypt::encrypt($request->item_id))
             ->with('edit-item-success', 'Inventory item updated successfully.');
     }
 

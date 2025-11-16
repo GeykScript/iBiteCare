@@ -80,7 +80,6 @@ class PepRegistration extends Controller
     public function registerPatientPEP(RegisterPatientPEPRequest  $request)
     {
         $request->validated();
-        dd($request->all()); // 👈 must be here, before anything else
 
 
 

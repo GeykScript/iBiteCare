@@ -105,6 +105,8 @@ use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
 use App\Http\Controllers\ClinicUser\MessagesController;
 use App\Http\Controllers\ClinicUser\AppointmentController;
+use App\Http\Controllers\ClinicUser\NotificationController;
+
 
 use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
@@ -235,6 +237,16 @@ Route::middleware('auth:clinic_user')->group(function () {
         ->name('clinic.messages.all.send');
     Route::post('/clinic/messages/send-new', [MessagesController::class, 'sendNewMessage'])
         ->name('clinic.messages.new.send');
+
+//----------------END-----------------------//
+
+
+// NOTIFICATIONS ---------------------------//
+
+Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])
+    ->name('notifications.markAsRead');
+
+Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('notifications.get');
 
     //----------------END-----------------------//
 

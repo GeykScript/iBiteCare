@@ -11,7 +11,7 @@ class ClinicUserLogsTable extends Component
 
 {
     use WithPagination;
-    public $perPage = 5;
+    public $perPage = 10;
     public $search = '';
 
     public $sortBy = 'created_at';

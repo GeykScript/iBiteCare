@@ -89,13 +89,16 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                     <x-notification />
                 </div>
+
             </div>
             <!-- content container -->
             <div class="flex flex-col flex-1 overflow-y-auto pt-[60px]">
@@ -273,16 +276,18 @@
                                 <div class="flex flex-col rounded-lg border border-gray-100 gap-2">
                                     <div class="p-8">
                                         <h5 class="leading-none md:text-lg font-900 text-gray-900  pb-1">Daily Clinic Overview</h5>
-                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400"> Summary of today’s transactions and appointments</p>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                            Summary of today’s transactions and patients scheduled to receive SMS.
+                                        </p>
                                     </div>
                                     <div class="w-full bg-white px-2  rounded">
                                         <div class="flex justify-between gap-5 py-4 px-3 shadow-lg">
                                             <div class="flex gap-3">
                                                 <div class="flex items-center justfy-center ">
-                                                    <i data-lucide="file-text" class="w-8 h-8 md:me-2"></i>
+                                                    <i data-lucide="file-text" class="md:w-8 md:h-8 md:me-2 text-gray-800"></i>
                                                 </div>
                                                 <div class="flex flex-col">
-                                                    <h1 class="font-bold">Transactions</h1>
+                                                    <h1 class="font-bold break-words text-xs md:text-sm">Transactions</h1>
                                                     <a href="{{ route('clinic.transactions') }}" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
                                                 </div>
                                             </div>
@@ -295,10 +300,10 @@
                                         <div class="flex justify-between gap-5 py-4 px-3 shadow-lg">
                                             <div class="flex gap-3">
                                                 <div class="flex items-center justfy-center ">
-                                                    <i data-lucide="notebook-pen" class="w-8 h-8 md:me-2"></i>
+                                                    <i data-lucide="message-square-text" class="md:w-8 md:h-8 md:me-2 text-gray-800"></i>
                                                 </div>
                                                 <div class="flex flex-col">
-                                                    <h1 class="font-bold">Expected Patients</h1>
+                                                    <h1 class="font-bold break-words text-xs md:text-sm">Scheduled Messages</h1>
                                                     <a href="{{ route('clinic.messages') }}" class="text-xs text-sky-600 hover:text-sky-700 flex items-center gap-1">See Details <i data-lucide="info" class="w-3 h-3"></i></a>
                                                 </div>
                                             </div>

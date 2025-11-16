@@ -10,7 +10,7 @@ class TransactionsTable extends Component
 {
     use WithPagination;
 
-    public $perPage = 5;
+    public $perPage = 10;
     public $sortBy = 'transaction_date';
     public $sortDirection = 'ASC';
     public $search = '';

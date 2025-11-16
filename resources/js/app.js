@@ -60,6 +60,7 @@ import {
         Sheet,
         Download,
         FileSliders,
+        Bell
         
     } 
      from 'lucide';
@@ -122,6 +123,7 @@ createIcons({
     Sheet,
     Download,
     FileSliders,
+    Bell
     
 }
 }); 

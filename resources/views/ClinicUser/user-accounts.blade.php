@@ -87,12 +87,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -102,8 +104,8 @@
                     <div>
                         <h1 class="text-lg md:text-3xl font-900">Clinic Users Account</h1>
                         <div class="flex items-center gap-3">
-                        <h2 class="md:ml-3 text-sm md:text-lg font-bold">Manage Clinic User Accounts </h2>
-                        <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                            <h2 class="md:ml-3 text-sm md:text-lg font-bold">Manage Clinic User Accounts </h2>
+                            <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
                         </div>
 
                     </div>

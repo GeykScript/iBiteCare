@@ -176,14 +176,15 @@
                         <div class="col-span-8 grid grid-cols-8 gap-2 mt-2">
                             <div class="md:col-span-1 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Total Stocks</p>
-                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_units }} </p>
+                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_units ?? '0' }} </p>
                             </div>
                             <div class="md:col-span-1 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Remaining Stocks</p>
-                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_unit_remaining }} </p>
+                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_unit_remaining ?? '0' }} </p>
                             </div>
                             <div class="md:col-span-1 col-span-8">
                                 <p class="text-sm font-semibold text-gray-600">Status</p>
+                            
                                 @if(strtolower($inventoryRecords->stock_status) === 'in stock')
                                 <p class="text-green-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
                                 @elseif(strtolower($inventoryRecords->stock_status) === 'out of stock')

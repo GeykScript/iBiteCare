@@ -11,7 +11,7 @@ class MessagePatientTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 5;
+    public $perPage = 10;
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
     public $filter = 'today'; // default filter

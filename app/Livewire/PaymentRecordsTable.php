@@ -11,7 +11,7 @@ class PaymentRecordsTable extends Component
 {
     use WithPagination;
 
-    public $perPage = 5;
+    public $perPage = 10;
     public $sortBy = 'created_at';
     public $sortDirection = 'ASC';
     public $search = '';

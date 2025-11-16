@@ -90,12 +90,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -173,7 +175,8 @@
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
                                         </div>
                                         <div class="md:col-span-4 col-span-12">
-                                            <p class="text-sm font-semibold mb-1">Service Usage: <span class="font-normal">( Skip if n/a)</span> </p>
+                                            <p class="text-sm font-semibold mb-1">Service Usage: <span class="font-normal text-gray-500 italic text-xs">(Skip if it applies to all or not)</span>
+                                            </p>
                                             <div x-data="{ open: false, selected: null, selectedLabel: 'Select Service' }" class="relative">
                                                 <!-- Hidden input to store the selected ID -->
                                                 <input type="hidden" name="service_id" x-model="selected">

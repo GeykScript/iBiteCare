@@ -13,7 +13,7 @@ class InventoryRecordsTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 5;
+    public $perPage = 10;
 
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
