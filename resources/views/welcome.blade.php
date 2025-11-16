@@ -199,40 +199,29 @@
                 </div>
             </div>
             <div class="md:col-span-1 col-span-2">
-                <div class="grid grid-cols-2 gap-4 ">
-                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl gap-3 border border-gray-100">
-                        <div class="items-center justify-center gap-2 flex bg-red-600 p-5  rounded-full ">
-                            <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
-                        </div>
-                        <h1 class="md:text-xl font-bold">Post Exposure Treatment</h1>
-                        <h1 class="md:text-xl">₱ 600</h1>
-                    </div>
-                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl  gap-3 border border-gray-100">
-                        <div class="items-center justify-center gap-2 flex bg-green-600 p-5 rounded-full ">
-                            <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
-                        </div>
-                        <h1 class="md:text-xl font-bold">Pre Exposure Treatment</h1>
-                        <h1 class="md:text-xl">₱ 600</h1>
+                @php
+                    $colors = ['bg-red-600', 'bg-green-600', 'bg-indigo-600', 'bg-gray-600', 'bg-yellow-600', 'bg-purple-600'];
+                @endphp
+                <!-- Horizontal scroll container -->
+                <div class="flex gap-4 overflow-x-auto p-2">
+                    @foreach ($services->chunk(6) as $chunkIndex => $serviceChunk)
+                    <div class="grid grid-cols-3 gap-2 flex-shrink-0 w-[500px] md:w-[650px]">
+                        @foreach ($serviceChunk as $index => $service)
+                        <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl gap-3 border border-gray-100">
+                            <!-- dynamic color -->
+                            <div class="items-center justify-center gap-2 flex {{ $colors[($chunkIndex*4 + $index) % count($colors)] }} p-5 rounded-full">
+                                <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
+                            </div>
 
-                    </div>
-                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl  gap-3 border border-gray-100">
-                        <div class="items-center justify-center gap-2 flex bg-indigo-600 p-5 rounded-full ">
-                            <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
+                            <h1 class="text-sm md:text-xl font-bold text-center">{{ $service->name }}</h1>
+                            <h1 class="text-sm md:text-xl">₱ {{ $service->service_fee }}</h1>
                         </div>
-                        <h1 class="md:text-xl font-bold">Boosters</h1>
-                        <h1 class="md:text-xl">₱ 600</h1>
-
+                        @endforeach
                     </div>
-                    <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl  gap-3 border border-gray-100">
-                        <div class="items-center justify-center gap-2 flex bg-gray-600 p-5 rounded-full ">
-                            <i data-lucide="syringe" class="md:w-12 md:h-12 w-6 h-6 text-white"></i>
-                        </div>
-                        <h1 class="md:text-xl font-bold">Tetanus Toxoid</h1>
-                        <h1 class="md:text-xl">₱ 150</h1>
-
-                    </div>
+                    @endforeach
                 </div>
             </div>
+
         </div>
     </section>
 

@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PatientSchedules;
+use App\Models\ClinicServices;
 
 Route::get('/', function () {
-    return view('welcome');
+    $services = ClinicServices::all();
+    return view('welcome', compact('services'));
 });
 
 Route::get('/faqs', function () {
@@ -34,7 +36,8 @@ Route::post('/set-password', [PasswordSetupController::class, 'store'])->name('s
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $services = ClinicServices::all();
+    return view('dashboard', compact('services'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
