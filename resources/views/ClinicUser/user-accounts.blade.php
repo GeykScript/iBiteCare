@@ -105,7 +105,7 @@
                         <h1 class="text-lg md:text-3xl font-900">Clinic Users Account</h1>
                         <div class="flex items-center gap-3">
                             <h2 class="md:ml-3 text-sm md:text-lg font-bold">Manage Clinic User Accounts </h2>
-                            <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                            <a href="{{ route('clinic.user-manual') }}#account-create" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
                         </div>
 
                     </div>

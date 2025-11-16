@@ -550,7 +550,7 @@
                     </div>
                     <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white rounded-lg items-center justify-center">
                         <div class="flex gap-1 items-center text-[#FF000C] justify-center ">
-                            <a href="{{ route('clinic.user-manual') }}" target="_blank" class="font-900 underline underline-offset-4">View User Manual</a>
+                            <a href="{{ route('clinic.user-manual') }}#account-manage" target="_blank" class="font-900 underline underline-offset-4">View User Manual</a>
                             <i data-lucide="file-sliders" class="w-5 h-5 stroke-[2.5]"></i>
                         </div>
                     </div>

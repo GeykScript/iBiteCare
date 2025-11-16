@@ -122,7 +122,7 @@
                                 <div class="flex items-center justify-center gap-2">
                                     <p class="text-gray-400 text-sm text-center">Service: Post Exposure Prophylaxis (PEP)
                                     </p>
-                                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-red-400"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                                    <a href="{{ route('clinic.user-manual') }}#patient-register" target="_blank" class="text-red-400"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
 
                                 </div>
 

@@ -14,7 +14,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/datetime.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/datetime.js', 'resources/js/alpine.js'])
 
 
 
@@ -107,7 +107,7 @@
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center gap-2">
                             <h1 class="text-xl md:text-3xl font-900">Clinic Services</h1>
-                            <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                            <a href="{{ route('clinic.user-manual') }}#update-services" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
                         </div>
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.services') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Services </a>

@@ -83,6 +83,7 @@
                             Recover
                         </a>
 
+                        @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
                         <a href="#account-create"
                             class="block text-gray-200 text-md hover:underline">
                             Create Account
@@ -97,6 +98,7 @@
                             class="block text-gray-200 text-md hover:underline">
                             Logs
                         </a>
+                        @endif
                     </div>
 
                 </div>
@@ -150,8 +152,10 @@
                 </div>
 
                 <a href="#services" class="block text-left w-full text-gray-50 ">Services</a>
+                <a href="#payments" class="block text-left w-full text-gray-50 ">Payments</a>
                 <a href="#inventory" class="block text-left w-full text-gray-50 ">Inventory</a>
                 <a href="#appointments" class="block text-left w-full text-gray-50 ">Appointments</a>
+                <a href="#reports" class="block text-left w-full text-gray-50 ">Reports</a>
             </nav>
         </aside>
 
@@ -311,6 +315,7 @@
                             </p>
                         </div>
 
+                        @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
                         <!-- create account  -->
                         <div class="flex flex-col mt-10" id="account-create">
                             <h2 class="text-lg md:text-xl text-[#FF000D] font-bold">Creating Accounts (For Admin Only)</h2>
@@ -379,6 +384,8 @@
                             </p>
 
                         </div>
+                        @endif
+
                     </div>
 
                 </div>
@@ -1054,7 +1061,7 @@
                                 This appointment system is designed to handle various booking channels, including Phone Calls, Text Messages, and Online Bookings through the website.
                                 It will provide a list of all appointments scheduled through these channels for easy management.
                             </p>
-                       
+
 
                         </div>
                         <!-- add appointments-->
@@ -1116,6 +1123,130 @@
 
 
             </section>
+
+            <!-- reports -->
+            <section id="reports" class="mt-10 mb-20">
+                <div class="flex flex-col">
+                    <!-- Header -->
+                    <div class="flex flex-row items-center gap-5 py-6 md:py-8 md:px-14 px-4">
+                        <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-12 h-12">
+                        <div>
+                            <h1 class="text-lg md:text-2xl font-900">Reports</h1>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="flex flex-col gap-4 md:px-20 px-4 pb-6">
+                        <p class="text-xs md:text-base leading-relaxed">
+                            This reports section allows clinic personel to generate and view various reports related to clinic operations.
+                            This includes reports on patient visits, immunizations, and inventory usage.
+                        </p>
+                        <p class="mt-3 ">
+                            To navigate to the reports section, click on the <b class="text-blue-600">'Reports'</b> link in the sidebar menu.
+                        </p>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md mt-3">
+                            <p class="text-xs md:text-base font-bold ">
+                                Important Reminder
+                            </p>
+                            <p class="text-[10px] md:text-sm mt-2 leading-relaxed">
+                                This section can only generate reports for patient who receive Post Exposure Prophylaxis (PEP) treatment.
+                                Sales and inventory usage reports are also based on Clinic Operations.
+                            </p>
+                            <p class="text-[10px] md:text-sm mt-2 leading-relaxed">
+                                Patient Reports can be filtered based on date range, service type, and patient age. The generated reports can be exported in PDF or Excel format for easy sharing and record-keeping.
+                                It follows Quarterly and Annual basis for better analysis of clinic performance.
+                            </p>
+                            <p class="text-[10px] md:text-sm mt-2 leading-relaxed">
+                                Sales Reports and Inventory Usage are annually generated to provide insights into the clinic's financial performance and supply consumption.
+                            </p>
+
+
+                        </div>
+                        <!-- generate pdf-->
+                        <div class="flex flex-col mt-10" id="generate-pdf-report">
+                            <h2 class="text-lg md:text-xl text-[#FF000D] font-bold">Generate PDF Reports</h2>
+                            <p>
+                                To generate a PDF report, click the <b class="text-red-600 font-semibold">'PDF'</b> button located at the bottom right corner of the Reports page under the charts for patient summary, clinic revenue and Inventory Usage.
+                                However, for Inventory Usage report, the PDF button is located at the top right corner of the Inventory Usage table.
+                            </p>
+
+                            <p class="mt-3">
+                                After clicking the <b class="text-red-600 font-semibold">'PDF'</b> button, it will redirect you to a new page where the PDF report will be generated for the selected report type.
+                                You can then view, download, or print the generated PDF report as needed.
+                            </p>
+                        </div>
+                        <!-- generate excel-->
+                        <div class="flex flex-col mt-10" id="generate-excel-report">
+                            <h2 class="text-lg md:text-xl text-[#FF000D] font-bold">Generate Excel Reports</h2>
+                            <p>
+                                To generate a Excel report, click the <b class="text-green-600 font-semibold">'Excel'</b> button located at the bottom right corner of the Reports page under the charts for patient summary, clinic revenue and Inventory Usage.
+                                However, for Inventory Usage report, the Excel button is located at the top right corner of the Inventory Usage table.
+                            </p>
+
+                            <p class="mt-3">
+                                After clicking the <b class="text-green-600 font-semibold">'Excel'</b> button, it will redirect you to a new page where the Excel report will be generated for the selected report type.
+                                You can then view, download, or print the generated Excel report as needed.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </section>
+
+            <!-- payments -->
+            <section id="payments" class="mt-20">
+                <div class="flex flex-col">
+                    <!-- Header -->
+                    <div class="flex flex-row items-center gap-5 py-6 md:py-8 md:px-14 px-4">
+                        <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-12 h-12">
+                        <div>
+                            <h1 class="text-lg md:text-2xl font-900">Payment Management</h1>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex flex-col gap-4 md:px-20 px-4 pb-6">
+                        <!--  payment -->
+                        <div class="flex flex-col mt-10">
+                            <h2 class="text-lg md:text-xl text-[#FF000D] font-bold">Payment Process</h2>
+
+                            <p class="mt-3">
+                                Please take note that you can only manage payments after completing patient immunization or when registering
+                                a new patient and adding new transactions.
+                            </p>
+
+
+                            <p class="mt-3">
+                                After verifying the immunization, it will proceed to the Payment section that is the time to process the payment for the patient's services.
+                                <br> <br>
+                                In the Payment section, the total amount due will be calculated based on the selected service and any additional fees. Date of Transaction is automatically set to the current system date and time.
+                                <br>
+                                <br>
+                                Staff Verification is required to confirm the payment details and complete the registration process.
+                                It requires the staff's password for verification.
+                            </p>
+                            <div class="flex flex-col md:flex-row items-center justify-center my-3">
+                                <img src="{{ asset('manual-img/patients/PSTEP6.png') }}" alt="Step 1" class="w-full max-w-xs object-contain">
+                                <img src="{{ asset('manual-img/patients/PSTEP8.png') }}" alt="Step 1" class="w-full max-w-2xl object-contain">
+                            </div>
+
+                            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md mt-3">
+                                <p class="text-xs md:text-base font-bold ">
+                                    Important Reminder
+                                </p>
+
+                                <p class="text-[12px] md:text-sm mt-2  leading-relaxed">
+                                    Please ensure that the Nurse and Staff assigned during registration are available to verify the immunization and payment details.
+                                    Their verification is crucial to complete the registration process successfully.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+
+            </section>
+
 
 
 

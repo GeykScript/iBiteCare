@@ -111,6 +111,8 @@ class ClinicUserProfileController extends Controller
     }
 
     public function userManual(){
-        return view('ClinicUser.manual');
+        $clinicUser = Auth::guard('clinic_user')->user();
+
+        return view('ClinicUser.manual', compact('clinicUser'));
     }
 }

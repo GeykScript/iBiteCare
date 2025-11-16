@@ -109,7 +109,7 @@
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]"> Registered Patients</h1>
-                    <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                    <a href="{{ route('clinic.user-manual') }}#patients" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
 
                 </div>
                 <div class="md:pl-12 pl-6">

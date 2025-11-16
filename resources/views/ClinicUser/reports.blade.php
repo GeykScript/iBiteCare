@@ -110,7 +110,7 @@
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
                     <div class="flex items-center gap-2">
                         <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Reports</h1>
-                        <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                        <a href="{{ route('clinic.user-manual') }}#reports" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
 
                     </div>
                 </div>

@@ -107,7 +107,7 @@
                         <div class="flex item-center gap-2">
                             <h1 class="text-lg md:text-3xl font-900">Patient Transactions</h1>
                             <div class="flex justify-center items-center">
-                                <a href="{{ route('clinic.user-manual') }}" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i>
+                                <a href="{{ route('clinic.user-manual') }}#patient-transactions" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i>
                                 </a>
                             </div>
                         </div>
