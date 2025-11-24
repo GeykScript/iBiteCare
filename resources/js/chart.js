@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalPatients = document.getElementById('totalPatients');
     const totalMale = document.getElementById('totalMale');
     const totalFemale = document.getElementById('totalFemale');
+    // const uniquePatients = document.getElementById('uniquePatients');
+
 
     let chartOptions = {
       chart: { type: 'bar', height: 350, toolbar: { show: false } },
@@ -55,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         filter: filter.value,
         serviceFilter: serviceFilter.value,
         ageFilter: ageFilter.value
+        
       });
 
       fetch(`/clinic/chart-data?${params}`)
@@ -68,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
           totalMale.textContent = data.totalMale;
           totalFemale.textContent = data.totalFemale;
           totalPatients.textContent = data.totalPatients;
+          // uniquePatients.textContent = data.uniquePatients;
         })
         .catch(err => console.error("Fetch error:", err));
     }

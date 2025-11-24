@@ -2,16 +2,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <div class="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-4 sm:p-6 my-6 sm:my-10">
-        <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4 sm:mb-6">Your Appointments</h2>
+    <div class="max-w-5xl mx-auto p-4 sm:p-6 flex flex-col items-start">
+        <h2 class="mb-4 sm:my-6 font-900 text-2xl sm:text-3xl text-gray-800">
+            Your Appointments
+        </h2>
+        <p class="text-md text-gray-500 mt-4">
+            <strong>Note:</strong> This section is for viewing your appointment details and schedules. <br>
+            Please select the appointment from the dropdown below to see all the relevant information.
+        </p>
+    </div>
 
+    <div class="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-4 sm:p-6 my-4 sm:my-4">
         @if($appointments->count() > 0)
-        <div class="text-center mb-6 px-2">
+        <div class="text-center mb-6 p-2">
             <label for="appointment_dropdown" class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                Select an appointment to view details:
+                To view appointment details, please select an appointment from the dropdown below:
             </label>
             <select id="appointment_dropdown"
-                class="block w-full md:w-3/4 lg:w-1/2 mx-auto px-2 sm:px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition">
+                class="block w-full md:w-3/4 lg:w-1/2 mx-auto px-2 sm:px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition">
                 <option value="">-- Select Appointment --</option>
                 @foreach($appointments as $appointment)
                 @if($appointment->status === 'Pending' || $appointment->status === 'Arrived' || $appointment->status === 'Rescheduled')
@@ -83,8 +91,18 @@
     </div>
 
 
+
+
     <div class="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-6 sm:p-10 my-6 sm:my-10">
-        <h1 class="text-2xl sm:text-3xl font-bold text-center text-red-600 mb-6 sm:mb-8">Book an Appointment</h1>
+        <h1 class="text-2xl sm:text-3xl font-900 font-bold text-center text-red-600 mb-6 sm:mb-8">Book an Appointment</h1>
+        <p class="text-md text-gray-700 my-4 space-y-2">
+            <strong>Note:</strong> This appointment is for prioritization purposes only and does <em>not</em> guarantee immediate service upon arrival.
+            <br><br>
+            If you do not show up for your scheduled appointment, your name will be removed from the appointment list and you will need to book again. We appreciate your understanding.
+        </p>
+        <p class="text-md text-gray-700 mt-6 mb-3 space-y-2 font-bold">
+            Please fill out the form below to schedule your appointment.
+        </p>
 
         @if(session('success'))
         <div class="bg-green-100 text-green-700 p-4 rounded-lg mb-6 text-center">
@@ -98,7 +116,7 @@
         </div>
         @endif
 
-        <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-2">
             @csrf
 
             <!-- Left Column -->
@@ -106,28 +124,28 @@
                 <div>
                     <label for="name" class="block text-xs sm:text-sm font-medium text-gray-700">Full Name</label>
                     <input type="text" id="name" name="name" value="{{ old('name', Auth::user()->name) }}"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required readonly>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition" required readonly>
                     @error('name') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="contact_number" class="block text-xs sm:text-sm font-medium text-gray-700">Contact Number</label>
                     <input type="tel" id="contact_number" name="contact_number" value="{{ old('contact_number') }}" maxlength="13"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition" required>
                     @error('contact_number') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="email" class="block text-xs sm:text-sm font-medium text-gray-700">Email Address</label>
                     <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required readonly>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition" required readonly>
                     @error('email') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="treatment_type" class="block text-xs sm:text-sm font-medium text-gray-700">Type of Treatment</label>
                     <select id="treatment_type" name="treatment_type"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition" required>
                         <option value="">Select...</option>
                         @foreach($services as $service)
                         <option value="{{ $service->name }}">
@@ -144,14 +162,14 @@
                 <div>
                     <label for="appointment_date" class="block text-xs sm:text-sm font-medium text-gray-700">Date of Appointment</label>
                     <input type="text" id="appointment_date" name="appointment_date" value="{{ old('appointment_date') }}"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition" required>
                     @error('appointment_date') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="appointment_time" class="block text-xs sm:text-sm font-medium text-gray-700">Preferred Time</label>
                     <select id="appointment_time" name="appointment_time"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition" required>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition" required>
                         <option value="">Select a date first...</option>
                     </select>
                     @error('appointment_time') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
@@ -160,7 +178,7 @@
                 <div>
                     <label for="additional_notes" class="block text-xs sm:text-sm font-medium text-gray-700">Additional Notes (if none, just leave it blank)</label>
                     <textarea id="additional_notes" name="additional_notes" rows="4"
-                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 transition">{{ old('additional_notes') }}</textarea>
+                        class="mt-1 block w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 transition">{{ old('additional_notes') }}</textarea>
                     @error('additional_notes') <p class="text-red-600 text-xs sm:text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -246,7 +264,7 @@
             }
         });
 
-        
+
         // Modal Helper Functions
         function showAlert(message, type = 'success') {
             const modal = document.getElementById('alertModal');
@@ -348,7 +366,13 @@
 
         document.getElementById('bookingForm')?.addEventListener('submit', function() {
             const btn = document.getElementById('submitBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            btn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Processing...</span>
+        `;
             btn.disabled = true;
         });
 
@@ -383,12 +407,10 @@
             if (appointment.status === 'Arrived') {
                 statusCell.textContent = 'Arrived';
                 statusCell.className = 'py-2 font-bold text-m text-green-600';
-            } 
-            else if (appointment.status === 'Rescheduled') {
+            } else if (appointment.status === 'Rescheduled') {
                 statusCell.textContent = 'Rescheduled';
                 statusCell.className = 'py-2 font-bold text-m text-blue-600';
-            }
-            else {
+            } else {
                 statusCell.textContent = 'Pending';
                 statusCell.className = 'py-2 font-bold text-m text-yellow-600';
             }

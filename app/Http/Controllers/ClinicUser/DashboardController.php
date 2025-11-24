@@ -62,23 +62,31 @@ class DashboardController extends Controller
         $ageFilter = $request->ageFilter ?? null;
 
         $query = ClinicTransactions::join('registered_patients', 'registered_patients.id', '=', 'patient_transactions.patient_id');
+       
+        // Compute UNIQUE patients served (distinct: patient_id + service_id + grouping)
+        // $uniquePatients = ClinicTransactions::selectRaw(
+        //     'COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) AS unique_count'
+        // )->first()->unique_count;
 
+
+        // count all transactions made
         switch ($filter) {
             case 'today':
-                $query->selectRaw('HOUR(transaction_date) as hour, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                $query->selectRaw('HOUR(transaction_date) as hour, registered_patients.sex, COUNT(*) as total')
                     ->whereDate('transaction_date', now())
                     ->groupBy('hour', 'registered_patients.sex')
                     ->orderBy('hour');
                 break;
+
             case 'yesterday':
-                $query->selectRaw('HOUR(transaction_date) as hour, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                $query->selectRaw('HOUR(transaction_date) as hour, registered_patients.sex, COUNT(*) as total')
                     ->whereDate('transaction_date', now()->subDay())
                     ->groupBy('hour', 'registered_patients.sex')
                     ->orderBy('hour');
                 break;
 
             case 'weekly':
-                $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(*) as total')
                     ->whereBetween('transaction_date', [now()->startOfWeek(), now()->endOfWeek()])
                     ->groupBy('date', 'registered_patients.sex')
                     ->orderBy('date');
@@ -86,25 +94,26 @@ class DashboardController extends Controller
 
             case 'monthly':
             case 'thisYear':
-                $query->selectRaw('MONTH(transaction_date) as month, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                $query->selectRaw('MONTH(transaction_date) as month, registered_patients.sex, COUNT(*) as total')
                     ->whereBetween('transaction_date', [now()->startOfYear(), now()->endOfYear()])
                     ->groupBy('month', 'registered_patients.sex')
                     ->orderBy('month');
                 break;
 
             case 'lastYear':
-                $query->selectRaw('MONTH(transaction_date) as month, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                $query->selectRaw('MONTH(transaction_date) as month, registered_patients.sex, COUNT(*) as total')
                     ->whereYear('transaction_date', now()->subYear()->year)
                     ->groupBy('month', 'registered_patients.sex')
                     ->orderBy('month');
                 break;
 
             default:
-                $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(DISTINCT CONCAT(patient_id, "-", service_id, "-", grouping)) as total')
+                $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(*) as total')
                     ->groupBy('date', 'registered_patients.sex')
                     ->orderBy('date');
                 break;
         }
+
 
         // Optional filters
         if ($serviceFilter && $serviceFilter != 'all') {
@@ -175,7 +184,9 @@ class DashboardController extends Controller
             ],
             'totalMale' => $totalMale,
             'totalFemale' => $totalFemale,
-            'totalPatients' => $totalPatients
+            'totalPatients' => $totalPatients,
+            // 'uniquePatients' => $uniquePatients
+
         ]);
     }
 }

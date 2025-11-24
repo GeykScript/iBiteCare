@@ -140,7 +140,7 @@
                                 <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="square-user"></i>
                             </div>
                             <div class="col-span-11  px-3 md:px-5 py-1">
-                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->first_name}} {{$clinicUser->middle_initial}} {{$clinicUser->last_name}} </h1>
+                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->first_name}} {{$clinicUser->middle_initial}} {{$clinicUser->last_name}} {{$clinicUser->suffix ?? ''}}</h1>
                                 <p class="md:text-sm text-xs text-gray-600">Name</p>
                             </div>
                         </div>
@@ -334,26 +334,36 @@
                                         @if ($errors->has('date_of_birth'))
                                         <label for="date_of_birth" class="text-sm font-semibold flex justify-between items-center w-full">Date of Birth:
                                             <span class="text-red-500 text-xs" id="date-of-birth-error">
-                                                {{ $errors->first('date_of_birth') }}
-                                                *</span>
+                                                {{ $errors->first('date_of_birth') }}*</span>
                                         </label>
                                         @else
                                         <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth:
                                             <span class="text-red-500 text-xs" id="date-of-birth-error">*</span>
                                         </label>
                                         @endif
-                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $clinicUser->info->birthdate) }}" readonly disabled
+                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $clinicUser->info->birthdate) }}"
                                             class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
+                                        @if ($errors->has('age'))
+                                        <label for="age" class="text-sm font-semibold flex justify-between items-center w-full">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">
+                                                {{ $errors->first('age') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="age" class="text-sm font-semibold ">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">*</span>
+                                        </label>
+                                        @endif
                                         <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $clinicUser->info->age) }}"
-                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <p class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></p>
+                                        <p class=" text-sm font-bold text-gray-800">Gender
+                                            <!-- <span class="text-red-500" id="gender-error">*</span> -->
+                                        </p>
                                         <div class="flex gap-5 items-center">
                                             @if ($clinicUser->info->gender == 'Male')
                                             <label class="flex items-center space-x-2">
@@ -393,6 +403,8 @@
                                             <i data-lucide="mail"></i>
                                             <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email', $clinicUser->email) }}" autocomplete="email"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                            <input type="hidden" name="email-checker" id="email-checker-id" value="{{$clinicUser->email}}">
+
                                         </div>
                                     </div>
 
@@ -576,8 +588,10 @@
 <script>
     document.getElementById('email').addEventListener('input', function() {
         const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+        const originalEmail = document.getElementById('email-checker-id').value.trim();
         const emailInput = this.value.trim();
         const errorSpan = document.getElementById('email-error');
+        const SubmitProfileBtn = document.getElementById('SubmitProfileBtn');
 
         // Basic email regex format check
         const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -587,19 +601,26 @@
             errorSpan.textContent = "Invalid email format";
             errorSpan.classList.add('text-red-500');
             this.classList.add('border-red-500');
+            SubmitProfileBtn.disabled = true;
             return;
         }
 
+        // Exclude original email from duplicate check
+        const emailsToCheck = existingEmails.filter(email => email !== originalEmail);
+
         // Check if email already exists
-        if (existingEmails.includes(emailInput)) {
+        if (emailsToCheck.includes(emailInput)) {
             errorSpan.textContent = "Email already exists";
             errorSpan.classList.add('text-red-500');
             this.classList.add('border-red-500');
+            SubmitProfileBtn.disabled = true;
         } else {
             errorSpan.textContent = "*";
             this.classList.remove('border-red-500');
+            SubmitProfileBtn.disabled = false;
         }
     });
+
 
 
 
@@ -628,6 +649,8 @@
         document.getElementById("password").value = data.default_password;
     }
 
+
+    // AGE CALCULATOR
     document.addEventListener("DOMContentLoaded", function() {
         const date_of_birth = document.getElementById("date_of_birth");
         const age = document.getElementById("age");
@@ -635,6 +658,13 @@
         date_of_birth.addEventListener("change", function() {
             const birthdate = new Date(date_of_birth.value);
             const today = new Date();
+
+            // Check if the birthdate is valid and not in the future
+            if (!date_of_birth.value || birthdate > today) {
+                age.value = "";
+                return;
+            }
+
             let calculatedAge = today.getFullYear() - birthdate.getFullYear();
             const monthDifference = today.getMonth() - birthdate.getMonth();
 
@@ -642,7 +672,7 @@
                 calculatedAge--;
             }
 
-            age.value = calculatedAge;
+            age.value = calculatedAge >= 0 ? calculatedAge : "";
         });
     });
 
@@ -717,6 +747,14 @@
             {
                 name: "contact_number",
                 label: "contact-number-error"
+            },
+            {
+                name: "date_of_birth",
+                label: "date-of-birth-error"
+            },
+            {
+                name: "age",
+                label: "age-error"
             }
         ];
 

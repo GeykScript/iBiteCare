@@ -33,8 +33,24 @@ class PatientSchedules extends Controller
                 $first = $group->first();
                 // merge all schedules from this grouping
                 $first->allSchedules = $group->flatMap->patientSchedules;
-                return $first;
-            })
+
+            // Compute overall status
+            $statuses = $first->allSchedules->pluck('status')->toArray();
+
+            if (empty($statuses)) {
+                $first->overall_status = null;
+            } elseif (in_array('Cancelled', $statuses)) {
+                $first->overall_status = 'Cancelled';
+            } elseif (in_array('Pending', $statuses)) {
+                $first->overall_status = 'Ongoing';
+            } elseif (count(array_unique($statuses)) === 1 && $statuses[0] === 'Completed') {
+                $first->overall_status = 'Completed';
+            } else {
+                $first->overall_status = 'Ongoing';
+            }
+
+            return $first;
+        })
             ->sortByDesc('transaction_date');
 
         return view('auth.schedules', compact('user', 'transactions2'));

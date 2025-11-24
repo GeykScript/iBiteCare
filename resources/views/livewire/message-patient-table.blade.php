@@ -122,6 +122,14 @@
                 </tr>
             </thead>
             <tbody>
+                @if($messages->isEmpty() && $filter === 'all')
+                <tr class="table-row sm:hidden">
+                    <td colspan="8" class="text-center py-4">No messages found.</td>
+                </tr>
+                <tr class="hidden sm:table-row">
+                    <td colspan="8" class="text-center py-4"> No messages found.</td>
+                </tr>
+                @endif
                 @if($messages->isEmpty() && $filter === 'sent')
                 <tr class="table-row sm:hidden">
                     <td colspan="8" class="text-center py-4">No messages sent.</td>

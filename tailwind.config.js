@@ -20,6 +20,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+                screens: {
+                'l': '1280px', // ✅ custom breakpoint for 1440px
+            },
         },
     },
 

@@ -130,7 +130,7 @@
                     <!-- // Add Appointment Modal -->
                     <dialog id="addAppointment" class="p-8 rounded-lg shadow-lg w-full max-w-2xl backdrop:bg-black/30 focus:outline-none ">
                         <!-- close modal button  -->
-                        <div class="w-full flex justify-end mb-5">
+                        <div class="w-full flex justify-end mb-5">  
                             <button onclick="document.getElementById('addAppointment').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
                         <!-- create  sms message all form  -->

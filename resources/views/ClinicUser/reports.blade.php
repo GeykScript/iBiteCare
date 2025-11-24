@@ -116,7 +116,7 @@
                 </div>
                 <!-- Main Content -->
                 <div class="grid grid-cols-12 md:p-4 p-2 gap-2">
-                    <div class="col-span-12 md:col-span-4  ">
+                    <div class="col-span-12 l:col-span-4  ">
                         <div class="flex flex-col gap-4 p-2 rounded-lg shadow-lg border border-gray-200">
                             <div class="w-full bg-white  p-2 md:p-6">
                                 <div class="flex items-center gap-2 p-2">
@@ -231,7 +231,7 @@
                                     <div>
                                         <p class="text-gray-500 font-bold">Accommodated Patients</p>
                                         <h5 id="totalPatients" class="leading-none text-2xl font-900 text-gray-900 pb-1">0</h5>
-                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patient Transactions</p>
                                     </div>
                                 </div>
 
@@ -324,7 +324,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-12 md:col-span-4">
+                    <div class="col-span-12 l:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
                             <div class="flex items-center gap-2 p-2 mb-6">
                                 <div>
@@ -403,7 +403,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-12 md:col-span-4">
+                    <div class="col-span-12 l:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
                             <h1 class="text-lg font-900 pb-8 px-2">Inventory Overview</h1>
                             <div class="flex justify-between pb-4 mb-3 border-b border-gray-200 dark:border-gray-700">

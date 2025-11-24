@@ -186,7 +186,7 @@
                     </div>
                     <div class="col-span-6 md:col-span-1 ">
                         <label for="age" class="block mb-2 text-sm font-bold text-gray-900">Age</label>
-                        <input type="text" name="age" id="age" required readonly
+                        <input type="text" name="age" id="age" required readonly placeholder="Age"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_age" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
@@ -230,15 +230,13 @@
             el.classList.add("hidden");
         });
 
-        // Validate inputs (text, date, time, hidden, select)
+        // Validate required inputs
         const inputs = document.querySelectorAll("#step-1 input[required], #step-1 select[required]");
         inputs.forEach(input => {
-            // Reset borders
             if (input.type !== "hidden") {
                 input.classList.remove("border-red-500", "border-gray-300");
                 input.classList.add("border-gray-300");
             } else {
-                // reset container border for dropdowns
                 const container = document.getElementById(`${input.id}-container`);
                 if (container) {
                     container.classList.remove("border-red-500", "border-gray-300");
@@ -251,7 +249,6 @@
                     input.classList.remove("border-gray-300");
                     input.classList.add("border-red-500");
                 } else {
-                    // highlight the dropdown container
                     const container = document.getElementById(`${input.id}-container`);
                     if (container) {
                         container.classList.remove("border-gray-300");
@@ -259,7 +256,6 @@
                     }
                 }
 
-                // show <p> error
                 const errorP = document.getElementById(`error_${input.id}`);
                 if (errorP) {
                     errorP.classList.remove("hidden");
@@ -269,7 +265,7 @@
             }
         });
 
-        // Validate location fields (region, province, city, barangay)
+        // Validate location fields
         ["region", "province", "city", "barangay"].forEach(field => {
             const hiddenInput = document.getElementById(`${field}_input`);
             const wrapperDiv = document.getElementById(`${field}_wrapper`);
@@ -291,6 +287,10 @@
                 }
             }
         });
+
+
+        const emailValid = validateEmailField();
+        if (!emailValid) isValid = false;
 
         return isValid;
     }
@@ -337,54 +337,56 @@
     });
 
     // EMAIL VALIDATOR & EXIST CHECKER
-    document.getElementById("email").addEventListener("input", function() {
-
+    function validateEmailField() {
+        const emailInput = document.getElementById("email");
         const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
         const errorEl = document.getElementById("error_email");
 
         // Only valid characters & lowercase
-        this.value = this.value.replace(/[^a-zA-Z0-9@._+-]/g, "").toLowerCase();
-        const emailValue = this.value.trim();
+        emailInput.value = emailInput.value.replace(/[^a-zA-Z0-9@._+-]/g, "").toLowerCase();
+        const emailValue = emailInput.value.trim();
 
-        // Email regex
         const emailPattern = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
 
-        // If empty, optional → reset
+        // Empty → optional
         if (emailValue.length === 0) {
             errorEl.classList.add("hidden");
-            this.classList.remove("border-red-500", "focus:border-red-500");
-            this.classList.add("border-gray-300", "focus:border-sky-500");
-            return;
+            emailInput.classList.remove("border-red-500", "focus:border-red-500");
+            emailInput.classList.add("border-gray-300", "focus:border-sky-500");
+            return true; // Empty is allowed
         }
 
         // Invalid format
         if (!emailPattern.test(emailValue)) {
             errorEl.textContent = "Invalid email format";
             errorEl.classList.remove("hidden");
-            this.classList.add("border-red-500", "focus:border-red-500");
-            this.classList.remove("border-gray-300", "focus:border-sky-500");
-            return;
+            emailInput.classList.add("border-red-500", "focus:border-red-500");
+            emailInput.classList.remove("border-gray-300", "focus:border-sky-500");
+            return false;
         }
 
-        // Check if email exists
+        // Check existing
         if (existingEmails.includes(emailValue)) {
             errorEl.textContent = "Email already exists";
             errorEl.classList.remove("hidden");
-            this.classList.add("border-red-500", "focus:border-red-500");
-            this.classList.remove("border-gray-300", "focus:border-sky-500");
-        } else {
-            // Valid & not exists
-            errorEl.classList.add("hidden");
-            this.classList.remove("border-red-500", "focus:border-red-500");
-            this.classList.add("border-gray-300", "focus:border-sky-500");
+            emailInput.classList.add("border-red-500", "focus:border-red-500");
+            emailInput.classList.remove("border-gray-300", "focus:border-sky-500");
+            return false;
         }
-    });
+
+        // Valid
+        errorEl.classList.add("hidden");
+        emailInput.classList.remove("border-red-500", "focus:border-red-500");
+        emailInput.classList.add("border-gray-300", "focus:border-sky-500");
+        return true;
+    }
+    // Live validation inside event listener
+    document.getElementById("email").addEventListener("input", validateEmailField);
 
 
 
 
-
-    //AGE CALCULATOR
+    // AGE CALCULATOR
     document.addEventListener("DOMContentLoaded", function() {
         const date_of_birth = document.getElementById("date_of_birth");
         const age = document.getElementById("age");
@@ -392,6 +394,13 @@
         date_of_birth.addEventListener("change", function() {
             const birthdate = new Date(date_of_birth.value);
             const today = new Date();
+
+            // Check if the birthdate is valid and not in the future
+            if (!date_of_birth.value || birthdate > today) {
+                age.value = "";
+                return;
+            }
+
             let calculatedAge = today.getFullYear() - birthdate.getFullYear();
             const monthDifference = today.getMonth() - birthdate.getMonth();
 
@@ -399,9 +408,10 @@
                 calculatedAge--;
             }
 
-            age.value = calculatedAge;
+            age.value = calculatedAge >= 0 ? calculatedAge : "";
         });
     });
+
     //PHONE NUMBER FORMATTER
     function formatContactNumber(input) {
         let value = input.value.replace(/\D/g, ""); // remove non-digits

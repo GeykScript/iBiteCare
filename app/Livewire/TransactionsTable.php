@@ -12,7 +12,7 @@ class TransactionsTable extends Component
 
     public $perPage = 10;
     public $sortBy = 'transaction_date';
-    public $sortDirection = 'ASC';
+    public $sortDirection = 'DESC';
     public $search = '';
 
     public function updatingSearch()
@@ -28,10 +28,10 @@ class TransactionsTable extends Component
     public function setSortBy($sortByField)
     {
         if ($this->sortBy === $sortByField) {
-            $this->sortDirection = $this->sortDirection === 'ASC' ? 'DESC' : 'ASC';
+            $this->sortDirection = $this->sortDirection === 'DESC' ? 'ASC' : 'DESC';
         } else {
             $this->sortBy = $sortByField;
-            $this->sortDirection = 'DESC';
+            $this->sortDirection = 'ASC';
         }
     }
 

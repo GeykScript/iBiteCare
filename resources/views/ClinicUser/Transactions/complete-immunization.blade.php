@@ -157,7 +157,8 @@
                             <input type="hidden" name="grouping" value="{{$grouping}}">
                             <input type="hidden" name="schedule_id" value="{{$schedule_id}}">
                             <input type="hidden" name="exposure_id" value="{{$old_immunization->exposure_id ?? ''}}">
-                            <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
+                            <input type="hidden" name="immunization_type" value="Active">
+                            <input type=" datetime-local" id="datetime_today" name="datetime_today" hidden>
 
                             <!-- Step 1:  Immunizations -->
                             <x-complete-steps.step-1 :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :nurses="$nurses" :old_immunization="$old_immunization" :service_fee="$service_fee" />

@@ -25,6 +25,11 @@ class AppointmentController extends Controller
         //
         $services = ClinicServices::all();
 
+        PatientAppointment::where('status', 'Pending')
+            ->where('appointment_date', '<', now()->toDateString())
+            ->delete();
+
+
 
         return view('ClinicUser.appointment',compact('clinicUser', 'services'));
     }

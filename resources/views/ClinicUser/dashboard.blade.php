@@ -123,7 +123,7 @@
                 <!-- Main content grid -->
                 <div class="grid grid-cols-7 md:p-4 p-2 gap-4 md:gap-2 ">
                     <!-- div for First CHART -->
-                    <div class="col-span-7 md:col-span-3 w-full bg-white rounded-lg shadow-lg border p-2 border-gray-200 ">
+                    <div class="col-span-7 l:col-span-3 w-full bg-white rounded-lg shadow-lg border p-2 border-gray-200 ">
                         <div class="flex flex-col gap-4 ">
                             <div class="w-full bg-white  p-2 md:p-6">
                                 <div class="flex items-center gap-2 p-2">
@@ -240,7 +240,7 @@
                                     <div>
                                         <p class="text-gray-500 font-bold">Accommodated Patients</p>
                                         <h5 id="totalPatients" class="leading-none text-2xl font-900 text-gray-900 pb-1">0</h5>
-                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patient Transactions</p>
                                     </div>
                                 </div>
 
@@ -268,7 +268,7 @@
                         </div>
                     </div>
                     <!-- div for Three CHART -->
-                    <div class="col-span-7 md:col-span-4 flex flex-col  gap-3 ">
+                    <div class="col-span-7 l:col-span-4 flex flex-col  gap-3 ">
 
                         <!-- div for two chart -->
                         <div class="grid grid-cols-5 bg-white  rounded md:gap-2 gap-4 h-full ">

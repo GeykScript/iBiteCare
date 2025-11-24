@@ -576,6 +576,14 @@
                                     <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
                                         <p>{{ $transaction->service->name }} - <span class="text-xs">
                                                 {{ date('F d, Y g:i A', strtotime($transaction->transaction_date)) }}
+
+                                                <span class="text-sm font-bold ml-2
+                                                        @if($transaction->overall_status === 'Completed') text-green-600
+                                                        @elseif($transaction->overall_status === 'Ongoing') text-sky-500
+                                                        @elseif($transaction->overall_status === 'Cancelled') text-red-600
+                                                        @endif">
+                                                    ( {{ $transaction->overall_status }} )
+                                                </span>
                                             </span></p> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down">
                                             <path d="m6 9 6 6 6-6" />
@@ -1159,15 +1167,32 @@
                                 <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
                                     <!-- date of birth  -->
                                     <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
-                                        <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth: </label>
-                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}" readonly disabled
+                                        @if ($errors->has('date_of_birth'))
+                                        <label for="date_of_birth" class="text-sm font-semibold flex justify-between items-center w-full">Date of Birth:
+                                            <span class="text-red-500 text-xs" id="date-of-birth-error">
+                                                {{ $errors->first('date_of_birth') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth:
+                                            <span class="text-red-500 text-xs" id="date-of-birth-error">*</span>
+                                        </label>
+                                        @endif
+                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}"
                                             class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
-                                        <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
-                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
+                                        @if ($errors->has('age'))
+                                        <label for="age" class="text-sm font-semibold flex justify-between items-center w-full">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">
+                                                {{ $errors->first('age') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="age" class="text-sm font-semibold ">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">*</span>
+                                        </label>
+                                        @endif <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
@@ -1229,8 +1254,9 @@
                                         @endif
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{  $patient->email }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email', $patient->email) }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                            <input type="hidden" name="email-checker" id="email-checker-id" value="{{$patient->email}}">
                                         </div>
                                     </div>
                                 </div>
@@ -1357,8 +1383,10 @@
 <script>
     document.getElementById('email').addEventListener('input', function() {
         const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+        const originalEmail = document.getElementById('email-checker-id').value.trim();
         const emailInput = this.value.trim();
         const errorSpan = document.getElementById('email-error');
+        const edit_submit_btn = document.getElementById('edit-submit-btn');
 
         // Basic email regex format check
         const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1368,19 +1396,26 @@
             errorSpan.textContent = "Invalid email format";
             errorSpan.classList.add('text-red-500');
             this.classList.add('border-red-500');
+            edit_submit_btn.disabled = true;
             return;
         }
 
+        // Exclude original email from duplicate check
+        const emailsToCheck = existingEmails.filter(email => email !== originalEmail);
+
         // Check if email already exists
-        if (existingEmails.includes(emailInput)) {
+        if (emailsToCheck.includes(emailInput)) {
             errorSpan.textContent = "Email already exists";
             errorSpan.classList.add('text-red-500');
             this.classList.add('border-red-500');
+            edit_submit_btn.disabled = true;
         } else {
             errorSpan.textContent = "*";
             this.classList.remove('border-red-500');
+            edit_submit_btn.disabled = false;
         }
     });
+
 
 
     const tabButtons = document.querySelectorAll(".tab-btn");
@@ -1446,6 +1481,34 @@
     });
 
 
+
+    // AGE CALCULATOR
+    document.addEventListener("DOMContentLoaded", function() {
+        const date_of_birth = document.getElementById("date_of_birth");
+        const age = document.getElementById("age");
+
+        date_of_birth.addEventListener("change", function() {
+            const birthdate = new Date(date_of_birth.value);
+            const today = new Date();
+
+            // Check if the birthdate is valid and not in the future
+            if (!date_of_birth.value || birthdate > today) {
+                age.value = "";
+                return;
+            }
+
+            let calculatedAge = today.getFullYear() - birthdate.getFullYear();
+            const monthDifference = today.getMonth() - birthdate.getMonth();
+
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthdate.getDate())) {
+                calculatedAge--;
+            }
+
+            age.value = calculatedAge >= 0 ? calculatedAge : "";
+        });
+    });
+
+
     //error handling js
     document.addEventListener("DOMContentLoaded", function() {
         let fields = [{
@@ -1488,6 +1551,18 @@
             {
                 name: "contact_number",
                 label: "contact-number-error"
+            },
+            {
+                name: "email",
+                label: "email-error"
+            },
+            {
+                name: "date_of_birth",
+                label: "date-of-birth-error"
+            },
+            {
+                name: "age",
+                label: "age-error"
             }
         ];
 

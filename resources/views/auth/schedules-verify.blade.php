@@ -6,10 +6,16 @@
         x-data="{ otpSent: {{ session('success') ? 'true' : 'false' }} }">
 
         <div class="p-4">
-            <h1 class="font-900 text-2xl sm:text-3xl font-bold text-gray-800">Clinic Schedules</h1>
-            <p class="text-md text-gray-500 mt-2">
-                No schedules available. Please verify your email or use the same email you provided at the clinic to view your immunization schedule.
+            <h1 class="font-900 text-2xl sm:text-3xl font-bold text-gray-800">Immunization Schedule</h1>
+            <p class="text-md text-gray-500 mt-2 md:p-4 text-center">
+                No immunization schedule found.
             </p>
+            <p class="text-md text-gray-500 mt-4">
+                Note: This is only for viewing your immunization schedule and Vaccination Card, not for appointment schedules. <br>
+                Please use the same email you gave to the clinic during your face-to-face visit.
+
+            </p>
+
         </div>
 
         <div x-show="!otpSent" class="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-6 sm:p-8 my-10 border border-gray-100">
@@ -26,7 +32,8 @@
             <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">Verify Your Email</h2>
             <p class="text-sm text-gray-500 mb-6 text-center">
                 Please confirm your email address to receive your one-time verification code.<br>
-                <span class="text-gray-400 text-xs">(Note: Please use the same email you provided at the clinic.)</span>
+                <span class="text-gray-400 text-xs">
+                </span>
             </p>
 
             <form action="{{ route('patient.schedules.sendOtp') }}" method="POST" id="otpForm" class="space-y-5">
@@ -42,7 +49,9 @@
                         value="{{ $user->email }}"
                         readonly
                         class="w-full border border-gray-300 bg-gray-50 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <p class="text-xs text-gray-500 mt-1">Your registered email address</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        Note: Use the email you provided at the clinic. If it wasn’t registered during the visit, this feature won’t show the desired information.
+                    </p>
                 </div>
 
                 <div class="flex justify-end">
@@ -61,9 +70,9 @@
         </div>
 
         <div x-show="otpSent" x-transition
-            class="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-6 sm:p-8 my-10 border border-gray-100">
+            class="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-4 sm:p-8 my-10 border border-gray-100">
 
-            <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">Enter Your Verification Code</h2>
+            <h2 class="text-lg md:text-2xl font-bold text-gray-800 mb-2 text-center">Enter Your Verification Code</h2>
             <p class="text-sm text-gray-500 mb-6 text-center">
                 We’ve sent a 6-digit verification code to your email address. Please enter it below to continue.
             </p>
@@ -89,17 +98,22 @@
                     <x-input-error :messages="$errors->get('code')" class="bg-red-100 border border-red-300 text-red-700 px-4 py-2 mt-2 rounded-md font-medium inline-block" />
                 </div>
 
-                <div class="flex justify-center gap-3 sm:gap-4 mt-5">
+                <div class="flex justify-center gap-2 sm:gap-3 mt-5">
                     @for ($i = 0; $i < 6; $i++)
                         <input
                         type="text"
                         maxlength="1"
                         name="code[]"
-                        class="md:w-14 w-12 h-14 text-center border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-xl font-semibold text-gray-800 rounded-lg transition-all duration-150 ease-in-out"
+                        class="w-9 h-10 md:w-12 md:h-14 md:w-14 md:h-14 
+                                text-center border-2 border-gray-300 
+                                focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
+                                text-md sm:text-xl font-semibold text-gray-800 
+                                rounded-lg transition-all duration-150 ease-in-out"
                         oninput="moveToNext(this)"
                         onkeydown="moveToPrev(event, this)">
                         @endfor
                 </div>
+
 
                 <input type="hidden" name="code" id="code">
 
