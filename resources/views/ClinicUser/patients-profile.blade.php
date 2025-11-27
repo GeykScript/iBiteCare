@@ -55,9 +55,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -539,7 +539,7 @@
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($payment->transaction->transaction_date)) }}</td>
                                                     <td class="px-4 py-2 border">{{ $payment->transaction->service->name }}</td>
                                                     <td class="px-4 py-2 border">{{ $payment->receipt_number }}</td>
-                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $payment->amount_paid }}
+                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ number_format($payment->amount_paid, 2) }}
                                                         </span></td>
                                                     <td class="px-4 py-2 border">{{ $payment->receivedBy->UserRole->role_name }}. {{ $payment->receivedBy->first_name }} {{ $payment->receivedBy->middle_initial }} {{ $payment->receivedBy->last_name }} </td>
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($payment->payment_date)) }}</td>

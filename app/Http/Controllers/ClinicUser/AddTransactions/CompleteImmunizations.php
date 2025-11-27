@@ -186,7 +186,7 @@ class CompleteImmunizations extends Controller
                                     'message_text'        =>
                                     "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel})  today, " .
                                         $scheduledDateObj->format('M j, Y') .
-                                        ".\nWe're open 8AM-5PM. Thank you!",
+                                        ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
                                 ]);
                             }
                         }
@@ -205,8 +205,8 @@ class CompleteImmunizations extends Controller
                                 'scheduled_send_date'  => $twoDaysBefore->format('Y-m-d'),
                                 'display_message'      => "Reminder: your ({$serviceLabel})  is on " . $scheduledDateObj->format('M j, Y') . ".",
                                 'message_text'         => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel})  schedule on "
-                                    . $scheduledDateObj->format('M j, Y')
-                                    . ". Clinic hours: 8AM to 5PM. Thank you!",
+                                    . $scheduledDateObj->format('M j, Y') .
+                                    ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
                                 'sender_id'            => null,
                                 'status'               => 'Pending',
                             ]); 
@@ -220,11 +220,11 @@ class CompleteImmunizations extends Controller
                                 'schedule'             => $newScheduledDate,
                                 'day_label'            => $serviceLabel,
                                 'scheduled_send_date'  => $newScheduledDate,
-                                'display_message'      => "Today is your PEP dose ({$serviceLabel}).",
+                                'display_message'      => "Today is your dose ({$serviceLabel}).",
                                 'message_text'         =>
-                                "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel}) PEP today, " .
+                                "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel}) today, " .
                                     $scheduledDateObj->format('M j, Y') .
-                                    ".\nWe're open 8AM-5PM. Thank you!",
+                                    ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
                                 'sender_id'            => null,
                                 'status'               => 'Pending',
                             ]);

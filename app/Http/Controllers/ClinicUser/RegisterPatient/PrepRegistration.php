@@ -66,6 +66,7 @@ class PrepRegistration extends Controller
 
     public function registerPatientPrep(RegisterPatientPREPRequest  $request)
     {
+        dd($request->all());
         $request->validated();
 
         $date = str_replace('T', ' ', $request->datetime_today);
@@ -164,8 +165,8 @@ class PrepRegistration extends Controller
                             'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
                             'display_message' => "Reminder: your ({$serviceSchedule->label}) PREP dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
                             'message_text' => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PREP schedule on "
-                                . $scheduledDateObj->format('M j, Y')
-                                . ". Clinic hours: 8AM to 5PM. Thank you!",
+                                . $scheduledDateObj->format('M j, Y') .
+                                ". Clinic hours: 8AM to 5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
                             'sender_id' => null,
                             'status' => 'Pending',
                         ]);
@@ -181,8 +182,8 @@ class PrepRegistration extends Controller
                         'display_message' => "Today is your PREP dose ({$serviceSchedule->label}).",
                         'message_text' =>
                         "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PREP today, " .
-                            $scheduledDateObj->format('M j, Y') .
-                            ".\nWe're open 8AM-5PM. Thank you!",
+                                $scheduledDateObj->format('M j, Y') .
+                                ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
                         'sender_id' => null,
                         'status' => 'Pending',
                     ]);

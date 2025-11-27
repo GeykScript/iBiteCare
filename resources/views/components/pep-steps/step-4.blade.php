@@ -17,7 +17,7 @@
                         <p id="error_anti_tetanus_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                         <div class="flex  items-center justify-center gap-4 p-2">
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="anti_tetanus_dose_given" id="anti_tetanus_dose_given" value="TT1" required
+                                <input type="radio" name="anti_tetanus_dose_given" id="anti_tetanus_dose_given" value="TT1"
                                     class="text-red-500 focus:ring-red-500">
                                 <span>TT1</span>
                             </label>
@@ -33,13 +33,19 @@
                             </label>
                         </div>
                     </div>
+                    <input type="hidden" id="used" value="0" name="used">
+                    @props(['anti_tetanus_fee'])
+                    <input type="hidden" id="tetanus_fee" name="tetanus_fee" value="{{ $anti_tetanus_fee->discounted_service_fee }}"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+
+
                     <!-- ANTI TETANUS VACCINE DROPDOWN  -->
                     @props(['antiTetanusVaccines'])
                     <div class="col-span-6 md:col-span-3 mt-2 md:px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Anti-Tetanus Vaccine</h2>
                         <div x-data="{ open: false, selected: null, selectedLabel: 'Select Vaccine', volume: null }" class="relative">
                             <!-- Hidden input to store the selected id -->
-                            <input type="hidden" name="anti_tetanus_vaccine_id" id="anti_tetanus_vaccine_id" required x-model="selected">
+                            <input type="hidden" name="anti_tetanus_vaccine_id" id="anti_tetanus_vaccine_id" x-model="selected">
                             <!-- Button / Display -->
                             <button type="button"
                                 @click="open = !open"
@@ -70,14 +76,14 @@
                     </div>
                     <div class="col-span-6 md:col-span-1 mt-2 ">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
-                        <input type="number" id="anti_dose_given" name="anti_dose_given" min="0" step="any" required
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                        <input type="number" id="anti_dose_given" name="anti_dose_given" min="0" step="any"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg  w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_anti_dose_given" class="text-red-500 text-xs mt-1  hidden">*required</p>
                     </div>
                     <div class="col-span-6 md:col-span-2 mt-2 md:px-4">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Administered</h2>
                         <input type="date" id="anti_tetanus_date_dose_given" name="anti_tetanus_date_dose_given"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg  w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_anti_tetanus_date_dose_given" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                 </div>
@@ -95,7 +101,7 @@
                                 <span>Active</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="immunization_type" value="Active"
+                                <input type="radio" name="immunization_type" value="Passive"
                                     class="text-red-500 focus:ring-red-500">
                                 <span>Passive</span>
                             </label>
@@ -103,12 +109,13 @@
                     </div>
                     <div class="col-span-6 md:col-span-2">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Given</h2>
-                        <p id="error_date_given" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
+                        <p id="error_date_dose_given" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
                         <input type="date" id="date_dose_given" name="date_dose_given"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
                     <div class="col-span-6 mt-2">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Place Administered</h2>
+                        <p id="error_place_of_immunization" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
                         <input type="text" id="place_of_immunization" name="place_of_immunization"
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
@@ -243,13 +250,13 @@
                     </div>
                     <!-- PASSIVE IMMUNIZATION SECTION  -->
                     <div class="col-span-12 md:col-span-4" id="passive_section">
-                        <h2 class="text-sm md:text-md  text-gray-500 font-900 mb-2">Passive Immunization </h2>
-                        <div class="grid grid-cols-12" x-data="{ PassiveCategory: 'ERIG' }">
+                        <h2 class="text-sm md:text-md  text-gray-500 font-900 mb-2">Passive Immunization <span class="text-gray-500 text-xs font-normal">( Skip if not needed )</span> </h2>
+                        <div class="grid grid-cols-12" x-data="{ PassiveCategory: '' }">
                             <div class="col-span-12">
                                 <h2 class=" text-xs md:text-md text-gray-500 font-900 ">RIG Type</h2>
                                 <div class="flex  gap-4 p-2">
                                     <label class="flex items-center space-x-2">
-                                        <input type="radio" name="passive_rig_category" value="ERIG" x-model="PassiveCategory" required
+                                        <input type="radio" name="passive_rig_category" value="ERIG" x-model="PassiveCategory"
                                             class="text-red-500 focus:ring-red-500">
                                         <span>ERIG</span>
                                     </label>
@@ -266,7 +273,8 @@
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">ERIG Vaccine</h2>
                                 <div x-data="{ open: false, selected_erig: null, selectedLabelErig: 'Select Vaccine', volume: null }" class="relative">
                                     <!-- Hidden input to store the selected id -->
-                                    <input type="hidden" name="erig_vaccine_id" x-model="selected_erig" :required="PassiveCategory === 'ERIG'" :disabled="PassiveCategory !== 'ERIG'">
+                                    <input type="hidden" name="erig_vaccine_id" x-model="selected_erig" :required="PassiveCategory === 'ERIG'"
+                                        :disabled="PassiveCategory !== 'ERIG'">
                                     <!-- Button / Display -->
                                     <button type="button"
                                         @click="open = !open"
@@ -304,7 +312,8 @@
                                 <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">HRIG Vaccine</h2>
                                 <div x-data="{ open: false, selected_hrig: null, selectedLabelHrig: 'Select Vaccine' , volume: null }" class="relative">
                                     <!-- Hidden input to store the selected id -->
-                                    <input type="hidden" name="hrig_vaccine_id" x-model="selected_hrig" :required="PassiveCategory === 'HRIG'" :disabled="PassiveCategory !== 'HRIG'">
+                                    <input type="hidden" name="erig_vaccine_id" x-model="selected_erig" :required="PassiveCategory === 'HRIG'"
+                                        :disabled="PassiveCategory !== 'ERIG'">
                                     <!-- Button / Display -->
                                     <button type="button"
                                         @click="open = !open"
@@ -339,20 +348,24 @@
                             <div class="col-span-12 grid grid-cols-6 gap-2 mt-2">
                                 <div class="col-span-6 md:col-span-2 ">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
-                                    <input type="number" id="passive_dose_given" name="passive_dose_given" required min="0" step="any"
+                                    <input type="number" id="passive_dose_given" name="passive_dose_given" min="0" step="any"
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                     <p id="error_passive_dose_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
 
                                 </div>
                                 <div class="col-span-6 md:col-span-3">
                                     <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Given:</h2>
-                                    <input type="date" id="passive_date_given" name="passive_date_given" required
+                                    <input type="date" id="passive_date_given" name="passive_date_given"
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                     <p id="error_passive_date_given" class="text-red-500 text-xs mt-1  hidden">*This field is required</p>
 
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" id="usedRig" value="0" name="usedRig">
+                        @props(['service_fee'])
+                        <input type="hidden" id="passive_fee" name="passive_fee" value="{{ $service_fee->discounted_rig }}"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
                     <!-- Nurse Verification Section -->
                     <div class="col-span-12 md:col-span-4 flex flex-col items-center justify-center">
@@ -409,8 +422,11 @@
                                 <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                             </div>
                         </div>
-                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                        <div class="flex flex-col w-full ">
+                            <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                            <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -564,10 +580,7 @@
         const passiveSection = document.getElementById("passive_section");
         const category = document.getElementById("biteCategoryInput").value;
         const inputs = passiveSection.querySelectorAll("input, select, textarea, button");
-        const anti_tetanus_dose_given = document.getElementById("anti_tetanus_dose_given");
-        const anti_tetanus_vaccine_id = document.getElementById("anti_tetanus_vaccine_id");
-        const anti_tetanus_date_dose_given = document.getElementById("anti_tetanus_date_dose_given");
-        const anti_dose_given = document.getElementById("anti_dose_given");
+
 
         if (category === "2") {
             // Hide and disable all inputs
@@ -579,11 +592,6 @@
                 el.required = false;
                 el.value = ""; // optional: clear old values
             });
-            anti_tetanus_dose_given.required = false;
-            anti_tetanus_vaccine_id.required = false;
-            anti_dose_given.required = false;
-            anti_tetanus_date_dose_given.value = "";
-            anti_tetanus_date_dose_given.required = false;
 
 
 
@@ -599,27 +607,23 @@
                     el.required = true;
                 }
             });
-            anti_tetanus_dose_given.required = true;
-            anti_tetanus_vaccine_id.required = true;
-            anti_dose_given.required = true;
-            anti_tetanus_date_dose_given.required = true;
+
 
         }
     }
 
+    // Get the radio buttons and inputs
+    const radiosPrevious = document.querySelectorAll('input[name="immunization_type"]');
+    const datePreviousInput = document.getElementById('date_dose_given');
+    const placePreviousInput = document.getElementById('place_of_immunization');
 
-
-
-
-    function dateOfTransactionToday() {
-        const anti_tetanuDate = document.getElementById("anti_tetanus_date_dose_given");
-        const passiveDateInput = document.getElementById("passive_date_given");
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, "0");
-        const day = String(today.getDate()).padStart(2, "0");
-        anti_tetanuDate.value = `${year}-${month}-${day}`;
-        passiveDateInput.value = `${year}-${month}-${day}`;
-    }
-    dateOfTransactionToday();
+    radiosPrevious.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.checked) {
+                // If any radio is selected, make inputs required
+                datePreviousInput.required = true;
+                placePreviousInput.required = true;
+            }
+        });
+    });
 </script>

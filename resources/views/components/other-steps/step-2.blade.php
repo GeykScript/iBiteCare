@@ -36,7 +36,7 @@
                                         <span>Active</span>
                                     </label>
                                     <label class="flex items-center space-x-2">
-                                        <input type="radio" name="immunization_type" value="Active"
+                                        <input type="radio" name="immunization_type" value="Passive"
                                             class="text-red-500 focus:ring-red-500">
                                         <span>Passive</span>
                                     </label>
@@ -78,7 +78,7 @@
                                         @click.outside="open = false"
                                         class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
                                         @if (count($vaccines) === 0)
-                                            <div class="px-3 py-2 text-sm text-gray-500">No vaccines available</div>
+                                        <div class="px-3 py-2 text-sm text-gray-500">No vaccines available</div>
                                         @endif
                                         @foreach ($vaccines as $vaccine)
                                         @php
@@ -153,8 +153,10 @@
                                 <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                             </div>
                         </div>
-                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                        <div class="flex flex-col w-full ">
+                            <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                            <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                        </div>
                     </div>
                 </div>
             </div>

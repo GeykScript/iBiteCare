@@ -113,7 +113,7 @@
                     </div>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4  md:px-10 gap-2 ">
+                <div class="grid grid-cols-4  md:px-10 gap-2 h-full mb-10">
                     <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
                         <div class="flex flex-col gap-4 md:gap-0 ">
                             <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
@@ -287,7 +287,7 @@
                             <!-- Step 3: Animal Profile -->
                             <x-pep-steps.step-3 />
                             <!-- Step 4:  Immunizations -->
-                            <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" :nurses="$nurses" />
+                            <x-pep-steps.step-4 :antiTetanusVaccines="$antiTetanusVaccines" :hrigVaccines="$hrigVaccines" :pvrvVaccines="$pvrvVaccines" :pcecVaccines="$pcecVaccines" :erigVaccines="$erigVaccines" :nurses="$nurses" :anti_tetanus_fee="$anti_tetanus_fee" :service_fee="$service_fee" />
                             <!-- Step 5: Payment -->
                             <x-pep-steps.step-5 :staffs="$staffs" :service_fee="$service_fee" />
                             <!-- Navigation Buttons -->
@@ -621,5 +621,204 @@
 </script>
 
 
+<script>
+    // Get elements
+    const usedInput = document.getElementById('used');
+    const tetanusFeeInput = document.getElementById('tetanus_fee');
+    const antiTetanusFee = document.getElementById('anti_tetanus_fee');
+    const displayAntiTetanusFee = document.getElementById('display_anti_tetanus_fee');
+    const antiTetanusLabel = document.getElementById('anti_tetanus_label');
+    const antiTetanusContainer = document.getElementById('anti_tetanus_fee_container');
+
+    // Store the original fee value
+    const originalFee = tetanusFeeInput.value;
+    tetanusFeeInput.value = '0'; // Set initial fee to 0
+    antiTetanusFee.value = tetanusFeeInput.value;
+    displayAntiTetanusFee.value = Number(antiTetanusFee.value)
+        .toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    displayAntiTetanusFee.classList.add('hidden');
+    antiTetanusFee.classList.add('hidden');
+    antiTetanusLabel.classList.add('hidden');
+    antiTetanusContainer.classList.add('hidden');
+
+    // Get all radio buttons
+    const radiosAntiTetanus = document.querySelectorAll('input[name="anti_tetanus_dose_given"]');
+
+    // anti tetanus required if used
+    const anti_tetanus_vaccine_id = document.getElementById('anti_tetanus_vaccine_id');
+    const anti_dose_given = document.getElementById('anti_dose_given');
+    const anti_tetanus_date_dose_given = document.getElementById('anti_tetanus_date_dose_given');
+    // Set initial required to false
+    anti_tetanus_vaccine_id.required = false;
+    anti_dose_given.required = false;
+    anti_tetanus_date_dose_given.required = false;
+
+    radiosAntiTetanus.forEach(radio => {
+        radio.addEventListener('click', () => {
+            usedInput.value = '1'; // Set used to 1 when any radio is clicked
+            usedInput.dispatchEvent(new Event('input')); // Trigger the input event so your fee JS runs
+        });
+    });
+
+    // Listen for changes on the "used" input
+    usedInput.addEventListener('input', () => {
+        if (usedInput.value === '1') {
+            tetanusFeeInput.value = originalFee; // Keep the original fee
+            antiTetanusFee.value = tetanusFeeInput.value;
+            displayAntiTetanusFee.value = Number(antiTetanusFee.value)
+                .toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            displayAntiTetanusFee.classList.remove('hidden');
+            antiTetanusFee.classList.remove('hidden');
+            antiTetanusLabel.classList.remove('hidden');
+            antiTetanusContainer.classList.remove('hidden');
+
+            // Set required to true
+            anti_tetanus_vaccine_id.required = true;
+            anti_dose_given.required = true;
+            anti_tetanus_date_dose_given.required = true;
+        } else {
+            tetanusFeeInput.value = '0'; // Set fee to 0
+            antiTetanusFee.value = tetanusFeeInput.value;
+            displayAntiTetanusFee.value = Number(antiTetanusFee.value)
+                .toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+
+            displayAntiTetanusFee.classList.add('hidden');
+            antiTetanusFee.classList.add('hidden');
+            antiTetanusLabel.classList.add('hidden');
+            antiTetanusContainer.classList.add('hidden');
+
+            // Set required to false
+            anti_tetanus_vaccine_id.required = false;
+            anti_dose_given.required = false;
+            anti_tetanus_date_dose_given.required = false;
+        }
+    });
+
+    const usedRigInput = document.getElementById('usedRig');
+    const passiveFeeInput = document.getElementById('passive_fee');
+    const displayRigFee = document.getElementById('display_rig_fee');
+    const rigFee = document.getElementById('rig_fee');
+
+    const passiveRadios = document.querySelectorAll('input[name="passive_rig_category"]');
+    const rigLabel = document.getElementById('rig_label');
+    const rigContainer = document.getElementById('rig_fee_container');
+
+
+    const passive_dose_given = document.getElementById('passive_dose_given');
+    const passive_date_given = document.getElementById('passive_date_given');
+
+    passive_dose_given.required = false;
+    passive_date_given.required = false;
+
+
+    passiveRadios.forEach(radio => {
+        radio.addEventListener('click', () => {
+            usedRigInput.value = '1'; // Set used to 1 when any radio is clicked
+            usedRigInput.dispatchEvent(new Event('input')); // Trigger the input event so your fee JS runs
+        });
+    });
+
+    const originalFeeRig = passiveFeeInput.value;
+    passiveFeeInput.value = '0'; // Set initial fee to 0
+    rigFee.value = passiveFeeInput.value;
+    displayRigFee.value = Number(rigFee.value)
+        .toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    displayRigFee.classList.add('hidden');
+    rigFee.classList.add('hidden');
+    rigLabel.classList.add('hidden');
+    rigContainer.classList.add('hidden');
+
+    // Listen for changes on the "used" input
+    usedRigInput.addEventListener('input', () => {
+        if (usedRigInput.value === '1') {
+            passiveFeeInput.value = originalFeeRig; // Keep the original fee
+            rigFee.value = passiveFeeInput.value;
+            displayRigFee.value = Number(rigFee.value)
+                .toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+            displayRigFee.classList.remove('hidden');
+            rigFee.classList.remove('hidden');
+            rigLabel.classList.remove('hidden');
+            rigContainer.classList.remove('hidden');
+
+            passive_dose_given.required = true;
+            passive_date_given.required = true;
+
+
+        } else {
+            passive_dose_given.required = false;
+            passive_date_given.required = false;
+
+            passiveFeeInput.value = '0'; // Set fee to 0
+            rigFee.value = passiveFeeInput.value;
+            displayRigFee.value = Number(rigFee.value)
+                .toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            displayRigFee.classList.add('hidden');
+            rigFee.classList.add('hidden');
+            rigLabel.classList.add('hidden');
+            rigContainer.classList.add('hidden');
+
+
+
+        }
+    });
+
+
+    // Get elements
+    const servicePrice = document.getElementById('service_fee');
+    const antiTetanusPrice = document.getElementById('anti_tetanus_fee');
+    const rigPrice = document.getElementById('rig_fee');
+    const additionalPrice = document.getElementById('additional_fee');
+    const totalAmountDisplay = document.getElementById('total_amount_display');
+    const totalAmountInput = document.getElementById('total_amount');
+
+    // Function to calculate total
+    function calculateTotal() {
+        const total =
+            Number(servicePrice.value || 0) +
+            Number(antiTetanusPrice.value || 0) +
+            Number(rigPrice.value || 0) +
+            Number(additionalPrice.value || 0);
+
+        totalAmountInput.value = total.toFixed(2);
+        totalAmountDisplay.textContent = total.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // Listen for changes on all relevant inputs
+    [servicePrice, antiTetanusPrice, rigPrice, additionalPrice].forEach(input => {
+        input.addEventListener('input', calculateTotal);
+    });
+
+    // Also recalc when radio buttons change your dynamic fees
+
+    [usedInput, usedRigInput].forEach(input => {
+        input.addEventListener('input', calculateTotal);
+    });
+
+    // Initial calculation
+    calculateTotal();
+</script>
 
 </html>

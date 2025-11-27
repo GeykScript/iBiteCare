@@ -11,6 +11,10 @@ class ClinicServices extends Model
         'name',
         'description',
         'service_fee',
+        'discount',
+        'rig_fee',
+        'rig_discounted_fee',
+        'discounted_service_fee',
         'created_at',
         'updated_at'
     ];

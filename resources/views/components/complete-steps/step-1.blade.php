@@ -211,8 +211,10 @@
                                             <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                                         </div>
                                     </div>
-                                    <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                                    <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                                    <div class="flex flex-col w-full ">
+                                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                                    </div>
                                 </div>
                             </div>
 

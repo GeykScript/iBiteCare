@@ -74,7 +74,9 @@
                     <th class="border-r border-b bg-gray-800 text-white px-2 py-3 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">ID</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer" wire:click="setSortBy('name')">Service Name</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Description</th>
-                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Service Fee</th>
+                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Amount</th>
+                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Discount</th>
+                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Net Amount</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Schedules</th>
                     <th class="px-2 py-3 border bg-gray-800 text-white rounded-tr-lg hover:cursor-pointer">Action</th>
                 </tr>
@@ -93,7 +95,9 @@
                     <td class="border-b px-2 py-2 text-gray-700 text-center">{{ $service->id }}</td>
                     <td class="border-b px-2 py-2 text-gray-700 text-center">{{ $service->name }} </td>
                     <td class="border-b px-2 py-2 text-gray-700">{{ $service->description }} </td>
-                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $service->service_fee }}</span></td>
+                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{  number_format($service->service_fee, 2) }}</span></td>
+                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"> {{  number_format($service->discount) }}%</span></td>
+                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{  number_format($service->discounted_service_fee, 2) }}</span></td>
                     <td class="border-b px-2 py-2 text-gray-700 text-center">
                         @forelse ($service->schedules as $schedule)
                         <div class="flex items-start justify-start">

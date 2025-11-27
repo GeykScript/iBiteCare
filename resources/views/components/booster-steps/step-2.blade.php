@@ -23,7 +23,7 @@
                                                     <span>Active</span>
                                                 </label>
                                                 <label class="flex items-center space-x-2">
-                                                    <input type="radio" name="immunization_type" value="Active" disabled
+                                                    <input type="radio" name="immunization_type" value="Passive"
                                                         class="text-red-500 focus:ring-red-500">
                                                     <span>Passive</span>
                                                 </label>
@@ -31,12 +31,13 @@
                                         </div>
                                         <div class="col-span-7 md:col-span-3">
                                             <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Date Given</h2>
-                                            <p id="error_date_given" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
+                                            <p id="error_date_dose_given" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
                                             <input type="date" id="date_dose_given" name="date_dose_given"
                                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                         </div>
                                         <div class="col-span-7 mt-2">
                                             <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Place Administered</h2>
+                                            <p id="error_place_of_immunization" class="text-red-500 text-xs mt-1 hidden ">*This field is required</p>
                                             <input type="text" id="place_of_immunization" name="place_of_immunization"
                                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                         </div>
@@ -211,8 +212,10 @@
                                             <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                                         </div>
                                     </div>
-                                    <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                                    <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                                    <div class="flex flex-col w-full ">
+                                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -358,6 +361,20 @@
         observer.observe(el, {
             attributes: true,
             attributeFilter: ["value"]
+        });
+    });
+    // Get the radio buttons and inputs
+    const radiosPrevious = document.querySelectorAll('input[name="immunization_type"]');
+    const datePreviousInput = document.getElementById('date_dose_given');
+    const placePreviousInput = document.getElementById('place_of_immunization');
+
+    radiosPrevious.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.checked) {
+                // If any radio is selected, make inputs required
+                datePreviousInput.required = true;
+                placePreviousInput.required = true;
+            }
         });
     });
 </script>

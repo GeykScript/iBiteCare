@@ -67,21 +67,22 @@ class PepRegistration extends Controller
             ->get();
 
         $service_fee = ClinicServices::where('id', $id)->first();
+        $anti_tetanus_fee = ClinicServices::where('id', 4)->first();
         $pepService = $id;
+
+
 
         $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
 
         $emails = Patient::all()->pluck('email')->toArray();
 
-        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee', 'recentlyAddedPatients', 'pepService', 'emails'));
+        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee', 'anti_tetanus_fee', 'recentlyAddedPatients', 'pepService', 'emails'));
     }
 
 
     public function registerPatientPEP(RegisterPatientPEPRequest  $request)
     {
         $request->validated();
-
-
 
         $date = str_replace('T', ' ', $request->datetime_today);
         
@@ -224,9 +225,11 @@ class PepRegistration extends Controller
                             'day_label' => $serviceSchedule->label,
                             'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
                             'display_message' => "Reminder: your ({$serviceSchedule->label}) PEP dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
-                            'message_text' => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP schedule on "
-                                . $scheduledDateObj->format('M j, Y')
-                                . ". Clinic hours: 8AM to 5PM. Thank you!",
+                            'message_text' =>
+                            "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP schedule on "
+                                . $scheduledDateObj->format('M j, Y') .
+                                ". Clinic hours: 8AM to 5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
+
                             'sender_id' => null,
                             'status' => 'Pending',
                         ]);
@@ -241,9 +244,10 @@ class PepRegistration extends Controller
                         'scheduled_send_date' => $scheduledDate,
                         'display_message' => "Today is your PEP dose ({$serviceSchedule->label}).",
                         'message_text' =>
-                        "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP today, " .
-                            $scheduledDateObj->format('M j, Y') .
-                            ".\nWe're open 8AM-5PM. Thank you!",
+                        "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP today, "
+                            . $scheduledDateObj->format('M j, Y') .
+                            ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
+
                         'sender_id' => null,
                         'status' => 'Pending',
                     ]);

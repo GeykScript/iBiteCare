@@ -113,7 +113,7 @@
                     </div>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4  md:px-10 gap-2 ">
+                <div class="grid grid-cols-4  md:px-10 h-full mb-10 gap-2 ">
                     <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
                         <div class="flex flex-col gap-4 md:gap-0 ">
                             <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
