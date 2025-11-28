@@ -186,7 +186,7 @@ class CompleteImmunizations extends Controller
                                     'message_text'        =>
                                     "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel})  today, " .
                                         $scheduledDateObj->format('M j, Y') .
-                                        ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
+                                        ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
                                 ]);
                             }
                         }
@@ -206,7 +206,7 @@ class CompleteImmunizations extends Controller
                                 'display_message'      => "Reminder: your ({$serviceLabel})  is on " . $scheduledDateObj->format('M j, Y') . ".",
                                 'message_text'         => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel})  schedule on "
                                     . $scheduledDateObj->format('M j, Y') .
-                                    ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
+                                    ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
                                 'sender_id'            => null,
                                 'status'               => 'Pending',
                             ]); 

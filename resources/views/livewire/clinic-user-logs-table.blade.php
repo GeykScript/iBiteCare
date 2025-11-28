@@ -22,6 +22,7 @@
                             <ul
                                 x-show="open"
                                 @click.outside="open = false"
+                                x-cloak
                                 class="absolute w-16 mt-1  bg-white border border-gray-300 rounded-lg shadow-lg">
                                 @foreach ([5, 10, 20, 50, 100] as $value)
                                 <li
@@ -66,8 +67,8 @@
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center rounded-l-lg hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('id')">ID</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center  hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('user_name')">Clinic User</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center  hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('role_name')">Role</th>
-                            <th scope="col" class="px-6 border md:px-2 py-3 text-center" >Action</th>
-                            <th scope="col" class="px-6 border md:px-2 py-3 text-center" >Details</th>
+                            <th scope="col" class="px-6 border md:px-2 py-3 text-center">Action</th>
+                            <th scope="col" class="px-6 border md:px-2 py-3 text-center">Details</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center rounded-r-lg hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('date_and_time')">Date and Time</th>
                         </tr>
                     </thead>
@@ -87,7 +88,9 @@
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $log->role->role_name }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $log->action }}</td>
                             <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $log->details }}</td>
-                            <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $log->date_and_time }}</td>
+                            <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">
+                                {{ \Carbon\Carbon::parse($log->date_and_time)->format('M, d, Y - g:i A') }}
+                            </td>
                         </tr>
                         @endforeach
                         @endif

@@ -165,7 +165,7 @@ class MessagesController extends Controller
         }
 
         return redirect()->route('clinic.messages')
-            ->with('sent-success', 'All messages processed and queued successfully!');
+            ->with('sent-success', 'Messages sent successfully!');
     }
     
 }

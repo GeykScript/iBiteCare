@@ -874,7 +874,7 @@
             x-data="{ show: true }"
             x-show="show"
             class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
-            <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4">
+            <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
                 <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
                     <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
                         <div class="p-4 rounded-full bg-green-500">
@@ -883,11 +883,13 @@
                     </div>
                 </div>
                 <h2 class="text-xl font-bold text-gray-700">{{ session('success') }}</h2>
-                <button
-                    @click="show = false"
-                    class="mt-4 px-8 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
-                    Okay
-                </button>
+                <div class="flex justify-end items-end w-full">
+                    <button
+                        @click="show = false"
+                        class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                        Close
+                    </button>
+                </div>
             </div>
         </div>
         @endif

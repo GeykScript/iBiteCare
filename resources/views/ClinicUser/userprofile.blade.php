@@ -121,15 +121,28 @@
                         <h1 class="p-4 text-xl font-900 text-[#FF000C]">Account Information</h1>
                     </div>
 
-                    @if (session('profile-success'))
+                    @if(session('profile-success'))
                     <div
                         x-data="{ show: true }"
                         x-show="show"
-                        class="md:w-1/2 w-full bg-green-100 border-2 rounded border-green-200 flex justify-between">
-                        <h1 class="p-4 text-md font-bold text-green-600">{{ session('profile-success') }}</h1>
-                        <button @click="show = false" class="py-2 px-4 text-lg font-bold text-green-600">
-                            <i data-lucide="x"></i>
-                        </button>
+                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+                        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+                            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                                    <div class="p-4 rounded-full bg-green-500">
+                                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-700">{{ session('profile-success') }}</h2>
+                            <div class="flex justify-end items-end w-full">
+                                <button
+                                    @click="show = false"
+                                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     @endif
 
@@ -546,15 +559,31 @@
                         </p>
                     </div>
 
+
+
+                    <!-- successfull modal  -->
                     @if (session('status') === 'password-updated')
                     <div
                         x-data="{ show: true }"
                         x-show="show"
-                        class="md:w-1/2 w-full bg-green-100 border-2 rounded border-green-200 flex justify-between">
-                        <h1 class="p-4 text-md font-bold text-green-600">{{ __('Your password has been updated successfully.') }}</h1>
-                        <button @click="show = false" class="py-2 px-4 text-lg font-bold text-green-600">
-                            <i data-lucide="x"></i>
-                        </button>
+                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+                        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+                            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                                    <div class="p-4 rounded-full bg-green-500">
+                                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-bold text-center text-gray-700">{{ __('Your password has been updated successfully.') }}</h2>
+                            <div class="flex justify-end items-end w-full">
+                                <button
+                                    @click="show = false"
+                                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     @endif
                     <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white border border-gray-200 shadow-lg rounded-lg">

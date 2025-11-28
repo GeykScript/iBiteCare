@@ -21,6 +21,7 @@
                         <ul
                             x-show="open"
                             @click.outside="open = false"
+                            x-cloak
                             class="absolute w-16 mt-1  bg-white border border-gray-300 rounded-lg shadow-lg">
                             @foreach ([5, 10, 20, 50, 100] as $value)
                             <li
@@ -41,29 +42,57 @@
         </div>
     </div>
     <!-- success remove message  -->
-    @if (session('remove-success'))
+    @if(session('remove-success'))
     <div
         x-data="{ show: true }"
         x-show="show"
-        class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
-        <h1 class="text-md font-bold text-green-600">{{ session('remove-success') }}</h1>
-        <button @click="show = false" class="text-lg font-bold text-green-600">
-            <i data-lucide="x"></i>
-        </button>
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                    <div class="p-4 rounded-full bg-green-500">
+                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                    </div>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold text-gray-700">{{ session('remove-success') }}</h2>
+            <div class="flex justify-end items-end w-full">
+                <button
+                    @click="show = false"
+                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
     @endif
+
     <!-- Success edit message  -->
-    @if (session('edit-item-success'))
+    @if(session('edit-item-success'))
     <div
         x-data="{ show: true }"
         x-show="show"
-        class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
-        <h1 class="text-md font-bold text-green-600">{{ session('edit-item-success') }}</h1>
-        <button @click="show = false" class="text-lg font-bold text-green-600">
-            <i data-lucide="x"></i>
-        </button>
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                    <div class="p-4 rounded-full bg-green-500">
+                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                    </div>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold text-gray-700">{{ session('edit-item-success') }}</h2>
+            <div class="flex justify-end items-end w-full">
+                <button
+                    @click="show = false"
+                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
     @endif
+
     <table class="min-w-full  text-sm mt-2 border-none">
         <thead class="bg-sky-600 border-none">
             <tr>
@@ -153,7 +182,7 @@
                 @if ($item->status == 'Used' || $item->status == 'Disposed')
                 <td class="border-b px-2 py-2 text-red-500 ">
                     <div class="flex justify-center">
-                      <p> -- </p>
+                        <p> -- </p>
                     </div>
                 </td>
                 @else

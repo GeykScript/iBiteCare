@@ -21,6 +21,7 @@
                         <ul
                             x-show="open"
                             @click.outside="open = false"
+                            x-cloak
                             class="absolute w-16 mt-1  bg-white border border-gray-300 rounded-lg shadow-lg">
                             @foreach ([5, 10, 20, 50, 100] as $value)
                             <li
@@ -39,12 +40,12 @@
                 </div>
             </div>
 
-            <div class="col-span-12 md:col-span-8 grid grid-cols-7 gap-2">
+            <div class="col-span-12 l:col-span-8 grid grid-cols-7 gap-2">
 
-                <div class="md:col-span-4 col-span-7 grid grid-cols-7 gap-2">
+                <div class="l:col-span-4 col-span-7 grid grid-cols-7 gap-2">
                     <!-- filter  -->
-                    <div class="col-span-7  flex flex-col md:flex-row gap-2  ">
-                        <h1 class="font-bold flex md:items-center md:justify-center">Filter:</h1>
+                    <div class="col-span-7  flex flex-col l:flex-row gap-2  ">
+                        <h1 class="font-bold flex l:items-center l:justify-center">Filter:</h1>
                         <div class="grid grid-cols-5 gap-2 items-center">
                             <button
                                 wire:click="$set('filter', 'all')"
@@ -71,7 +72,7 @@
                     <!-- search bar -->
 
                 </div>
-                <div class="col-span-7 md:col-span-3 flex ">
+                <div class="col-span-7 l:col-span-3 flex ">
                     <div class="w-full">
                         <div class="flex items-center  bg-gray-50 border border-gray-300 rounded-lg px-3  focus-within:ring-2 focus-within:ring-sky-500">
                             <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 text-gray-500" />
@@ -89,17 +90,33 @@
         </div>
     </div>
 
-    @if (session('sent-success'))
+
+    <!-- successfull modal  -->
+    @if(session('sent-success'))
     <div
         x-data="{ show: true }"
         x-show="show"
-        class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
-        <h1 class="text-md font-bold text-green-600">{{ session('sent-success') }}</h1>
-        <button @click="show = false" class="text-lg font-bold text-green-600">
-            <i data-lucide="x"></i>
-        </button>
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                    <div class="p-4 rounded-full bg-green-500">
+                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                    </div>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold text-gray-700">{{ session('sent-success') }}</h2>
+            <div class="flex justify-end items-end w-full">
+                <button
+                    @click="show = false"
+                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
     @endif
+
     <!-- table with overflow -->
     <div class="overflow-x-auto md:overflow-hidden">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
@@ -152,7 +169,9 @@
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 ">{{ $message->id }}</td>
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 ">{{ $message->patient->first_name }} {{ $message->patient->last_name }}</td>
                     <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900"> {{ $message->patient->contact_number }}</th>
-                    <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900"> {{ $message->schedule ?? 'N/A' }}</th>
+                    <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">
+                        {{ \Carbon\Carbon::parse($message->schedule?? 'N/A')->format('M, d, Y') }}
+                    </th>
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $message->day_label ?? 'N/A' }}</td>
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 w-80">
                         <div class="flex justify-start">

@@ -151,7 +151,7 @@
                                                 </svg>
                                             </button>
 
-                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                            <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
                                                     <li><button data-value="all" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">All
@@ -189,7 +189,7 @@
                                                 </svg>
                                             </button>
 
-                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                            <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-y-auto scrollbar-hidden">
                                                 <ul class="py-1 text-sm text-gray-700 scrollbar-hidden">
                                                     <li><button data-value="all" class="service-option w-full text-left px-4 py-2 hover:bg-gray-100">All
@@ -220,7 +220,7 @@
                                                 </svg>
                                             </button>
 
-                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                            <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
                                                     <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All Ages
@@ -333,7 +333,9 @@
                                                 <div class="ml-2 flex flex-col gap-1">
                                                     <h1 class="text-sm font-bold text-gray-900">{{ $transaction->Patient->first_name }} {{ $transaction->Patient->last_name }}</h1>
                                                     <p class="text-xs font-semibold text-gray-500">{{ $transaction->Service->name }}</p>
-                                                    <p class="text-xs font-normal text-gray-500">Visited on: {{ $transaction->getDateOnlyAttribute() }}</p>
+                                                    <p class="text-xs font-normal text-gray-500">
+                                                        Visited on: {{ \Carbon\Carbon::parse($transaction->getDateOnlyAttribute())->format('m-d-Y') }}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <a href="{{ route('clinic.patients.profile', Crypt::encrypt($transaction->Patient->id)) }}" class="flex items-center justify-center text-sky-600">

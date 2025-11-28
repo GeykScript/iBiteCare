@@ -21,6 +21,7 @@
                         <ul
                             x-show="open"
                             @click.outside="open = false"
+                            x-cloak
                             class="absolute w-16 mt-1  bg-white border border-gray-300 rounded-lg shadow-lg">
                             @foreach ([5, 10, 20, 50, 100] as $value)
                             <li
@@ -40,7 +41,7 @@
             </div>
 
             <!-- search bar -->
-            <div class="flex  w-full md:w-1/4">
+            <div class="flex  w-full l:w-1/4">
                 <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 flex items-center px-2 py-4 pointer-events-none">
                         <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 " />
@@ -56,17 +57,7 @@
         </div>
     </div>
 
-    @if (session('success'))
-    <div
-        x-data="{ show: true }"
-        x-show="show"
-        class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
-        <h1 class="text-md font-bold text-green-600">{{ session('success') }}</h1>
-        <button @click="show = false" class="text-lg font-bold text-green-600">
-            <i data-lucide="x"></i>
-        </button>
-    </div>
-    @endif
+  
     <div class="overflow-x-auto md:overflow-hidden">
         <table class="min-w-full  text-sm mt-2 ">
             <thead class="bg-gray-100">
@@ -92,7 +83,7 @@
                 @foreach($transactions as $transaction)
                 <tr>
                     <td class="border-b px-2 py-2 text-gray-700">{{ $transaction->id }}</td>
-                    <td class="border px-2 py-2 text-gray-700">{{ date('F d, Y - g:i A', strtotime($transaction->transaction_date)) }}</td>
+                    <td class="border px-2 py-2 text-gray-700"> {{ \Carbon\Carbon::parse($transaction->transaction_date)->format('M, d, Y - g:i A') }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $transaction->Patient->first_name }} {{ $transaction->Patient->middle_initial }} {{ $transaction->Patient->last_name }}</td>
                     <td class="border px-2 py-2 text-gray-700">{{ $transaction->Service->name }}</td>
 

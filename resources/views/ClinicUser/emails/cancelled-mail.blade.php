@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Appointment Rescheduled</title>
+    <title>Appointment Cancelled</title>
 </head>
 
 <body style="margin:0; padding:0; background-color:#f9fafb; font-family: 'Segoe UI', Arial, sans-serif;">
@@ -22,10 +22,10 @@
             <p style="margin:0 0 16px;">Hello {{ $appointment->name ?? 'Patient' }},</p>
 
             <p style="margin:0 0 16px;">
-                Your appointment has been <strong style="color:#EB1C24;">Rescheduled</strong>.
-                Here are your updated appointment details:
+                We are sorry for the inconvenience caused due to unforeseen circumstances.
+                Your appointment has been <strong style="color:#EB1C24;">Cancelled</strong>.<br>
+                Cancelled appointment details:
             </p>
-
             <div style="margin:25px 0; border:1px solid #f1f1f1; border-radius:10px; background:#fef2f2; padding:20px;">
                 <table width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;">
                     <tr>
@@ -43,20 +43,19 @@
                 </table>
             </div>
 
-            <p style="margin:0 0 20px; color:#EB1C24;">
-                Note: If you are not available on the rescheduled date and time, kindly reschedule your appointment through our website.
+            <p style="margin:0 0 16px;">
+                If you would like to schedule a new appointment, you can use our website, call or text us at <strong>0954 195 2374</strong>. We apologize for any inconvenience this may have caused.
             </p>
 
-            <p style="margin:0 0 20px;">
-                Click below to view more details about your appointment:
+            <p style="margin:0 0 16px;">
+                To make a new appointment in our Website, please click the button below: 
             </p>
-
             <!-- View Details Button -->
             <div style="text-align:center; margin:30px 0;">
                 <a href="{{ url('/dashboard') }}"
                     style="display:inline-block; background:#EB1C24; color:#ffffff; padding:12px 28px; border-radius:8px; 
     text-decoration:none; font-weight:600; font-size:15px; letter-spacing:0.3px;">
-                    View Appointment Details
+                    Make a New Appointment
                 </a>
 
             </div>
@@ -66,7 +65,7 @@
             </p>
 
             <p style="margin-top:40px;">
-                Thank you,<br>
+                Thank you for your understanding,<br>
                 <span style="color:#EB1C24; font-weight:bold;">Dr. Care Guinobatan Support Team</span>
             </p>
         </div>

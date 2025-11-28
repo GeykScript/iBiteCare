@@ -112,7 +112,7 @@ class InventorySupplies extends Controller
                 }
             }
         }
-        return redirect()->route('clinic.supplies')->with('success', 'New supplies added successfully.');
+        return redirect()->route('clinic.supplies')->with('success', 'New Supplies Added Successfully!');
     }
 
 

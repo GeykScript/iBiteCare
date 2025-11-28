@@ -210,7 +210,7 @@
                                             </div>
                                             <div class="flex flex-col mt-3">
                                                 <p class="text-sm font-medium text-gray-900 ">Booking Channel</p>
-                                                <div class="flex items-center space-x-4 mt-3">
+                                                <div class="flex flex-col mt-3 px-4">
                                                     <label class="flex items-center space-x-2">
                                                         <input
                                                             type="radio"
@@ -227,6 +227,14 @@
                                                             value="Text Message"
                                                             class="text-sky-600 focus:ring-sky-500">
                                                         <span>Text Message</span>
+                                                    </label>
+                                                    <label class="flex items-center space-x-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="channel"
+                                                            value="Walk-In"
+                                                            class="text-sky-600 focus:ring-sky-500">
+                                                        <span>Walk-In</span>
                                                     </label>
                                                 </div>
                                             </div>

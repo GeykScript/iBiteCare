@@ -102,7 +102,7 @@ class ManageInventorySupplies extends Controller
 
         return redirect()
             ->route('clinic.supplies.manage', $id)
-            ->with('success', 'New supplies added successfully.');
+            ->with('success', 'New Stock Added Successfully!');
     }
 
 
@@ -129,7 +129,7 @@ class ManageInventorySupplies extends Controller
 
             return redirect()
                 ->route('clinic.supplies.manage', Crypt::encrypt($request->item_id))
-                ->with('edit-success', 'Product details updated successfully.');
+                ->with('edit-success', 'Product Details Updated!');
         }
 
         return redirect()
@@ -168,7 +168,7 @@ class ManageInventorySupplies extends Controller
 
         return redirect()
             ->route('clinic.supplies.manage', Crypt::encrypt($request->item_id))
-            ->with('edit-item-success', 'Inventory item updated successfully.');
+            ->with('edit-item-success', 'Inventory Item Updated!');
     }
 
 }

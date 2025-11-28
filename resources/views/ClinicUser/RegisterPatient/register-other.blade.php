@@ -159,8 +159,7 @@
                         <div
                             x-data="{ show: true }"
                             x-show="show"
-                            x-transition.opacity.duration.300ms
-                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
                             <!-- Modal content -->
                             <div
                                 @click.outside="show = false"
@@ -173,24 +172,24 @@
                                 </button>
                                 <!-- Success Icon -->
                                 <div class="flex flex-col items-center justify-center gap-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="140"
-                                        viewBox="0 0 24 24" fill="#1AE820" stroke="white"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-circle-check-icon">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="m9 12 2 2 4-4" />
-                                    </svg>
-                                    <h2 class="text-2xl font-900 text-[#1AE820]">Transaction Completed</h2>
+                                    <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                                        <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                                            <div class="p-4 rounded-full bg-green-500">
+                                                <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h2 class="text-2xl font-900 text-green-500">Transaction Completed</h2>
                                     <p class="text-gray-800 font-bold text-sm mt-1">
-                                        You may proceed to view patient details or return to the home page.
+                                        You may proceed to view patient details or return to the patient page.
                                     </p>
                                     <div class="flex flex-col gap-1 mt-4 text-sm">
-                                        <a href="{{ route('clinic.patients.profile', Crypt::encrypt($recentlyAddedPatients->id)) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                        <a href="{{ route('clinic.patients.profile', Crypt::encrypt($recentlyAddedPatients->id)) }}" class="text-blue-500 hover:underline underline-offset-4 font-semibold">
                                             View Patient Details
                                         </a>
-                                        <a href="{{ route('clinic.dashboard') }}"
-                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
-                                            Return to Home Page
+                                        <a href="{{ route('clinic.patients') }}"
+                                            class="text-blue-500 hover:underline underline-offset-4 font-semibold">
+                                            Return to Patient Page
                                         </a>
                                     </div>
                                     <div class="flex justify-end items-end w-full">
@@ -204,6 +203,7 @@
                             </div>
                         </div>
                         @endif
+                        
                         @if (session('error'))
                         <div
                             x-data="{ show: true }"

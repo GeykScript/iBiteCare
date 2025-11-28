@@ -22,6 +22,7 @@
                             <ul
                                 x-show="open"
                                 @click.outside="open = false"
+                                x-cloak
                                 class="absolute w-16 mt-1  bg-white border border-gray-300 rounded-lg shadow-lg">
                                 @foreach ([5, 10, 20, 50, 100] as $value)
                                 <li
@@ -41,7 +42,7 @@
                 </div>
 
                 <!-- search bar -->
-                <div class="flex  w-full md:w-1/4">
+                <div class="flex  w-full l:w-1/4">
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 left-0 flex items-center px-2 py-4 pointer-events-none">
                             <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 " />
@@ -66,7 +67,7 @@
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center rounded-l-lg hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('id')">ID</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('brand_name')">Brand Name</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('category')">Category</th>
-                            <th scope=" col" class="px-6 border md:px-2 py-3 text-center ">Used</th>
+                            <th scope="col" class="px-6 border md:px-2 py-3 text-center ">Used</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center  hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('user_name')">Used by</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center ">Details</th>
                             <th scope="col" class="px-6 border md:px-2 py-3 text-center rounded-r-lg hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('usage_date')">Usage Date</th>

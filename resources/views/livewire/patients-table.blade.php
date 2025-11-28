@@ -20,7 +20,7 @@
                         <!-- Dropdown menu -->
                         <ul
                             x-show="open"
-                            @click.outside="open = false"
+                            @click.outside="open = false" x-cloak
                             class="absolute w-16 mt-1  bg-white border border-gray-300 rounded-lg shadow-lg">
                             @foreach ([5, 10, 20, 50, 100] as $value)
                             <li
@@ -40,7 +40,7 @@
             </div>
 
             <!-- search bar -->
-            <div class="flex  w-full md:w-1/4">
+            <div class="flex  w-full l:w-1/4">
                 <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 flex items-center px-2 py-4 pointer-events-none">
                         <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 " />
@@ -94,14 +94,16 @@
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $patient->last_name }}</td>
                     <th class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 whitespace-nowrap"> {{ $patient->first_name }}</th>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $patient->middle_initial }}</td>
-                    <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->birthdate }}</td>
+                    <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">
+                        {{ \Carbon\Carbon::parse($patient->birthdate)->format('M, d, Y') }}
+                    </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->age }}</td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">
-                    @if ($patient->sex == 'Male')
-                    <span class="text-blue-500 font-bold">Male</span>
-                    @else
-                    <span class="text-pink-500 font-bold">Female</span>
-                    @endif
+                        @if ($patient->sex == 'Male')
+                        <span class="text-blue-500 font-bold">Male</span>
+                        @else
+                        <span class="text-pink-500 font-bold">Female</span>
+                        @endif
                     </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $patient->contact_number }}</td>
                     <td colspan="2" class="text-center md:text-start md:px-8 font-medium text-gray-900 hidden md:table-cell ">{{ $patient->address }}</td>
