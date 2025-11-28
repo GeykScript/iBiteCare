@@ -189,7 +189,7 @@
 
     <section class="bg-white" id="services">
         <div class="grid grid-cols-2 lg:gap-3 gap-1 lg:p-20  p-6">
-            <div class="lg:col-span-1 col-span-2 flex flex-col justify-center items-center p-5 lg:px-20 lg:gap-10 gap-3">
+            <div class="sm:col-span-1 col-span-2 flex flex-col justify-center items-center p-5 lg:px-20 lg:gap-10 gap-3">
                 <div>
                     <h1 class="lg:text-5xl text-2xl font-900 text-[#FF000C]">Why Choose Us</h1>
                 </div>
@@ -198,31 +198,61 @@
                     Our team of experts is ready to provide the best care for you.
                 </div>
             </div>
-            <div class="lg:col-span-1 col-span-2">
+            <div class="sm:col-span-1 col-span-2">
                 @php
-                    $colors = ['bg-red-600', 'bg-green-600', 'bg-indigo-600', 'bg-gray-600', 'bg-yellow-600', 'bg-purple-600'];
+                $colors = ['bg-red-600', 'bg-green-600', 'bg-indigo-600', 'bg-gray-600', 'bg-yellow-600', 'bg-purple-600'];
                 @endphp
                 <!-- Horizontal scroll container -->
                 <div class="flex gap-4 overflow-x-auto p-2">
                     @foreach ($services->chunk(6) as $chunkIndex => $serviceChunk)
-                    <div class="grid grid-cols-3 gap-2 flex-shrink-0 w-[500px] lg:w-[650px]">
+                    <div class="grid grid-cols-3 gap-2 flex-shrink-0 w-[475px] lg:w-[650px] py-2">
                         @foreach ($serviceChunk as $index => $service)
-                        <div class="bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-xl gap-3 border border-gray-100">
-                            <!-- dynamic color -->
+                        <div class="relative bg-white flex flex-col items-center justify-center p-5 rounded-lg shadow-lg gap-3 border border-gray-100">
+                            @if ($service->discount > 0)
+                            <div class="absolute top-2 right-2 bg-red-600 text-white text-sm font-semibold rounded-xl px-3 py-1 shadow">
+                                <span>{{ number_format($service->discount) }}%</span>
+                                <span class="text-[10px]">OFF</span>
+                            </div>
+                            @endif
+
+                            <!-- @if ($service->discount > 0)
+                            <div class="absolute top-2 right-2 w-12 h-12 bg-red-600 text-white rounded-full flex flex-col items-center justify-center text-[15px] font-bold shadow">
+                                <span>{{ number_format($service->discount) }}%</span>
+                                <span class="text-[8px]">OFF</span>
+                            </div>
+                            @endif -->
+
+
+
                             <div class="items-center justify-center gap-2 flex {{ $colors[($chunkIndex*4 + $index) % count($colors)] }} p-5 rounded-full">
                                 <i data-lucide="syringe" class="lg:w-12 lg:h-12 w-6 h-6 text-white"></i>
                             </div>
-
                             <h1 class="text-sm lg:text-xl font-bold text-center">{{ $service->name }}</h1>
-                            <h1 class="text-sm lg:text-xl">₱ {{ $service->service_fee }}</h1>
+                            @if ($service->discount > 0)
+                            <div class="flex flex-col">
+                                <div class="flex items-center justify-end line-through">
+                                    <i data-lucide="philippine-peso" class="w-3 h-3 text-gray-600 "></i>
+                                    <h1 class="text-center text-xs  text-gray-600">{{$service->service_fee }}</h1>
+                                </div>
+                                <div class="flex gap-1 items-center">
+                                    <i data-lucide="philippine-peso" class="w-5 h-5 text-red-500 " stroke-width="3"></i>
+                                    <h1 class="text-sm lg:text-xl font-900 text-red-500" >{{ $service->discounted_service_fee }} </h1>
+                                </div>
+                            </div>
+                            @else
+                            <div class=" flex gap-1 items-center">
+                                        <i data-lucide="philippine-peso" class="w-5 h-5 text-red-500 " stroke-width="3"></i>
+                                        <h1 class="text-sm lg:text-xl font-900 text-red-500">{{ $service->service_fee }}</h1>
+                                </div>
+                                @endif
+                            </div>
+                            @endforeach
                         </div>
                         @endforeach
                     </div>
-                    @endforeach
                 </div>
-            </div>
 
-        </div>
+            </div>
     </section>
 
     <section id="contact">
