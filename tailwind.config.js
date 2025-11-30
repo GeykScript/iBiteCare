@@ -9,10 +9,10 @@ export default {
 
      content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php', // ✅ Add package views
+        './vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php', // Add package views
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        './app/Livewire/**/*.php', // ✅ Add Livewire PHP files
+        './app/Livewire/**/*.php', // Add Livewire PHP files
     ],
 
     theme: {
@@ -21,7 +21,7 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
                 screens: {
-                'l': '1280px', // ✅ custom breakpoint for 1440px
+                'l': '1280px', // custom breakpoint for 1440px
             },
         },
     },
