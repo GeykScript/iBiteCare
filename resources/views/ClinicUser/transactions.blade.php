@@ -55,9 +55,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -87,12 +87,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -101,7 +103,10 @@
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="md:w-16 md:h-16 w-14 h-14">
                     <div>
                         <h1 class="text-lg md:text-3xl font-900">Transactions History</h1>
-                        <h2 class="d:ml-3 text-sm md:text-lg font-bold">Manage Transactions Records</h2>
+                        <div class="flex items-center gap-2">
+                            <h2 class="d:ml-3 text-sm md:text-lg font-bold">Manage Transactions Records</h2>
+                            <a href="{{ route('clinic.user-manual') }}#patient-transactions" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                        </div>
 
                     </div>
                 </div>

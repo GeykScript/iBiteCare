@@ -11,13 +11,15 @@ class PatientsTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 5;
+    public $perPage = 10;
 
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
 
     public $genderFilter = null; // null = all, 'Male' = male only, 'Female' = female only
     public $gender = '';
+    public $dateFrom = '';
+    public $dateTo = '';
 
 
     public function updatingSearch()
@@ -29,6 +31,23 @@ class PatientsTable extends Component
     {
         $this->resetPage();
     }
+
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->resetPage();
+    }
+
 
     public function setSortBy($sortByField)
     {
@@ -63,6 +82,12 @@ class PatientsTable extends Component
 
         if ($this->genderFilter) {
             $query->where('sex', $this->genderFilter);
+        }
+        if($this->dateFrom) {
+            $query->whereDate('birthdate', '>=', $this->dateFrom);
+        }
+        if($this->dateTo) {
+            $query->whereDate('birthdate', '<=', $this->dateTo);
         }
 
         return view('livewire.patients-table', [

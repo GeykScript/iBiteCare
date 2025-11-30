@@ -14,7 +14,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/datetime.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/datetime.js', 'resources/js/alpine.js'])
 
 
 
@@ -90,12 +90,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -103,7 +105,10 @@
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Clinic Services</h1>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-xl md:text-3xl font-900">Clinic Services</h1>
+                            <a href="{{ route('clinic.user-manual') }}#update-services" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                        </div>
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.services') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Services </a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -135,35 +140,97 @@
                             <input type="hidden" name="service_id" value="{{ $service->id }}">
 
                             <div class="grid grid-cols-2 gap-10">
-                                <div class="md:col-span-1 col-span-2">
-                                    <h1 class="text-lg font-bold">Service Details</h1>
-                                    <div class="mt-4">
-                                        <label for="name" class="block text-sm font-medium text-gray-700">Service Name</label>
-                                        <input type="text" name="name" id="name" autocomplete="name" value="{{ old('name', $service->name) }}"
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
-                                        @error('name')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                <div class="flex {{ 
+                                    (in_array($service->id, [1, 2, 3]) && in_array(strtolower($service->name), ['post exposure prophylaxis', 'pre-exposure prophylaxis', 'booster'])) 
+                                        ? ' ' 
+                                        : 'flex justify-center col-span-2' 
+                                }}">
+                                    <div class="md:col-span-1 col-span-2">
+                                        <h1 class="text-lg font-bold">Service Details</h1>
+                                        <div class="mt-4">
+                                            <label for="name" class="block text-sm font-medium text-gray-700">Service Name</label>
+                                            <input type="text" name="name" id="name" autocomplete="name" value="{{ old('name', $service->name) }}"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
+                                            @error('name')
+                                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
 
-                                    <div class="mt-4">
-                                        <label for="description" class="block text-sm font-medium text-gray-700">Service Description</label>
-                                        <textarea name="description" id="description" rows="4"
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>{{ old('description', $service->description) }}</textarea>
-                                        @error('description')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                        <div class="mt-4">
+                                            <label for="description" class="block text-sm font-medium text-gray-700">Service Description</label>
+                                            <textarea name="description" id="description" rows="4"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>{{ old('description', $service->description) }}</textarea>
+                                            @error('description')
+                                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
 
-                                    <div class="mt-4">
-                                        <label for="fee" class="block text-sm font-medium text-gray-700">Service Fee</label>
-                                        <input type="text" name="service_fee" id="fee" value="{{ old('service_fee', $service->service_fee) }}"
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
-                                        @error('service_fee')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                        @enderror
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <div class="col-span-3 md:col-span-1 mt-4">
+                                                <label for="service_fee_display" class="block text-sm font-medium text-gray-700">Service Fee</label>
+                                                <input type="text" name="service_fee_display" id="service_fee_display" value="{{ old('service_fee', $service->service_fee) }}"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
+                                                <input type="hidden" name="service_fee" id="service_fee" value="{{ old('service_fee', $service->service_fee) }}"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
+                                                @error('service_fee')
+                                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="col-span-3 md:col-span-1 mt-4">
+                                                <label for="discount" class="block text-sm font-medium text-gray-700">Discount (%)</label>
+                                                <input type="text" name="discount" id="discount" value="{{ old('discount', $service->discount) }}"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                                @error('discount')
+                                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="col-span-3 md:col-span-1 mt-4">
+                                                <label for="discounted_service_fee_display" class="block text-sm font-medium text-gray-700">Net Amount</label>
+                                                <input type="text" name="discounted_service_fee_display" id="discounted_service_fee_display" value="{{ old('discounted_service_fee', $service->discounted_service_fee) }}"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                                <input type="hidden" name="discounted_service_fee" id="discounted_service_fee" value="{{ old('discounted_service_fee', $service->discounted_service_fee) }}"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
+                                                @error('discounted_service_fee')
+                                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            @if ( $service->id == 1 || strtolower($service->name) == 'post exposure prophylaxis' )
+                                            <div class="col-span-3  grid grid-cols-4 mt-4 gap-2">
+                                                <div class="col-span-4 border-2 border-gray-100"></div>
+                                                <div class="col-span-4 md:col-span-2 mt-2">
+                                                    <label for="rig_fee_input_display" class="block text-sm font-medium text-gray-700">RIG Immunization Fee</label>
+                                                    <span class="text-xs text-gray-600 italic">Only for Post Exposure Prophylaxis (PEP)</span>
+                                                    <input type="text" name="rig_fee_input_display" id="rig_fee_input_display" value="{{ old('rig_fee', $service->rig_fee) }}"
+                                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                                    <input type="hidden" name="rig_fee_input" id="rig_fee_input" value="{{ old('rig_fee', $service->rig_fee) }}"
+                                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
+                                                    @error('rig_fee')
+                                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-span-4 md:col-span-2 mt-2">
+                                                    <label for="discounted_rig_display" class="block text-sm font-medium text-gray-700">Promo / Discounted RIG Fee </label>
+                                                    <span class="text-xs text-gray-600 italic">Copy the original price to disable promo. </span>
+
+                                                    <input type="text" name="discounted_rig_display" id="discounted_rig_display" value="{{ old('discounted_rig', $service->discounted_rig) }}"
+                                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                                    <input type="hidden" name="discounted_rig" id="discounted_rig" value="{{ old('discounted_rig', $service->discounted_rig) }}"
+                                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                                    @error('discounted_rig')
+                                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            @endif
+
+                                        </div>
                                     </div>
                                 </div>
+                                @if (
+                                in_array($service->id, [1, 2, 3]) &&
+                                in_array(strtolower($service->name), ['post exposure prophylaxis', 'pre-exposure prophylaxis', 'booster'])
+                                )
                                 <div class="md:col-span-1 col-span-2">
                                     <h1 class="text-lg font-bold">Service Schedule <span class="text-gray-400 text-sm">(Optional)</span></h1>
                                     <div class="mt-2">
@@ -175,7 +242,6 @@
                                             @forelse ($service->schedules as $index => $schedule)
                                             <div class="grid grid-cols-5 gap-2 mb-2">
                                                 <input type="hidden" name="schedules[{{ $index }}][id]" value="{{ $schedule->id }}" class="border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-
                                                 <input type="number" name="day[{{ $index }}]" value="{{ $schedule->day_offset }}" class="col-span-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
                                                 <input type="text" name="label[{{ $index }}]" value="{{ $schedule->label }}" class="col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
 
@@ -242,8 +308,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
-                            <div class="flex justify-end p-4 items-center gap-4 md:pr-24">
+                            <div class="flex justify-end p-4 items-center gap-4 md:pr-24 mt-4">
                                 <a href="{{ route('clinic.services') }}" class="text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg">Cancel</a>
                                 <button type="submit" id="submitUpdateBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-500">
                                     Update Service
@@ -261,16 +328,130 @@
 </body>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // === RIG FEE ===
+        const rigDisplay = document.getElementById('rig_fee_input_display');
+        const rigHidden = document.getElementById('rig_fee_input');
+
+        function formatNumber(num) {
+            if (num === "" || isNaN(num)) return "";
+            return parseFloat(num).toLocaleString('en-US');
+        }
+
+        function extractNumber(str) {
+            return str.replace(/,/g, '');
+        }
+
+        // Format on page load
+        rigDisplay.value = formatNumber(rigHidden.value);
+
+        // Format when typing
+        rigDisplay.addEventListener('input', function() {
+            let raw = extractNumber(this.value);
+            rigHidden.value = raw; // hidden raw number
+            this.value = formatNumber(raw); // formatted display
+        });
+
+
+
+        // === DISCOUNTED RIG FEE ===
+        const discDisplay = document.getElementById('discounted_rig_display');
+        const discHidden = document.getElementById('discounted_rig');
+
+        // Format on load
+        discDisplay.value = formatNumber(discHidden.value);
+
+        // Format when typing
+        discDisplay.addEventListener('input', function() {
+            let raw = extractNumber(this.value);
+            discHidden.value = raw; // raw number
+            this.value = formatNumber(raw); // formatted
+        });
+
+    });
+
+    const feeInput = document.getElementById('service_fee'); // hidden raw input
+    const discountInput = document.getElementById('discount');
+    const netInput = document.getElementById('discounted_service_fee'); // hidden raw input
+
+    const ServiceFeeDisplay = document.getElementById('service_fee_display'); // formatted
+    const DiscountedFeeDisplay = document.getElementById('discounted_service_fee_display'); // formatted
+
+    // Format formatted display text with commas + decimals
+    function formatMoney(value) {
+        if (isNaN(value)) return '';
+        return Number(value).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // Format service fee DISPLAY only (with commas)
+    function formatFeeInput() {
+        let raw = ServiceFeeDisplay.value.replace(/,/g, '');
+        let value = parseFloat(raw);
+
+        if (isNaN(value)) {
+            ServiceFeeDisplay.value = '';
+            feeInput.value = 0;
+            calculateNet();
+            return;
+        }
+
+        // Display formatted
+        ServiceFeeDisplay.value = Number(value).toLocaleString('en-US');
+
+        // Save raw to hidden input
+        feeInput.value = value;
+
+        calculateNet();
+    }
+
+    function calculateNet() {
+        let fee = parseFloat(feeInput.value) || 0;
+        let discount = parseFloat(discountInput.value) || 0;
+
+        // Fix discount range
+        if (discount < 0) discount = 0;
+        if (discount > 100) discount = 100;
+
+        discountInput.value = discount;
+
+        // Compute net
+        let discountAmount = fee * (discount / 100);
+        let net = fee - discountAmount;
+
+        if (net < 0) net = 0;
+
+        // Display formatted
+        DiscountedFeeDisplay.value = formatMoney(net);
+
+        // Save raw net (no comma)
+        netInput.value = net;
+    }
+
+    // Events
+    ServiceFeeDisplay.addEventListener('input', formatFeeInput);
+    discountInput.addEventListener('input', calculateNet);
+
+    // Initialize on load (in case values exist)
+    window.addEventListener('load', () => {
+        formatFeeInput();
+    });
+
+    // Submit button loading state
+
     const submitUpdateBtn = document.getElementById("submitUpdateBtn");
     document.getElementById('UpdateServiceForm').addEventListener('submit', function() {
         submitUpdateBtn.disabled = true;
         submitUpdateBtn.innerHTML = `
-            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-            </svg>
-            <span>Loading...</span>
-        `;
+<svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
+    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+</svg>
+<span>Loading...</span>
+`;
 
     });
 
@@ -323,22 +504,22 @@
         removeBtn.className =
             'remove-btn p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600';
         removeBtn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 width="20" height="20"
-                 viewBox="0 0 24 24"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="2"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 class="lucide lucide-trash-2">
-                <path d="M10 11v6" />
-                <path d="M14 11v6" />
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                <path d="M3 6h18" />
-                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-            </svg>
-        `;
+<svg xmlns="http://www.w3.org/2000/svg"
+    width="20" height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="lucide lucide-trash-2">
+    <path d="M10 11v6" />
+    <path d="M14 11v6" />
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+    <path d="M3 6h18" />
+    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+</svg>
+`;
 
         // Append inputs + button to div
         div.appendChild(dayInput);

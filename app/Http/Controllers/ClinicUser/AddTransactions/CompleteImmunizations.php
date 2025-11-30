@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\Messages;
 
 
 class CompleteImmunizations extends Controller
@@ -125,19 +126,109 @@ class CompleteImmunizations extends Controller
                     ->where('id', '>', $request->schedule_id)
                     ->get();
 
+
                 foreach ($futureSchedules as $schedule) {
-                    $nextDayLabel = $schedule->Day;
+
+                    $nextDayLabel = $schedule->Day; // Example: Day 3
                     $nextDayNumber = intval(preg_replace('/\D/', '', $nextDayLabel));
 
                     if ($nextDayNumber > $currentDayNumber) {
-                        // Compute new scheduled date properly using Carbon
+
+                        // Compute new date based on adjusted Day_0
                         $newScheduledDate = Carbon::parse($request->dateOfTransaction)
                             ->addDays($nextDayNumber - $currentDayNumber)
-                            ->toDateString(); // returns 'Y-m-d'
+                            ->toDateString();
 
+                        // Update the schedule record
                         $schedule->update([
                             'scheduled_date' => $newScheduledDate,
                         ]);
+
+                        /* ------------------------------------
+                            * UPDATE EXISTING REMINDER MESSAGES
+                            * ------------------------------------*/
+                        $scheduledDateObj = Carbon::parse($newScheduledDate);
+                        $twoDaysBefore = $scheduledDateObj->copy()->subDays(2);
+                        $serviceLabel = $schedule->Day; // Example Day 3 / Day 7
+
+                        // Get existing messages for this sched
+                        $messages = Messages::where('immunization_sched_id', $schedule->id)->get();
+
+                        // Track if we found each type of message
+                        $hasTwoDaysBefore = false;
+                        $hasSameDay = false;
+
+                        foreach ($messages as $msg) {
+
+                            // Check if this is 2-days-before message
+                            if (Carbon::parse($msg->scheduled_send_date)->eq($msg->schedule) === false) {
+                                // This is the 2-days-before reminder
+                                $hasTwoDaysBefore = true;
+
+                                $msg->update([
+                                    'schedule'            => $newScheduledDate,
+                                    'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
+                                    'display_message'     => "Reminder: your ({$serviceLabel})  is on " . $scheduledDateObj->format('M j, Y') . ".",
+                                    'message_text'        => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel})  schedule on "
+                                        . $scheduledDateObj->format('M j, Y')
+                                        . ". Clinic hours: 8AM to 5PM. Thank you!",
+                                ]);
+                            }
+
+                            // Check if this is ON-THE-DAY reminder
+                            if ($msg->scheduled_send_date == $msg->schedule) {
+                                $hasSameDay = true;
+
+                                $msg->update([
+                                    'schedule'            => $newScheduledDate,
+                                    'scheduled_send_date' => $newScheduledDate,
+                                    'display_message'     => "Today is your ({$serviceLabel}).",
+                                    'message_text'        =>
+                                    "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel})  today, " .
+                                        $scheduledDateObj->format('M j, Y') .
+                                        ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
+                                ]);
+                            }
+                        }
+
+                                            /* ------------------------------------
+                            * CREATE ANY MISSING MESSAGES
+                            * ------------------------------------*/
+
+                        // Create 2-days-before if missing
+                        if (!$hasTwoDaysBefore && $nextDayNumber > 0 && $twoDaysBefore->isFuture()) {
+                            Messages::create([
+                                'patient_id'           => $schedule->patient_id,
+                                'immunization_sched_id' => $schedule->id,
+                                'schedule'             => $newScheduledDate,
+                                'day_label'            => $serviceLabel,
+                                'scheduled_send_date'  => $twoDaysBefore->format('Y-m-d'),
+                                'display_message'      => "Reminder: your ({$serviceLabel})  is on " . $scheduledDateObj->format('M j, Y') . ".",
+                                'message_text'         => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel})  schedule on "
+                                    . $scheduledDateObj->format('M j, Y') .
+                                    ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
+                                'sender_id'            => null,
+                                'status'               => 'Pending',
+                            ]); 
+                        }
+
+                        // Create same-day if missing
+                        if (!$hasSameDay && $nextDayNumber > 0) {
+                            Messages::create([
+                                'patient_id'           => $schedule->patient_id,
+                                'immunization_sched_id' => $schedule->id,
+                                'schedule'             => $newScheduledDate,
+                                'day_label'            => $serviceLabel,
+                                'scheduled_send_date'  => $newScheduledDate,
+                                'display_message'      => "Today is your dose ({$serviceLabel}).",
+                                'message_text'         =>
+                                "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceLabel}) today, " .
+                                    $scheduledDateObj->format('M j, Y') .
+                                    ".\nWe're open 8AM-5PM.\nFor any concerns, you may message us at 0954 195 2374. Thank you!",
+                                'sender_id'            => null,
+                                'status'               => 'Pending',
+                            ]);
+                        }
                     }
                 }
             }

@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+Options +FollowSymLinks
+# ------------------------------------------------------
+# Maintenance Mode
+# ------------------------------------------------------
+RewriteEngine On
+
+# Allow access to the maintenance file itself
+RewriteCond %{REQUEST_URI} !/maintenance.html$
+
+# Allow access to assets (CSS, JS, images) if needed
+RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|svg)$
+
+# Redirect everything to maintenance.html
+RewriteRule ^.*$ /maintenance.html [R=302,L]
+
+</IfModule>
+

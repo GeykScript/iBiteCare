@@ -59,19 +59,7 @@
                                     <!-- Password -->
                                     <div class="mt-6">
                                         <x-input-label for="password" :value="__('Password')" />
-                                        <x-text-input
-                                            id="password"
-                                            class="block mt-1 w-full"
-                                            type="password"
-                                            name="password"
-                                            required
-                                            autocomplete="new-password"
-                                            minlength="8"
-                                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}"
-                                            title="Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character." />
-                                        <p class="text-sm text-gray-500 mt-1">
-                                            Must be at least 8 characters, include uppercase, lowercase, number, and special character.
-                                        </p>
+                                        <x-password-input id="password" name="password" required class="mt-1" />
                                         <x-input-error :messages="$errors->get('password')" class="bg-red-200 px-4 py-2 mt-2 rounded-sm font-bold text-red-500" />
                                     </div>
 
@@ -79,8 +67,7 @@
                                     <!-- Confirm Password -->
                                     <div class=" mt-4">
                                         <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                                        <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                            type="password" name="password_confirmation" required autocomplete="new-password" />
+                                        <x-password-input id="password_confirmation" name="password_confirmation" required class="mt-1" />
                                     </div>
 
                                     <!-- Submit -->

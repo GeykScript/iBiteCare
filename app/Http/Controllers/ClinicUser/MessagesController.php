@@ -9,7 +9,7 @@ use App\Models\Messages;
 use App\Models\Patient;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-
+use Carbon\Carbon;
 
 class MessagesController extends Controller
 {
@@ -30,7 +30,19 @@ class MessagesController extends Controller
         
         $patients = Patient::all();
 
+        $this->updateUnsentMessages();
+        
         return view('ClinicUser.messages', compact('clinicUser', 'messages', 'todayMessages', 'patients'));
+    }
+
+    public function updateUnsentMessages()
+    {
+        // Update all messages where status is 'Pending' and scheduled_send_date is older than today
+        Messages::where('status', 'Pending')
+            ->where('scheduled_send_date', '<', now()->toDateString())
+            ->update([
+                'status' => 'Unsent',
+            ]);
     }
 
 
@@ -63,6 +75,7 @@ class MessagesController extends Controller
             Messages::where('id', $request->message_id)
                 ->update([
                     'status' => 'Sent',
+                    'message_text' => $request->message,
                 ]);
 
         } else {
@@ -165,7 +178,7 @@ class MessagesController extends Controller
         }
 
         return redirect()->route('clinic.messages')
-            ->with('sent-success', 'All messages processed and queued successfully!');
+            ->with('sent-success', 'Messages sent successfully!');
     }
     
 }

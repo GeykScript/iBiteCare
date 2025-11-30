@@ -57,9 +57,8 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -89,12 +88,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -108,7 +109,10 @@
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]">Booked Patients Lists</h1>
+                    <a href="{{ route('clinic.user-manual') }}#appointments" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i>
+                    </a>
                 </div>
+
                 <div class="md:pl-12 pl-6">
                     <h1 class="md:text-lg text-gray-800"> This list shows all patients who have made an appointment.
                     </h1>
@@ -206,7 +210,7 @@
                                             </div>
                                             <div class="flex flex-col mt-3">
                                                 <p class="text-sm font-medium text-gray-900 ">Booking Channel</p>
-                                                <div class="flex items-center space-x-4 mt-3">
+                                                <div class="flex flex-col mt-3 px-4">
                                                     <label class="flex items-center space-x-2">
                                                         <input
                                                             type="radio"
@@ -223,6 +227,14 @@
                                                             value="Text Message"
                                                             class="text-sky-600 focus:ring-sky-500">
                                                         <span>Text Message</span>
+                                                    </label>
+                                                    <label class="flex items-center space-x-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="channel"
+                                                            value="Walk-In"
+                                                            class="text-sky-600 focus:ring-sky-500">
+                                                        <span>Walk-In</span>
                                                     </label>
                                                 </div>
                                             </div>

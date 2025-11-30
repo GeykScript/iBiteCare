@@ -28,8 +28,8 @@
                     <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
                 </a>
             </div>
-            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-8  ">
-                <div class="flex flex-col justify-start overflow-y-auto scrollbar-hidden h-full">
+            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-4 md:p-8  ">
+                <div class="flex flex-col justify-start overflow-y-auto scrollbar-hidden h-full px-4">
                     <div class="flex items-end justify-between md:px-8">
                         <div class="flex items-center justify-end md:mt-6 mt-2 text-sm text-gray-400 ">
                             <p class="hover:text-red-500 font-900">iBiteCare<sup>+</sup></p>
@@ -46,16 +46,14 @@
                             <h1 class="items-center justify-center gap-2 md:text-xl font-900 text-gray-700 flex mt-4 "><img src="{{asset('drcare_logo.png')}}" alt="Dr.Care logo" class="w-10 h-10">Update Password</h1>
                             <p class="text-sm">Set a new password for your account. Use a strong password with at least 8 characters, including letters, numbers, and symbols.</p>
                             <div>
-                                <x-input-label for="update_patient_password" :value="__('New Password')" />
-                                <x-text-input id="update_patient_password" name="password" type="password"
-                                    class="mt-1 block w-full" autocomplete="new-password" />
+                                <x-input-label for="password" :value="__('New Password')" />
+                                <x-password-input id="password" name="password" required class="mt-1" />
                                 <x-input-error :messages="$errors->get('password')" class="bg-red-200 px-4 py-2 mt-2" />
                             </div>
 
                             <div>
                                 <x-input-label for="update_patient_password_confirmation" :value="__('Confirm Password')" />
-                                <x-text-input id="update_patient_password_confirmation" name="password_confirmation" type="password"
-                                    class="mt-1 block w-full" autocomplete="new-password" />
+                                <x-password-input id="update_patient_password_confirmation" name="password_confirmation" required class="mt-1" />
                                 <x-input-error :messages="$errors->get('password_confirmation')" class="bg-red-200 px-4 py-2 mt-2" />
                             </div>
 

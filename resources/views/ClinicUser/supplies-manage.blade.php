@@ -58,9 +58,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -90,12 +90,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -103,7 +105,11 @@
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Inventory Supplies</h1>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-xl md:text-3xl font-900">Inventory Supplies</h1>
+                            <a href="{{ route('clinic.user-manual') }}#view-supplies" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+
+                        </div>
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.supplies') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Inventory </a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -134,17 +140,32 @@
                                 class="text-red-600 px-4 py-2 rounded-lg flex items-center gap-1 focus:outline-none font-900 hover:text-red-500">
                                 <i data-lucide="square-pen" class="w-5 h-5" stroke-width="3"></i>Edit</button>
                         </div>
-                        @if (session('edit-success'))
+                        <!-- successfull modal  -->
+                        @if(session('edit-success'))
                         <div
                             x-data="{ show: true }"
                             x-show="show"
-                            class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
-                            <h1 class="text-md font-bold text-green-600">{{ session('edit-success') }}</h1>
-                            <button @click="show = false" class="text-lg font-bold text-green-600">
-                                <i data-lucide="x"></i>
-                            </button>
+                            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+                            <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+                                <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                                    <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                                        <div class="p-4 rounded-full bg-green-500">
+                                            <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h2 class="text-xl font-bold text-gray-700">{{ session('edit-success') }}</h2>
+                                <div class="flex justify-end items-end w-full">
+                                    <button
+                                        @click="show = false"
+                                        class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         @endif
+
                         <div class="grid grid-cols-8 gap-2 py-2">
                             <div class="md:col-span-2 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Product Name</p>
@@ -172,14 +193,15 @@
                         <div class="col-span-8 grid grid-cols-8 gap-2 mt-2">
                             <div class="md:col-span-1 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Total Stocks</p>
-                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_units }} </p>
+                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_units ?? '0' }} </p>
                             </div>
                             <div class="md:col-span-1 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Remaining Stocks</p>
-                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_unit_remaining }} </p>
+                                <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_unit_remaining ?? '0' }} </p>
                             </div>
                             <div class="md:col-span-1 col-span-8">
                                 <p class="text-sm font-semibold text-gray-600">Status</p>
+
                                 @if(strtolower($inventoryRecords->stock_status) === 'in stock')
                                 <p class="text-green-500 font-bold text-lg">{{ $inventoryRecords->stock_status }} </p>
                                 @elseif(strtolower($inventoryRecords->stock_status) === 'out of stock')

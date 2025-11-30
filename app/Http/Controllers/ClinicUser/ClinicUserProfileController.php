@@ -17,7 +17,9 @@ class ClinicUserProfileController extends Controller
     {
         $clinicUser = Auth::guard('clinic_user')->user();
 
-        return view('ClinicUser.userprofile', compact('clinicUser'));
+        $emails = ClinicUser::all()->pluck('email')->toArray();
+
+        return view('ClinicUser.userprofile', compact('clinicUser', 'emails'));
     }
 
 
@@ -35,6 +37,8 @@ class ClinicUserProfileController extends Controller
             'city'            => 'nullable|string|max:255',
             'barangay'        => 'nullable|string|max:255',
             'description'     => 'nullable|string|max:500',
+            'date_of_birth'   => 'required|date',
+            'age'             => 'required|integer|min:0|max:150',
         ]);
 
         // Handle suffix formatting
@@ -83,6 +87,8 @@ class ClinicUserProfileController extends Controller
         $newInfoData = [
             'contact_number' => $request->contact_number,
             'address'        => $address,
+            'birthdate'     => $request->date_of_birth,
+            'age'           => $request->age,
         ];
         $oldInfoData = $clinicUserInfo->only(array_keys($newInfoData));
 
@@ -106,5 +112,11 @@ class ClinicUserProfileController extends Controller
         ]);
 
         return redirect()->route('clinic.profile')->with('profile-success', 'User account updated successfully!');
+    }
+
+    public function userManual(){
+        $clinicUser = Auth::guard('clinic_user')->user();
+
+        return view('ClinicUser.manual', compact('clinicUser'));
     }
 }

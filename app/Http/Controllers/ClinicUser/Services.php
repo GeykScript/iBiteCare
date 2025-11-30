@@ -29,45 +29,67 @@ class Services extends Controller
    }
 
    //function to handle update service details
-   public function updateServiceDetails(Request $request){
+   public function updateServiceDetails(Request $request)
+   {
+      $request->validate([
+         'service_id' => 'required|exists:services,id',
+         'name' => 'required|string|max:255',
+         'description' => 'nullable|string',
+         'service_fee' => 'required|numeric|min:0',
+         'discount' => 'nullable|numeric|min:0',
+         'discounted_service_fee' => 'nullable|numeric|min:0',
+         'rig_fee_input' => 'nullable|numeric|min:0',
+         'discounted_rig' => 'nullable|numeric|min:0',
+      ]);
 
-         $request->validate([
-               'service_id' => 'required|exists:services,id',
-               'name' => 'required|string|max:255',
-               'description' => 'nullable|string',
-               'service_fee' => 'required|numeric|min:0',
-         ]);
-   
-         $service = ClinicServices::find($request->input('service_id'));
-   
-         if (!$service) {
-               return redirect()->back()->with('error', 'Service not found.');
+      $service = ClinicServices::find($request->input('service_id'));
+
+      if (!$service) {
+         return redirect()->back()->with('error', 'Service not found.');
+      }
+
+      // --- Check if service details changed ---
+      $newValues = [
+         'name' => $request->input('name'),
+         'description' => $request->input('description'),
+         'service_fee' => $request->input('service_fee'),
+         'discount' => $request->input('discount', 0),
+         'discounted_service_fee' => $request->input('discounted_service_fee', 0),
+         'rig_fee' => $request->input('rig_fee_input', 0),
+         'discounted_rig' => $request->input('discounted_rig', 0),
+      ];
+
+      $serviceChanged = false;
+      foreach ($newValues as $key => $value) {
+         if ($service->$key != $value) {
+            $serviceChanged = true;
+            $service->$key = $value;
          }
-   
-         $service->name = $request->input('name');
-         $service->description = $request->input('description');
-         $service->service_fee = $request->input('service_fee');
-         $service->save();
+      }
 
       // --- Handle Schedules ---
+      $schedulesChanged = false;
 
       // 1. Delete removed schedules
-      if ($request->has('deleted_schedules')) {
+      if ($request->has('deleted_schedules') && count($request->input('deleted_schedules')) > 0) {
          ClinicServicesSchedules::whereIn('id', $request->input('deleted_schedules'))
             ->where('service_id', $service->id)
             ->delete();
+         $schedulesChanged = true;
       }
 
-      // 2. Update remaining schedules (only those that came back in the request)
+      // 2. Update existing schedules
       if ($request->has('schedules')) {
          foreach ($request->input('schedules') as $index => $scheduleData) {
             if (!empty($scheduleData['id'])) {
-               ClinicServicesSchedules::where('id', $scheduleData['id'])
-                  ->where('service_id', $service->id)
-                  ->update([
+               $schedule = ClinicServicesSchedules::find($scheduleData['id']);
+               if ($schedule && ($schedule->day_offset != $request->input("day.$index") || $schedule->label != $request->input("label.$index"))) {
+                  $schedule->update([
                      'day_offset' => $request->input("day.$index"),
                      'label'      => $request->input("label.$index"),
                   ]);
+                  $schedulesChanged = true;
+               }
             }
          }
       }
@@ -76,18 +98,25 @@ class Services extends Controller
       if ($request->has('newDay') && $request->has('newLabel')) {
          foreach ($request->input('newDay') as $i => $day) {
             $label = $request->input("newLabel.$i");
-
-            // Skip empty inputs
             if (!empty($day) || !empty($label)) {
                ClinicServicesSchedules::create([
                   'service_id' => $service->id,
                   'day_offset' => $day,
                   'label'      => $label,
                ]);
+               $schedulesChanged = true;
             }
          }
       }
 
+      // --- Save service only if changed ---
+      if ($serviceChanged) {
+         $service->save();
+      }
+
+      if (!$serviceChanged && !$schedulesChanged) {
+         return redirect()->route('clinic.services')->with('success', 'No Changes Made.');
+      }
 
       return redirect()->route('clinic.services')->with('success', 'Service Details updated successfully.');
    }
@@ -101,10 +130,11 @@ class Services extends Controller
          'service_name' => 'required|string|max:255',
          'service_fee'  => 'required|numeric|min:0',
          'description'  => 'required|string|max:1000',
-         'newDay'       => 'array|nullable',
-         'newDay.*'     => 'nullable|integer|min:0',
-         'newLabel'     => 'array|nullable',
-         'newLabel.*'   => 'nullable|string|max:255',
+         'discount'     => 'nullable|numeric|min:0',
+         // 'newDay'       => 'array|nullable',
+         // 'newDay.*'     => 'nullable|integer|min:0',
+         // 'newLabel'     => 'array|nullable',
+         // 'newLabel.*'   => 'nullable|string|max:255',
       ]);
 
       // Save service
@@ -112,20 +142,22 @@ class Services extends Controller
          'name' => $validated['service_name'],
          'service_fee'  => $validated['service_fee'],
          'description'  => $validated['description'],
+         'discount'     => $validated['discount'] ?? 0,
+         'discounted_service_fee' => $validated['service_fee'] - ($validated['service_fee'] * ($validated['discount'] ?? 0) / 100),
       ]);
 
       // If schedules were added
-      if (!empty($validated['newDay']) && !empty($validated['newLabel'])) {
-         foreach ($validated['newDay'] as $index => $dayOffset) {
-            if ($dayOffset !== null && !empty($validated['newLabel'][$index])) {
-               ClinicServicesSchedules::create([
-                  'service_id' => $service->id,
-                  'day_offset' => $dayOffset,
-                  'label'      => $validated['newLabel'][$index],
-               ]);
-            }
-         }
-      }
+      // if (!empty($validated['newDay']) && !empty($validated['newLabel'])) {
+      //    foreach ($validated['newDay'] as $index => $dayOffset) {
+      //       if ($dayOffset !== null && !empty($validated['newLabel'][$index])) {
+      //          ClinicServicesSchedules::create([
+      //             'service_id' => $service->id,
+      //             'day_offset' => $dayOffset,
+      //             'label'      => $validated['newLabel'][$index],
+      //          ]);
+      //       }
+      //    }
+      // }
 
       return redirect()->back()->with('success', 'New service added successfully!');
    }

@@ -21,6 +21,7 @@
                         <ul
                             x-show="open"
                             @click.outside="open = false"
+                            x-cloak
                             class="absolute w-16 mt-1  bg-white border border-gray-300 rounded-lg shadow-lg">
                             @foreach ([5, 10, 20, 50, 100] as $value)
                             <li
@@ -40,7 +41,7 @@
             </div>
 
             <!-- search bar -->
-            <div class="flex  w-full md:w-1/4">
+            <div class="flex  w-full l:w-1/4">
                 <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 flex items-center px-2 py-4 pointer-events-none">
                         <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 " />
@@ -56,17 +57,33 @@
         </div>
     </div>
 
-    @if (session('success'))
+
+    @if(session('success'))
     <div
         x-data="{ show: true }"
         x-show="show"
-        class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
-        <h1 class="text-md font-bold text-green-600">{{ session('success') }}</h1>
-        <button @click="show = false" class="text-lg font-bold text-green-600">
-            <i data-lucide="x"></i>
-        </button>
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                    <div class="p-4 rounded-full bg-green-500">
+                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                    </div>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold text-gray-700">{{ session('success') }}</h2>
+            <div class="flex justify-end items-end w-full">
+                <button
+                    @click="show = false"
+                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
     @endif
+
+
     <div class="overflow-x-auto md:overflow-hidden">
         <table class="min-w-full  text-sm mt-2 ">
             <thead class="bg-gray-100">
@@ -74,7 +91,9 @@
                     <th class="border-r border-b bg-gray-800 text-white px-2 py-3 hover:cursor-pointer rounded-tl-lg" wire:click="setSortBy('id')">ID</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer" wire:click="setSortBy('name')">Service Name</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Description</th>
-                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Service Fee</th>
+                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Amount</th>
+                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Discount</th>
+                    <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Net Amount</th>
                     <th class="border bg-gray-800 text-white px-2 py-3 hover:cursor-pointer">Schedules</th>
                     <th class="px-2 py-3 border bg-gray-800 text-white rounded-tr-lg hover:cursor-pointer">Action</th>
                 </tr>
@@ -93,7 +112,9 @@
                     <td class="border-b px-2 py-2 text-gray-700 text-center">{{ $service->id }}</td>
                     <td class="border-b px-2 py-2 text-gray-700 text-center">{{ $service->name }} </td>
                     <td class="border-b px-2 py-2 text-gray-700">{{ $service->description }} </td>
-                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $service->service_fee }}</span></td>
+                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ number_format($service->service_fee, 2) }}</span></td>
+                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"> {{ number_format($service->discount) }}%</span></td>
+                    <td class="border-b px-2 py-2 text-gray-700 text-center"><span class="flex items-center justify-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ number_format($service->discounted_service_fee, 2) }}</span></td>
                     <td class="border-b px-2 py-2 text-gray-700 text-center">
                         @forelse ($service->schedules as $schedule)
                         <div class="flex items-start justify-start">

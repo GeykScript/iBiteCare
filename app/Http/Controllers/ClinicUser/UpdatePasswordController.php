@@ -35,8 +35,7 @@ class UpdatePasswordController extends Controller
                 'string',
                 'min:8',
                 'confirmed',
-                'regex:/[!@#$%^&*(),.?":{}|<>]/', // requires at least one symbol
-                'regex:/[0-9]/',                   // requires at least one number
+                'regex:/^(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/',                // requires at least one number
             ],
         ], [
             'password.regex' => 'The password must contain at least one number and one special character.',

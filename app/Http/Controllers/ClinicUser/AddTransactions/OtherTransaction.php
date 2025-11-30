@@ -47,6 +47,7 @@ class OtherTransaction extends Controller
 
 
         $patient = Patient::find($patient_id);
+        
 
         return view('ClinicUser.Transactions.new-other', compact('clinicUser', 'services', 'vaccines', 'nurses', 'staffs', 'patient', 'service_id', 'patient_id'));
     }

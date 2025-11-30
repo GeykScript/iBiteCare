@@ -58,9 +58,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -90,12 +90,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -107,13 +109,12 @@
                     </div>
                 </div>
                 <!-- Header content -->
-                <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
+                <div class="md:pl-12 pl-6 flex items-center gap-2 ">
                     <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Inventory</h1>
-                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
+                    <a href="{{ route('clinic.user-manual') }}#inventory" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+
                 </div>
-                <div class="md:pl-12 pl-6">
-                    <h1 class="md:text-lg text-gray-800">All vaccines, rigs, supplies and equipment available at the clinic.</h1>
-                </div>
+
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 gap-4">
                     <div class="col-span-7 md:col-span-4 flex flex-col md:flex-row items-end md:items-center justify-end gap-4 md:gap-10">
@@ -174,7 +175,8 @@
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400" required />
                                         </div>
                                         <div class="md:col-span-4 col-span-12">
-                                            <p class="text-sm font-semibold mb-1">Service Usage: <span class="font-normal">( Skip if n/a)</span> </p>
+                                            <p class="text-sm font-semibold mb-1">Service Usage: <span class="font-normal text-gray-500 italic text-xs">(Skip if it applies to all or not)</span>
+                                            </p>
                                             <div x-data="{ open: false, selected: null, selectedLabel: 'Select Service' }" class="relative">
                                                 <!-- Hidden input to store the selected ID -->
                                                 <input type="hidden" name="service_id" x-model="selected">
@@ -305,8 +307,11 @@
                         </form>
                     </dialog>
 
-                    <!-- livewire/patient-table.php -->
-                    <livewire:inventory-records-table />
+                    <div class="col-span-7 md:col-span-4">
+                        <!-- livewire/patient-table.php -->
+                        <livewire:inventory-records-table />
+                    </div>
+
                 </div>
             </div>
         </section>

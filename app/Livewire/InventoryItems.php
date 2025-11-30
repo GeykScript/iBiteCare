@@ -48,7 +48,7 @@ class InventoryItems extends Component
             $item->save();
         
             //  success message
-            session()->flash('remove-success', 'Item removed successfully.');
+            session()->flash('remove-success', 'Item Removed Successfully!');
         }else{
             //  error message
             session()->flash('remove-error', 'Item not found.');

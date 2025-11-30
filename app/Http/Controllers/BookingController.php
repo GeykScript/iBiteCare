@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingConfirmation;
 use App\Models\ClinicServices;
+use App\Models\Notifications;
+use Carbon\Carbon;
+
 
 class BookingController extends Controller
 {
@@ -41,7 +44,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $hasActiveAppointment = PatientAppointment::where('patient_account_id', Auth::id())
-            ->whereNotIn('status', ['Completed', 'Cancelled'])
+            ->whereNotIn('status', ['Arrived', 'Cancelled'])
             ->exists();
 
         if ($hasActiveAppointment) {
@@ -79,6 +82,19 @@ class BookingController extends Controller
         $validated['booking_reference'] = $bookingReference;
 
         $appointment = PatientAppointment::create($validated);
+        Notifications::insert([
+
+        'content' => 'New appointment booked online on ' 
+            . Carbon::parse($appointment->appointment_date)->format('F j, Y') 
+            . ' at ' 
+            . Carbon::parse($appointment->appointment_time)->format('h:i A') 
+            . '.',
+            'is_read' => 0,
+            'links_to' => 1, // links to appointments
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         Mail::to($appointment->email)->send(new BookingConfirmation($appointment));
 
         return back()->with('success', 'Your appointment has been booked successfully! Booking ID: ' . $bookingReference);
@@ -118,6 +134,14 @@ class BookingController extends Controller
         $appointment->status = 'Cancelled';
         $appointment->save();
 
+        Notifications::insert([
+            'content' => 'Appointment has been cancelled by '.$appointment->name .'.',
+            'is_read' => 0,
+            'links_to' => 1, // links to appointments
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return response()->json(['message' => 'Appointment cancelled successfully']);
     }
 
@@ -135,6 +159,16 @@ class BookingController extends Controller
         $appointment->update([
             'appointment_date' => $request->appointment_date,
             'appointment_time' => $request->appointment_time,
+        ]);
+
+        Notifications::insert([
+            'content' => 'Appointment has been rescheduled by '.$appointment->name 
+                .' to '. Carbon::parse($appointment->appointment_date)->format('F j, Y') 
+                .' at '. Carbon::parse($appointment->appointment_time)->format('h:i A') .'.',
+            'is_read' => 0,
+            'links_to' => 1, // links to appointments
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return response()->json([

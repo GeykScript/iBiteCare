@@ -18,7 +18,7 @@
         </div>
         @endif
         <div class="p-4">
-            <h1 class="font-900 text-2xl sm:text-3xl font-bold text-gray-800">Clinic Schedules</h1>
+            <h1 class="font-900 text-2xl sm:text-3xl font-bold text-gray-800">Immunization Schedules</h1>
             <p class="text-md text-gray-500">View upcoming immunizations and vaccination history</p>
         </div>
         <div class=" bg-white  shadow-lg px-8 pt-4 pb-4 rounded-lg flex flex-col gap-2">
@@ -41,6 +41,14 @@
                 <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
                     <p>{{ $transaction->service->name }} - <span class="text-xs">
                             {{ date('F d, Y g:i A', strtotime($transaction->transaction_date)) }}
+
+                            <span class="text-sm font-bold ml-2
+                                @if($transaction->overall_status === 'Completed') text-green-600
+                                @elseif($transaction->overall_status === 'Ongoing') text-sky-500
+                                @elseif($transaction->overall_status === 'Cancelled') text-red-600
+                                @endif">
+                                ( {{ $transaction->overall_status ?? 'N/A' }} )
+                            </span>
                         </span></p> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down">
                         <path d="m6 9 6 6 6-6" />

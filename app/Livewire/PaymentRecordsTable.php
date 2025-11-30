@@ -11,10 +11,12 @@ class PaymentRecordsTable extends Component
 {
     use WithPagination;
 
-    public $perPage = 5;
+    public $perPage = 10;
     public $sortBy = 'created_at';
-    public $sortDirection = 'ASC';
+    public $sortDirection = 'DESC';
     public $search = '';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatingSearch()
     {
@@ -26,13 +28,29 @@ class PaymentRecordsTable extends Component
         $this->resetPage();
     }
 
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->resetPage();
+    }
+
     public function setSortBy($sortByField)
     {
         if ($this->sortBy === $sortByField) {
-            $this->sortDirection = $this->sortDirection === 'ASC' ? 'DESC' : 'ASC';
+            $this->sortDirection = $this->sortDirection === 'DESC' ? 'ASC' : 'DESC';
         } else {
             $this->sortBy = $sortByField;
-            $this->sortDirection = 'DESC';
+            $this->sortDirection = 'ASC';
         }
     }
     public function render()
@@ -59,6 +77,12 @@ class PaymentRecordsTable extends Component
             $query->orderBy($this->sortBy, $this->sortDirection);
         }
 
+        if($this->dateFrom) {
+            $query->whereDate('payment_date', '>=', $this->dateFrom);
+        }
+        if($this->dateTo) {
+            $query->whereDate('payment_date', '<=', $this->dateTo);
+        }
 
         // Handle searching
         if (!empty($this->search)) {

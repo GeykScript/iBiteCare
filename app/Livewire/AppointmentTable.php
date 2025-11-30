@@ -11,10 +11,13 @@ class AppointmentTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 5;
+    public $perPage = 10;
 
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
+    public $filter = 'pending'; // default filter
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatingSearch()
     {
@@ -23,6 +26,23 @@ class AppointmentTable extends Component
 
     public function updatedPerPage()
     {
+        $this->resetPage();
+    }
+
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
         $this->resetPage();
     }
 
@@ -35,10 +55,34 @@ class AppointmentTable extends Component
             $this->sortDirection = 'ASC';
         }
     }
+
     public function render()
     {
-        $query = PatientAppointment::search($this->search);
-        return view('livewire.appointment-table',[
+        $query = PatientAppointment::search($this->search)
+            ->when($this->filter === 'all', function ($query) {
+            $query->whereIn('status', ['Arrived', 'Cancelled', 'Pending']);
+        })
+            // Apply date filters
+            ->when($this->dateFrom, function ($query) {
+                $query->whereDate('appointment_date', '>=', $this->dateFrom);
+            })
+            ->when($this->dateTo, function ($query) {
+                $query->whereDate('appointment_date', '<=', $this->dateTo);
+            })
+            ->when($this->filter === 'arrived', function ($query) {
+                // only sent messages
+                $query->where('status', 'Arrived');
+            })
+            ->when($this->filter === 'cancelled', function ($query) {
+                // only sent messages
+                $query->where('status', 'Cancelled');
+            })
+            ->when($this->filter === 'pending', function ($query) {
+                // only sent messages
+                $query->where('status', 'Pending');
+            });
+
+        return view('livewire.appointment-table', [
             'appointments' => $query->orderBy($this->sortBy, $this->sortDirection)
                 ->paginate($this->perPage),
         ]);

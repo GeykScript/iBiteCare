@@ -57,9 +57,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -89,12 +89,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -119,15 +121,28 @@
                         <h1 class="p-4 text-xl font-900 text-[#FF000C]">Account Information</h1>
                     </div>
 
-                    @if (session('profile-success'))
+                    @if(session('profile-success'))
                     <div
                         x-data="{ show: true }"
                         x-show="show"
-                        class="md:w-1/2 w-full bg-green-100 border-2 rounded border-green-200 flex justify-between">
-                        <h1 class="p-4 text-md font-bold text-green-600">{{ session('profile-success') }}</h1>
-                        <button @click="show = false" class="py-2 px-4 text-lg font-bold text-green-600">
-                            <i data-lucide="x"></i>
-                        </button>
+                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+                        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+                            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                                    <div class="p-4 rounded-full bg-green-500">
+                                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-700">{{ session('profile-success') }}</h2>
+                            <div class="flex justify-end items-end w-full">
+                                <button
+                                    @click="show = false"
+                                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     @endif
 
@@ -138,7 +153,7 @@
                                 <i class="md:w-8 md:h-8 stroke-[#FF000C]" data-lucide="square-user"></i>
                             </div>
                             <div class="col-span-11  px-3 md:px-5 py-1">
-                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->first_name}} {{$clinicUser->middle_initial}} {{$clinicUser->last_name}} </h1>
+                                <h1 class="md:text-xl text-md font-bold">{{$clinicUser->first_name}} {{$clinicUser->middle_initial}} {{$clinicUser->last_name}} {{$clinicUser->suffix ?? ''}}</h1>
                                 <p class="md:text-sm text-xs text-gray-600">Name</p>
                             </div>
                         </div>
@@ -195,6 +210,9 @@
                                 class="flex gap-1  text-xs items-center text-sky-500 font-900">More Details <i data-lucide="info" class="w-5 h-5 fill-sky-500 stroke-white"></i></button>
                         </div>
                     </div>
+                    <!-- for email validation   -->
+                    <input type="hidden" id="existing-emails" value="{{ json_encode($emails) }}">
+
 
                     <!-- update user profile modal -->
                     <dialog id="user-profile-info" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
@@ -329,26 +347,36 @@
                                         @if ($errors->has('date_of_birth'))
                                         <label for="date_of_birth" class="text-sm font-semibold flex justify-between items-center w-full">Date of Birth:
                                             <span class="text-red-500 text-xs" id="date-of-birth-error">
-                                                {{ $errors->first('date_of_birth') }}
-                                                *</span>
+                                                {{ $errors->first('date_of_birth') }}*</span>
                                         </label>
                                         @else
                                         <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth:
                                             <span class="text-red-500 text-xs" id="date-of-birth-error">*</span>
                                         </label>
                                         @endif
-                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $clinicUser->info->birthdate) }}" readonly disabled
+                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $clinicUser->info->birthdate) }}"
                                             class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
+                                        @if ($errors->has('age'))
+                                        <label for="age" class="text-sm font-semibold flex justify-between items-center w-full">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">
+                                                {{ $errors->first('age') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="age" class="text-sm font-semibold ">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">*</span>
+                                        </label>
+                                        @endif
                                         <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $clinicUser->info->age) }}"
-                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
-                                        <p class=" text-sm font-bold text-gray-800">Gender <span class="text-red-500" id="gender-error">*</span></p>
+                                        <p class=" text-sm font-bold text-gray-800">Gender
+                                            <!-- <span class="text-red-500" id="gender-error">*</span> -->
+                                        </p>
                                         <div class="flex gap-5 items-center">
                                             @if ($clinicUser->info->gender == 'Male')
                                             <label class="flex items-center space-x-2">
@@ -388,6 +416,8 @@
                                             <i data-lucide="mail"></i>
                                             <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email', $clinicUser->email) }}" autocomplete="email"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                            <input type="hidden" name="email-checker" id="email-checker-id" value="{{$clinicUser->email}}">
+
                                         </div>
                                     </div>
 
@@ -509,7 +539,7 @@
 
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
+                                    <button type="submit" id="SubmitProfileBtn" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Save Changes
                                     </button>
                                     <button type="button" onclick="document.getElementById('user-profile-info').close()"
@@ -529,19 +559,41 @@
                         </p>
                     </div>
 
+
+
+                    <!-- successfull modal  -->
                     @if (session('status') === 'password-updated')
                     <div
                         x-data="{ show: true }"
                         x-show="show"
-                        class="md:w-1/2 w-full bg-green-100 border-2 rounded border-green-200 flex justify-between">
-                        <h1 class="p-4 text-md font-bold text-green-600">{{ __('Your password has been updated successfully.') }}</h1>
-                        <button @click="show = false" class="py-2 px-4 text-lg font-bold text-green-600">
-                            <i data-lucide="x"></i>
-                        </button>
+                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
+                        <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
+                            <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                                <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                                    <div class="p-4 rounded-full bg-green-500">
+                                        <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-bold text-center text-gray-700">{{ __('Your password has been updated successfully.') }}</h2>
+                            <div class="flex justify-end items-end w-full">
+                                <button
+                                    @click="show = false"
+                                    class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     @endif
                     <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white border border-gray-200 shadow-lg rounded-lg">
                         @include('ClinicUser.profile.update-password-form')
+                    </div>
+                    <div class="flex flex-col md:px-20 md:py-8 p-4 md:w-1/2 w-full bg-white rounded-lg items-center justify-center">
+                        <div class="flex gap-1 items-center text-[#FF000C] justify-center ">
+                            <a href="{{ route('clinic.user-manual') }}#account-manage" target="_blank" class="font-900 underline underline-offset-4">View User Manual</a>
+                            <i data-lucide="file-sliders" class="w-5 h-5 stroke-[2.5]"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -563,6 +615,44 @@
 
 
 <script>
+    document.getElementById('email').addEventListener('input', function() {
+        const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+        const originalEmail = document.getElementById('email-checker-id').value.trim();
+        const emailInput = this.value.trim();
+        const errorSpan = document.getElementById('email-error');
+        const SubmitProfileBtn = document.getElementById('SubmitProfileBtn');
+
+        // Basic email regex format check
+        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Validate format first
+        if (emailInput.length > 0 && !emailFormat.test(emailInput)) {
+            errorSpan.textContent = "Invalid email format";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+            SubmitProfileBtn.disabled = true;
+            return;
+        }
+
+        // Exclude original email from duplicate check
+        const emailsToCheck = existingEmails.filter(email => email !== originalEmail);
+
+        // Check if email already exists
+        if (emailsToCheck.includes(emailInput)) {
+            errorSpan.textContent = "Email already exists";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+            SubmitProfileBtn.disabled = true;
+        } else {
+            errorSpan.textContent = "*";
+            this.classList.remove('border-red-500');
+            SubmitProfileBtn.disabled = false;
+        }
+    });
+
+
+
+
     document.addEventListener("DOMContentLoaded", function() {
         const passwordField = document.getElementById("defaultPassword");
         const toggleBtn = document.getElementById("togglePassword");
@@ -588,6 +678,8 @@
         document.getElementById("password").value = data.default_password;
     }
 
+
+    // AGE CALCULATOR
     document.addEventListener("DOMContentLoaded", function() {
         const date_of_birth = document.getElementById("date_of_birth");
         const age = document.getElementById("age");
@@ -595,6 +687,13 @@
         date_of_birth.addEventListener("change", function() {
             const birthdate = new Date(date_of_birth.value);
             const today = new Date();
+
+            // Check if the birthdate is valid and not in the future
+            if (!date_of_birth.value || birthdate > today) {
+                age.value = "";
+                return;
+            }
+
             let calculatedAge = today.getFullYear() - birthdate.getFullYear();
             const monthDifference = today.getMonth() - birthdate.getMonth();
 
@@ -602,7 +701,7 @@
                 calculatedAge--;
             }
 
-            age.value = calculatedAge;
+            age.value = calculatedAge >= 0 ? calculatedAge : "";
         });
     });
 
@@ -677,6 +776,14 @@
             {
                 name: "contact_number",
                 label: "contact-number-error"
+            },
+            {
+                name: "date_of_birth",
+                label: "date-of-birth-error"
+            },
+            {
+                name: "age",
+                label: "age-error"
             }
         ];
 
@@ -691,6 +798,9 @@
             if (input) input.classList.remove("border-red-500");
             if (btn) btn.classList.remove("border-red-500");
         }
+
+        const SubmitProfileBtn = document.getElementById("SubmitProfileBtn");
+
 
         document.getElementById("update-user-profile-info").addEventListener("submit", function(e) {
             let isValid = true;
@@ -727,7 +837,20 @@
                 }
             });
 
-            if (!isValid) e.preventDefault();
+            if (!isValid) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+
+            SubmitProfileBtn.disabled = true;
+            SubmitProfileBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Loading...</span>
+        `;
         });
     });
 </script>

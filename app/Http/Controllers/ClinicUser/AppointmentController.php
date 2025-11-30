@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\PatientAppointment;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppointmentRescheduleMail;
+use App\Mail\AppointmentCancelledMail;
+use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
+
 
 class AppointmentController extends Controller
 {
@@ -24,6 +28,11 @@ class AppointmentController extends Controller
         }
         //
         $services = ClinicServices::all();
+
+        PatientAppointment::where('status', 'Pending')
+            ->where('appointment_date', '<', now()->toDateString())
+            ->delete();
+
 
 
         return view('ClinicUser.appointment',compact('clinicUser', 'services'));
@@ -43,6 +52,12 @@ class AppointmentController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        // Generate unique booking reference (DrCare-YYYYMMDD-XXX)
+        $date = now()->format('Ymd');
+        $lastAppointment = PatientAppointment::whereDate('created_at', today())->orderBy('id', 'desc')->first();
+        $sequence = $lastAppointment ? (intval(substr($lastAppointment->booking_reference, -5)) + 1) : 1;
+        $bookingReference = 'DrCare-' . $date . '-' . str_pad($sequence, 5, '0', STR_PAD_LEFT);
+
         // Create a new appointment
         PatientAppointment::create([
             'name' => $request->name,
@@ -54,9 +69,10 @@ class AppointmentController extends Controller
             'booking_channel' => $request->channel,
             'additional_notes' => $request->notes,
             'status' => 'Pending',
+            'booking_reference' => $bookingReference,
         ]);
 
-        return redirect()->back()->with('success', 'Appointment booked successfully.');
+        return redirect()->back()->with('success', 'Appointment Booked Successfully.');
     }
 
 
@@ -68,6 +84,7 @@ class AppointmentController extends Controller
             'appointment_time' => 'required|string',
             'email' => 'nullable|email|max:255',
         ]);
+
 
         // Find the appointment by ID
         $appointment = PatientAppointment::find($request->appointment_id);
@@ -82,12 +99,35 @@ class AppointmentController extends Controller
         $appointment->status = 'Pending';
         $appointment->save();
 
-        if($patientEmail = $request->email && !empty($request->email)) {
-            // Send reschedule email to patient
-            Mail::to($patientEmail)->send(new AppointmentRescheduleMail($appointment));
-        }
+        if(!empty($appointment->contact_number)) {
+            // Send SMS notification via Semaphore API
+            $contactNumber = str_replace(' ', '', preg_replace(
+                ['/^\+63/', '/^0/'],
+                ['63', '63'],
+                $appointment->contact_number
+            ));
 
-        return redirect()->back()->with('success', 'Appointment rescheduled successfully.');
+            $appointmentDate = Carbon::parse($request->appointment_date)->format('M, d, Y');
+            $appointmentTime = Carbon::parse($request->appointment_time)->format('h:i A');
+
+            $messageText = "Hello! This is Dr. Care ABC Guinobatan. Your appointment has been rescheduled to $appointmentDate at $appointmentTime."."
+            \nFor any concerns, Call/Text: 0954 195 2374. Thank you!";
+
+            // dd($contactNumber, $messageText);
+                Http::post('https://api.semaphore.co/api/v4/messages', [
+                        'apikey' => env('SEMAPHORE_API_KEY'),
+                        'number' => $contactNumber,
+                        'message' => $messageText,
+                        'sendername' => env('SEMAPHORE_SENDER_NAME'),
+                    ]);
+            }
+
+        if (!empty($request->email)) {
+            $patientEmail = $request->email;
+            Mail::to($patientEmail)->send(new AppointmentRescheduleMail($appointment));
+    }
+    
+        return redirect()->back()->with('success', 'Appointment Rescheduled Successfully.');
     }
 
     public function changeStatus(Request $request)
@@ -108,6 +148,34 @@ class AppointmentController extends Controller
         $appointment->status = $request->status;
         $appointment->save();
 
-        return redirect()->back()->with('success', 'Appointment status updated successfully.');
+        if ($request->status == 'Cancelled' && !empty($appointment->contact_number)) {
+            // Send SMS notification via Semaphore API
+            $contactNumber = str_replace(' ', '', preg_replace(
+                ['/^\+63/', '/^0/'],
+                ['63', '63'],
+                $appointment->contact_number
+            ));
+
+            $appointmentDate = Carbon::parse($request->appointment_date)->format('M, d, Y');
+            $appointmentTime = Carbon::parse($request->appointment_time)->format('h:i A');
+
+            $messageText = "Hello! This is Dr. Care ABC Guinobatan. Your appointment scheduled on $appointmentDate at $appointmentTime has been cancelled.
+            \nFor any concerns, call or text 0954 195 2374. Thank you!";
+            
+            // dd($contactNumber, $messageText);
+            Http::post('https://api.semaphore.co/api/v4/messages', [
+                'apikey' => env('SEMAPHORE_API_KEY'),
+                'number' => $contactNumber,
+                'message' => $messageText,
+                'sendername' => env('SEMAPHORE_SENDER_NAME'),
+            ]);
+        }
+
+        if ( $request->status == 'Cancelled' && !empty($appointment->email) ) {
+            $patientEmail = $appointment->email;
+            Mail::to($patientEmail)->send(new AppointmentCancelledMail($appointment));
+        }
+
+        return redirect()->back()->with('success', 'Status Updated Successfully.');
     }
 }

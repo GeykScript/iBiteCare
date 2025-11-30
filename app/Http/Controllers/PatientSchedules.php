@@ -33,8 +33,24 @@ class PatientSchedules extends Controller
                 $first = $group->first();
                 // merge all schedules from this grouping
                 $first->allSchedules = $group->flatMap->patientSchedules;
-                return $first;
-            })
+
+            // Compute overall status
+            $statuses = $first->allSchedules->pluck('status')->toArray();
+
+            if (empty($statuses)) {
+                $first->overall_status = null;
+            } elseif (in_array('Cancelled', $statuses)) {
+                $first->overall_status = 'Cancelled';
+            } elseif (in_array('Pending', $statuses)) {
+                $first->overall_status = 'Ongoing';
+            } elseif (count(array_unique($statuses)) === 1 && $statuses[0] === 'Completed') {
+                $first->overall_status = 'Completed';
+            } else {
+                $first->overall_status = 'Ongoing';
+            }
+
+            return $first;
+        })
             ->sortByDesc('transaction_date');
 
         return view('auth.schedules', compact('user', 'transactions2'));
@@ -80,7 +96,6 @@ class PatientSchedules extends Controller
         $verificationCode = rand(100000, 999999);
 
         User::where('id', $request->input('id'))
-        ->where('email', $request->input('email'))
             ->update(['two_factor_code' => Crypt::encryptString($verificationCode)]);
 
 
@@ -96,7 +111,8 @@ class PatientSchedules extends Controller
         Mail::to($request->input('email'))->send(new TwofactorCodeMail($verificationCode));
 
 
-        return back()->with('success', 'OTP has been sent to your email.');
+        return back()->with('success', 'OTP has been sent to your email.')
+        ->with('email', $request->input('email'));
     }
 
     public function verifyOtp(Request $request)
@@ -112,6 +128,10 @@ class PatientSchedules extends Controller
 
         if (!$patient || !$user) {
             return back()->withErrors(['error' => 'Invalid user or patient.']);
+        }
+
+        if ($user ->email === $patient->email && $patient->account_id) {
+            return redirect()->route('schedules.verifyForm')->with('error-mail', 'This account you provided during your clinic visit is already linked.');
         }
 
         try {

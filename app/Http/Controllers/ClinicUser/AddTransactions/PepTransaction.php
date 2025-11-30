@@ -69,11 +69,13 @@ class PepTransaction extends Controller
         $patient = Patient::find($patient_id);
 
         $service_fee = ClinicServices::where('id', $service_id)->first();
+        $anti_tetanus_fee = ClinicServices::where('id', 4)->first();
+
         $pepService = $service_id;
 
         $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
 
-        return view('ClinicUser.Transactions.new-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs', 'service_fee', 'recentlyAddedPatients', 'pepService', 'patient'));
+        return view('ClinicUser.Transactions.new-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs', 'service_fee', 'anti_tetanus_fee', 'recentlyAddedPatients', 'pepService', 'patient'));
     }
 
 
@@ -203,8 +205,8 @@ class PepTransaction extends Controller
                             'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
                             'display_message' => "Reminder: your ({$serviceSchedule->label}) PEP dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
                             'message_text' => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP schedule on "
-                                . $scheduledDateObj->format('M j, Y')
-                                . ". Clinic hours: 8AM to 5PM. Thank you!",
+                                . $scheduledDateObj->format('M j, Y') .
+                                ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
                             'sender_id' => null,
                             'status' => 'Pending',
                         ]);
@@ -221,7 +223,7 @@ class PepTransaction extends Controller
                         'message_text' =>
                         "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP today, " .
                             $scheduledDateObj->format('M j, Y') .
-                            ".\nWe're open 8AM-5PM. Thank you!",
+                            ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
                         'sender_id' => null,
                         'status' => 'Pending',
                     ]);

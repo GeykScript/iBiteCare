@@ -77,11 +77,29 @@ class PatientsController extends Controller
                 $first = $group->first();
                 // merge all schedules from this grouping
                 $first->allSchedules = $group->flatMap->patientSchedules;
-                return $first;
-            })
+            // Compute overall status
+            $statuses = $first->allSchedules->pluck('status')->toArray();
+
+            if (empty($statuses)) {
+                $first->overall_status = null;
+            } elseif (in_array('Cancelled', $statuses)) {
+                $first->overall_status = 'Cancelled';
+            } elseif (in_array('Pending', $statuses)) {
+                $first->overall_status = 'Ongoing';
+            } elseif (count(array_unique($statuses)) === 1 && $statuses[0] === 'Completed') {
+                $first->overall_status = 'Completed';
+            } else {
+                $first->overall_status = 'Ongoing';
+            }
+
+            return $first;
+        })
             ->sortByDesc('transaction_date');
 
-        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules'));
+        $emails = Patient::all()->pluck('email')->toArray();
+
+
+        return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules','emails'));
     }
 
 
@@ -123,6 +141,8 @@ class PatientsController extends Controller
             'suffix'         => 'nullable|string|max:50',
             'sex'            => 'nullable|string|max:10',
             'contact_number' => 'required|string|max:20',
+            'date_of_birth'  => 'required|date',
+            'age'            => 'required|integer|min:0|max:150',
             'email'          => 'required|email|max:255|unique:registered_patients,email,' . $request->id,
             'province'       => 'nullable|string|max:255',
             'city'           => 'nullable|string|max:255',
@@ -173,6 +193,9 @@ class PatientsController extends Controller
             'email'          => $request->email,
             'sex'            => $request->sex,
             'address'        => $address,
+            'birthdate'      => $request->date_of_birth,
+            'age'            => $request->age,
+
         ];
 
         // Old user data
@@ -181,7 +204,7 @@ class PatientsController extends Controller
         // Check if any changes exist
         if ($oldUserData == $newUserData) {
             return redirect()
-                ->route('clinic.patients.profile', ['id' => $patient_user->id])
+                ->route('clinic.patients.profile', ['id' => Crypt::encrypt($patient_user->id)])
                 ->with('profile-success', 'No changes made.');
         }
 
@@ -189,7 +212,7 @@ class PatientsController extends Controller
         $patient_user->update($newUserData);
 
         return redirect()
-            ->route('clinic.patients.profile', ['id' => $patient_user->id])
+            ->route('clinic.patients.profile', ['id' => Crypt::encrypt($patient_user->id)])
             ->with('profile-success', 'User account updated successfully!');
     }
 

@@ -55,9 +55,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -87,12 +87,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -101,7 +103,10 @@
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="md:w-16 md:h-16 w-14 h-14">
                     <div>
                         <h1 class="text-lg md:text-3xl font-900">Clinic Users Account</h1>
-                        <h2 class=",d:ml-3 text-sm md:text-lg font-bold">Manage Clinic User Accounts </h2>
+                        <div class="flex items-center gap-3">
+                            <h2 class="md:ml-3 text-sm md:text-lg font-bold">Manage Clinic User Accounts </h2>
+                            <a href="{{ route('clinic.user-manual') }}#account-create" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                        </div>
 
                     </div>
                 </div>
@@ -112,6 +117,8 @@
                             onclick="document.getElementById('newClinicUserModal').showModal()"
                             class=" bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none font-bold hover:bg-red-700"><i data-lucide="plus" class="w-5 h-5 stroke-[2]"></i>New User Account</button>
                     </div>
+                    <input type="hidden" id="existing-emails" value="{{ json_encode($emails) }}">
+
 
                     <!-- New Clinic User Modal -->
                     <dialog id="newClinicUserModal" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
@@ -136,18 +143,18 @@
                                     <div class="flex gap-7 md:px-6">
                                         <!-- admin role -->
                                         <p class="flex items-center space-x-2">
-                                            <input type="radio" name="role" value="1" class="text-red-500 focus:ring-red-500" required {{ old('role') == '1' ? 'checked' : '' }}>
-                                            <span>Admin</span>
+                                            <input type="radio" id="radio1" name="role" value="1" class="text-red-500 focus:ring-red-500" required {{ old('role') == '1' ? 'checked' : '' }}>
+                                            <label for="radio1">Admin</label>
                                         </p>
                                         <!-- nurse role  -->
                                         <p class="flex items-center space-x-2">
-                                            <input type="radio" name="role" value="2" class="text-green-600 focus:ring-green-600" {{ old('role') == '2' ? 'checked' : '' }}>
-                                            <span>Nurse</span>
+                                            <input type="radio" id="radio2" name="role" value="2" class="text-green-600 focus:ring-green-600" {{ old('role') == '2' ? 'checked' : '' }}>
+                                            <label for="radio2">Nurse</label>
                                         </p>
                                         <!-- staff role  -->
                                         <p class="flex items-center space-x-2">
-                                            <input type="radio" name="role" value="3" class="text-sky-600 focus:ring-sky-600" {{ old('role') == '3' ? 'checked' : '' }}>
-                                            <span>Staff</span>
+                                            <input type="radio" id="radio3" name="role" value="3" class="text-sky-600 focus:ring-sky-600" {{ old('role') == '3' ? 'checked' : '' }}>
+                                            <label for="radio3">Staff</label>
                                         </p>
                                     </div>
                                 </div>
@@ -295,7 +302,18 @@
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
+
+
+                                        @if ($errors->has('age'))
+                                        <label for="age" class="text-sm font-semibold flex justify-between items-center w-full">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">
+                                                {{ $errors->first('age') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="age" class="text-sm font-semibold ">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">*</span>
+                                        </label>
+                                        @endif
                                         <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age') }}"
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly>
                                     </div>
@@ -323,6 +341,7 @@
                                 <div class="col-span-12 grid grid-cols-4 gap-4 mt-2">
                                     <!-- email  -->
                                     <div class="col-span-4 md:col-span-2 flex flex-col items-center gap-2">
+
                                         <div class="w-full flex items-center">
                                             @if ($errors->has('email'))
                                             <label for="email" class="text-sm font-semibold flex justify-between items-center w-full">Personal Email:
@@ -340,6 +359,8 @@
                                             <i data-lucide="mail"></i>
                                             <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email') }}" autocomplete="email"
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+
+
                                         </div>
                                     </div>
 
@@ -618,16 +639,26 @@
                                         @endif
 
 
-                                        <input type="date" name="update_date_of_birth" id="update_date_of_birth" :value="user.date_of_birth" readonly disabled
+                                        <input type="date" name="update_date_of_birth" id="update_date_of_birth" :value="user.date_of_birth"
                                             :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                             class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
+                                        @if (session('update_errors') && session('update_errors')->has('update_age'))
+                                        <label for="update_age" class="text-sm font-semibold flex justify-between items-center w-full">Age:
+                                            <span class="text-red-500 text-xs" id="update-age-error">
+                                                {{ session('update_errors')->first('update_age') }}
+                                                *</span>
+                                        </label>
+                                        @else
+                                        <label for="update_age" class="text-sm font-semibold ">Age
+                                            <span class="text-red-500 text-xs" id="update-age-error"></span>
+                                        </label>
+                                        @endif
                                         <input type="number" name="update_age" placeholder="Age" id="update_age" :value="user.age"
                                             :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
-                                            class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
+                                            class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
@@ -665,6 +696,8 @@
                                             <input type="email" name="update_email" id="update_email" placeholder="example@gmail.com" :value="user.email" id="update-email"
                                                 :class="user.is_disabled == 1 ? 'opacity-50 pointer-events-none' : ''"
                                                 class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:border-sky-300">
+                                            <input type="hidden" name="email-checker" id="email-checker-id" :value="user.email">
+
                                         </div>
                                     </div>
 
@@ -841,7 +874,7 @@
             x-data="{ show: true }"
             x-show="show"
             class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
-            <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4">
+            <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 flex flex-col items-center gap-4" @click.outside="show = false">
                 <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
                     <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
                         <div class="p-4 rounded-full bg-green-500">
@@ -850,11 +883,13 @@
                     </div>
                 </div>
                 <h2 class="text-xl font-bold text-gray-700">{{ session('success') }}</h2>
-                <button
-                    @click="show = false"
-                    class="mt-4 px-8 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
-                    Okay
-                </button>
+                <div class="flex justify-end items-end w-full">
+                    <button
+                        @click="show = false"
+                        class="mt-4 text-white text-sm bg-gray-700 font-semibold py-2 px-4 rounded-lg">
+                        Close
+                    </button>
+                </div>
             </div>
         </div>
         @endif
@@ -890,31 +925,80 @@
 
 
 <script>
-    const submitNewAccountBtn = document.getElementById("submitNewAccountBtn");
-    document.getElementById('create_account_form').addEventListener('submit', function() {
-        submitNewAccountBtn.disabled = true;
-        submitNewAccountBtn.innerHTML = `
-            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-            </svg>
-            <span>Loading...</span>
-        `;
+    const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    function validateEmail(inputId, errorId) {
+        const input = document.getElementById(inputId);
+        const errorSpan = document.getElementById(errorId);
+        const submitNewAccountBtn = document.getElementById('submitNewAccountBtn');
+
+        input.addEventListener('input', function() {
+            const email = input.value.trim();
+
+            // Format validation
+            if (email && !emailFormat.test(email)) {
+                errorSpan.textContent = "Invalid email format";
+                input.classList.add('border-red-500');
+                submitNewAccountBtn.disabled = true;
+                return;
+            }
+
+            // Duplicate validation
+            if (existingEmails.includes(email)) {
+                errorSpan.textContent = "Email already exists";
+                input.classList.add('border-red-500');
+                submitNewAccountBtn.disabled = true;
+
+            } else {
+                errorSpan.textContent = "*";
+                input.classList.remove('border-red-500');
+                submitNewAccountBtn.disabled = false;
+            }
+        });
+    }
+
+    // Call function for each field
+    validateEmail('email', 'email-error');
+
+
+    document.getElementById('update_email').addEventListener('input', function() {
+        const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+        const originalEmail = document.getElementById('email-checker-id').value.trim();
+        const emailInput = this.value.trim();
+        const errorSpan = document.getElementById('update-email-error');
+        const submitUpdateBtn = document.getElementById('submitUpdateBtn');
+
+        // Basic email regex format check
+        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Validate format first
+        if (emailInput.length > 0 && !emailFormat.test(emailInput)) {
+            errorSpan.textContent = "Invalid email format";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+            submitUpdateBtn.disabled = true;
+            return;
+        }
+
+        // Exclude original email from duplicate check
+        const emailsToCheck = existingEmails.filter(email => email !== originalEmail);
+
+        // Check if email already exists
+        if (emailsToCheck.includes(emailInput)) {
+            errorSpan.textContent = "Email already exists";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+            submitUpdateBtn.disabled = true;
+        } else {
+            errorSpan.textContent = "*";
+            this.classList.remove('border-red-500');
+            submitUpdateBtn.disabled = false;
+        }
     });
 
-    const submitUpdateBtn = document.getElementById("submitUpdateBtn");
-    document.getElementById('updateProfileForm').addEventListener('submit', function() {
-        submitUpdateBtn.disabled = true;
-        submitUpdateBtn.innerHTML = `
-            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-            </svg>
-            <span>Loading...</span>
-        `;
 
-    });
+
 
     async function regenerateAccountId() {
         let response = await fetch("/clinic-users/generate-id");
@@ -924,6 +1008,8 @@
         document.getElementById("password").value = data.default_password;
     }
 
+
+    // AGE CALCULATOR
     document.addEventListener("DOMContentLoaded", function() {
         const date_of_birth = document.getElementById("date_of_birth");
         const age = document.getElementById("age");
@@ -931,6 +1017,13 @@
         date_of_birth.addEventListener("change", function() {
             const birthdate = new Date(date_of_birth.value);
             const today = new Date();
+
+            // Check if the birthdate is valid and not in the future
+            if (!date_of_birth.value || birthdate > today) {
+                age.value = "";
+                return;
+            }
+
             let calculatedAge = today.getFullYear() - birthdate.getFullYear();
             const monthDifference = today.getMonth() - birthdate.getMonth();
 
@@ -938,7 +1031,7 @@
                 calculatedAge--;
             }
 
-            age.value = calculatedAge;
+            age.value = calculatedAge >= 0 ? calculatedAge : "";
         });
     });
 
@@ -1009,7 +1102,13 @@
             {
                 name: "contact_number",
                 label: "contact-number-error"
-            }
+            },
+            {
+                name: "age",
+                label: "age-error"
+            },
+
+
         ];
 
         function markInvalid(input, label, btn) {
@@ -1023,6 +1122,9 @@
             if (input) input.classList.remove("border-red-500");
             if (btn) btn.classList.remove("border-red-500");
         }
+
+        const submitNewAccountBtn = document.getElementById("submitNewAccountBtn");
+
 
         // Run validation on submit
         document.getElementById("create_account_form").addEventListener("submit", function(e) {
@@ -1047,7 +1149,18 @@
             if (!isValid) {
                 e.preventDefault(); // 🚫 stops submission
                 e.stopPropagation();
+                return; // ⛔ stop here — don't show loader
             }
+
+            submitNewAccountBtn.disabled = true;
+            submitNewAccountBtn.innerHTML = `
+        <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+        </svg>
+        <span>Loading...</span>
+    `;
+
         });
 
         // Real-time validation
@@ -1076,8 +1189,40 @@
         });
     });
 
+
+
+    // AGE CALCULATOR
+    document.addEventListener("DOMContentLoaded", function() {
+        const date_of_birth = document.getElementById("update_date_of_birth");
+        const age = document.getElementById("update_age");
+
+        date_of_birth.addEventListener("change", function() {
+            const birthdate = new Date(date_of_birth.value);
+            const today = new Date();
+
+            // Check if the birthdate is valid and not in the future
+            if (!date_of_birth.value || birthdate > today) {
+                age.value = "";
+                return;
+            }
+
+            let calculatedAge = today.getFullYear() - birthdate.getFullYear();
+            const monthDifference = today.getMonth() - birthdate.getMonth();
+
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthdate.getDate())) {
+                calculatedAge--;
+            }
+
+            age.value = calculatedAge >= 0 ? calculatedAge : "";
+        });
+    });
+
     // error handling for update modal
     document.addEventListener("DOMContentLoaded", function() {
+
+        const submitUpdateBtn = document.getElementById("submitUpdateBtn");
+
+
         let fields = [{
                 name: "update_region",
                 label: "update-region-error",
@@ -1122,6 +1267,14 @@
             {
                 name: "update_contact_number",
                 label: "update-contact-number-error"
+            },
+            {
+                name: "update_date_of_birth",
+                label: "update-date-of-birth-error"
+            },
+            {
+                name: "update_age",
+                label: "update-age-error"
             }
         ];
 
@@ -1172,7 +1325,21 @@
                 }
             });
 
-            if (!isValid) e.preventDefault();
+            if (!isValid) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+
+            submitUpdateBtn.disabled = true;
+            submitUpdateBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Loading...</span>
+        `;
+
         });
     });
 </script>

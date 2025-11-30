@@ -78,9 +78,15 @@
                     <div class="flex flex-col mt-6">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Service Fee: </h2>
                         @props(['service_fee'])
-                        <input type="text" id="service_fee" name="service_fee" disabled value="{{ $service_fee->service_fee }}" required
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
-                        <p id="error_service_fee" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        <p class="text-sm text-gray-900">- {{ $service_fee->name }}</p>
+                        <div class="flex items-center">
+                            <i data-lucide="philippine-peso" class="text-gray-900 w-4 h-4"></i>
+                            <input type="text" id="display_service_fee" name="display_service_fee" disabled value="{{ $service_fee->discounted_service_fee }}"
+                                class="border-none text-gray-900 text-sm rounded-lg block w-full px-2">
+                            <input type="hidden" id="service_fee" name="service_fee" disabled value="{{ $service_fee->discounted_service_fee }}" required
+                                class="border-none text-gray-900 text-sm rounded-lg block w-full px-2">
+                            <p id="error_service_fee" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                        </div>
                     </div>
                     <div class="flex flex-col">
                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Additional Fee:</h2>

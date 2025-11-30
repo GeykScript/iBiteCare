@@ -28,7 +28,7 @@
                 </a>
             </div>
             <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center py-8 px-4 md:px-8 ">
-                <div class="flex flex-col justify-between h-full overflow-y-auto scrollbar-hidden">
+                <div class="flex flex-col justify-between h-full overflow-y-auto scrollbar-hidden px-4">
                     <div class="flex  justify-between mb-5">
                         <a href="{{route('clinic.login')}}" class="flex items-center justify-center gap-2 hover:underline text-red-500  underline-offset-4">
                             <i data-lucide="circle-chevron-left" class="text-red-500"></i>

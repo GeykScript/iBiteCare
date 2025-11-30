@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 ">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -13,28 +13,28 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-6 sm:-my-px sm:ms-10 lg:ms-20 sm:flex">
                     <a href="{{ route('dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        text-md font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
                         {{ __('Home') }}
                     </a>
 
                     <a href="{{ route('booking.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        text-md font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
                         {{ __('Appointments') }}
                     </a>
                     <a href="{{ route('schedules.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        text-md font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
                         {{ __('Schedules') }}
                     </a>
                     <a href="{{ route('advisory') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent 
-                        text-sm font-medium leading-5 text-gray-900 hover:text-red-600 
+                        text-md font-medium leading-5 text-gray-900 hover:text-red-600 
                         hover:border-red-300 focus:outline-none focus:text-red-600 
                         focus:border-red-300 transition">
                         {{ __('Faqs') }}
@@ -48,9 +48,9 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-900 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="circle-user"></i>
-                                <h1>
+                            <div class="hidden md:flex items-center gap-2">
+                                <i data-lucide="circle-user" ></i>
+                                <h1 >
                                     {{ Auth::user()->name }}
                                 </h1>
                             </div>

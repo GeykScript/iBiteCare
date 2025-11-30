@@ -95,7 +95,7 @@
                                 <span>Done</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="brain_exam" value="Not Done"
+                                <input type="radio" name="brain_exam" value="NotDone"
                                     class="text-sky-500 focus:ring-sky-500">
                                 <span>Not Done</span>
                             </label>

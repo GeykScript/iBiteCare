@@ -138,8 +138,8 @@ class BoosterTransaction extends Controller
                             'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
                             'display_message' => "Reminder: your ({$serviceSchedule->label}) Booster dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
                             'message_text' => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) Booster schedule on "
-                                . $scheduledDateObj->format('M j, Y')
-                                . ". Clinic hours: 8AM to 5PM. Thank you!",
+                                . $scheduledDateObj->format('M j, Y') .
+                                ". Clinic hours: 8AM to 5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
                             'sender_id' => null,
                             'status' => 'Pending',
                         ]);
@@ -154,9 +154,9 @@ class BoosterTransaction extends Controller
                         'scheduled_send_date' => $scheduledDate,
                         'display_message' => "Today is your Booster dose ({$serviceSchedule->label}).",
                         'message_text' =>
-                        "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) booster today, " .
-                            $scheduledDateObj->format('M j, Y') .
-                            ".\nWe're open 8AM-5PM. Thank you!",
+                        "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) booster today, " 
+                            . $scheduledDateObj->format('M j, Y') .
+                            ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
                         'sender_id' => null,
                         'status' => 'Pending',
                     ]);

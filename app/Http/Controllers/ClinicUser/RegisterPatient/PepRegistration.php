@@ -67,11 +67,16 @@ class PepRegistration extends Controller
             ->get();
 
         $service_fee = ClinicServices::where('id', $id)->first();
+        $anti_tetanus_fee = ClinicServices::where('id', 4)->first();
         $pepService = $id;
+
+
 
         $recentlyAddedPatients = Patient::orderBy('created_at', 'desc')->first();
 
-        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee', 'recentlyAddedPatients', 'pepService'));
+        $emails = Patient::all()->pluck('email')->toArray();
+
+        return view('ClinicUser.RegisterPatient.register-pep', compact('clinicUser', 'antiTetanusVaccines', 'pvrvVaccines', 'pcecVaccines', 'erigVaccines', 'hrigVaccines', 'nurses', 'staffs','service_fee', 'anti_tetanus_fee', 'recentlyAddedPatients', 'pepService', 'emails'));
     }
 
 
@@ -80,10 +85,10 @@ class PepRegistration extends Controller
         $request->validated();
 
         $date = str_replace('T', ' ', $request->datetime_today);
-
-
+        
         // Combine address fields into a single address string
         $address = $request->province . ', ' . $request->city . ', ' . $request->barangay . ', ' . $request->description;
+
 
         try {
 
@@ -131,8 +136,8 @@ class PepRegistration extends Controller
                 'clinical_status' => $request->clinical_status,
                 'ownership_status' => $request->ownership_status,
                 'brain_exam' => $request->brain_exam,
-                'brain_exam_location' => $request->brain_exam_location,
-                'brain_exam_results' => $request->brain_exam_results,
+                'brain_exam_location' => $request->brain_exam_location ?? null,
+                'brain_exam_results' => $request->brain_exam_results ?? null,
             ]);
 
 
@@ -163,7 +168,7 @@ class PepRegistration extends Controller
                     'dose_given' => $request->anti_tetanus_dose_given,
                     'date_dose_given' => $request->anti_tetanus_date_dose_given,
                     'rn_in_charge' => $request->nurse_id,
-                    'year_last_dose_given' => $request->year_last_dose_given,
+                    'year_last_dose_given' => $request->year_last_dose_given ?? null,
                 ]);
             }
 
@@ -220,9 +225,11 @@ class PepRegistration extends Controller
                             'day_label' => $serviceSchedule->label,
                             'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
                             'display_message' => "Reminder: your ({$serviceSchedule->label}) PEP dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
-                            'message_text' => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP schedule on "
-                                . $scheduledDateObj->format('M j, Y')
-                                . ". Clinic hours: 8AM to 5PM. Thank you!",
+                            'message_text' =>
+                            "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP schedule on "
+                                . $scheduledDateObj->format('M j, Y') .
+                                ". Clinic hours: 8AM to 5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
+
                             'sender_id' => null,
                             'status' => 'Pending',
                         ]);
@@ -237,9 +244,10 @@ class PepRegistration extends Controller
                         'scheduled_send_date' => $scheduledDate,
                         'display_message' => "Today is your PEP dose ({$serviceSchedule->label}).",
                         'message_text' =>
-                        "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP today, " .
-                            $scheduledDateObj->format('M j, Y') .
-                            ".\nWe're open 8AM-5PM. Thank you!",
+                        "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) PEP today, "
+                            . $scheduledDateObj->format('M j, Y') .
+                            ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
+
                         'sender_id' => null,
                         'status' => 'Pending',
                     ]);

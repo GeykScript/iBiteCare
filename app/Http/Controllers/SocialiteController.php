@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\Patient;
 
 class SocialiteController extends Controller
 {
@@ -35,29 +36,63 @@ class SocialiteController extends Controller
                 'name' => $socialUser->name,
             ]);
 
-            // Check if already exists
+            // First, check if user exists with the OAuth provider
+
             $user = User::where('auth_provider', $provider)
                         ->where('auth_provider_id', $socialUser->id)
                         ->first();
 
-            Log::info('User lookup result', [
-                'user_found' => $user ? 'yes' : 'no',
-                'user_id' => $user ? $user->id : null,
-            ]);
-
             if ($user) {
                 Auth::login($user);
                 session(['auth_provider' => $provider]);
-                Log::info('Redirecting to dashboard for existing user');
+
+                // get email to link patient record
+                $inputEmail = $socialUser->email;
+                                    // Link patient record to user account if email matches
+                    $patient = Patient::where('email', $inputEmail)->first();
+                    if ($patient && $patient->email === $user->email && empty($patient->account_id)) {
+                        $patient->update(['account_id' => $user->id]);
+                    }
+
+                Log::info('Existing OAuth user logged in', ['user_id' => $user->id]);
                 return redirect()->route('dashboard');
             }
 
-            // If not existing -> store social data in session
+            // Check if user exists with this email (signed up manually)
+            $existingUser = User::where('email', strtolower($socialUser->email))->first();
+
+            if ($existingUser) {
+                // User exists with manual registration - link OAuth to existing account
+                $existingUser->update([
+                    'auth_provider' => $provider,
+                    'auth_provider_id' => $socialUser->id,
+                ]);
+                
+                // get email to link patient record
+                $existingEmail = $existingUser->email;
+                // Link patient record to user account if email matches
+                $patient = Patient::where('email', $existingEmail)->first();
+                if ($patient && $patient->email === $existingUser->email && empty($patient->account_id)) {
+                    $patient->update(['account_id' => $existingUser->id]);
+                }
+
+                Auth::login($existingUser);
+                session(['auth_provider' => $provider]);
+                
+                Log::info('Linked OAuth to existing user', [
+                    'user_id' => $existingUser->id,
+                    'provider' => $provider
+                ]);
+
+                return redirect()->route('dashboard');
+            }
+
+            // New google sign in user
             session([
                 'auth_provider'    => $provider,
                 'auth_provider_id' => $socialUser->id,
                 'social_name'      => $socialUser->name,
-                'social_email'     => $socialUser->email,
+                'social_email'     => strtolower($socialUser->email),
             ]);
 
             Log::info('Redirecting to set.password for new user');

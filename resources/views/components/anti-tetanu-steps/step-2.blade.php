@@ -27,8 +27,10 @@
                                 <div class="grid grid-cols-6 ">
                                     <div class="col-span-6 md:col-span-3 px-4">
                                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Year last Dose Given <br> <span class="text-gray-500 text-xs font-normal">( Leave blank if unknown )</span></h2>
-                                        <input type="date" id="year_last_dose_given" name="year_last_dose_given"
-                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                        <input type="number" id="year_last_dose_given" name="year_last_dose_given"
+                                            min="1900" max="2099" step="1"
+                                            placeholder="YYYY"
+                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 focus:ring-sky-500 focus:border-sky-500">
                                     </div>
                                     <div class="col-span-6 md:col-span-3">
                                         <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">No. of Dose Given</h2>
@@ -71,7 +73,7 @@
                                                 @click.outside="open = false"
                                                 class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
                                                 @if (count($antiTetanusVaccines) === 0)
-                                                    <div class="px-3 py-2 text-sm text-gray-500">No vaccines available</div>
+                                                <div class="px-3 py-2 text-sm text-gray-500">No vaccines available</div>
                                                 @endif
                                                 @foreach ($antiTetanusVaccines as $vaccine)
                                                 @php
@@ -161,8 +163,10 @@
                                 <h2 id="verifiedLabel" class="text-green-500 text-center hidden">Verified</h2>
                             </div>
                         </div>
-                        <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
-                        <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                        <div class="flex flex-col w-full ">
+                            <p id="error_nurse" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
+                            <p id="NotVerified" class="text-red-500 text-xs mt-1 hidden">*Please verify to continue</p>
+                        </div>
                     </div>
                 </div>
             </div>

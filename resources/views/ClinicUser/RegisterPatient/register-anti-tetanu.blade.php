@@ -85,12 +85,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -111,13 +113,16 @@
                     </div>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4  md:px-10 gap-2 ">
+                <div class="grid grid-cols-4  md:px-10 h-full mb-10 gap-2 ">
                     <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
                         <div class="flex flex-col gap-4 md:gap-0 ">
                             <a href="{{ route('clinic.patients') }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                             <div class="flex flex-col mb-6 ">
                                 <h1 class="text-md  md:text-2xl font-900 text-center ">New Patient Registration</h1>
-                                <p class="text-gray-400 text-sm text-center">Service: Anti - Tetanus </p>
+                                <div class="flex items-center justify-center gap-2">
+                                    <p class="text-gray-400 text-sm text-center">Service: Anti - Tetanus </p>
+                                    <a href="{{ route('clinic.user-manual') }}#patient-register" target="_blank" class="text-red-400"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                                </div>
                             </div>
                         </div>
                         <!-- Progress Bar -->
@@ -154,8 +159,7 @@
                         <div
                             x-data="{ show: true }"
                             x-show="show"
-                            x-transition.opacity.duration.300ms
-                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 md:z-50">
                             <!-- Modal content -->
                             <div
                                 @click.outside="show = false"
@@ -168,24 +172,24 @@
                                 </button>
                                 <!-- Success Icon -->
                                 <div class="flex flex-col items-center justify-center gap-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="140"
-                                        viewBox="0 0 24 24" fill="#1AE820" stroke="white"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-circle-check-icon">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="m9 12 2 2 4-4" />
-                                    </svg>
-                                    <h2 class="text-2xl font-900 text-[#1AE820]">Transaction Completed</h2>
+                                    <div class="p-2 rounded-full border-green-100 border-2 bg-green-100">
+                                        <div class="p-2 rounded-full border-green-300 border-2 bg-green-300">
+                                            <div class="p-4 rounded-full bg-green-500">
+                                                <i data-lucide="check" class="text-white w-14 h-14 "></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h2 class="text-2xl font-900 text-green-500">Transaction Completed</h2>
                                     <p class="text-gray-800 font-bold text-sm mt-1">
-                                        You may proceed to view patient details or return to the home page.
+                                        You may proceed to view patient details or return to the patient page.
                                     </p>
                                     <div class="flex flex-col gap-1 mt-4 text-sm">
-                                        <a href="{{ route('clinic.patients.profile', Crypt::encrypt($recentlyAddedPatients->id)) }}" class="text-blue-600 hover:underline underline-offset-4 font-semibold">
+                                        <a href="{{ route('clinic.patients.profile', Crypt::encrypt($recentlyAddedPatients->id)) }}" class="text-blue-500 hover:underline underline-offset-4 font-semibold">
                                             View Patient Details
                                         </a>
-                                        <a href="{{ route('clinic.dashboard') }}"
-                                            class="text-blue-600 hover:underline underline-offset-4 font-semibold">
-                                            Return to Home Page
+                                        <a href="{{ route('clinic.patients') }}"
+                                            class="text-blue-500 hover:underline underline-offset-4 font-semibold">
+                                            Return to Patient Page
                                         </a>
                                     </div>
                                     <div class="flex justify-end items-end w-full">
@@ -259,7 +263,7 @@
                             <input type="hidden" name="service_id" value="{{ $antiTetanuService }}">
                             <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
                             <!-- Step 1: Personal Details -->
-                            <x-anti-tetanu-steps.step-1 />
+                            <x-anti-tetanu-steps.step-1 :emails="$emails" />
                             <!-- Step 4:  Immunizations -->
                             <x-anti-tetanu-steps.step-2 :antiTetanusVaccines="$antiTetanusVaccines" :nurses="$nurses" />
                             <!-- Step 5: Payment -->
@@ -325,7 +329,8 @@
 
                                                 } else {
                                                     document.querySelector('#error_staff_password').classList.remove('hidden');
-                                                    document.querySelector('#staff_password').classList.add('border-red-500');
+                                                    document.querySelector('#staff_password').classList.add('border-red-500', 'bg-white', 'focus:border-red-500', 'focus:ring-red-500');
+
 
                                                 }
                                             })
@@ -340,12 +345,14 @@
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_staff_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
                                     </div>
-                                    <input
+                                    <!-- <input
                                         type="password"
                                         id="staff_password"
                                         name="staff_password"
                                         class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                                        required>
+                                        required> -->
+                                    <x-password-input id="staff_password" name="staff_password" required class="mt-1" />
+
                                 </div>
                                 <div class="mt-4 flex justify-end gap-2">
                                     <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
@@ -411,7 +418,8 @@
 
                                                 } else {
                                                     document.querySelector('#error_nurse_password').classList.remove('hidden');
-                                                    document.querySelector('#nurse_password').classList.add('border-red-500');
+                                                    document.querySelector('#nurse_password').classList.add('border-red-500', 'bg-white', 'focus:border-red-500', 'focus:ring-red-500');
+
 
                                                 }
                                             })
@@ -426,12 +434,13 @@
                                         <p class="text-xs text-gray-500">Please enter your password to verify your identity.</p>
                                         <p id="error_nurse_password" class="text-red-500 text-xs  text-end hidden">*Incorrect password.</p>
                                     </div>
-                                    <input
+                                    <!-- <input
                                         type="password"
                                         id="nurse_password"
                                         name="nurse_password"
                                         class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                                        required>
+                                        required> -->
+                                    <x-password-input id="nurse_password" name="nurse_password" required class="mt-1" />
                                 </div>
                                 <div class="mt-4 flex justify-end gap-2">
                                     <button type="submit" class="px-8 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">

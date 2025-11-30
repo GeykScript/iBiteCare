@@ -19,10 +19,10 @@
 
         <!-- Body -->
         <div style="padding:35px 30px; color:#374151; font-size:15px; line-height:1.7;">
-            <p style="margin:0 0 16px;">Hello {{ $appointment->patient->name ?? 'Patient' }},</p>
+            <p style="margin:0 0 16px;">Hello {{ $appointment->name ?? 'Patient' }},</p>
 
             <p style="margin:0 0 16px;">
-                Your appointment has been <strong style="color:#EB1C24;">rescheduled</strong>.
+                Your appointment has been <strong style="color:#EB1C24;">Rescheduled</strong>.
                 Here are your updated appointment details:
             </p>
 
@@ -42,6 +42,10 @@
                     </tr>
                 </table>
             </div>
+
+            <p style="margin:0 0 20px; color:#EB1C24;">
+                Note: If you are not available on the rescheduled date and time, kindly reschedule your appointment through our website.
+            </p>
 
             <p style="margin:0 0 20px;">
                 Click below to view more details about your appointment:

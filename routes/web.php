@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PatientSchedules;
+use App\Models\ClinicServices;
 
 Route::get('/', function () {
-    return view('welcome');
+    $services = ClinicServices::all();
+    return view('welcome', compact('services'));
 });
 
 Route::get('/faqs', function () {
@@ -34,7 +36,8 @@ Route::post('/set-password', [PasswordSetupController::class, 'store'])->name('s
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $services = ClinicServices::all();
+    return view('dashboard', compact('services'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -105,6 +108,8 @@ use App\Http\Controllers\ClinicUser\Payments;
 use App\Http\Controllers\ClinicUser\Transactions;
 use App\Http\Controllers\ClinicUser\MessagesController;
 use App\Http\Controllers\ClinicUser\AppointmentController;
+use App\Http\Controllers\ClinicUser\NotificationController;
+
 
 use App\Http\Controllers\ClinicUser\RegisterPatient\AntiTetanuRegistration;
 use App\Http\Controllers\ClinicUser\RegisterPatient\BoosterRegistration;
@@ -236,6 +241,16 @@ Route::middleware('auth:clinic_user')->group(function () {
     Route::post('/clinic/messages/send-new', [MessagesController::class, 'sendNewMessage'])
         ->name('clinic.messages.new.send');
 
+//----------------END-----------------------//
+
+
+// NOTIFICATIONS ---------------------------//
+
+Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])
+    ->name('notifications.markAsRead');
+
+Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('notifications.get');
+
     //----------------END-----------------------//
 
 
@@ -269,6 +284,9 @@ Route::middleware('auth:clinic_user')->group(function () {
 
     Route::put('/clinic/password', [PasswordController::class, 'update'])
         ->name('clinic.password.update');
+
+    Route::get('/clinic/user-manual', [ClinicUserProfileController::class, 'userManual'])
+        ->name('clinic.user-manual');
     //----------------END-----------------------//
         
     // CLINIC USER ACCOUNTS ---------------------------
@@ -393,6 +411,8 @@ Route::get('/patient/update-password/{id}', [PatientUpdatePasswordController::cl
     
 Route::post('/patient/update-password', [PatientUpdatePasswordController::class, 'updatePassword'])
     ->name('patient.update-password.update');
+
+
 
 
     //--------------------------END----------------------------------------------//

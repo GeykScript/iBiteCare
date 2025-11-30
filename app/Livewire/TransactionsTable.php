@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Livewire;
 
 use Livewire\Component;
@@ -10,10 +11,12 @@ class TransactionsTable extends Component
 {
     use WithPagination;
 
-    public $perPage = 5;
+    public $perPage = 10;
     public $sortBy = 'transaction_date';
-    public $sortDirection = 'ASC';
+    public $sortDirection = 'DESC';
     public $search = '';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatingSearch()
     {
@@ -25,16 +28,32 @@ class TransactionsTable extends Component
         $this->resetPage();
     }
 
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->resetPage();
+    }
+
     public function setSortBy($sortByField)
     {
         if ($this->sortBy === $sortByField) {
-            $this->sortDirection = $this->sortDirection === 'ASC' ? 'DESC' : 'ASC';
+            $this->sortDirection = $this->sortDirection === 'DESC' ? 'ASC' : 'DESC';
         } else {
             $this->sortBy = $sortByField;
-            $this->sortDirection = 'DESC';
+            $this->sortDirection = 'ASC';
         }
     }
-
 
     public function render()
     {
@@ -84,6 +103,15 @@ class TransactionsTable extends Component
                         });
                     });
             });
+
+        // Apply date filters
+        if ($this->dateFrom) {
+            $transactions = $transactions->whereDate('transaction_date', '>=', $this->dateFrom);
+        }
+
+        if ($this->dateTo) {
+            $transactions = $transactions->whereDate('transaction_date', '<=', $this->dateTo);
+        }
 
         if ($this->sortBy === 'patient') {
             $transactions = $transactions

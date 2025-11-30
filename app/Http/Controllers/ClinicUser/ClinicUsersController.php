@@ -20,9 +20,10 @@ class ClinicUsersController extends Controller
 
         $clinic_users = ClinicUser::all();
         [$generated_id, $default_password] = $this->generateUniqueIdAndPassword();
-        
 
-        return view('ClinicUser.user-accounts', compact('clinicUser', 'clinic_users', 'generated_id', 'default_password'));
+        $emails = ClinicUser::all()->pluck('email')->toArray();
+
+        return view('ClinicUser.user-accounts', compact('clinicUser', 'clinic_users', 'generated_id', 'default_password', 'emails'));
     }
 
 
@@ -154,6 +155,8 @@ class ClinicUsersController extends Controller
             'update_first_name'      => 'required|string|max:255',
             'update_last_name'       => 'required|string|max:255',
             'update_middle_initial'  => 'nullable|string|max:10',
+            'update_date_of_birth'    => 'nullable|date',
+            'update_age'              => 'nullable|integer|min:0',
             'update_suffix'          => 'nullable|string|max:50',
             'update_email'           => 'required|email|max:255|unique:users,email,' . $request->id,
             'update_contact_number'  => 'required|string|max:20',
@@ -168,6 +171,8 @@ class ClinicUsersController extends Controller
             'update_last_name'      => 'last name',
             'update_middle_initial' => 'middle initial',    
             'update_suffix'         => 'suffix',
+            'update_date_of_birth'  => 'date of birth',
+            'update_age'            => 'age',
             'update_email'          => 'email',
             'update_contact_number' => 'contact number',
             'update_province'       => 'province',
@@ -209,6 +214,7 @@ class ClinicUsersController extends Controller
             'suffix'          => $suffix,
             'email'           => $request->update_email,
             'is_disabled'     => $request->is_disabled ?? 0, // default to 0 if not set
+            
         ];
 
         // Old user data
@@ -233,6 +239,8 @@ class ClinicUsersController extends Controller
         $newInfoData = [
             'contact_number' => $request->update_contact_number,
             'address'        => $address,
+            'birthdate'     => $request->update_date_of_birth,
+            'age'           => $request->update_age,
         ];
         $oldInfoData = $clinicUserInfo->only(array_keys($newInfoData));
 

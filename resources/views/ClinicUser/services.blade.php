@@ -87,12 +87,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -101,7 +103,11 @@
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="md:w-16 md:h-16 w-14 h-14">
                     <div>
                         <h1 class="text-lg md:text-3xl font-900">Clinic Services</h1>
-                        <h2 class=",d:ml-3 text-sm md:text-lg font-bold">Manage Clinic Services</h2>
+                        <div class="flex items-center gap-2 ">
+                            <h2 class="md:ml-3 text-sm md:text-lg font-bold">Manage Clinic Services</h2>
+                            <a href="{{ route('clinic.user-manual') }}#services" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+                        </div>
+
 
                     </div>
                 </div>
@@ -135,14 +141,19 @@
                                             <span class="font-bold">Note:</span> When creating a new service, ensure that all products used for immunization procedures are added to its inventory.
                                         </p>
                                     </div>
-                                    <div class="grid grid-cols-4 w-full gap-2 ">
-                                        <div class="md:col-span-3 col-span-4">
+                                    <div class="grid grid-cols-6 w-full gap-2 ">
+                                        <div class="md:col-span-3 col-span-6">
                                             <label for="service_name" class="block mb-2 text-sm font-medium text-gray-900">Service Name</label>
                                             <input type="text" id="service_name" name="service_name" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="Enter Service Name" required>
                                         </div>
-                                        <div class="md:col-span-1 col-span-4">
+                                        <div class="md:col-span-2 col-span-3">
                                             <label for="service_fee" class="block mb-2 text-sm font-medium text-gray-900">Service Fee</label>
                                             <input type="number" id="service_fee" name="service_fee" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="Service Fee" required>
+
+                                        </div>
+                                        <div class="md:col-span-1 col-span-3">
+                                            <label for="discount" class="block mb-2 text-sm font-medium text-gray-900">Discount (%)</label>
+                                            <input type="number" id="discount" name="discount" max="100" min="0" value="0" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="Discount" required>
 
                                         </div>
                                     </div>
@@ -150,13 +161,14 @@
                                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
                                         <textarea id="description" name="description" class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5" placeholder="Enter Description" required></textarea>
                                     </div>
-                                    <div class="flex justify-between items-center pr-10 p-2">
-                                        <!-- Add button -->
+
+                                    <!-- add schedules section  -->
+                                    <!-- <div class="flex justify-between items-center pr-10 p-2">
                                         <button type="button" id="add-schedule" class="mt-2 text-blue-500 font-bold  py-1 rounded flex items-center gap-2 hover:text-blue-600"><i data-lucide="plus" class="w-4 h-4 "></i>Add Schedule <span class="text-gray-400 font-normal">(Optional)</span></button>
-                                    </div>
+                                    </div> -->
+                                    
                                     <!-- Container for new schedules -->
-                                    <div id="Newschedule" class="space-y-2">
-                                        <!-- Default input -->
+                                    <!-- <div id="Newschedule" class="space-y-2">
                                         <div class="grid grid-cols-5 gap-2">
                                             <input type="number" name="newDay[]" placeholder="Day Offset"
                                                 class="border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
@@ -178,7 +190,7 @@
                                                     <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                                                 </svg></button>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
 
@@ -223,68 +235,68 @@
 
     });
 
-    const container = document.getElementById('Newschedule');
-    const addBtn = document.getElementById('add-schedule');
+    // const container = document.getElementById('Newschedule');
+    // const addBtn = document.getElementById('add-schedule');
 
-    addBtn.addEventListener('click', () => {
-        // Create wrapper div
-        const div = document.createElement('div');
-        div.classList.add('grid', 'grid-cols-5', 'gap-2');
+    // addBtn.addEventListener('click', () => {
+    //     // Create wrapper div
+    //     const div = document.createElement('div');
+    //     div.classList.add('grid', 'grid-cols-5', 'gap-2');
 
-        // Create Day input
-        const dayInput = document.createElement('input');
-        dayInput.type = 'number';
-        dayInput.name = 'newDay[]';
-        dayInput.placeholder = 'Day Offset';
-        dayInput.className =
-            'border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
+    //     // Create Day input
+    //     const dayInput = document.createElement('input');
+    //     dayInput.type = 'number';
+    //     dayInput.name = 'newDay[]';
+    //     dayInput.placeholder = 'Day Offset';
+    //     dayInput.className =
+    //         'border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
 
-        // Create Label input
-        const labelInput = document.createElement('input');
-        labelInput.type = 'text';
-        labelInput.name = 'newLabel[]';
-        labelInput.placeholder = 'New label';
-        labelInput.className =
-            'col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
+    //     // Create Label input
+    //     const labelInput = document.createElement('input');
+    //     labelInput.type = 'text';
+    //     labelInput.name = 'newLabel[]';
+    //     labelInput.placeholder = 'New label';
+    //     labelInput.className =
+    //         'col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
 
-        // Create remove button with SVG
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className =
-            'remove-btn p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600';
-        removeBtn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 width="20" height="20"
-                 viewBox="0 0 24 24"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="2"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 class="lucide lucide-trash-2">
-                <path d="M10 11v6" />
-                <path d="M14 11v6" />
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                <path d="M3 6h18" />
-                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-            </svg>
-        `;
+    //     // Create remove button with SVG
+    //     const removeBtn = document.createElement('button');
+    //     removeBtn.type = 'button';
+    //     removeBtn.className =
+    //         'remove-btn p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600';
+    //     removeBtn.innerHTML = `
+    //         <svg xmlns="http://www.w3.org/2000/svg"
+    //              width="20" height="20"
+    //              viewBox="0 0 24 24"
+    //              fill="none"
+    //              stroke="currentColor"
+    //              stroke-width="2"
+    //              stroke-linecap="round"
+    //              stroke-linejoin="round"
+    //              class="lucide lucide-trash-2">
+    //             <path d="M10 11v6" />
+    //             <path d="M14 11v6" />
+    //             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+    //             <path d="M3 6h18" />
+    //             <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    //         </svg>
+    //     `;
 
-        // Append inputs + button to div
-        div.appendChild(dayInput);
-        div.appendChild(labelInput);
-        div.appendChild(removeBtn);
+    //     // Append inputs + button to div
+    //     div.appendChild(dayInput);
+    //     div.appendChild(labelInput);
+    //     div.appendChild(removeBtn);
 
-        // Append div to container
-        container.appendChild(div);
-    });
+    //     // Append div to container
+    //     container.appendChild(div);
+    // });
 
     // Event delegation for all remove buttons (existing + future)
-    container.addEventListener('click', (e) => {
-        if (e.target.closest('.remove-btn')) {
-            e.target.closest('.grid').remove();
-        }
-    });
+    // container.addEventListener('click', (e) => {
+    //     if (e.target.closest('.remove-btn')) {
+    //         e.target.closest('.grid').remove();
+    //     }
+    // });
 </script>
 
 </html>

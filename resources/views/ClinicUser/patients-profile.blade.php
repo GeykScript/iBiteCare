@@ -14,6 +14,8 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/chart.js','resources/js/datetime.js', 'resources/js/address.js', 'resources/js/alpine.js'])
     @endif
 </head>
@@ -53,9 +55,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -85,12 +87,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -98,7 +102,14 @@
                 <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Registered Patient</h1>
+                        <div class="flex item-center gap-2">
+                            <h1 class="text-xl md:text-3xl font-900">Registered Patient</h1>
+                            <div class="flex justify-center items-center">
+                                <a href="{{ route('clinic.user-manual') }}#patient-view" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -171,41 +182,27 @@
                                                     class="w-full h-full text-gray-100 [stroke-width:1.55]"></i>
                                             </div>
                                             <div class="flex flex-col  gap-4">
-                                                <div class="flex gap-2 italic text-sm items-end justify-end">
+                                                <div class="flex gap-2 italic text-xs md:text-sm items-end justify-end">
                                                     <p>Registration Date:</p>
                                                     <p>{{ date('F d, Y', strtotime($patient->registration_date)) }}</p>
                                                 </div>
                                                 <div class="border-2 border-gray-50"></div>
                                                 <div class="flex gap-4 justify-start items-start">
-                                                    <div class="flex flex-col items-start gap-2 font-semibold">
-                                                        <p>Name:</p>
-                                                        <p>Birthdate:</p>
-                                                        <p>Gender:</p>
-                                                        <p>Age:</p>
-                                                    </div>
-                                                    <div class="flex flex-col gap-2">
-                                                        <p>{{ $patient->first_name }} {{ $patient->middle_initial }} {{ $patient->last_name }} {{$patient->suffix}} </p>
-                                                        <p>{{ date('F d, Y', strtotime($patient->birthdate)) }}</p>
-                                                        <p>{{ $patient->sex }}</p>
-                                                        <p>{{ $patient->age }} yrs old</p>
+                                                    <div class="flex flex-col items-start gap-2 font-normal">
+                                                        <p><span class="font-semibold">Name:</span> {{ $patient->first_name }} {{ $patient->middle_initial }} {{ $patient->last_name }} {{$patient->suffix}} </p>
+                                                        <p><span class="font-semibold">Birthdate:</span> {{ date('F d, Y', strtotime($patient->birthdate)) }}</p>
+                                                        <p><span class="font-semibold">Gender:</span> {{ $patient->sex }}</p>
+                                                        <p><span class="font-semibold">Age:</span> {{ $patient->age }} yrs old</p>
                                                     </div>
                                                 </div>
                                                 <div class="border-2 border-gray-50"></div>
                                                 <div class="flex gap-4 justify-start items-start">
-                                                    <div class="flex flex-col gap-2 items-start font-semibold">
-                                                        <p>Phone:</p>
+                                                    <div class="flex flex-col gap-2 items-start font-normal">
+                                                        <p><span class="font-semibold">Phone:</span> {{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
                                                         @if ($patient->email)
-                                                        <p>Email:</p>
+                                                        <p><span class="font-semibold">Email:</span> {{ $patient->email}}</p>
                                                         @endif
-                                                        <p>Address:</p>
-                                                    </div>
-                                                    <div class="flex flex-col gap-2">
-                                                        <p>{{ preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1 $2 $3', $patient->contact_number) }}</p>
-
-                                                        @if ($patient->email)
-                                                        <p>{{ $patient->email}}</p>
-                                                        @endif
-                                                        <p>{{ $patient->address }}</p>
+                                                        <p><span class="font-semibold">Address:</span> {{ $patient->address }}</p>
                                                     </div>
                                                 </div>
 
@@ -542,7 +539,7 @@
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($payment->transaction->transaction_date)) }}</td>
                                                     <td class="px-4 py-2 border">{{ $payment->transaction->service->name }}</td>
                                                     <td class="px-4 py-2 border">{{ $payment->receipt_number }}</td>
-                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ $payment->amount_paid }}
+                                                    <td class="px-4 py-2 border"><span class="flex items-center"><i data-lucide="philippine-peso" class="w-4 h-4 text-gray-700"></i> {{ number_format($payment->amount_paid, 2) }}
                                                         </span></td>
                                                     <td class="px-4 py-2 border">{{ $payment->receivedBy->UserRole->role_name }}. {{ $payment->receivedBy->first_name }} {{ $payment->receivedBy->middle_initial }} {{ $payment->receivedBy->last_name }} </td>
                                                     <td class="px-4 py-2 border">{{ date('F d, Y - g:i A', strtotime($payment->payment_date)) }}</td>
@@ -579,6 +576,14 @@
                                     <button @click="open = !open" class="border-2 border-gray-100  w-full flex justify-between items-center px-3 py-2 bg-white text-gray-800 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none">
                                         <p>{{ $transaction->service->name }} - <span class="text-xs">
                                                 {{ date('F d, Y g:i A', strtotime($transaction->transaction_date)) }}
+
+                                                <span class="text-sm font-bold ml-2
+                                                        @if($transaction->overall_status === 'Completed') text-green-600
+                                                        @elseif($transaction->overall_status === 'Ongoing') text-sky-500
+                                                        @elseif($transaction->overall_status === 'Cancelled') text-red-600
+                                                        @endif">
+                                                    ( {{ $transaction->overall_status }} )
+                                                </span>
                                             </span></p> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down">
                                             <path d="m6 9 6 6 6-6" />
@@ -1063,6 +1068,8 @@
                             @csrf
                             @method('PUT')
 
+                            <input type="hidden" id="existing-emails" value="{{ json_encode($emails) }}">
+
                             <input type="text" name="id" value="{{ $patient->id }}" hidden>
 
                             <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center">
@@ -1160,15 +1167,32 @@
                                 <div class="col-span-12 grid grid-cols-6 gap-4 mt-2">
                                     <!-- date of birth  -->
                                     <div class="col-span-6 md:col-span-2 flex flex-col gap-1">
-                                        <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth: </label>
-                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}" readonly disabled
+                                        @if ($errors->has('date_of_birth'))
+                                        <label for="date_of_birth" class="text-sm font-semibold flex justify-between items-center w-full">Date of Birth:
+                                            <span class="text-red-500 text-xs" id="date-of-birth-error">
+                                                {{ $errors->first('date_of_birth') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="date_of_birth" class="text-sm font-semibold ">Date of Birth:
+                                            <span class="text-red-500 text-xs" id="date-of-birth-error">*</span>
+                                        </label>
+                                        @endif
+                                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $patient->birthdate) }}"
                                             class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- age  -->
                                     <div class="col-span-6 md:col-span-1 flex flex-col gap-1">
-                                        <label for="age" class=" text-sm font-bold text-gray-800">Age</label>
-                                        <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
-                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300" readonly disabled>
+                                        @if ($errors->has('age'))
+                                        <label for="age" class="text-sm font-semibold flex justify-between items-center w-full">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">
+                                                {{ $errors->first('age') }}*</span>
+                                        </label>
+                                        @else
+                                        <label for="age" class="text-sm font-semibold ">Age:
+                                            <span class="text-red-500 text-xs" id="age-error">*</span>
+                                        </label>
+                                        @endif <input type="number" name="age" placeholder="Age" id="age" value="{{ old('age', $patient->age) }}"
+                                            class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                                     </div>
                                     <!-- gender  -->
                                     <div class="col-span-6 md:col-span-3 flex flex-col gap-3">
@@ -1230,8 +1254,9 @@
                                         @endif
                                         <div class="w-full flex items-center gap-4">
                                             <i data-lucide="mail"></i>
-                                            <input type="email" name="email" placeholder="example@gmail.com" value="{{  $patient->email }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                            <input type="email" name="email" id="email" placeholder="example@gmail.com" value="{{ old('email', $patient->email) }}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                 class="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
+                                            <input type="hidden" name="email-checker" id="email-checker-id" value="{{$patient->email}}">
                                         </div>
                                     </div>
                                 </div>
@@ -1327,7 +1352,7 @@
 
                                 <!-- submit and cancel button   -->
                                 <div class="col-span-12 flex items-end justify-end gap-2 mt-5">
-                                    <button type="submit" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
+                                    <button type="submit" id="edit-submit-btn" class="md:px-8 px-4 py-2 bg-sky-500 text-white rounded-lg text-md hover:bg-sky-400">
                                         Save Changes
                                     </button>
                                     <button type="button" onclick="document.getElementById('EditPatientProfile').close()"
@@ -1356,6 +1381,43 @@
 
 
 <script>
+    document.getElementById('email').addEventListener('input', function() {
+        const existingEmails = JSON.parse(document.getElementById('existing-emails').value);
+        const originalEmail = document.getElementById('email-checker-id').value.trim();
+        const emailInput = this.value.trim();
+        const errorSpan = document.getElementById('email-error');
+        const edit_submit_btn = document.getElementById('edit-submit-btn');
+
+        // Basic email regex format check
+        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Validate format first
+        if (emailInput.length > 0 && !emailFormat.test(emailInput)) {
+            errorSpan.textContent = "Invalid email format";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+            edit_submit_btn.disabled = true;
+            return;
+        }
+
+        // Exclude original email from duplicate check
+        const emailsToCheck = existingEmails.filter(email => email !== originalEmail);
+
+        // Check if email already exists
+        if (emailsToCheck.includes(emailInput)) {
+            errorSpan.textContent = "Email already exists";
+            errorSpan.classList.add('text-red-500');
+            this.classList.add('border-red-500');
+            edit_submit_btn.disabled = true;
+        } else {
+            errorSpan.textContent = "*";
+            this.classList.remove('border-red-500');
+            edit_submit_btn.disabled = false;
+        }
+    });
+
+
+
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
 
@@ -1419,6 +1481,34 @@
     });
 
 
+
+    // AGE CALCULATOR
+    document.addEventListener("DOMContentLoaded", function() {
+        const date_of_birth = document.getElementById("date_of_birth");
+        const age = document.getElementById("age");
+
+        date_of_birth.addEventListener("change", function() {
+            const birthdate = new Date(date_of_birth.value);
+            const today = new Date();
+
+            // Check if the birthdate is valid and not in the future
+            if (!date_of_birth.value || birthdate > today) {
+                age.value = "";
+                return;
+            }
+
+            let calculatedAge = today.getFullYear() - birthdate.getFullYear();
+            const monthDifference = today.getMonth() - birthdate.getMonth();
+
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthdate.getDate())) {
+                calculatedAge--;
+            }
+
+            age.value = calculatedAge >= 0 ? calculatedAge : "";
+        });
+    });
+
+
     //error handling js
     document.addEventListener("DOMContentLoaded", function() {
         let fields = [{
@@ -1461,6 +1551,18 @@
             {
                 name: "contact_number",
                 label: "contact-number-error"
+            },
+            {
+                name: "email",
+                label: "email-error"
+            },
+            {
+                name: "date_of_birth",
+                label: "date-of-birth-error"
+            },
+            {
+                name: "age",
+                label: "age-error"
             }
         ];
 
@@ -1475,6 +1577,8 @@
             if (input) input.classList.remove("border-red-500");
             if (btn) btn.classList.remove("border-red-500");
         }
+
+        const editSubmitProfileBtn = document.getElementById("edit-submit-btn");
 
         document.getElementById("EditPatientProfileForm").addEventListener("submit", function(e) {
             let isValid = true;
@@ -1511,7 +1615,20 @@
                 }
             });
 
-            if (!isValid) e.preventDefault();
+            if (!isValid) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+
+            editSubmitProfileBtn.disabled = true;
+            editSubmitProfileBtn.innerHTML = `
+            <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <span>Loading...</span>
+        `;
         });
     });
 </script>

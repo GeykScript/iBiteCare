@@ -55,9 +55,9 @@
                     <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
                     <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
                     <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-
                     @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
+
+                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
                     <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
                     <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
                     <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
@@ -87,12 +87,14 @@
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
-                <div>
+                <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
                         <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
                     </div>
+                    <!-- Notification Component -->
+                    <x-notification />
                 </div>
             </div>
             <!-- content container -->
@@ -106,12 +108,15 @@
                 </div>
                 <!-- Header content -->
                 <div class="md:pl-12 pl-6 flex items-center md:gap-2 ">
-                    <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Reports</h1>
-                    <!-- <i data-lucide="circle-question-mark" class="stroke-white font-900 md:w-6 md:h-6 w-4 h-4 fill-[#FF000D]"></i> -->
+                    <div class="flex items-center gap-2">
+                        <h1 class="md:text-2xl font-900 text-[#FF000D]">Clinic Activity Reports</h1>
+                        <a href="{{ route('clinic.user-manual') }}#reports" target="_blank" class="text-[#FF000D]"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
+
+                    </div>
                 </div>
                 <!-- Main Content -->
                 <div class="grid grid-cols-12 md:p-4 p-2 gap-2">
-                    <div class="col-span-12 md:col-span-4  ">
+                    <div class="col-span-12 l:col-span-4  ">
                         <div class="flex flex-col gap-4 p-2 rounded-lg shadow-lg border border-gray-200">
                             <div class="w-full bg-white  p-2 md:p-6">
                                 <div class="flex items-center gap-2 p-2">
@@ -138,7 +143,7 @@
                                                 </svg>
                                             </button>
 
-                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                            <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                                 class="absolute z-10 mt-1 w-full  bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
                                                     <li><button data-value="all" class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100">All
@@ -159,7 +164,7 @@
                                     </div>
 
                                     <!-- Service Type Filter -->
-                                    <div class="col-span-3 md:col-span-3">
+                                    <div class="col-span-2 md:col-span-3">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="serviceFilter" value="all">
                                             <button
@@ -175,7 +180,7 @@
                                                 </svg>
                                             </button>
 
-                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                            <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 max-w-64 overflow-y-auto scrollbar-hidden">
                                                 <ul class="py-1 text-sm text-gray-700 scrollbar-hidden">
                                                     <li><button data-value="all" class="service-option w-full text-left px-4 py-2 hover:bg-gray-100">All
@@ -190,7 +195,7 @@
                                     </div>
 
                                     <!-- Age Filter -->
-                                    <div class="col-span-1 md:col-span-1">
+                                    <div class="col-span-2 md:col-span-1">
                                         <div x-data="{ open: false }" class="relative inline-block w-full text-left">
                                             <input type="hidden" id="ageFilter" value="all">
                                             <button
@@ -206,11 +211,11 @@
                                                 </svg>
                                             </button>
 
-                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                            <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                                 class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                                                 <ul class="py-1 text-sm text-gray-700">
-                                                    <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All
-                                                            Ages</button></li>
+                                                    <li><button data-value="all" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">All Ages
+                                                        </button></li>
                                                     <li><button data-value="0-17" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">0-17</button></li>
                                                     <li><button data-value="18-64" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">18-64</button></li>
                                                     <li><button data-value="65+" class="age-option w-full text-left px-4 py-2 hover:bg-gray-100">65+</button></li>
@@ -226,7 +231,7 @@
                                     <div>
                                         <p class="text-gray-500 font-bold">Accommodated Patients</p>
                                         <h5 id="totalPatients" class="leading-none text-2xl font-900 text-gray-900 pb-1">0</h5>
-                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patients</p>
+                                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Patient Transactions</p>
                                     </div>
                                 </div>
 
@@ -268,7 +273,7 @@
                                             </button>
 
                                             <!-- Dropdown opens above the button -->
-                                            <div x-show="open" @click.outside="open = false" @click="open = false"
+                                            <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                                 class="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg bottom-full mb-1">
                                                 <ul class="py-1 text-sm text-gray-700">
                                                     <li>
@@ -319,7 +324,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-12 md:col-span-4">
+                    <div class="col-span-12 l:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
                             <div class="flex items-center gap-2 p-2 mb-6">
                                 <div>
@@ -360,7 +365,7 @@
                                         </svg>
                                     </button>
 
-                                    <div x-show="open" @click.outside="open = false" @click="open = false"
+                                    <div x-show="open" @click.outside="open = false" @click="open = false" x-cloak
                                         class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                                         <ul class="py-1 text-sm text-gray-700">
                                             <li><button data-value="all" class="filter2-option w-full text-left px-4 py-2 hover:bg-gray-100">All Time</button></li>
@@ -398,7 +403,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-12 md:col-span-4">
+                    <div class="col-span-12 l:col-span-4">
                         <div class="w-full bg-white rounded-lg shadow-lg border border-gray-200  p-4 md:p-6 h-full">
                             <h1 class="text-lg font-900 pb-8 px-2">Inventory Overview</h1>
                             <div class="flex justify-between pb-4 mb-3 border-b border-gray-200 dark:border-gray-700">

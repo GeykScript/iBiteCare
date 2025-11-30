@@ -26,8 +26,8 @@
                     <img src="{{asset('Frame 3.png')}}" alt="" class="w-50 h-50 md:mt-0 mt-[-5rem]" />
                 </a>
             </div>
-            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-8 ">
-                <div class="flex flex-col justify-between h-full  overflow-y-auto scrollbar-hidden">
+            <div class="md:h-[37.5rem] bg-white md:w-[35rem] border border-gray-200 w-[20rem] h-[32rem] md:rounded-r-[10px] rounded-b-[5px] md:rounded-b-[0px] shadow-xl items-center justify-center p-4 md:p-8 ">
+                <div class="flex flex-col justify-between h-full  overflow-y-auto scrollbar-hidden px-4">
                     <div class="flex items-end justify-end md:px-8">
                         <div id="datetime" class="md:text-md text-sm text-gray-700 font-bold"></div>
                     </div>
@@ -49,10 +49,8 @@
                                     <!-- Password -->
                                     <div class="mt-4">
                                         <x-input-label for="password" :value="__('Password')" />
-                                        <x-text-input id="password" class="block mt-1 w-full py-2 text-lg"
-                                            type="password"
-                                            name="password"
-                                            required autocomplete="current-password" />
+                                        <x-password-input id="password" name="password" required class="mt-1" />
+
                                         <x-input-error :messages="$errors->get('password')" class="bg-red-200 px-4 py-2 mt-2 rounded-sm font-bold text-red-500" />
                                     </div>
 

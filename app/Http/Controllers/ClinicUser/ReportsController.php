@@ -127,14 +127,14 @@ class ReportsController extends Controller
         // Apply date range and grouping
         switch ($filter) {
             case 'today':
-                $query->selectRaw('HOUR(payment_date) as hour, SUM(amount_paid) as total')
+                $query->selectRaw('HOUR(created_at) as hour, SUM(amount_paid) as total')
                     ->whereDate('payment_date', now())
                     ->groupBy('hour')
                     ->orderBy('hour');
                 break;
 
             case 'yesterday':
-                $query->selectRaw('HOUR(payment_date) as hour, SUM(amount_paid) as total')
+                $query->selectRaw('HOUR(created_at) as hour, SUM(amount_paid) as total')
                     ->whereDate('payment_date', now()->subDay())
                     ->groupBy('hour')
                     ->orderBy('hour');
