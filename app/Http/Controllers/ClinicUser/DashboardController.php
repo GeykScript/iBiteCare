@@ -95,9 +95,10 @@ class DashboardController extends Controller
                 break;
 
             default:
-                $query->selectRaw('DATE(transaction_date) as date, registered_patients.sex, COUNT(*) as total')
-                    ->groupBy('date', 'registered_patients.sex')
-                    ->orderBy('date');
+                $query->selectRaw('MONTH(transaction_date) as month, registered_patients.sex, COUNT(*) as total')
+                    ->whereBetween('transaction_date', [now()->startOfYear(), now()->endOfYear()])
+                    ->groupBy('month', 'registered_patients.sex')
+                    ->orderBy('month');
                 break;
         }
 
@@ -120,7 +121,7 @@ class DashboardController extends Controller
         $femaleData = [];
         $categories = [];
 
-        if (in_array($filter, ['monthly', 'thisYear', 'lastYear'])) {
+        if (in_array($filter, ['all','monthly', 'thisYear', 'lastYear'])) {
             // Always show all 12 months
             $categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             $maleData = array_fill(0, 12, 0);
@@ -131,7 +132,7 @@ class DashboardController extends Controller
                 if (strtolower($row->sex) === 'male') $maleData[$index] = $row->total;
                 if (strtolower($row->sex) === 'female') $femaleData[$index] = $row->total;
             }
-        } elseif ($filter === 'today') {
+        } elseif ($filter === 'today' || $filter === 'yesterday') {
             // Always show 8AM–5PM regardless of data
             $hourRange = range(8, 16);
             $categories = array_map(fn($h) => date('g A', mktime($h, 0)), $hourRange);

@@ -164,9 +164,10 @@ class ReportsController extends Controller
                 break;
 
             default:
-                $query->selectRaw('DATE(payment_date) as date, SUM(amount_paid) as total')
-                    ->groupBy('date')
-                    ->orderBy('date');
+                $query->selectRaw('MONTH(payment_date) as month, SUM(amount_paid) as total')
+                    ->whereBetween('payment_date', [now()->startOfYear(), now()->endOfYear()])
+                    ->groupBy('month')
+                    ->orderBy('month');
                 break;
         }
 
@@ -175,7 +176,7 @@ class ReportsController extends Controller
         $categories = [];
         $data = [];
 
-        if (in_array($filter, ['monthly', 'thisYear', 'lastYear'])) {
+        if (in_array($filter, ['all','monthly', 'thisYear', 'lastYear'])) {
             // Always show all 12 months
             $categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             $data = array_fill(0, 12, 0);

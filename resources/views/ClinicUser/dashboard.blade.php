@@ -257,7 +257,7 @@
                                 <div id="chart" class="mt-4"></div>
                                 <div class="grid grid-cols-2  border-gray-200 border-t">
                                     <div class="col-span-2 mt-2 flex items-end justify-end">
-                                        <a href="{{ route('clinic.transactions') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-sky-500 hover:bg-sky-400 focus:ring-4 focus:outline-none focus:ring-sky-500 rounded-lg text-center">
+                                        <a href="{{ route('clinic.transactions') }}" class="px-5 py-2.5 text-xs font-medium text-white inline-flex items-center bg-sky-500 hover:bg-sky-400 focus:ring-2 focus:outline-none  rounded-lg text-center">
                                             <i data-lucide="file-text" class="w-4 h-4 md:me-2"></i>
                                             View Details
                                         </a>

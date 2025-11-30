@@ -40,7 +40,7 @@
                 </div>
                 <div class="l:col-span-4 col-span-12 flex flex-col gap-2">
                     <!-- filter  -->
-                     <div class=" flex items-center  gap-2   ">
+                    <div class=" flex items-center  gap-2   ">
                         <h1 class="font-bold text-gray-700 flex text-sm">Filter:</h1>
                         <div class="w-48" x-data="{ open:false }">
                             <!-- Button -->
@@ -122,7 +122,7 @@
                         </button>
                         @endif
                     </div>
-                    
+
                     <!-- search bar -->
                 </div>
             </div>
@@ -234,7 +234,7 @@
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 ">{{ $message->patient->first_name }} {{ $message->patient->last_name }}</td>
                     <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900"> {{ $message->patient->contact_number }}</th>
                     <th class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">
-                        {{ \Carbon\Carbon::parse($message->schedule?? 'N/A')->format('M, d, Y') }}
+                        {{ $message->schedule ? \Carbon\Carbon::parse($message->schedule)->format('M, d, Y') : 'N/A' }}
                     </th>
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900">{{ $message->day_label ?? 'N/A' }}</td>
                     <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 w-80">

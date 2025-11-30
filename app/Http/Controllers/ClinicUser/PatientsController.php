@@ -143,7 +143,7 @@ class PatientsController extends Controller
             'contact_number' => 'required|string|max:20',
             'date_of_birth'  => 'required|date',
             'age'            => 'required|integer|min:0|max:150',
-            'email'          => 'required|email|max:255|unique:registered_patients,email,' . $request->id,
+            'email'          => 'nullable|email|max:255|unique:registered_patients,email,' . $request->id,
             'province'       => 'nullable|string|max:255',
             'city'           => 'nullable|string|max:255',
             'barangay'       => 'nullable|string|max:255',
