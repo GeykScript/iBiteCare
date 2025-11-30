@@ -16,6 +16,9 @@ class ClinicUserLogsTable extends Component
 
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
+    public $dateFrom = '';
+    public $dateTo = '';
+
 
     public function updatedPerPage()
     {
@@ -27,6 +30,23 @@ class ClinicUserLogsTable extends Component
     {
         $this->resetPage(); // reset pagination when search changes
     }
+
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->resetPage();
+    }
+
 
     public function setSortBy($sortByField)
     {
@@ -53,6 +73,14 @@ class ClinicUserLogsTable extends Component
                     ->orWhere('users.last_name', 'like', '%' . $this->search . '%');
             });
         }
+
+        if ($this->dateFrom) {
+            $query->whereDate('date_and_time', '>=', $this->dateFrom);
+        }
+        if ($this->dateTo) {
+            $query->whereDate('date_and_time', '<=', $this->dateTo);
+        }
+
 
         // Handle sorting
         if ($this->sortBy === 'role_name') {

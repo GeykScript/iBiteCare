@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\Patient;
 
 class SocialiteController extends Controller
 {
@@ -44,6 +45,15 @@ class SocialiteController extends Controller
             if ($user) {
                 Auth::login($user);
                 session(['auth_provider' => $provider]);
+
+                // get email to link patient record
+                $inputEmail = $socialUser->email;
+                                    // Link patient record to user account if email matches
+                    $patient = Patient::where('email', $inputEmail)->first();
+                    if ($patient && $patient->email === $user->email && empty($patient->account_id)) {
+                        $patient->update(['account_id' => $user->id]);
+                    }
+
                 Log::info('Existing OAuth user logged in', ['user_id' => $user->id]);
                 return redirect()->route('dashboard');
             }
@@ -57,6 +67,14 @@ class SocialiteController extends Controller
                     'auth_provider' => $provider,
                     'auth_provider_id' => $socialUser->id,
                 ]);
+                
+                // get email to link patient record
+                $existingEmail = $existingUser->email;
+                // Link patient record to user account if email matches
+                $patient = Patient::where('email', $existingEmail)->first();
+                if ($patient && $patient->email === $existingUser->email && empty($patient->account_id)) {
+                    $patient->update(['account_id' => $existingUser->id]);
+                }
 
                 Auth::login($existingUser);
                 session(['auth_provider' => $provider]);

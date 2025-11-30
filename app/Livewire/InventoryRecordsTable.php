@@ -17,6 +17,8 @@ class InventoryRecordsTable extends Component
 
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatingSearch()
     {
@@ -25,6 +27,21 @@ class InventoryRecordsTable extends Component
 
     public function updatedPerPage()
     {
+        $this->resetPage();
+    }
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
         $this->resetPage();
     }
 
@@ -41,6 +58,13 @@ class InventoryRecordsTable extends Component
     public function render()
     {
         $query = Inventory::search($this->search);
+
+        if ($this->dateFrom) {
+            $query->whereDate('last_restocked_date', '>=', $this->dateFrom);
+        }
+        if ($this->dateTo) {
+            $query->whereDate('last_restocked_date', '<=', $this->dateTo);
+        }
         return view('livewire.inventory-records-table',[
             'supplies' => $query->orderBy($this->sortBy, $this->sortDirection)
                 ->paginate($this->perPage),

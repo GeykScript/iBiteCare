@@ -96,7 +96,6 @@ class PatientSchedules extends Controller
         $verificationCode = rand(100000, 999999);
 
         User::where('id', $request->input('id'))
-        ->where('email', $request->input('email'))
             ->update(['two_factor_code' => Crypt::encryptString($verificationCode)]);
 
 
@@ -112,7 +111,8 @@ class PatientSchedules extends Controller
         Mail::to($request->input('email'))->send(new TwofactorCodeMail($verificationCode));
 
 
-        return back()->with('success', 'OTP has been sent to your email.');
+        return back()->with('success', 'OTP has been sent to your email.')
+        ->with('email', $request->input('email'));
     }
 
     public function verifyOtp(Request $request)
@@ -128,6 +128,10 @@ class PatientSchedules extends Controller
 
         if (!$patient || !$user) {
             return back()->withErrors(['error' => 'Invalid user or patient.']);
+        }
+
+        if ($user ->email === $patient->email && $patient->account_id) {
+            return redirect()->route('schedules.verifyForm')->with('error-mail', 'This account you provided during your clinic visit is already linked.');
         }
 
         try {

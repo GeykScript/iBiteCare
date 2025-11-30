@@ -14,6 +14,8 @@ class InventoryUsage extends Component
 
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatedPerPage()
     {
@@ -24,6 +26,23 @@ class InventoryUsage extends Component
     public function updatingSearch()
     {
         $this->resetPage(); // reset pagination when search changes
+    }
+
+
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->resetPage();
     }
 
     public function setSortBy($sortByField)
@@ -55,6 +74,14 @@ class InventoryUsage extends Component
                     ->orWhere('users.last_name', 'like', '%' . $this->search . '%');
             });
         }
+
+        if ($this->dateFrom) {
+            $query->whereDate('usage_date', '>=', $this->dateFrom);
+        }
+        if ($this->dateTo) {
+            $query->whereDate('usage_date', '<=', $this->dateTo);
+        }
+
 
         // ↕ Sorting
         if ($this->sortBy === 'brand_name') {

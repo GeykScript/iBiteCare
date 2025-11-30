@@ -44,9 +44,22 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // get email to link patient record
+        $inputEmail = $request->input('email');
+        // Link patient record to user account if email matches 
+        $patient = Patient::where('email', $inputEmail)->first();
+        $user = User::where('email', $inputEmail)->first();
+
+        if ($patient && $user && $patient->email === $user->email && empty($patient->account_id)) {
+            $patient->update(['account_id' => $user->id]);
+        }
+
         event(new Registered($user));
 
         Auth::login($user);
+
+     
+
 
         return redirect(route('dashboard', absolute: false));
     }

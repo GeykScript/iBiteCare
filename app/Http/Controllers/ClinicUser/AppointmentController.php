@@ -114,12 +114,12 @@ class AppointmentController extends Controller
             \nFor any concerns, Call/Text: 0954 195 2374. Thank you!";
 
             // dd($contactNumber, $messageText);
-                // Http::post('https://api.semaphore.co/api/v4/messages', [
-                //         'apikey' => env('SEMAPHORE_API_KEY'),
-                //         'number' => $contactNumber,
-                //         'message' => $messageText,
-                //         'sendername' => env('SEMAPHORE_SENDER_NAME'),
-                //     ]);
+                Http::post('https://api.semaphore.co/api/v4/messages', [
+                        'apikey' => env('SEMAPHORE_API_KEY'),
+                        'number' => $contactNumber,
+                        'message' => $messageText,
+                        'sendername' => env('SEMAPHORE_SENDER_NAME'),
+                    ]);
             }
 
         if (!empty($request->email)) {
@@ -161,14 +161,14 @@ class AppointmentController extends Controller
 
             $messageText = "Hello! This is Dr. Care ABC Guinobatan. Your appointment scheduled on $appointmentDate at $appointmentTime has been cancelled.
             \nFor any concerns, call or text 0954 195 2374. Thank you!";
-
+            
             // dd($contactNumber, $messageText);
-            // Http::post('https://api.semaphore.co/api/v4/messages', [
-            //     'apikey' => env('SEMAPHORE_API_KEY'),
-            //     'number' => $contactNumber,
-            //     'message' => $messageText,
-            //     'sendername' => env('SEMAPHORE_SENDER_NAME'),
-            // ]);
+            Http::post('https://api.semaphore.co/api/v4/messages', [
+                'apikey' => env('SEMAPHORE_API_KEY'),
+                'number' => $contactNumber,
+                'message' => $messageText,
+                'sendername' => env('SEMAPHORE_SENDER_NAME'),
+            ]);
         }
 
         if ( $request->status == 'Cancelled' && !empty($appointment->email) ) {

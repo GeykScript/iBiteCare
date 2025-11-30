@@ -1,8 +1,8 @@
 <div class="flex flex-col col-span-4 gap-2 relative pb-12">
     <div class="overflow-hidden">
-        <div class="grid grid-cols-12 gap-2 p-2 ">
+        <div class="grid grid-cols-12 gap-6 p-2 ">
             <!-- per page dropdown -->
-            <div class="col-span-12 md:col-span-4 flex ">
+            <div class="col-span-12 md:col-span-9 flex items-center justify-between  gap-4">
                 <div class="flex gap-4 items-center">
                     <div
                         x-data="{ open: false, selected: @entangle('perPage') }"
@@ -38,49 +38,105 @@
                         entries per page
                     </p>
                 </div>
-            </div>
-
-            <div class="col-span-12 l:col-span-8 grid grid-cols-7 gap-2">
-
-                <div class="l:col-span-4 col-span-7 grid grid-cols-7 gap-2">
+                <div class="l:col-span-4 col-span-12 flex flex-col gap-2">
                     <!-- filter  -->
-                    <div class="col-span-7  flex flex-col l:flex-row gap-2  ">
-                        <h1 class="font-bold flex l:items-center l:justify-center">Filter:</h1>
-                        <div class="grid grid-cols-5 gap-2 items-center">
+                     <div class=" flex items-center  gap-2   ">
+                        <h1 class="font-bold text-gray-700 flex text-sm">Filter:</h1>
+                        <div class="w-48" x-data="{ open:false }">
+                            <!-- Button -->
                             <button
-                                wire:click="$set('filter', 'all')"
-                                class="col-span-1 md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
-                            {{ $filter === 'all' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
-                                All
-                            </button>
-                            <button
-                                wire:click="$set('filter', 'today')"
-                                class="col-span-2 md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
-                            {{ $filter === 'today' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
-                                Scheduled Today
+                                @click="open = !open"
+                                type="button"
+                                class="bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg px-4 py-2 w-full flex justify-between items-center">
+                                <span>
+                                    {{ $filter === 'all' ? 'All' : ($filter === 'today' ? 'Scheduled Today' : ($filter === 'sent' ? 'Sent Messages' : ($filter === 'unsent' ? 'Unsent Messages' : 'All'))) }}
+                                </span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
                             </button>
 
-                            <button
-                                wire:click="$set('filter', 'sent')"
-                                class="col-span-2 md:px-4 px-1 py-2 rounded-lg text-xs md:text-sm font-semibold  focus:outline-none
-                            {{ $filter === 'sent' ? 'bg-sky-500 text-white' : 'bg-white border border-gray-800 text-gray-800 hover:border-sky-500 hover:text-sky-500' }}">
-                                Sent Messages
-                            </button>
+                            <!-- Dropdown Menu -->
+                            <div
+                                x-show="open"
+                                @click.outside="open = false"
+                                x-cloak
+                                class="absolute mt-1 w-48 bg-white border border-gray-300 rounded-lg shadow-md">
+
+                                <button
+                                    wire:click="$set('filter', 'all')"
+                                    @click="open=false"
+                                    class="block w-full text-left px-4 py-2 text-sm 
+                                    {{ $filter === 'all' ? 'bg-gray-800 text-white' : 'hover:bg-gray-100' }}">
+                                    All
+                                </button>
+
+                                <button
+                                    wire:click="$set('filter', 'today')"
+                                    @click="open=false"
+                                    class="block w-full text-left px-4 py-2 text-sm 
+                                    {{ $filter === 'today' ? 'bg-gray-800 text-white' : 'hover:bg-gray-100' }}">
+                                    Scheduled Today
+                                </button>
+
+                                <button
+                                    wire:click="$set('filter', 'sent')"
+                                    @click="open=false"
+                                    class="block w-full text-left px-4 py-2 text-sm 
+                                     {{ $filter === 'sent' ? 'bg-gray-800 text-white' : 'hover:bg-gray-100' }}">
+                                    Sent Messages
+                                </button>
+
+                                <!-- New Unsent Option -->
+                                <button
+                                    wire:click="$set('filter', 'unsent')"
+                                    @click="open=false"
+                                    class="block w-full text-left px-4 py-2 text-sm 
+                                    {{ $filter === 'unsent' ? 'bg-gray-800 text-white' : 'hover:bg-gray-100' }}">
+                                    Unsent Messages
+                                </button>
+                            </div>
                         </div>
 
                     </div>
-                    <!-- search bar -->
+                    <div class="flex flex-wrap items-center justify-start l:justify-center  gap-2 px-2 ">
+                        <span class="text-sm font-medium text-gray-700">Date:</span>
 
+                        <input
+                            wire:model.live="dateFrom"
+                            type="date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-sky-500 focus:border-sky-500 px-2 py-1.5 w-auto">
+
+                        <span class="text-xs text-gray-500">to</span>
+
+                        <input
+                            wire:model.live="dateTo"
+                            type="date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-sky-500 focus:border-sky-500 px-2 py-1.5 w-auto">
+
+                        @if($dateFrom || $dateTo)
+                        <button
+                            wire:click="clearDateFilter"
+                            class="px-2 py-1 text-sm font-medium text-white bg-sky-500 hover:bg-sky-400 rounded-md transition">
+                            Clear
+                        </button>
+                        @endif
+                    </div>
+                    
+                    <!-- search bar -->
                 </div>
-                <div class="col-span-7 l:col-span-3 flex ">
+            </div>
+
+            <div class="col-span-12 l:col-span-3 grid grid-cols-7 gap-2 ">
+                <div class="col-span-7 flex items-end ">
                     <div class="w-full">
-                        <div class="flex items-center  bg-gray-50 border border-gray-300 rounded-lg px-3  focus-within:ring-2 focus-within:ring-sky-500">
+                        <div class="flex items-center bg-gray-50 border border-gray-300 rounded-lg px-3 focus-within:ring-1 focus-within:ring-sky-500 focus-within:border-sky-500 transition">
                             <img src="{{ asset('images/search.svg') }}" alt="Search Icon" class="w-5 h-5 text-gray-500" />
                             <input
                                 wire:model.live.debounce.300ms="search"
                                 type="text"
                                 name="search"
-                                class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0  text-sm text-gray-900"
+                                class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm text-gray-900"
                                 placeholder="Search"
                                 required />
                         </div>
@@ -163,6 +219,14 @@
                     <td colspan="8" class="text-center py-4"> No messages scheduled for today.</td>
                 </tr>
                 @endif
+                @if($messages->isEmpty() && $filter === 'unsent')
+                <tr class="table-row sm:hidden">
+                    <td colspan="8" class="text-center py-4">No unsent messages.</td>
+                </tr>
+                <tr class="hidden sm:table-row">
+                    <td colspan="8" class="text-center py-4"> No unsent messages.</td>
+                </tr>
+                @endif
 
                 @foreach ($messages as $message)
                 <tr wire:key="{{ $message->id }}" class="border-b dark:border-gray-700">
@@ -184,10 +248,18 @@
                         <span class="text-green-500 font-bold p-2 px-5 rounded bg-green-200">{{ $message->status }}</span>
                         @elseif ($message->status == 'Pending')
                         <span class="text-orange-400 font-bold p-2 rounded bg-orange-100">{{ $message->status }}</span>
+                        @else
+                        <span class="text-red-400 font-bold p-2 rounded bg-red-100">{{ $message->status }}</span>
                         @endif
                     </td>
-                    @if ($message->status == 'Pending')
-                    <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 " x-data="{ open: false, messageId: null, messageContent: '', patientName: '', patientContact: '', displayContact: '' }">
+                    @if ($message->status == 'Pending' || $message->status == 'Unsent')
+
+                    @php
+                    $unsent = ($message->status == 'Unsent');
+                    @endphp
+
+
+                    <td class="px-6 md:px-2 py-3 text-center font-medium text-gray-900 " x-data="{ open: false, messageId: null, messageContent: '', patientName: '', patientContact: '', displayContact: '', unsent: '{{ $unsent }}' }">
                         <button
                             @click="$dispatch('send-message-modal', {
                                 id: {{ $message->id }}, 
@@ -195,9 +267,15 @@
                                 patientName: `{{ addslashes($message->patient->first_name . ' ' . $message->patient->last_name) }}`,
                                 displayContact: `{{ $message->patient->contact_number }}`,
                                 patientContact: `{{ str_replace(' ', '', $message->patient->contact_number) }}`,
+                                unsent: {{ $unsent ? 'true' : 'false' }}
                              })"
                             class="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg  focus:outline-none">
+                            @if ($message->status == 'Pending')
                             Send
+                            @elseif ($message->status == 'Unsent')
+                            Resend
+                            @endif
+
                         </button>
                     </td>
                     @else
@@ -227,11 +305,12 @@
                 patientName: null,
                 patientContact: null,
                 displayContact: null,
+                unsent: null,
                 open() { this.$refs.modal.showModal() },
                 close() { this.$refs.modal.close() }
                 }"
         x-ref="modal"
-        @send-message-modal.window="messageId = $event.detail.id; messageContent = $event.detail.content; patientName = $event.detail.patientName; patientContact = $event.detail.patientContact; displayContact = $event.detail.displayContact; open()"
+        @send-message-modal.window="messageId = $event.detail.id; messageContent = $event.detail.content; patientName = $event.detail.patientName; patientContact = $event.detail.patientContact; displayContact = $event.detail.displayContact; unsent = $event.detail.unsent; open() "
         class="p-8 rounded-lg shadow-lg w-full max-w-2xl backdrop:bg-black/30 focus:outline-none">
         <div class="w-full flex justify-end mb-2">
             <button @click="close()" class="focus:outline-none">
@@ -253,6 +332,13 @@
                 @csrf
                 <input type="number" :value="messageId" name="message_id" hidden>
                 <input type="number" :value="patientContact" name="contact_number" hidden>
+
+
+                <div x-show="unsent" class="p-4 bg-yellow-50 border border-yellow-200 text-sm rounded-lg text-yellow-800">
+                    <strong>Notice:</strong> This message has not been sent. Please review and update the content if you intend to resend.
+                </div>
+
+
 
                 <div class="flex flex-col">
                     <label for="message" class="mb-2 text-sm font-medium text-gray-900">Message Content</label>

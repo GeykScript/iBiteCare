@@ -19,11 +19,12 @@
         </div>
 
         <div x-show="!otpSent" class="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-6 sm:p-8 my-10 border border-gray-100">
-            @if (session('success'))
+
+            @if (session('error-mail'))
             <div x-data="{ show: true }" x-show="show"
-                class="w-full bg-green-100 border-2 rounded border-green-200 flex justify-between py-2 px-4 ">
-                <h1 class="text-md font-bold text-green-600">{{ session('success') }}</h1>
-                <button @click="show = false" class="text-lg font-bold text-green-600">
+                class="w-full bg-red-100 border-2 rounded border-red-200 flex justify-between py-2 px-4 mb-4 ">
+                <h1 class="text-md font-bold text-red-600">{{ session('error-mail') }}</h1>
+                <button @click="show = false" class="text-lg font-bold text-red-600">
                     <i data-lucide="x"></i>
                 </button>
             </div>
@@ -45,10 +46,11 @@
                     <input
                         type="email"
                         name="email"
-                        id="email"
+                        id="email-input"
                         value="{{ $user->email }}"
-                        readonly
-                        class="w-full border border-gray-300 bg-gray-50 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        required
+                        class="w-full border border-gray-300 bg-gray-50 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 ">
+                    <p id="error-email" class="text-red-600 text-sm mt-1"></p>
                     <p class="text-xs text-gray-500 mt-1">
                         Note: Use the email you provided at the clinic. If it wasn’t registered during the visit, this feature won’t show the desired information.
                     </p>
@@ -89,7 +91,7 @@
             <form action="{{ route('patient.schedules.verifyOtp') }}" method="POST" class="space-y-6" id="VerifyotpForm">
                 @csrf
                 <input type="hidden" name="id" value="{{ $user->id }}">
-                <input type="hidden" name="email" value="{{ $user->email }}">
+                <input type="hidden" name="email" value="{{ old('email', session('email')) }}">
 
                 <div class="text-center">
                     <label for="code" class="block text-md font-semibold text-gray-700 mb-2">
@@ -146,6 +148,30 @@
             </div>
         </div>
     </div>
+    <script>
+        const emailInput = document.getElementById('email-input');
+        const emailError = document.getElementById('error-email');
+
+        emailInput.addEventListener('input', function() {
+            const email = emailInput.value;
+
+            // Email validation
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            if (!isValid) {
+                emailInput.classList.remove('focus:ring-sky-500', 'focus:border-sky-500');
+                emailInput.classList.add('focus:ring-red-500', 'focus:border-red-500');
+
+                emailError.textContent = "Please enter a valid email address.";
+            } else {
+                emailError.textContent = "";
+                emailInput.classList.remove('focus:ring-red-500', 'focus:border-red-500');
+                emailInput.classList.add('focus:ring-sky-500', 'focus:border-sky-500');
+
+            }
+        });
+    </script>
+
 
 
     <script>

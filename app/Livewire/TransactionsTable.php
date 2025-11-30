@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Livewire;
 
 use Livewire\Component;
@@ -14,6 +15,8 @@ class TransactionsTable extends Component
     public $sortBy = 'transaction_date';
     public $sortDirection = 'DESC';
     public $search = '';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatingSearch()
     {
@@ -22,6 +25,23 @@ class TransactionsTable extends Component
 
     public function updatedPerPage()
     {
+        $this->resetPage();
+    }
+
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
         $this->resetPage();
     }
 
@@ -34,7 +54,6 @@ class TransactionsTable extends Component
             $this->sortDirection = 'ASC';
         }
     }
-
 
     public function render()
     {
@@ -84,6 +103,15 @@ class TransactionsTable extends Component
                         });
                     });
             });
+
+        // Apply date filters
+        if ($this->dateFrom) {
+            $transactions = $transactions->whereDate('transaction_date', '>=', $this->dateFrom);
+        }
+
+        if ($this->dateTo) {
+            $transactions = $transactions->whereDate('transaction_date', '<=', $this->dateTo);
+        }
 
         if ($this->sortBy === 'patient') {
             $transactions = $transactions

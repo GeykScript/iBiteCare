@@ -15,6 +15,8 @@ class PaymentRecordsTable extends Component
     public $sortBy = 'created_at';
     public $sortDirection = 'DESC';
     public $search = '';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatingSearch()
     {
@@ -23,6 +25,22 @@ class PaymentRecordsTable extends Component
 
     public function updatedPerPage()
     {
+        $this->resetPage();
+    }
+
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
         $this->resetPage();
     }
 
@@ -59,6 +77,12 @@ class PaymentRecordsTable extends Component
             $query->orderBy($this->sortBy, $this->sortDirection);
         }
 
+        if($this->dateFrom) {
+            $query->whereDate('payment_date', '>=', $this->dateFrom);
+        }
+        if($this->dateTo) {
+            $query->whereDate('payment_date', '<=', $this->dateTo);
+        }
 
         // Handle searching
         if (!empty($this->search)) {
