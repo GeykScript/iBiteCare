@@ -29,13 +29,27 @@ class AppointmentController extends Controller
         //
         $services = ClinicServices::all();
 
-        PatientAppointment::where('status', 'Pending')
+        PatientAppointment::where('status', 'Cancelled')
             ->where('appointment_date', '<', now()->toDateString())
             ->delete();
 
+        $scheduledAppointments = PatientAppointment::whereNotIn('status', ['Arrived', 'Cancelled'])
+            ->whereMonth('appointment_date', Carbon::now()->month)
+            ->whereYear('appointment_date', Carbon::now()->year)
+            ->orderBy('appointment_date', 'asc')
+            ->get();
+
+        // Generate all dates for the current month
+        $datesInMonth = [];
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+
+        for ($date = $start; $date->lte($end); $date->addDay()) {
+            $datesInMonth[] = $date->format('Y-m-d');
+        }
 
 
-        return view('ClinicUser.appointment',compact('clinicUser', 'services'));
+        return view('ClinicUser.appointment',compact('clinicUser', 'services', 'scheduledAppointments', 'datesInMonth'));
     }
 
 

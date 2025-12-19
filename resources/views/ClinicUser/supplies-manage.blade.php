@@ -191,12 +191,12 @@
                             <h1 class="font-900 text-lg">Stocks Details</h1>
                         </div>
                         <div class="col-span-8 grid grid-cols-8 gap-2 mt-2">
-                            <div class="md:col-span-1 col-span-4">
+                            <!-- <div class="md:col-span-1 col-span-4">
                                 <p class="text-sm font-semibold text-gray-600">Total Stocks</p>
                                 <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_units ?? '0' }} </p>
-                            </div>
+                            </div> -->
                             <div class="md:col-span-1 col-span-4">
-                                <p class="text-sm font-semibold text-gray-600">Remaining Stocks</p>
+                                <p class="text-sm font-semibold text-gray-600">Total Stocks</p>
                                 <p class="text-gray-800 font-bold text-lg">{{ $inventoryRecords->total_unit_remaining ?? '0' }} </p>
                             </div>
                             <div class="md:col-span-1 col-span-8">
@@ -381,6 +381,18 @@
                                     <div class="col-span-12 border-2 border-gray-100 mt-2 mb-2"></div>
                                     <div class="col-span-12 ">
                                         <h1 class="font-900 text-md">Stock Information</h1>
+                                        <div class="grid grid-cols-12 gap-4 py-2">
+                                            <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
+                                                <label for="batch_no" class="text-sm font-semibold">Batch Number</label>
+                                                <input type="text" name="batch_no" id="batch_no" placeholder="e.g ABH2025-0312"
+                                                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 " required />
+                                            </div>
+                                            <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
+                                                <label for="expiration_date" class="text-sm font-semibold">Expiration Date</label>
+                                                <input type="date" name="expiration_date" id="expiration_date"
+                                                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 " required />
+                                            </div>
+                                        </div>
                                         <div class="grid grid-cols-12 gap-2 py-2">
                                             <div class="md:col-span-6 col-span-12">
                                                 <p class="text-sm font-semibold mb-1">Package Type</p>
@@ -453,7 +465,7 @@
                         <dialog id="updateInventoryItemModal"
                             x-data="{
                                         item: {
-                                            id: '', stock_id: '', item_id: '', quantity: '', remaining: '', price: '', status: ''
+                                            id: '', stock_id: '', item_id: '', quantity: '', remaining: '', batch_no: '', expiration_date: ''
                                         },
                                         open() { this.$refs.modal.showModal() },
                                         close() { this.$refs.modal.close() }
@@ -487,17 +499,29 @@
                                         <input type="hidden" name="stock_id" x-model="item.stock_id">
                                         <input type="hidden" name="item_id" x-model="item.item_id">
                                     </div>
+                                    <div class="col-span-12 grid grid-cols-12 gap-4 py-2">
+                                        <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
+                                            <label for="batch_no" class="text-sm font-semibold">Batch Number</label>
+                                            <input type="text" name="batch_no" id="batch_no" placeholder="e.g ABH2025-0312" x-model="item.batch_no"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 "  />
+                                        </div>
+                                        <div class="md:col-span-6 col-span-12 flex flex-col justify-end gap-2">
+                                            <label for="expiration_date" class="text-sm font-semibold">Expiration Date</label>
+                                            <input type="date" name="expiration_date" id="expiration_date" x-model="item.expiration_date"
+                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400 "  />
+                                        </div>
+                                    </div>
                                     <div class="col-span-12 flex flex-col">
                                         <p class="block text-sm font-medium">Quantity</p>
                                         <p class="text-xs text-gray-500">(Leave unchanged if no update is needed)</p>
-                                        <input type="number" name="quantity" x-model="item.quantity"
+                                        <input type="number" name="quantity" x-model="item.quantity" min="0" disabled
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
                                     </div>
 
                                     <div class="col-span-12 flex flex-col">
                                         <p class="block text-sm font-medium">Remaining Quantity</p>
                                         <p class="text-xs text-gray-500">(Leave unchanged if no update is needed)</p>
-                                        <input type="number" name="remaining_quantity" x-model="item.remaining"
+                                        <input type="number" name="remaining_quantity" x-model="item.remaining" min="0"
                                             class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none hover:border-sky-400 focus:ring-0 focus:border-sky-400">
                                     </div>
 

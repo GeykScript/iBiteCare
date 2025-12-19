@@ -373,9 +373,7 @@
                                                     @if (str_contains($serviceName, 'post'))
                                                     <td class="px-4 py-2 border">
                                                         <a href="{{ route('clinic.patients.profile.immunization_info', [
-                                                            Crypt::encrypt($immunization->id), Crypt::encrypt($immunization->transaction_id)
-                                                        ]) }}"
-                                                            target="_blank"
+                                                            Crypt::encrypt($immunization->id), Crypt::encrypt($immunization->transaction_id)  ]) }}"
                                                             class="bg-sky-500 px-4 p-1 text-white font-bold rounded-lg hover:bg-sky-600">
                                                             View
                                                         </a>

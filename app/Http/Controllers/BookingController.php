@@ -15,6 +15,7 @@ use Carbon\Carbon;
 
 class BookingController extends Controller
 {
+
     public function index()
     {
         $appointments = PatientAppointment::where('patient_account_id', Auth::id())
@@ -38,8 +39,24 @@ class BookingController extends Controller
 
         $services = ClinicServices::all();
 
-        return view('auth.booking', compact('appointments', 'appointmentsJson', 'services'));
+        $scheduledAppointments = PatientAppointment::whereNotIn('status', ['Arrived', 'Cancelled'])
+            ->whereMonth('appointment_date', Carbon::now()->month)
+            ->whereYear('appointment_date', Carbon::now()->year)
+            ->orderBy('appointment_date', 'asc')
+            ->get();
+
+        // Generate all dates for the current month
+        $datesInMonth = [];
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+
+        for ($date = $start; $date->lte($end); $date->addDay()) {
+            $datesInMonth[] = $date->format('Y-m-d');
+        }
+
+        return view('auth.booking', compact('appointments', 'appointmentsJson', 'services', 'scheduledAppointments', 'datesInMonth'));
     }
+
 
     public function store(Request $request)
     {
@@ -97,8 +114,11 @@ class BookingController extends Controller
 
         Mail::to($appointment->email)->send(new BookingConfirmation($appointment));
 
-        return back()->with('success', 'Your appointment has been booked successfully! Booking ID: ' . $bookingReference);
-    }
+        return back()->with(
+            'success',
+            "Your appointment has been booked successfully!\nBooking ID: " . $bookingReference
+        );   
+     }
 
     public function getAvailableSlots(Request $request)
     {
@@ -107,6 +127,7 @@ class BookingController extends Controller
         $slots = AppointmentSlot::where('is_active', true)->get();
 
         $slotCounts = PatientAppointment::whereDate('appointment_date', $date)
+            ->whereNotIn('status', ['Cancelled'])
             ->selectRaw('TIME_FORMAT(appointment_time, "%H:%i:%s") as appointment_time, COUNT(*) as count')
             ->groupBy('appointment_time')
             ->pluck('count', 'appointment_time');

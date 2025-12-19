@@ -101,9 +101,9 @@
                                                     @php
                                                     $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
                                                     @endphp
-                                                    <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; volume = '{{ $formattedVolume }}'; open = false"
+                                                    <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '{{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }}'; volume = '{{ $formattedVolume }}'; open = false"
                                                         class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                        #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
+                                                        {{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }} - ({{ $formattedVolume }} ml)
                                                     </div>
                                                     @endforeach
                                                     @endif
@@ -139,9 +139,9 @@
                                                     @php
                                                     $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
                                                     @endphp
-                                                    <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; open = false"
+                                                    <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '{{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }}'; open = false"
                                                         class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                        {{ $vaccine->item->product_type }} - #{{ $vaccine->id }} ({{ $formattedVolume }} ml)
+                                                        {{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }} - ({{ $formattedVolume }} ml)
                                                     </div>
                                                     @endforeach
                                                     @endif

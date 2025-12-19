@@ -14,6 +14,8 @@ class InventoryStocks extends Component
 
     public $sortBy = 'created_at';
     public $sortDirection = 'ASC';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function updatedPerPage()    
     {
@@ -39,10 +41,37 @@ class InventoryStocks extends Component
         $this->itemId = $itemId;
     }
 
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->resetPage();
+    }
     public function render()
     {
+        $query = Inventory_stock::where('item_id', $this->itemId);
+
+       
+        // Apply date filtering
+        if ($this->dateFrom) {
+            $query->whereDate('restock_date', '>=', $this->dateFrom);
+        }
+
+        if ($this->dateTo) {
+            $query->whereDate('restock_date', '<=', $this->dateTo);
+        }
+
         return view('livewire.inventory-stocks', [
-            'inventoryStocks' => Inventory_stock::where('item_id', $this->itemId)
+            'inventoryStocks' => $query
                 ->orderBy($this->sortBy, $this->sortDirection)
                 ->paginate($this->perPage),
         ]);

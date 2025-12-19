@@ -21,67 +21,9 @@
 <body>
     <div class="flex h-screen">
 
-        <!-- Sidebar -->
-        <div id="sidebar"
-            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
-            style="height: calc(var(--vh, 1vh) * 100);">
 
-            <div class="absolute top-20 right-[-0.6rem] ">
-                <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
-                    <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
-                </button>
-            </div>
-            <!-- Logo -->
-            <div class="flex items-center">
-                <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
-            </div>
-            <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
-                <ul class="space-y-0.5">
-                    <li class="flex items-center px-2 mb-4 block md:hidden">
-                        <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
-                        <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
-                    </li>
-
-                    <li><a href="{{ route('clinic.dashboard') }}" class="mt-3 block px-4 py-2 rounded hover:bg-gray-900 hover:text-white  flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
-                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Patient Management</p>
-                    <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="{{ route('clinic.appointments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
-
-                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Clinic Management</p>
-                    <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
-                    <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
-                    <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-
-                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
-                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
-                    <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
-                    <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
-                    @endif
-                </ul>
-            </nav>
-            <div class="flex flex-col px-4 py-2 gap-2">
-                <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
-                    <i data-lucide="circle-user" class="w-6 h-6"></i>
-                    <div class="flex flex-col items-center">
-                        <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
-                        <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
-                    </div>
-                    <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
-                </a>
-                <div>
-                    <button onclick="document.getElementById('logoutModal').classList.remove('hidden')" class="w-full bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 flex items-center justify-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i>
-                        Logout
-                    </button>
-                </div>
-
-            </div>
-        </div>
         <!-- Main Content -->
-        <section id="mainContent" class="flex-1 ml-0 md:ml-56 h-full  ">
+        <section id="mainContent" class="flex-1  h-full  ">
             <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
@@ -153,32 +95,33 @@
                             <input type="hidden" name="patient_id" value="{{ $patient_id }}">
                             <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
 
-                            <div class="flex flex-col  items-center justify-center mb-4">
-                                <div class="md:w-1/3 grid grid-cols-6 gap-2 md:px-6 mb-2" id="vital-signs">
+                            <div class="flex flex-col w-full items-center justify-center">
+                                <div class="l:w-1/2 grid grid-cols-6 gap-2 l:px-6 mb-2" id="vital-signs">
                                     <div class="col-span-6 ">
-                                        <h2 class="md:text-lg text-gray-700 font-900">Vital Signs </h2>
+                                        <h2 class="l:text-lg text-gray-500 font-900">Vital Signs </h2>
                                     </div>
-                                    <div class="col-span-6 md:col-span-2 ">
-                                        <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-500">Weight (kg)</label>
+                                    <div class="col-span-6 sm:col-span-2 l:col-span-2 ">
+                                        <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-600">Weight (kg)</label>
                                         <input type="text" name="heart_rate" id="heart_rate" placeholder="e.g 70"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
                                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                     </div>
-                                    <div class="col-span-6 md:col-span-2 ">
-                                        <label for="temperature" class="block mb-2 text-sm font-bold text-gray-500">Temperature</label>
+                                    <div class="col-span-6 sm:col-span-2 l:col-span-2 ">
+                                        <label for="temperature" class="block mb-2 text-sm font-bold text-gray-600">Temperature</label>
                                         <input type="text" name="temperature" id="temperature" placeholder="e.g 37.5"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
                                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                     </div>
-                                    <div class="col-span-6 md:col-span-2 ">
-                                        <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-500">Blood Pressure</label>
+                                    <div class="col-span-6 sm:col-span-2 l:col-span-2 ">
+                                        <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-600">Blood Pressure</label>
                                         <input type="text" name="blood_pressure" id="blood_pressure" placeholder="e.g 120/80"
                                             oninput="this.value = this.value.replace(/[^0-9/]/g, '')"
                                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                     </div>
                                 </div>
-                                <x-other-steps.step-2 :vaccines="$vaccines" :nurses="$nurses" :services="$services" />
                             </div>
+                            <x-other-steps.step-2 :vaccines="$vaccines" :nurses="$nurses" :services="$services" />
+
                             <x-other-steps.step-3 :staffs="$staffs" :services="$services " />
 
                             <!-- Navigation Buttons -->

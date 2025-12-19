@@ -140,7 +140,7 @@
     </div>
 
     <!-- table pagination -->
-    <div class="px-3 mt-5">
+    <div class="px-3 mt-5 mb-3">
         {{ $services->appends(['perPage' => $perPage])->links() }}
     </div>
 </div>

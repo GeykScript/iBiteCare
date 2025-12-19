@@ -227,10 +227,11 @@ class ReportsController extends Controller
 
         // Get all records for the selected year
         $datas = revenue_expenses_report::where('year', $year)
-            ->orderByRaw("FIELD(month, 
-            'January','February','March','April','May','June',
-            'July','August','September','October','November','December')")
+            ->orderByRaw("FIELD(BINARY month, 
+        'January','February','March','April','May','June',
+        'July','August','September','October','November','December')")
             ->get();
+
 
         if ($datas->isEmpty()) {
             return back()->with('error', 'No data available for ' . $year);

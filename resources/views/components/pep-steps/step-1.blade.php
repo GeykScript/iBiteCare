@@ -6,24 +6,24 @@
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-2">
             <div class="col-span-12">
-                <h2 class="md:text-lg text-gray-700 font-900 mb-2">Patient Information</h2>
+                <h2 class="l:text-lg text-gray-700 font-900 mb-2">Patient Information</h2>
             </div>
-            <div class="col-span-12 md:col-span-4 ">
-                <label for="first_name" class="block mb-2 text-sm font-bold text-gray-900">First Name</label>
+            <div class="col-span-12 l:col-span-4 ">
+                <label for="first_name" class="block mb-2 text-sm font-bold text-gray-900">First Name <span class="text-red-600">*</span></label>
                 <input type="text" name="first_name" id="first_name" required placeholder="e.g Juan" autocomplete="given-name"
                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500 ">
                 <p id="error_first_name" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
             </div>
-            <div class="col-span-12 md:col-span-4 ">
-                <label for="last_name" class="block mb-2 text-sm font-bold text-gray-900">Last Name</label>
+            <div class="col-span-12 l:col-span-4 ">
+                <label for="last_name" class="block mb-2 text-sm font-bold text-gray-900">Last Name <span class="text-red-600">*</span></label>
                 <input type="text" name="last_name" id="last_name" required placeholder="e.g Dela Cruz"
                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                 <p id="error_last_name" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
             </div>
-            <div class="col-span-12 md:col-span-2 ">
+            <div class="col-span-12 l:col-span-2 ">
                 <div class="grid grid-cols-2 gap-1 flex">
                     <div>
-                        <label for="middleInitial" class="block mb-2 text-sm font-bold text-gray-900">M.I.</label>
+                        <label for="middleInitial" class="block mb-2 text-sm font-bold text-gray-900">M.I.<span class="text-red-600">*</span></label>
                         <input type="text" name="middle_initial" id="middleInitial" required maxlength="2" placeholder="e.g R."
 
                             class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
@@ -37,8 +37,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-span-12 md:col-span-2 md:ml-6 ">
-                <label for="dateOfRegistration" class="block mb-2 text-sm font-bold text-gray-900">Date of Registration</label>
+            <div class="col-span-12 l:col-span-2 l:ml-6 ">
+                <label for="dateOfRegistration" class="block mb-2 text-sm font-bold text-gray-900">Date of Registration<span class="text-red-600">*</span></label>
                 <input type="date" name="date_of_registration" id="dateOfRegistration" required
                     class=" border border-gray-300  text-gray-900 text-sm rounded-lg block w-full p-2.5  focus:ring-sky-500 focus:border-sky-500">
                 <p id="error_dateOfRegistration" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
@@ -52,9 +52,9 @@
                 <div class="col-span-12">
                     <h2 class="text-lg text-gray-700 font-900 ">Address</h2>
                 </div>
-                <div class="col-span-12 md:col-span-4">
+                <div class="col-span-12 l:col-span-4">
                     <div class="mb-3 relative">
-                        <label for="region_btn" class="text-sm mb-2 font-semibold">Region</label>
+                        <label for="region_btn" class="text-sm mb-2 font-semibold">Region <span class="text-red-600">*</span></label>
                         <!-- wrapper that gets the red border -->
                         <div class="w-full  flex items-center border rounded-lg px-2  " id="region_wrapper">
                             <div class="flex-1">
@@ -73,9 +73,9 @@
                 </div>
 
                 <!-- province  -->
-                <div class="col-span-12 md:col-span-4">
+                <div class="col-span-12 l:col-span-4">
                     <div class="mb-3 relative">
-                        <label for="province_btn" class="text-sm mb-2 font-semibold">Province</label>
+                        <label for="province_btn" class="text-sm mb-2 font-semibold">Province <span class="text-red-600">*</span></label>
                         <div class="w-full  flex items-center border rounded-lg px-2  " id="province_wrapper">
                             <div class="flex-1">
                                 <button id="province_btn" type="button"
@@ -92,9 +92,9 @@
                     </div>
                 </div>
                 <!-- city  -->
-                <div class="col-span-12 md:col-span-4">
+                <div class="col-span-12 l:col-span-4">
                     <div class="mb-3 relative">
-                        <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality </label>
+                        <label for="city_btn" class="text-sm mb-2 font-semibold">City / Municipality <span class="text-red-600">*</span></label>
                         <div class="w-full  flex items-center border rounded-lg px-2" id="city_wrapper">
                             <div class="flex-1">
                                 <button id="city_btn" type="button"
@@ -111,11 +111,11 @@
                     </div>
                 </div>
                 <!-- barangay and purok  -->
-                <div class="col-span-12 md:col-span-12">
+                <div class="col-span-12 l:col-span-12">
                     <div class="grid grid-cols-4 gap-4">
                         <!-- barangay  -->
-                        <div class="col-span-4 md:col-span-2 mb-3 relative">
-                            <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay</label>
+                        <div class="col-span-4 l:col-span-2 mb-3 relative">
+                            <label for="barangay_btn" class="text-sm mb-2 font-semibold">Barangay <span class="text-red-600">*</span></label>
                             <div class="w-full  flex items-center border rounded-lg px-2 " id="barangay_wrapper">
                                 <div class="flex-1">
                                     <button id="barangay_btn" type="button"
@@ -131,8 +131,8 @@
                             <p id="error_barangay" class="text-end text-red-500 text-xs mt-1 hidden">*This field is required</p>
                         </div>
                         <!-- purok  -->
-                        <div class="col-span-4 md:col-span-2 ">
-                            <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. </label>
+                        <div class="col-span-4 l:col-span-2 ">
+                            <label for="description" class="text-sm mb-2 font-semibold">Purok / Bldng No. <span class="text-red-600">*</span> </label>
                             <input type="text" name="description" id="description" required placeholder="e.g Purok-2" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:border-sky-300">
                             <p id="error_description" class="text-end text-red-500 text-xs mt-1 hidden">*This field is required</p>
                         </div>
@@ -143,20 +143,20 @@
             </div>
             <!-- contact & demographics  -->
             <div class="col-span-12 grid grid-cols-12 gap-2 ">
-                <div class="col-span-12 md:col-span-6">
-                    <h2 class="md:text-lg text-gray-700 font-900 ">Contact & Demographics</h2>
+                <div class="col-span-12 l:col-span-6">
+                    <h2 class="l:text-lg text-gray-700 font-900 ">Contact & Demographics</h2>
                 </div>
-                <div class="col-span-5 hidden md:block">
-                    <h2 class="md:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
+                <div class="col-span-5 hidden l:block">
+                    <h2 class="l:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
                 </div>
-                <div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-2 ">
-                    <div class="col-span-6 md:col-span-2 ">
-                        <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900">Phone Number</label>
+                <div class="col-span-12 l:col-span-6 grid grid-cols-6 gap-2 ">
+                    <div class="col-span-6 l:col-span-2 ">
+                        <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900">Phone Number <span class="text-red-600">*</span></label>
                         <input type="text" name="contact_number" id="contact_number" required placeholder="e.g 09xx xxx xxxx" maxlength="13"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_contact_number" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
-                    <div class="col-span-6 md:col-span-3 ">
+                    <div class="col-span-6 l:col-span-3 ">
                         @props(['emails'])
                         <input type="hidden" id="existing-emails" value="{{ json_encode($emails) }}">
 
@@ -166,8 +166,8 @@
                         <p id="error_email" class="text-red-500 text-xs mt-1 hidden"></p>
 
                     </div>
-                    <div class="col-span-6 md:col-span-1">
-                        <p class="block mb-2 text-sm font-bold text-gray-900">Sex</p>
+                    <div class="col-span-6 l:col-span-1">
+                        <p class="block mb-2 text-sm font-bold text-gray-900">Sex <span class="text-red-600">*</span></p>
                         <x-select-dropdown
                             name="sex"
                             id="sex"
@@ -178,36 +178,36 @@
                                      ]" />
                         <p id="error_sex" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
-                    <div class="col-span-6 md:col-span-2 ">
-                        <label for="date_of_birth" class="block mb-2 text-sm font-bold text-gray-900">Date of Birth</label>
+                    <div class="col-span-6 l:col-span-2 ">
+                        <label for="date_of_birth" class="block mb-2 text-sm font-bold text-gray-900">Date of Birth <span class="text-red-600">*</span></label>
                         <input type="date" name="date_of_birth" id="date_of_birth" required
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_date_of_birth" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
-                    <div class="col-span-6 md:col-span-1 ">
-                        <label for="age" class="block mb-2 text-sm font-bold text-gray-900">Age</label>
+                    <div class="col-span-6 l:col-span-1 ">
+                        <label for="age" class="block mb-2 text-sm font-bold text-gray-900">Age <span class="text-red-600">*</span></label>
                         <input type="text" name="age" id="age" required readonly placeholder="Age"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                         <p id="error_age" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                     </div>
                 </div>
-                <div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-2 md:px-10 ">
-                    <div class="col-span-6 block md:hidden">
-                        <h2 class="md:text-lg text-gray-700 font-900 mb-2">Vital Signs</h2>
+                <div class="col-span-12 l:col-span-6 grid grid-cols-6 gap-2 l:px-10 ">
+                    <div class="col-span-6 block l:hidden">
+                        <h2 class="l:text-lg text-gray-700 font-900 mb-2">Vital Signs <span class="text-red-600">*</span></h2>
                     </div>
-                    <div class="col-span-6 md:col-span-2 ">
+                    <div class="col-span-6 l:col-span-2 ">
                         <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-900">Weight (kg)</label>
                         <input type="text" name="heart_rate" id="heart_rate" placeholder="e.g 70"
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
-                    <div class="col-span-6 md:col-span-2 ">
+                    <div class="col-span-6 l:col-span-2 ">
                         <label for="temperature" class="block mb-2 text-sm font-bold text-gray-900">Temperature</label>
                         <input type="text" name="temperature" id="temperature" placeholder="e.g 37.5"
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                     </div>
-                    <div class="col-span-6 md:col-span-2 ">
+                    <div class="col-span-6 l:col-span-2 ">
                         <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-900">Blood Pressure</label>
                         <input type="text" name="blood_pressure" id="blood_pressure" placeholder="e.g 120/80"
                             oninput="this.value = this.value.replace(/[^0-9/]/g, '')"

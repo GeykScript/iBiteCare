@@ -15,6 +15,8 @@ class InventoryItems extends Component
     public $perPage = 5;
     public $sortBy = 'created_at';
     public $sortDirection = 'ASC';
+    public $dateFrom = '';
+    public $dateTo = '';
 
     public function mount($itemId)
     {
@@ -35,6 +37,22 @@ class InventoryItems extends Component
 
         $this->sortBy = $sortByField;
         $this->sortDirection = 'DESC';
+    }
+
+    public function updatedDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->resetPage();
+    }
+    public function clearDateFilter()
+    {
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->resetPage();
     }
 
 
@@ -61,14 +79,24 @@ class InventoryItems extends Component
 
     public function render()
     {
+        // Base query
+        $query = Inventory_units::where('item_id', $this->itemId);
+
+        // Optional date range filtering
+        if ($this->dateFrom) {
+            $query->whereDate('expiration_date', '>=', $this->dateFrom);
+        }
+
+        if ($this->dateTo) {
+            $query->whereDate('expiration_date', '<=', $this->dateTo);
+        }
+
         return view('livewire.inventory-items', [
-            'inventoryItems' => Inventory_units::where('item_id', $this->itemId)
-            ->orderBy($this->sortBy, $this->sortDirection)
-            ->paginate($this->perPage),
-            'column' => Inventory_units::where('item_id', $this->itemId)->first()
+            'inventoryItems' => $query
+                ->orderBy($this->sortBy, $this->sortDirection)
+                ->paginate($this->perPage),
+
+            'column' => $query->first() // no second unnecessary query
         ]);
     }
-
-
-    
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ClinicUser;
 
 use App\Http\Controllers\Controller;
+use App\Models\Inventory_units;
 use Illuminate\Http\Request;
 use App\Models\Notifications;
 use App\Models\Messages;
@@ -41,6 +42,37 @@ class NotificationController extends Controller
                 ]);
             }
         }
+
+
+        $expired_units = Inventory_units::with('item')
+            ->where('expiration_date', '<', now()->toDateString())
+            ->get();
+
+        $count = $expired_units->count();
+
+        if ($count > 0) {
+
+            // Collect unique brand names
+            $brands = $expired_units
+                ->pluck('item.brand_name')   // adjust column name if different
+                ->unique()
+                ->implode(', ');
+
+            $existing_expired = Notifications::whereDate('created_at', now()->toDateString())
+                ->where('content', 'like', '%expired%')
+                ->first();
+
+            if (!$existing_expired) {
+                Notifications::insert([
+                    'content' => "Items from $brands have reached their expiration date. Total expired units: $count",
+                    'is_read' => 0,
+                    'links_to' => 3,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
 
         $notifications = Notifications::orderBy('created_at', 'desc')->get();
 

@@ -60,7 +60,8 @@ import {
         Sheet,
         Download,
         FileSliders,
-        Bell
+        Bell,
+        CalendarDays
         
     } 
      from 'lucide';
@@ -123,7 +124,8 @@ createIcons({
     Sheet,
     Download,
     FileSliders,
-    Bell
+    Bell,
+    CalendarDays
     
 }
 }); 

@@ -327,6 +327,9 @@ Route::get('/notifications', [NotificationController::class, 'getNotifications']
 
     Route::put('/clinic/supplies/manage/edit/quantity', [ManageInventorySupplies::class, 'updateQuantity'])
         ->name('clinic.supplies.manage.edit.quantity');
+
+    Route::put('/clinic/supplies/manage/edit/volume', [ManageInventorySupplies::class, 'editVaccine'])
+        ->name('clinic.supplies.manage.edit.volume');
     //-----------------END-----------------------//
 
 

@@ -49,7 +49,7 @@
                                 type="button"
                                 class="bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg px-4 py-2 w-full flex justify-between items-center">
                                 <span>
-                                    {{ $filter === 'all' ? 'All' : ($filter === 'today' ? 'Scheduled Today' : ($filter === 'sent' ? 'Sent Messages' : ($filter === 'unsent' ? 'Unsent Messages' : 'All'))) }}
+                                    {{ $filter === 'all' ? 'All' : ($filter === 'today' ? 'Scheduled Today' : ($filter === 'sent' ? 'Sent Messages' : ($filter === 'unsent' ? 'Not Sent Messages' : 'All'))) }}
                                 </span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -93,7 +93,7 @@
                                     @click="open=false"
                                     class="block w-full text-left px-4 py-2 text-sm 
                                     {{ $filter === 'unsent' ? 'bg-gray-800 text-white' : 'hover:bg-gray-100' }}">
-                                    Unsent Messages
+                                     Not Sent Messages
                                 </button>
                             </div>
                         </div>
@@ -248,8 +248,8 @@
                         <span class="text-green-500 font-bold p-2 px-5 rounded bg-green-200">{{ $message->status }}</span>
                         @elseif ($message->status == 'Pending')
                         <span class="text-orange-400 font-bold p-2 rounded bg-orange-100">{{ $message->status }}</span>
-                        @else
-                        <span class="text-red-400 font-bold p-2 rounded bg-red-100">{{ $message->status }}</span>
+                        @elseif ($message->status == 'Unsent')
+                        <span class="text-red-400 font-bold p-2 rounded bg-red-100">Not Sent</span>
                         @endif
                     </td>
                     @if ($message->status == 'Pending' || $message->status == 'Unsent')

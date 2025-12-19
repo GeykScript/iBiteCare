@@ -58,6 +58,7 @@
             </tr>
             <tr style="text-align:center; font-weight:bold; background-color:#91f4b0; border:1px solid #000;">
                 <th style="text-align:center; font-weight:bold; background-color:#91f4b0; border:1px solid #000; ">Item Name</th>
+                <th style="text-align:center; font-weight:bold; background-color:#91f4b0; border:1px solid #000;">Batch Number</th>
                 <th style="text-align:center; font-weight:bold; background-color:#91f4b0; border:1px solid #000;">Package Type</th>
                 <th style="text-align:center; font-weight:bold; background-color:#91f4b0; border:1px solid #000;">Packages Received</th>
                 <th style="text-align:center; font-weight:bold; background-color:#91f4b0; border:1px solid #000;">Items per Package</th>
@@ -83,6 +84,7 @@
             @endphp
             <tr style="text-align:center; border:1px solid #000;">
                 <td>{{ $data->item->brand_name ?? 'N/A' }}</td>
+                <td>{{ $data->batch_no ?? 'N/A' }}</td>
                 <td>{{ $data->package_type }}</td>
                 <td>{{ $data->packages_received }}</td>
                 <td>{{ $data->items_per_package }} pcs</td>
@@ -97,7 +99,7 @@
                 <th colspan="9" style="border:none;">&nbsp;</th>
             </tr>
             <tr style="font-weight:bold; background-color:#ffa9a9; border:1px solid #000;">
-                <td colspan="2" style="font-weight:bold; background-color:#ffa9a9; border:1px solid #000; ">TOTAL</td>
+                <td colspan="3" style="font-weight:bold; background-color:#ffa9a9; border:1px solid #000; text-align:center; ">TOTAL</td>
                 <td style="font-weight:bold; background-color:#ffa9a9; border:1px solid #000; ">{{ $totalPackages }}</td>
                 <td style="font-weight:bold; background-color:#ffa9a9; border:1px solid #000; "></td>
                 <td style="font-weight:bold; background-color:#ffa9a9; border:1px solid #000; ">{{ $totalUnits }}</td>
@@ -109,7 +111,7 @@
                 <th colspan="9" style="border:none;">&nbsp;</th>
             </tr>
 
-         
+
         </tbody>
     </table>
     @endif

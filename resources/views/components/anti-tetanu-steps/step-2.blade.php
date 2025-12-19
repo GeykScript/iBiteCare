@@ -81,9 +81,9 @@
                                                 @endphp
 
                                                 <div
-                                                    @click="selected = '{{ $vaccine->id }}'; selectedLabel = '#{{ $vaccine->package_number }} ({{ $formattedVolume}} ml)'; volume = '{{ $formattedVolume }}'; open = false"
+                                                    @click="selected = '{{ $vaccine->id }}'; selectedLabel = '{{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }}'; volume = '{{ $formattedVolume }}'; open = false"
                                                     class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                    #{{ $vaccine->package_number }} ({{ $formattedVolume }} ml)
+                                                    {{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }} - ({{ $formattedVolume }} ml)
                                                 </div>
                                                 @endforeach
                                             </div>

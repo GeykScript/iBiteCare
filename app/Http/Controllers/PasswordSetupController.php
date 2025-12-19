@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Patient;
 
 class PasswordSetupController extends Controller
 {
@@ -36,6 +37,15 @@ class PasswordSetupController extends Controller
             'auth_provider'    => $providerData['auth_provider'],
             'auth_provider_id' => $providerData['auth_provider_id'],
         ]);
+        // get email to link patient record
+        $inputEmail = $providerData['social_email'];
+
+        // Link patient record to user account if email matches 
+        $patient = Patient::where('email', $inputEmail)->first();
+
+        if ($patient && $patient->email === $user->email && empty($patient->account_id)) {
+            $patient->update(['account_id' => $user->id]);
+        }
 
         Auth::login($user);
 

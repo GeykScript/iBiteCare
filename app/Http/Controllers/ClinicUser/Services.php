@@ -131,10 +131,10 @@ class Services extends Controller
          'service_fee'  => 'required|numeric|min:0',
          'description'  => 'required|string|max:1000',
          'discount'     => 'nullable|numeric|min:0',
-         // 'newDay'       => 'array|nullable',
-         // 'newDay.*'     => 'nullable|integer|min:0',
-         // 'newLabel'     => 'array|nullable',
-         // 'newLabel.*'   => 'nullable|string|max:255',
+         'newDay'       => 'array|nullable',
+         'newDay.*'     => 'nullable|integer|min:0',
+         'newLabel'     => 'array|nullable',
+         'newLabel.*'   => 'nullable|string|max:255',
       ]);
 
       // Save service
@@ -147,17 +147,17 @@ class Services extends Controller
       ]);
 
       // If schedules were added
-      // if (!empty($validated['newDay']) && !empty($validated['newLabel'])) {
-      //    foreach ($validated['newDay'] as $index => $dayOffset) {
-      //       if ($dayOffset !== null && !empty($validated['newLabel'][$index])) {
-      //          ClinicServicesSchedules::create([
-      //             'service_id' => $service->id,
-      //             'day_offset' => $dayOffset,
-      //             'label'      => $validated['newLabel'][$index],
-      //          ]);
-      //       }
-      //    }
-      // }
+      if (!empty($validated['newDay']) && !empty($validated['newLabel'])) {
+         foreach ($validated['newDay'] as $index => $dayOffset) {
+            if ($dayOffset !== null && !empty($validated['newLabel'][$index])) {
+               ClinicServicesSchedules::create([
+                  'service_id' => $service->id,
+                  'day_offset' => $dayOffset,
+                  'label'      => $validated['newLabel'][$index],
+               ]);
+            }
+         }
+      }
 
       return redirect()->back()->with('success', 'New service added successfully!');
    }

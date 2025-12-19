@@ -120,160 +120,286 @@
 
                 <!-- Main Content -->
                 <div class="grid grid-cols-4 p-4  md:px-10 ">
-                    <div class="col-span-4 md:col-span-4 flex justify-end  px-2">
+                    <div class="col-span-4 md:col-span-4 flex flex-col l:flex-row  gap-2 justify-end  px-2">
+                        <button
+                            onclick="document.getElementById('calendar_view').showModal()"
+                            class="text-sky-600 px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="calendar-days" class="w-5 h-5"></i>
+                            Calendar View</button>
                         <button
                             onclick="document.getElementById('addAppointment').showModal()"
-                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>Add Appointment</button>
+                            class="bg-red-600 text-white px-7 py-2 rounded-lg flex items-center gap-3 focus:outline-none"><i data-lucide="plus" class="w-5 h-5"></i>
+                            Add Appointment</button>
                     </div>
 
                     <!-- // Add Appointment Modal -->
-                    <dialog id="addAppointment" class="p-8 rounded-lg shadow-lg w-full max-w-2xl backdrop:bg-black/30 focus:outline-none ">
+                    <dialog id="calendar_view" class="p-8 rounded-lg shadow-lg w-full max-w-5xl backdrop:bg-black/30 focus:outline-none ">
                         <!-- close modal button  -->
                         <div class="w-full flex justify-end mb-5">
-                            <button onclick="document.getElementById('addAppointment').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                            <button onclick="document.getElementById('calendar_view').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
                         <!-- create  sms message all form  -->
-                        <div>
-                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
-                                <div class="col-span-12 flex items-center gap-4 mb-4">
-                                    <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
-                                    <div class="flex flex-col">
-                                        <h2 class="text-xl font-bold ">Make Appointment</h2>
-                                        <p class="text-gray-600 text-sm">Fill out the form below to schedule a new appointment.</p>
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-4 mb-4 l:px-12 px-0 ">
+                                <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
+                                <div class="flex flex-col">
+                                    <h2 class="text-xl font-bold "> Appointment Schedules</h2>
+                                    <p class="text-gray-600 text-sm">List of Appointments this month.</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center overflow-y-auto">
+
+                                <div class="col-span-12 mx-auto bg-white shadow-md rounded-xl p-4 sm:p-6 my-4 sm:my-4 flex flex-col items-center justify-center ">
+                                    <div>
+                                        <h3 class="text-lg text-gray-900 font-semibold mb-2 text-center"> {{ \Carbon\Carbon::parse($datesInMonth[0])->format('F Y') }} </h3>
+                                    </div>
+
+                                    @php
+                                    $firstDayOfMonth = \Carbon\Carbon::parse($datesInMonth[0])->startOfMonth();
+                                    $lastDayOfMonth = \Carbon\Carbon::parse($datesInMonth[0])->endOfMonth();
+
+                                    // Prepare weeks for the current month only
+                                    $weeks = [];
+                                    $week = [];
+
+                                    // Fill empty cells at the start if month doesn't start on Monday
+                                    $startWeekDay = $firstDayOfMonth->dayOfWeekIso; // 1 = Monday, 7 = Sunday
+                                    for ($i = 1; $i < $startWeekDay; $i++) {
+                                        $week[]=null; // empty cell
+                                        }
+
+                                        // Add all days of the month
+                                        for ($day=$firstDayOfMonth->copy(); $day <= $lastDayOfMonth; $day->addDay()) {
+                                            $week[] = $day->copy();
+
+                                            if (count($week) === 7) {
+                                            $weeks[] = $week;
+                                            $week = [];
+                                            }
+                                            }
+
+                                            // Add last week if it has remaining days
+                                            if (count($week) > 0) {
+                                            while (count($week) < 7) {
+                                                $week[]=null; // empty cell at end
+                                                }
+                                                $weeks[]=$week;
+                                                }
+                                                @endphp
+
+                                                <div class="overflow-auto " style="max-height: 600px; max-width: 100%;">
+                                                <table class="min-w-max border-collapse border border-white">
+                                                    <thead class="bg-gray-800 text-white sticky top-0">
+                                                        <tr>
+                                                            @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $day)
+                                                            <th class="border border-gray-800 p-6">{{ $day }}</th>
+                                                            @endforeach
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($weeks as $week)
+                                                        <tr>
+                                                            @foreach($week as $day)
+                                                            @if($day)
+                                                            @php
+                                                            $dateStr = $day->format('Y-m-d');
+                                                            $isSunday = $day->dayOfWeekIso === 7;
+
+                                                            // Filter appointments for this day
+                                                            $appointmentsForDate = $scheduledAppointments->filter(function($a) use ($dateStr) {
+                                                            return \Carbon\Carbon::parse($a->appointment_date)->format('Y-m-d') === $dateStr;
+                                                            });
+
+                                                            $appointmentsByTime = $appointmentsForDate->groupBy('appointment_time');
+                                                            @endphp
+                                                            <td class="border border-gray-800 p-2 align-top text-sm min-w-[120px] 
+                                            @if($isSunday) bg-red-100 
+                                            @elseif($appointmentsByTime->isEmpty()) bg-green-200
+                                            @else bg-sky-200 
+                                            @endif">
+                                                                <div class="w-10 h-10 mb-3 border border-gray-800 rounded-full flex items-center justify-center">
+                                                                    <div class="font-bold">{{ $day->format('d') }}</div>
+                                                                </div>
+
+
+                                                                @if($isSunday)
+                                                                <div class="text-red-500 font-semibold">Not Available</div>
+                                                                @elseif($appointmentsByTime->isEmpty())
+                                                                <div class="text-gray-800 font-semibold">Available</div>
+                                                                @else
+                                                                @foreach($appointmentsByTime->sortKeys() as $time => $appointmentsAtTime)
+                                                                @php
+                                                                $count = $appointmentsAtTime->count();
+                                                                $max = 5;
+                                                                @endphp
+                                                                <div class="text-sky-600 font-semibold">
+                                                                    {{ \Carbon\Carbon::parse($time)->format('g:i A') }} - {{ $count }}/{{ $max }}
+                                                                </div>
+                                                                @endforeach
+                                                                @endif
+                                                            </td>
+
+                                                            @else
+                                                            <td class="border border-gray-800 p-2 bg-gray-100"></td>
+                                                            @endif
+                                                            @endforeach
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+                </div>
+                </dialog>
+                <dialog id="addAppointment" class="p-8 rounded-lg shadow-lg w-full max-w-2xl backdrop:bg-black/30 focus:outline-none ">
+                    <!-- close modal button  -->
+                    <div class="w-full flex justify-end mb-5">
+                        <button onclick="document.getElementById('addAppointment').close()" class="focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    </div>
+                    <!-- create  sms message all form  -->
+                    <div>
+                        <div class="grid grid-cols-12 md:px-8 gap-2 flex flex-col items-center justify-center ">
+                            <div class="col-span-12 flex items-center gap-4 mb-4">
+                                <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
+                                <div class="flex flex-col">
+                                    <h2 class="text-xl font-bold ">Make Appointment</h2>
+                                    <p class="text-gray-600 text-sm">Fill out the form below to schedule a new appointment.</p>
+                                </div>
+                            </div>
+
+                            <form action="{{ route('clinic.appointments.book') }}" id="appointmentForm" method="POST" class="col-span-12">
+                                @csrf
+                                <div class="grid grid-cols-12 gap-2 ">
+                                    <div class="col-span-12 md:col-span-6">
+                                        <label for="name" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Name</label>
+                                        <input type="text" name="name" id="name" placeholder="Name" autocomplete="given-name"
+                                            class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500"
+                                            required>
+                                        <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Phone Number</label>
+                                        <input type="text" name="contact_number" id="contact_number" required placeholder="e.g 09xx xxx xxxx" maxlength="13"
+                                            class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
+
+                                        <label for="email" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Email Address <span class="font-normal">( Optional )</span></label>
+                                        <input type="email" name="email" id="email" autocomplete="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                            class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
+
+                                    </div>
+                                    <div class="col-span-12 md:col-span-6">
+                                        <div class="grid grid-cols-2 gap-2 mt-2">
+                                            <div class="col-span-2 md:col-span-1 flex flex-col">
+                                                <label for="appointment_date" class="text-sm font-medium text-gray-900 mb-2">Date</label>
+                                                <input
+                                                    type="date"
+                                                    id="appointment_date"
+                                                    name="appointment_date" required
+                                                    class="text-sm border border-gray-300 rounded-lg  p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                            </div>
+
+                                            <div class="col-span-2 md:col-span-1 flex flex-col">
+                                                <label for="appointment_time" class="text-sm font-medium text-gray-900 mb-2">Time</label>
+                                                <input
+                                                    type="time"
+                                                    id="appointment_time"
+                                                    name="appointment_time" required
+                                                    class="text-sm border border-gray-300 rounded-lg p-2.5 focus:ring-sky-500 focus:border-sky-500">
+                                            </div>
+                                        </div>
+                                        <div x-data="{ open: false, selected: null, selectedLabel: 'Select...', }" class="relative mt-2">
+                                            <p class="block text-sm font-medium text-gray-900">Type of Treatment</p>
+
+                                            <!-- Hidden input for form submission -->
+                                            <input type="hidden" name="treatment_type" required x-model="selected">
+
+                                            <!-- Button / Display -->
+                                            <button type="button"
+                                                @click="open = !open"
+                                                id="treatment_type_dropdown_button"
+                                                class="mt-2 w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500 transition">
+                                                <span x-text="selectedLabel"></span>
+                                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                                            </button>
+
+                                            <!-- Dropdown list -->
+                                            <div x-show="open"
+                                                @click.outside="open = false"
+                                                class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto scrollbar-hidden">
+                                                @foreach($services as $service)
+                                                <div
+                                                    @click="selected = '{{ $service->name }}'; selectedLabel = '{{ $service->name }}'; open = false"
+                                                    class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
+                                                    {{ $service->name }}
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mt-3">
+                                            <p class="text-sm font-medium text-gray-900 ">Booking Channel</p>
+                                            <div class="flex flex-col mt-3 px-4">
+                                                <label class="flex items-center space-x-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="channel"
+                                                        value="Phone Call" required
+                                                        class="text-sky-600 focus:ring-sky-500">
+                                                    <span>Phone Call</span>
+                                                </label>
+
+                                                <label class="flex items-center space-x-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="channel"
+                                                        value="Text Message"
+                                                        class="text-sky-600 focus:ring-sky-500">
+                                                    <span>Text Message</span>
+                                                </label>
+                                                <label class="flex items-center space-x-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="channel"
+                                                        value="Walk-In"
+                                                        class="text-sky-600 focus:ring-sky-500">
+                                                    <span>Walk-In</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-12">
+                                        <label for="notes" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Notes <span class="font-normal">( Optional )</span></label>
+                                        <textarea name="notes" id="notes" rows="3" placeholder="Additional notes..."
+                                            class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500"></textarea>
                                     </div>
                                 </div>
 
-                                <form action="{{ route('clinic.appointments.book') }}" id="appointmentForm" method="POST" class="col-span-12">
-                                    @csrf
-                                    <div class="grid grid-cols-12 gap-2 ">
-                                        <div class="col-span-12 md:col-span-6">
-                                            <label for="name" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Name</label>
-                                            <input type="text" name="name" id="name" placeholder="Name" autocomplete="given-name"
-                                                class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500"
-                                                required>
-                                            <label for="contact_number" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Phone Number</label>
-                                            <input type="text" name="contact_number" id="contact_number" required placeholder="e.g 09xx xxx xxxx" maxlength="13"
-                                                class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
-
-                                            <label for="email" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Email Address <span class="font-normal">( Optional )</span></label>
-                                            <input type="email" name="email" id="email" autocomplete="email" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                                                class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500">
-
-                                        </div>
-                                        <div class="col-span-12 md:col-span-6">
-                                            <div class="grid grid-cols-2 gap-2 mt-2">
-                                                <div class="col-span-2 md:col-span-1 flex flex-col">
-                                                    <label for="appointment_date" class="text-sm font-medium text-gray-900 mb-2">Date</label>
-                                                    <input
-                                                        type="date"
-                                                        id="appointment_date"
-                                                        name="appointment_date" required
-                                                        class="text-sm border border-gray-300 rounded-lg  p-2.5 focus:ring-sky-500 focus:border-sky-500">
-                                                </div>
-
-                                                <div class="col-span-2 md:col-span-1 flex flex-col">
-                                                    <label for="appointment_time" class="text-sm font-medium text-gray-900 mb-2">Time</label>
-                                                    <input
-                                                        type="time"
-                                                        id="appointment_time"
-                                                        name="appointment_time" required
-                                                        class="text-sm border border-gray-300 rounded-lg p-2.5 focus:ring-sky-500 focus:border-sky-500">
-                                                </div>
-                                            </div>
-                                            <div x-data="{ open: false, selected: null, selectedLabel: 'Select...', }" class="relative mt-2">
-                                                <p class="block text-sm font-medium text-gray-900">Type of Treatment</p>
-
-                                                <!-- Hidden input for form submission -->
-                                                <input type="hidden" name="treatment_type" required x-model="selected">
-
-                                                <!-- Button / Display -->
-                                                <button type="button"
-                                                    @click="open = !open"
-                                                    id="treatment_type_dropdown_button"
-                                                    class="mt-2 w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 text-left bg-white flex justify-between items-center text-sm focus:ring-sky-500 focus:border-sky-500 transition">
-                                                    <span x-text="selectedLabel"></span>
-                                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
-                                                </button>
-
-                                                <!-- Dropdown list -->
-                                                <div x-show="open"
-                                                    @click.outside="open = false"
-                                                    class="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto scrollbar-hidden">
-                                                    @foreach($services as $service)
-                                                    <div
-                                                        @click="selected = '{{ $service->name }}'; selectedLabel = '{{ $service->name }}'; open = false"
-                                                        class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                        {{ $service->name }}
-                                                    </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                            <div class="flex flex-col mt-3">
-                                                <p class="text-sm font-medium text-gray-900 ">Booking Channel</p>
-                                                <div class="flex flex-col mt-3 px-4">
-                                                    <label class="flex items-center space-x-2">
-                                                        <input
-                                                            type="radio"
-                                                            name="channel"
-                                                            value="Phone Call" required
-                                                            class="text-sky-600 focus:ring-sky-500">
-                                                        <span>Phone Call</span>
-                                                    </label>
-
-                                                    <label class="flex items-center space-x-2">
-                                                        <input
-                                                            type="radio"
-                                                            name="channel"
-                                                            value="Text Message"
-                                                            class="text-sky-600 focus:ring-sky-500">
-                                                        <span>Text Message</span>
-                                                    </label>
-                                                    <label class="flex items-center space-x-2">
-                                                        <input
-                                                            type="radio"
-                                                            name="channel"
-                                                            value="Walk-In"
-                                                            class="text-sky-600 focus:ring-sky-500">
-                                                        <span>Walk-In</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-span-12">
-                                            <label for="notes" class="block mb-2 text-sm font-bold text-gray-900 mt-2">Notes <span class="font-normal">( Optional )</span></label>
-                                            <textarea name="notes" id="notes" rows="3" placeholder="Additional notes..."
-                                                class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-0 focus:border-sky-500"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex justify-end gap-2 mt-6">
-                                        <button type="submit" id="submitAppointmentBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
-                                            Submit
-                                        </button>
-                                        <button type="button" onclick="document.getElementById('addAppointment').close()"
-                                            class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md">
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                <div class="flex justify-end gap-2 mt-6">
+                                    <button type="submit" id="submitAppointmentBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
+                                        Submit
+                                    </button>
+                                    <button type="button" onclick="document.getElementById('addAppointment').close()"
+                                        class="px-6 py-2 bg-gray-100 text-gray-500 rounded-lg text-md">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </dialog>
-                    <div class="col-span-4">
-                        <livewire:appointment-table />
                     </div>
-
+                </dialog>
+                <div class="col-span-4">
+                    <livewire:appointment-table />
                 </div>
-            </div>
-        </section>
 
-        <!-- Modals For Logout -->
-        <x-logout-modal />
-        <script>
-            const submitAppointmentBtn = document.getElementById("submitAppointmentBtn");
-            document.getElementById('appointmentForm').addEventListener('submit', function() {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = `
+            </div>
+    </div>
+    </section>
+
+    <!-- Modals For Logout -->
+    <x-logout-modal />
+    <script>
+        const submitAppointmentBtn = document.getElementById("submitAppointmentBtn");
+        document.getElementById('appointmentForm').addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
             <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
@@ -281,8 +407,8 @@
             <span>Loading...</span>
         `;
 
-            });
-        </script>
+        });
+    </script>
 
 </body>
 

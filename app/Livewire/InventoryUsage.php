@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 class InventoryUsage extends Component
 {
     use WithPagination;
-    public $perPage = 5 ;
+    public $perPage = 10;
     public $search = '';
 
     public $sortBy = 'created_at';
@@ -60,7 +60,7 @@ class InventoryUsage extends Component
     public function render()
     {
         $query = Inventory_usage::query()
-            ->select('inventory_usage.*', 'inventory_items.brand_name', 'inventory_items.category', 'users.first_name', 'users.last_name')
+            ->select('inventory_usage.*', 'inventory_items.brand_name', 'inventory_items.category', 'inventory_units.batch_no', 'users.first_name', 'users.last_name')
             ->leftJoin('inventory_units', 'inventory_units.id', '=', 'inventory_usage.unit_id')
             ->leftJoin('inventory_items', 'inventory_items.id', '=', 'inventory_units.item_id')
             ->leftJoin('users', 'users.id', '=', 'inventory_usage.used_by');
@@ -70,6 +70,7 @@ class InventoryUsage extends Component
             $query->where(function ($q) {
                 $q->where('inventory_items.brand_name', 'like', '%' . $this->search . '%')
                     ->orWhere('inventory_items.category', 'like', '%' . $this->search . '%')
+                    ->orWhere('inventory_units.batch_no', 'like', '%' . $this->search . '%')
                     ->orWhere('users.first_name', 'like', '%' . $this->search . '%')
                     ->orWhere('users.last_name', 'like', '%' . $this->search . '%');
             });

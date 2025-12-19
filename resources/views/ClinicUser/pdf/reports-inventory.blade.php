@@ -142,6 +142,8 @@
             <tr>
                 <th>#</th>
                 <th>Item Name</th>
+                <th>Batch Number</th>
+
                 <th>Package Type</th>
                 <th>Packages Received</th>
                 <th>Items per Package</th>
@@ -168,6 +170,8 @@
             <tr>
                 <td>{{ $i++ }}</td>
                 <td>{{ $data->item->brand_name ?? 'N/A' }}</td>
+                <td>{{ $data->batch_no ?? 'N/A' }}</td>
+
                 <td>{{ $data->package_type }}</td>
                 <td>{{ $data->packages_received }}</td>
                 <td>{{ $data->items_per_package }} pcs</td>
@@ -180,7 +184,7 @@
             @endforeach
 
             <tr style="font-weight: bold; background-color: #ffa9a9;">
-                <td colspan="3">TOTAL</td>
+                <td colspan="4">TOTAL</td>
                 <td>{{ $totalPackages }}</td>
                 <td></td>
                 <td>{{ $totalUnits }}</td>

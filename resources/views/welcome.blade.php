@@ -71,54 +71,64 @@
 </style>
 
 <nav class="bg-white border-gray-200 shadow-lg relative">
-    <div class="w-full flex flex-wrap items-center justify-between lg:px-12  p-4">
+    <div class="w-full flex items-center justify-between p-4 lg:px-12">
 
-        <!-- Logo & Brand -->
-        <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse hover:outline-none focus:outline-none">
+        <!-- Logo -->
+        <a href="{{ url('/') }}" class="flex items-center space-x-3 hover:outline-none focus:outline-none">
             <img src="{{ asset('drcare_logo.png') }}" class="h-10 w-10" alt="Dr.Care Logo" />
-            <span class="font-900 text-2xl text-[#FF000D] whitespace-nowrap">Dr.Care</span>
+            <span class="font-900 text-2xl text-[#FF000D]">Dr.Care</span>
         </a>
 
-        <!-- Login/Register & Toggle -->
-        <div class="flex lg:order-2 space-x-2 rtl:space-x-reverse">
+        <!-- Right Side Buttons -->
+        <div class="flex items-center space-x-2 lg:order-2">
+
             @if (Route::has('login'))
             @auth
             <a href="{{ url('/dashboard') }}" class="hidden lg:inline-block bg-gray-800 text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-700">
                 Dashboard
             </a>
             @else
-            <a href="{{ route('login') }}" class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-500">
-                Log in
+            <!-- Login (Visible Desktop + Mobile) -->
+            <a href="{{ route('login') }}" class="bg-gray-800 text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-700">
+                Sign in
             </a>
-            @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="bg-gray-800 text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-700 hidden lg:inline-block">
-                Sign up
-            </a>
-            @endif
+
             @endauth
             @endif
+            <!-- Admin Login (Visible Desktop Only) -->
+            <a href="{{ route('clinic.login') }}" class="hidden lg:inline-block bg-white font-semibold text-gray-800 text-sm px-4 py-2 rounded-lg hover:border border-gray-800">
+                Login as Clinic Personnel
+            </a>
 
-            <!-- Hamburger Toggle Button -->
+            <!-- Hamburger -->
             <button id="menu-toggle" type="button"
-                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                aria-controls="navbar-dr-care" aria-expanded="false">
-                <span class="sr-only">Open main menu</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="inline-flex items-center p-2 w-10 h-10 lg:hidden text-gray-500 rounded-lg hover:bg-gray-100 focus:ring-2 focus:ring-gray-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
 
-        <!-- Navigation Links -->
+        <!-- Mobile Menu -->
         <div id="navbar-dr-care"
-            class="hidden absolute top-full left-0 z-50 w-full  flex-col items-start rounded-b-lg bg-white border-t lg:static lg:flex lg:flex-row lg:items-center  lg:w-auto lg:border-0">
-            <ul
-                class="flex flex-col w-full font-medium  p-4 lg:p-0 lg:flex-row lg:space-x-14 lg:text-lg">
-                <li><a href="#home" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
-                <li><a href="#about" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">About</a></li>
-                <li><a href="#services" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Services</a></li>
-                <li><a href="#contact" class="block py-2 px-4 text-black hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Contact</a></li>
+            class="hidden absolute top-full left-0 w-full bg-white border-t rounded-b-lg z-50 lg:static lg:flex lg:w-auto lg:border-0">
+
+            <ul class="flex flex-col w-full font-medium p-4 lg:p-0 lg:flex-row lg:space-x-14 lg:text-lg">
+
+                <li><a href="#home" class="block py-2 px-4 hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Home</a></li>
+                <li><a href="#about" class="block py-2 px-4 hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">About</a></li>
+                <li><a href="#services" class="block py-2 px-4 hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Services</a></li>
+                <li><a href="#contact" class="block py-2 px-4 hover:text-[#EB1C26] hover:underline underline-offset-8 decoration-[#EB1C26]">Contact</a></li>
+
+                <!-- Admin Login for MOBILE -->
+                <li class="lg:hidden">
+                    <a href="{{ route('clinic.login') }}" class="block bg-white text-gray-800  px-4 py-2 mt-2 rounded-lg hover:underline underline-offset-8 decoration-gray-800">
+                        Login as Clinic Personnel
+
+                    </a>
+                </li>
+
             </ul>
         </div>
 
@@ -236,23 +246,23 @@
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i data-lucide="philippine-peso" class="w-5 h-5 text-red-500 " stroke-width="3"></i>
-                                    <h1 class="text-sm lg:text-xl font-900 text-red-500" >{{ $service->discounted_service_fee }} </h1>
+                                    <h1 class="text-sm lg:text-xl font-900 text-red-500">{{ $service->discounted_service_fee }} </h1>
                                 </div>
                             </div>
                             @else
                             <div class=" flex gap-1 items-center">
-                                        <i data-lucide="philippine-peso" class="w-5 h-5 text-red-500 " stroke-width="3"></i>
-                                        <h1 class="text-sm lg:text-xl font-900 text-red-500">{{ $service->service_fee }}</h1>
-                                </div>
-                                @endif
+                                <i data-lucide="philippine-peso" class="w-5 h-5 text-red-500 " stroke-width="3"></i>
+                                <h1 class="text-sm lg:text-xl font-900 text-red-500">{{ $service->service_fee }}</h1>
                             </div>
-                            @endforeach
+                            @endif
                         </div>
                         @endforeach
                     </div>
+                    @endforeach
                 </div>
-
             </div>
+
+        </div>
     </section>
 
     <section id="contact">
@@ -347,6 +357,42 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!4v1761314808558!6m8!1m7!1su92fSLmnrPRP7oG_CpWi4g!2m2!1d13.19259527591199!2d123.5984813759736!3f247.298179839878!4f8.970605024564918!5f0.7820865974627469" width="400" height="300" style="border:0;" allow="accelerometer; gyroscope; magnetometer; fullscreen"
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
+
+        </div>
+    </section>
+
+    <section class="bg-white">
+        <div class="col-span-2 flex flex-col bg-white gap-2 my-10">
+            <div class="flex flex-col ">
+                <div class="w-full  l:flex-row flex flex-col-reverse ">
+                    <div class="w-[500px]"></div>
+                    <div class="flex flex-col gap-2 bg-[#C5453C]  rounded-l-lg lg:p-6 p-4">
+                        <h1 class="text-center font-900 text-lg text-white">MGA DAPAT TANDAAN</h1>
+                        <ul class="list-disc text-sm text-white p-4 px-10 space-y-4">
+                            <li>BAWAL uminom ng alak ng 30 days.</li>
+                            <li>BAWAL kumain ng manok, itlog, hipon, bagoong, patis at malansang pagkain.</li>
+                            <li>Kung tuturukan ng ERIG, iwasan ang Frozen Foods, fishy-smelling foods, canned foods, noodles, chocolate, peanut at junk foods.</li>
+                            <li>Panatilihing tuyo at iwasang galawin ang sugat sa loob ng 8 oras. Pagkatapos hugasan ang sugat ng sabon at tubig at lagyan ng betadine pagkatapos itong patuyuin. Takpan ang sugat gamit ang gasa sa loob ng 24–48 oras.</li>
+                            <li>Magpacheck-up kung lumalala ang pamamaga, pamumula o kirot, pagkakaroon ng nana ang sugat o may mabahong amoy ang sugat.</li>
+                            <li>Maaaring mamaga ang lugar na pinagturukan, i-warm compress ito. Kapag inilagnat, maaaring uminom ng paracetamol kung walang allergy sa paracetamol.</li>
+                        </ul>
+                    </div>
+                    <div class="w-full flex justify-center l:justify-start">
+                        <img src="{{ asset('images/3.png') }}"
+                            alt="Person Reminding"
+                            class="w-[18rem] rounded-r-lg object-contain">
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex justify-center items-center gap-4 bg-white">
+                <img src="{{ asset('images/Logo-DOH.webp') }}"
+                    alt="Person Reminding"
+                    class="w-32 rounded-lg ">
+                <img src="{{ asset('images/rabies-free.jpg') }}"
+                    alt="Person Reminding"
+                    class="w-32 rounded-lg ">
+            </div>
         </div>
     </section>
 
@@ -396,7 +442,6 @@
                 </div>
             </div>
             <div class="col-span-6 mt-5 text-center text-gray-700 lg:mt-20 mt-16">
-                <a href="{{ route('clinic.login') }}" class="text-lg text-gray-600 hover:text-red-600 font-bold">Admin Login</a>
                 <p class="text-xs mt-4">© 2025 Dr.Care Guinobatan. All rights reserved.</p>
             </div>
 
@@ -411,20 +456,27 @@
 </body>
 
 <script>
-    const toggleButton = document.getElementById('menu-toggle');
-    const menu = document.getElementById('navbar-dr-care');
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.getElementById('menu-toggle');
+        const menu = document.getElementById('navbar-dr-care');
 
-    toggleButton.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
+        if (!toggleButton || !menu) return;
 
-    document.querySelectorAll('#navbar-dr-care a').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth < 768) {
-                menu.classList.add('hidden');
-            }
+        // Toggle mobile menu
+        toggleButton.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking a link on mobile
+        document.querySelectorAll('#navbar-dr-care a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    menu.classList.add('hidden');
+                }
+            });
         });
     });
 </script>
+
 
 </html>

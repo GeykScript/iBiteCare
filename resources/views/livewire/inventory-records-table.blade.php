@@ -118,8 +118,9 @@
             <thead class="text-md text-white  bg-gray-800 ">
                 <tr class="px-4">
                     <th scope="col" class="px-6 md:px-2 py-4 text-center rounded-l-lg hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('id')">ID</th>
-                    <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('category')">Category</th>
                     <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('brand_name')">Brand Name</th>
+                    <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('category')">Category</th>
+
                     <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200" wire:click="setSortBy('product_type')">Product Type</th>
                     <th scope="col" class="px-6 md:px-2 py-4 text-center hover:cursor-pointer hover:text-gray-200  hidden md:table-cell" wire:click="setSortBy('immunity_type')">Immunity Type</th>
                     <th scope="col" class="px-6 md:px-2 py-4 text-center  hidden md:table-cell">Total Unit</th>
@@ -141,22 +142,11 @@
                 @foreach ($supplies as $supply)
                 <tr wire:key="{{ $supply->id }}" class="border-b dark:border-gray-700">
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $supply->id }}</td>
-                    <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">
-                        @if (strtolower($supply->category) === 'vaccine')
-                        <span class="text-blue-500 font-bold p-2 rounded bg-blue-100">{{ $supply->category }}</span>
-                        @elseif (strtolower($supply->category) === 'supply')
-                        <span class="text-orange-500 font-bold p-2 rounded bg-orange-100">{{ $supply->category }}</span>
-                        @elseif (strtolower($supply->category) === 'anti-tetanus')
-                        <span class="text-yellow-500 font-bold p-2 rounded bg-yellow-100">{{ $supply->category }}</span>
-                        @elseif (strtolower($supply->category) === 'booster')
-                        <span class="text-green-500 font-bold p-2 rounded bg-green-100">{{ $supply->category }}</span>
-                        @elseif (strtolower($supply->category) === 'rig')
-                        <span class="text-red-500 font-bold p-2 rounded bg-red-100">{{ $supply->category }}</span>
-                        @elseif (strtolower($supply->category) === 'equipment')
-                        <span class="text-stone-500 p-2 rounded bg-stone-100">{{ $supply->category }}</span>
-                        @endif
-                    </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">{{ $supply->brand_name }}</td>
+
+                    <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900">
+                        <span class="text-gray-900 p-2 rounded">{{ $supply->category }}</span>
+                    </td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 ">{{ $supply->product_type }}</td>
                     <td class="px-6 md:px-2 py-4 text-center font-medium text-gray-900 hidden md:table-cell">{{ $supply->immunity_type ? :'n/a' }}</td>
                     <td class="text-center font-medium text-gray-900 hidden md:table-cell ">{{ $supply->total_units}}</td>

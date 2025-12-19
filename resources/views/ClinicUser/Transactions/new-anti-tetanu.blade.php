@@ -21,74 +21,17 @@
 <body>
     <div class="flex h-screen">
 
-        <!-- Sidebar -->
-        <div id="sidebar"
-            class="side-bar w-56 fixed inset-y-0 bg-white text-black flex flex-col border-r border-gray-300 z-50 transform -translate-x-full md:translate-x-0"
-            style="height: calc(var(--vh, 1vh) * 100);">
 
-            <div class="absolute top-20 right-[-0.6rem] ">
-                <button id="closeSidebar" class="text-white text-2xl hidden md:hidden">
-                    <i data-lucide="circle-chevron-right" class="w-6 h-6 stroke-white fill-[#FF000D]"></i>
-                </button>
-            </div>
-            <!-- Logo -->
-            <div class="flex items-center">
-                <img src="{{ asset('images/nav-pic.png') }}" alt="Navigation Logo" class="hidden md:block w-full">
-            </div>
-            <!-- Navigation (scrollable) -->
-            <nav class="flex-1 overflow-y-auto min-h-0 px-4 py-0 text-md scrollbar-hidden mt-20 md:mt-0">
-                <ul class="space-y-0.5">
-                    <li class="flex items-center px-2 mb-4 block md:hidden">
-                        <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-14 h-14">
-                        <a href="{{ route('clinic.dashboard') }}" class="block px-2 py-2 rounded text-2xl text-[#FF000D] font-900 flex items-center gap-3">Dr.Care </a>
-                    </li>
-
-                    <li><a href="{{ route('clinic.dashboard') }}" class="mt-3 block px-4 py-2 rounded hover:bg-gray-900 hover:text-white  flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>Dashboard</a></li>
-                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Patient Management</p>
-                    <li><a href="{{ route('clinic.patients')}}" class="block px-4 py-2 rounded bg-gray-900 text-white flex items-center gap-3"><i data-lucide="users" class="w-5 h-5"></i>Patients</a></li>
-                    <li><a href="{{ route('clinic.appointments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="notebook-pen" class="w-5 h-5"></i>Appointments</a></li>
-                    <li><a href="{{ route('clinic.messages') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="message-square-text" class="w-5 h-5"></i>Messages</a></li>
-
-                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">Clinic Management</p>
-                    <li><a href="{{route('clinic.supplies')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="package" class="w-5 h-5"></i>Inventory</a></li>
-                    <li><a href="{{ route('clinic.transactions')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5"></i>Transactions</a></li>
-                    <li><a href="{{ route('clinic.payments') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="philippine-peso" class="w-5 h-5"></i>Payments </a></li>
-                    @if ($clinicUser && $clinicUser->UserRole && strtolower($clinicUser->UserRole->role_name) === 'admin')
-                    <li><a href="{{ route('clinic.services') }}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="briefcase-medical" class="w-5 h-5"></i>Services</a></li>
-                    <li><a href="{{ route('clinic.reports')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="chart-column-big" class="w-5 h-5"></i>Reports</a></li>
-                    <p class="text-xs font-bold text-gray-400 my-1 uppercase">User Management</p>
-                    <li><a href="{{route('clinic.user-accounts')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="file-user" class="w-5 h-5"></i>Accounts</a></li>
-                    <li><a href="{{route('clinic.user-logs')}}" class="block px-4 py-2 rounded hover:bg-gray-900 hover:text-white flex items-center gap-3"><i data-lucide="logs" class="w-5 h-5"></i>Logs</a></li>
-                    @endif
-                </ul>
-            </nav>
-            <div class="flex flex-col px-4 py-2 gap-2">
-                <a href="{{ route('clinic.profile') }}" class="flex flex-row items-center justify-between text-center w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
-                    <i data-lucide="circle-user" class="w-6 h-6"></i>
-                    <div class="flex flex-col items-center">
-                        <h1 class="text-sm font-bold">{{ $clinicUser->first_name }}</h1>
-                        <p class="text-xs">{{$clinicUser->UserRole->role_name}}</p>
-                    </div>
-                    <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
-                </a>
-                <div>
-                    <button onclick="document.getElementById('logoutModal').classList.remove('hidden')" class="w-full bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 flex items-center justify-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i>
-                        Logout
-                    </button>
-                </div>
-
-            </div>
-        </div>
         <!-- Main Content -->
-        <section id="mainContent" class="flex-1 ml-0 md:ml-56 h-full  ">
-            <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between md:justify-start shadow-lg">
+        <section id="mainContent" class="flex-1  h-full  ">
+            <div class="fixed top-0 w-full z-50  bg-gray-900 p-3 flex items-center gap-10 justify-between l:justify-start shadow-lg">
                 <button id="toggleSidebar" class="text-white block ml-2 focus:outline-none ">
                     ☰ </button>
                 <div class="flex items-center gap-5">
                     <!-- date and time -->
                     <div class="flex items-center justify-between gap-3 pr-5">
                         <i data-lucide="calendar-clock" class="text-white w-8 h-8"></i>
-                        <div id="datetime" class="md:text-md text-sm text-white font-bold"></div>
+                        <div id="datetime" class="l:text-l text-sm text-white font-bold"></div>
                     </div>
                     <!-- Notification Component -->
                     <x-notification />
@@ -96,10 +39,10 @@
             </div>
             <!-- content container -->
             <div class="flex flex-col flex-1  pt-[60px]">
-                <div class="flex flex-row items-center md:gap-5 gap-3 py-8 md:px-14 px-4">
+                <div class="flex flex-row items-center l:gap-5 gap-3 py-8 l:px-14 px-4">
                     <img src="{{asset('drcare_logo.png')}}" alt="Dr-Care Logo" class="w-16 h-16">
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl md:text-3xl font-900">Patient Transaction</h1>
+                        <h1 class="text-xl l:text-3xl font-900">Patient Transaction</h1>
                         <div class="flex items-center gap-2">
                             <a href="{{ route('clinic.patients') }}" class="font-bold hover:text-red-500 hover:underline underline-offset-4">Patient</a>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -108,16 +51,16 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-12">
-                    <div class="col-span-3 md:col-span-1 flex items-center justify-center">
+                    <div class="col-span-3 l:col-span-1 flex items-center justify-center">
                     </div>
                 </div>
                 <!-- Main Content -->
-                <div class="grid grid-cols-4  md:px-10 h-full mb-10 gap-2 ">
+                <div class="grid grid-cols-4  l:px-10 h-full mb-10 gap-2 ">
                     <div class="col-span-4 bg-white rounded-lg shadow-lg w-full  px-10 py-4  border border-gray-100">
-                        <div class="flex flex-col gap-4 md:gap-0 ">
+                        <div class="flex flex-col gap-4 l:gap-0 ">
                             <a href="{{ route('clinic.patients.transactions', Crypt::encrypt($patient->id)) }}" class="text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i>Back</a>
                             <div class="flex flex-col mb-6 ">
-                                <h1 class="text-md  md:text-2xl font-900 text-center ">New Anti-Tetanus Transaction</h1>
+                                <h1 class="text-l  l:text-2xl font-900 text-center ">New Anti-Tetanus Transaction</h1>
                                 <div class="flex items-center justify-center gap-2">
                                     <p class="text-gray-400 text-sm text-center">Service: {{ $service_fee->name }}</p>
                                     <a href="{{ route('clinic.user-manual') }}#patient-transactions" target="_blank" class="text-red-400"> <i data-lucide="circle-question-mark" class="w-5 h-5"></i></a>
@@ -126,13 +69,13 @@
                         </div>
                         <!-- Progress Bar -->
                         <div class="mb-8 overflow-x-auto  scrollbar-hidden ">
-                            <div class="flex items-center justify-between md:px-32 ">
+                            <div class="flex items-center justify-between l:px-32 ">
                                 <!-- Step 1 -->
                                 <div class="flex flex-col items-center ">
                                     <div id="step2-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-gray-900 text-center">Immunization</span>
+                                    <span class="mt-2 text-xs l:text-sm font-bold text-gray-900 text-center">Immunization</span>
                                 </div>
                                 <!-- Line between step 1 & 2 -->
                                 <div class=" bg-red-300 mx-2 border-2 h-1 w-full border-red-300" id="line2"></div>
@@ -141,7 +84,7 @@
                                     <div id="step3-circle"
                                         class="step-indicator w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600">
                                     </div>
-                                    <span class="mt-2 text-xs md:text-sm font-bold text-red-400 text-center">Payment</span>
+                                    <span class="mt-2 text-xs l:text-sm font-bold text-red-400 text-center">Payment</span>
                                 </div>
                             </div>
                         </div>
@@ -155,24 +98,24 @@
                             <input type="datetime-local" id="datetime_today" name="datetime_today" hidden>
 
                             <div class="flex flex-col w-full items-center justify-center">
-                                <div class="md:w-1/2 grid grid-cols-6 gap-2 md:px-6 mb-2" id="vital-signs">
+                                <div class="l:w-1/2 grid grid-cols-6 gap-2 l:px-6 mb-2" id="vital-signs">
                                     <div class="col-span-6 ">
-                                        <h2 class="md:text-lg text-gray-500 font-900">Vital Signs </h2>
+                                        <h2 class="l:text-lg text-gray-500 font-900">Vital Signs </h2>
                                     </div>
-                                    <div class="col-span-6 md:col-span-2 ">
-                                        <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-500">Weight (kg)</label>
+                                    <div class="col-span-6 sm:col-span-2 l:col-span-2 ">
+                                        <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-600">Weight (kg)</label>
                                         <input type="text" name="heart_rate" id="heart_rate" placeholder="e.g 70"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
                                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                     </div>
-                                    <div class="col-span-6 md:col-span-2 ">
-                                        <label for="temperature" class="block mb-2 text-sm font-bold text-gray-500">Temperature</label>
+                                    <div class="col-span-6 sm:col-span-2 l:col-span-2 ">
+                                        <label for="temperature" class="block mb-2 text-sm font-bold text-gray-600">Temperature</label>
                                         <input type="text" name="temperature" id="temperature" placeholder="e.g 37.5"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
                                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
                                     </div>
-                                    <div class="col-span-6 md:col-span-2 ">
-                                        <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-500">Blood Pressure</label>
+                                    <div class="col-span-6 sm:col-span-2 l:col-span-2 ">
+                                        <label for="blood_pressure" class="block mb-2 text-sm font-bold text-gray-600">Blood Pressure</label>
                                         <input type="text" name="blood_pressure" id="blood_pressure" placeholder="e.g 120/80"
                                             oninput="this.value = this.value.replace(/[^0-9/]/g, '')"
                                             class=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-sky-500 focus:border-sky-500">
@@ -415,13 +358,13 @@
 
             if (i < step) {
                 circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
-                label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
+                label.className = "mt-2 text-xs l:text-sm font-bold text-gray-900 text-center";
             } else if (i === step) {
                 circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white";
-                label.className = "mt-2 text-xs md:text-sm font-bold text-gray-900 text-center";
+                label.className = "mt-2 text-xs l:text-sm font-bold text-gray-900 text-center";
             } else {
                 circle.className = "w-6 h-6 flex items-center justify-center rounded-full border-2 border-red-300 bg-red-200 text-red-600";
-                label.className = "mt-2 text-xs md:text-sm font-bold text-red-400 text-center";
+                label.className = "mt-2 text-xs l:text-sm font-bold text-red-400 text-center";
             }
         }
 

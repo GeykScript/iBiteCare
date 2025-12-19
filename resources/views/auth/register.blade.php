@@ -80,6 +80,24 @@
                                             <x-input-error :messages="$errors->get('password_confirmation')" class="bg-red-200 px-4 py-2 mt-2 rounded-sm font-bold text-red-500" />
                                         </div>
 
+                                        <!-- Terms & Conditions -->
+                                        <div class="mt-4 flex items-center gap-2">
+                                            <input
+                                                id="terms"
+                                                type="checkbox"
+                                                name="terms"
+                                                class="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+                                                required>
+
+                                            <label for="terms" class="text-xs md:text-sm text-gray-700">
+                                                I agree to the
+                                                <button onclick="document.getElementById('terms_and_conditions').showModal()"
+                                                    class="text-sky-500 font-semibold hover:underline">
+                                                    Terms & Conditions and Privacy Policy
+                                                </button>
+                                            </label>
+                                        </div>
+
                                         <div class="flex items-center flex-col mt-4">
                                             <x-primary-button id="submitBtn" class=" w-full text-center items-center justify-center bg-red-600 hover:bg-red-700 focus:bg-red-700">
                                                 {{ __('Register') }}
@@ -100,8 +118,94 @@
         </div>
         </div>
     </section>
+    <dialog id="terms_and_conditions" class="p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop:bg-black/30 focus:outline-none ">
+        <!-- close modal button  -->
+        <div class="w-full flex flex-col justify-end mb-5">
+            <button onclick="document.getElementById('terms_and_conditions').close()" class="focus:outline-none flex justify-end"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-600 text-center">Terms and Conditions</h2>
+            <p class="text-sm leading-relaxed text-gray-700 mt-2">
+
+                <strong>1. Acceptance of Terms</strong><br>
+                By accessing or using Dr.Care services, you agree to be bound by these Terms and Conditions.
+                If you do not agree with any part of the terms, you must not use our services.
+                <br><br>
+
+                <strong>2. Services</strong><br>
+                Dr.Care provides animal bite consultations, vaccinations, and other services.
+                We reserve the right to modify or discontinue any service without prior notice.
+                <br><br>
+
+                <strong>3. User Responsibilities</strong><br>
+                Users must provide accurate information when booking appointments and follow all instructions
+                provided by Dr.Care staff. Misuse of services may result in termination of access.
+                <br><br>
+
+                <strong>4. Privacy</strong><br>
+                We respect your privacy and handle personal information in accordance with our Privacy Policy.
+                By using our services, you consent to the collection and use of your data as described in the policy.
+                <br><br>
+
+                <strong>5. Limitation of Liability</strong><br>
+                Dr.Care is not liable for any damages arising from the use of our services, including direct, indirect,
+                incidental, or consequential damages. Our liability is limited to the maximum extent permitted by law.
+                <br><br>
+
+                <strong>6. Changes to Terms</strong><br>
+                We may update these Terms and Conditions periodically. Changes will be effective immediately upon posting.
+                Continued use of our services constitutes acceptance of the revised terms.
+                <br><br>
+
+                <strong>7. Governing Law</strong><br>
+                These Terms are governed by the laws of the Philippines. Any disputes arising from these terms
+                shall be subject to the exclusive jurisdiction of Philippine courts.
+                <br><br>
+
+            </p>
+            <h2 class="text-xl sm:text-2xl font-bold  text-red-600 text-center">Privacy Policy</h2>
+            <p class="text-sm leading-relaxed text-gray-700 mt-4">
+                This Privacy Policy explains how we collect, use, store, and protect your personal information when you book an appointment for anti-rabies vaccination through our system.
+                <br><br>
+                <strong>1. Information We Collect:</strong> Name, contact details, email address, appointment details, and any additional notes you provide.
+                <br>
+                <strong>2. How We Use Your Information:</strong> For booking, confirming, rescheduling, and maintaining proper clinic records.
+                <br>
+                <strong>3. Data Protection:</strong> Your information is secured and only accessible to authorized personnel.
+                <br>
+                <strong>4. Data Sharing:</strong> We do not sell your data. Information is only shared when required by law or for service delivery.
+                <br>
+                <strong>5. Your Rights:</strong> You have the right to access, correct, or request deletion of your personal data.
+                <br>
+                <strong>6. Contact Us:</strong> For concerns regarding this policy, please contact our office.
+            </p>
+        </div>
+        <div class="flex justify-end ">
+            <button onclick="document.getElementById('terms_and_conditions').close()" class="focus:outline-none flex justify-end bg-gray-800 text-white px-4 py-1 hover:bg-gray-700 rounded">Close</button>
+
+        </div>
+
+    </dialog>
 
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const checkbox = document.getElementById('terms');
+        const submitBtn = document.getElementById('submitBtn');
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            }
+        });
+    });
+</script>
+
 <script>
     const submitBtn = document.getElementById("submitBtn");
     document.getElementById('registerForm').addEventListener('submit', function() {

@@ -18,10 +18,11 @@ class RevenueReport implements FromView
     {
         $year = now()->year;
         $datas = revenue_expenses_report::where('year', $year)
-            ->orderByRaw("FIELD(month, 
-            'January','February','March','April','May','June',
-            'July','August','September','October','November','December')")
+            ->orderByRaw("FIELD(BINARY month, 
+        'January','February','March','April','May','June',
+        'July','August','September','October','November','December')")
             ->get();
+
 
         return view('ClinicUser.exports.revenue-reports', compact('datas', 'year'));
     }

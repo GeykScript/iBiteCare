@@ -21,13 +21,15 @@
 </head>
 
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+<body class="bg-gray-100 min-h-screen flex flex-col gap-2 items-center justify-center p-6">
+
     <div class="bg-white shadow-xl rounded-2xl p-10 w-full max-w-3xl border border-gray-200">
-        <div class="grid grid-cols-3">
+        <div>
+            <a href="{{ route('clinic.patients.profile', Crypt::encrypt($patient->id)) }}" class="text-lg text-blue-500 hover:underline flex items-center underline-offset-4 font-bold"><i data-lucide="chevron-left" class="w-5 h-5"></i> Back</a>
+        </div>
+        <div class="grid grid-cols-3 mt-4">
             <div class="col-span-3 md:col-span-2">
                 <img src="{{ asset('images/vaccine-card-title.png') }}" alt="Title Logo">
-
-
             </div>
             <div class="col-span-3 md:col-span-1">
                 <div class="w-full flex items-end justify-end ">

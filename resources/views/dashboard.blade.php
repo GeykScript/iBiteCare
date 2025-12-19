@@ -254,6 +254,42 @@
             </div>
         </section>
 
+
+        <section class="bg-white">
+            <div class="col-span-2 flex flex-col bg-white gap-2 py-10">
+                <div class="flex flex-col ">
+                    <div class="w-full  l:flex-row flex flex-col-reverse ">
+                        <div class="l:w-[800px]"></div>
+                        <div class="flex flex-col gap-2 bg-[#C5453C]  rounded-l-lg lg:p-6 p-4">
+                            <h1 class="text-center font-900 text-lg text-white">MGA DAPAT TANDAAN</h1>
+                            <ul class="list-disc text-sm text-white p-4 px-10 space-y-4">
+                                <li>BAWAL uminom ng alak ng 30 days.</li>
+                                <li>BAWAL kumain ng manok, itlog, hipon, bagoong, patis at malansang pagkain.</li>
+                                <li>Kung tuturukan ng ERIG, iwasan ang Frozen Foods, fishy-smelling foods, canned foods, noodles, chocolate, peanut at junk foods.</li>
+                                <li>Panatilihing tuyo at iwasang galawin ang sugat sa loob ng 8 oras. Pagkatapos hugasan ang sugat ng sabon at tubig at lagyan ng betadine pagkatapos itong patuyuin. Takpan ang sugat gamit ang gasa sa loob ng 24–48 oras.</li>
+                                <li>Magpacheck-up kung lumalala ang pamamaga, pamumula o kirot, pagkakaroon ng nana ang sugat o may mabahong amoy ang sugat.</li>
+                                <li>Maaaring mamaga ang lugar na pinagturukan, i-warm compress ito. Kapag inilagnat, maaaring uminom ng paracetamol kung walang allergy sa paracetamol.</li>
+                            </ul>
+                        </div>
+                        <div class="w-full flex justify-center l:justify-start">
+                            <img src="{{ asset('images/3.png') }}"
+                                alt="Person Reminding"
+                                class="w-[18rem] rounded-r-lg object-contain">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="flex justify-center items-center gap-4 bg-white">
+                    <img src="{{ asset('images/Logo-DOH.webp') }}"
+                        alt="Person Reminding"
+                        class="w-32 rounded-lg ">
+                    <img src="{{ asset('images/rabies-free.jpg') }}"
+                        alt="Person Reminding"
+                        class="w-32 rounded-lg ">
+                </div>
+            </div>
+        </section>
+
         <div class="bg-[#5482B2] h-12 "></div>
 
         <footer class="bg-gray-100 shadow-lg ">

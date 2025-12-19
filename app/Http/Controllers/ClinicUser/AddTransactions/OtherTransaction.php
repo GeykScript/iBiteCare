@@ -17,6 +17,10 @@ use App\Models\PatientImmunizations;
 use App\Models\PaymentRecords;
 use App\Models\ClinicUserLogs;
 use App\Models\Inventory_usage;
+use App\Models\ClinicServicesSchedules;
+use App\Models\PatientImmunizationsSchedule;
+use App\Models\Messages;
+
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -85,6 +89,82 @@ class OtherTransaction extends Controller
                 'blood_pressure' => $request->blood_pressure,
             ]);
 
+            // 1. Generate all schedules
+            $serviceSchedules = ClinicServicesSchedules::where('service_id', $request->service_id)->get();
+
+            if ($serviceSchedules->isNotEmpty()) {
+                $patientSchedules = collect(); // will hold all created schedules
+
+                foreach ($serviceSchedules as $serviceSchedule) {
+                    $scheduledDate = Carbon::parse($request->date_of_registration)
+                        ->addDays($serviceSchedule->day_offset)
+                        ->format('Y-m-d');
+
+                    // Determine if this is the "Day 0" schedule
+                    $isDay0 = $serviceSchedule->day_offset == 0;
+
+                    $patientSchedules->push(
+                        $newSchedule = PatientImmunizationsSchedule::create([
+                            'patient_id'       => $patient->id,
+                            'transaction_id'   => $transaction->id,
+                            'service_id'      =>  $request->service_id,
+                            'service_sched_id' => $serviceSchedule->id,
+                            'Day'              => $serviceSchedule->label,
+                            'grouping'         => $transaction->id,
+                            'scheduled_date'   => $scheduledDate,
+                            'date_completed'   => $isDay0 ? $scheduledDate : null, // initially not completed
+                            'dose'             => $isDay0 ? ($request->vaccine_dose_given ?? null) : null,
+                            'status'           => $isDay0 ? 'Completed' : 'Pending',
+                            'administered_by'  => $isDay0 ? $request->nurse_id : null,
+                        ])
+                    );
+                    // Skip reminders for Day 0 (already administered)
+                    if (!$isDay0) {
+                        $scheduledDateObj = Carbon::parse($scheduledDate);
+                        $twoDaysBefore = $scheduledDateObj->copy()->subDays(2);
+
+                        // 2 days before
+                        if ($twoDaysBefore->isFuture()) {
+                            Messages::create([
+                                'patient_id' => $patient->id,
+                                'immunization_sched_id' => $newSchedule->id,
+                                'schedule' => $scheduledDate,
+                                'day_label' => $serviceSchedule->label,
+                                'scheduled_send_date' => $twoDaysBefore->format('Y-m-d'),
+                                'display_message' => "Reminder: your ({$serviceSchedule->label}) {$services->name} dose is on " . Carbon::parse($scheduledDate)->format('M j, Y') . ".",
+                                'message_text' => "Good day! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) {$services->name} schedule on "
+                                    . $scheduledDateObj->format('M j, Y') .
+                                    ". Clinic hours: 8AM to 5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
+                                'sender_id' => null,
+                                'status' => 'Pending',
+                            ]);
+                        }
+
+                        // On the day
+                        Messages::create([
+                            'patient_id' => $patient->id,
+                            'immunization_sched_id' => $newSchedule->id,
+                            'schedule' => $scheduledDate,
+                            'day_label' => $serviceSchedule->label,
+                            'scheduled_send_date' => $scheduledDate,
+                            'display_message' => "Today is your {$services->name} dose ({$serviceSchedule->label}).",
+                            'message_text' =>
+                            "Good day {$patient->first_name}! This is Dr. Care ABC Guinobatan reminding you of your ({$serviceSchedule->label}) {$services->name} today, "
+                                . $scheduledDateObj->format('M j, Y') .
+                                ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
+                            'sender_id' => null,
+                            'status' => 'Pending',
+                        ]);
+                    }
+                }
+
+                // 2. Grab the first schedule (Day 0)
+                $firstSchedule = $patientSchedules->first();
+            }else
+            {
+                $firstSchedule = null;
+            }
+
             $paymentRecord = PaymentRecords::create([
                 'patient_id' => $patient->id,
                 'transaction_id' => $transaction->id,
@@ -104,14 +184,14 @@ class OtherTransaction extends Controller
                 'vital_signs_id' => $patientVitalSigns->id,
                 'immunization_type' => $request->immunization_type,
                 'date_given' => $date,
-                'day_label' =>  null,
+                'day_label' =>  $firstSchedule ? 'D0' : null,
                 'vaccine_used_id' => $request->vaccine_id ?? null,
                 'rig_used_id' => null,
                 'anti_tetanus_id' => null,
                 'route_of_administration' => $request->route_of_administration,
                 'administered_by_id' => $request->nurse_id,
                 'payment_id' => $paymentRecord->id,
-                'schedule_id' => null, // <-- links to the first schedule
+                'schedule_id' => $firstSchedule ? $firstSchedule->id : null, // <-- links to the first schedule
                 'status' => 'Completed',
             ]);
 

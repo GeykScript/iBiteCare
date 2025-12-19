@@ -163,12 +163,12 @@
                                     </div>
 
                                     <!-- add schedules section  -->
-                                    <!-- <div class="flex justify-between items-center pr-10 p-2">
+                                    <div class="flex justify-between items-center pr-10 p-2">
                                         <button type="button" id="add-schedule" class="mt-2 text-blue-500 font-bold  py-1 rounded flex items-center gap-2 hover:text-blue-600"><i data-lucide="plus" class="w-4 h-4 "></i>Add Schedule <span class="text-gray-400 font-normal">(Optional)</span></button>
-                                    </div> -->
+                                    </div> 
                                     
                                     <!-- Container for new schedules -->
-                                    <!-- <div id="Newschedule" class="space-y-2">
+                                     <div id="Newschedule" class="space-y-2">
                                         <div class="grid grid-cols-5 gap-2">
                                             <input type="number" name="newDay[]" placeholder="Day Offset"
                                                 class="border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
@@ -190,7 +190,7 @@
                                                     <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                                                 </svg></button>
                                         </div>
-                                    </div> -->
+                                    </div> 
                                 </div>
 
 
@@ -235,68 +235,68 @@
 
     });
 
-    // const container = document.getElementById('Newschedule');
-    // const addBtn = document.getElementById('add-schedule');
+    const container = document.getElementById('Newschedule');
+    const addBtn = document.getElementById('add-schedule');
 
-    // addBtn.addEventListener('click', () => {
-    //     // Create wrapper div
-    //     const div = document.createElement('div');
-    //     div.classList.add('grid', 'grid-cols-5', 'gap-2');
+    addBtn.addEventListener('click', () => {
+        // Create wrapper div
+        const div = document.createElement('div');
+        div.classList.add('grid', 'grid-cols-5', 'gap-2');
 
-    //     // Create Day input
-    //     const dayInput = document.createElement('input');
-    //     dayInput.type = 'number';
-    //     dayInput.name = 'newDay[]';
-    //     dayInput.placeholder = 'Day Offset';
-    //     dayInput.className =
-    //         'border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
+        // Create Day input
+        const dayInput = document.createElement('input');
+        dayInput.type = 'number';
+        dayInput.name = 'newDay[]';
+        dayInput.placeholder = 'Day Offset';
+        dayInput.className =
+            'border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
 
-    //     // Create Label input
-    //     const labelInput = document.createElement('input');
-    //     labelInput.type = 'text';
-    //     labelInput.name = 'newLabel[]';
-    //     labelInput.placeholder = 'New label';
-    //     labelInput.className =
-    //         'col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
+        // Create Label input
+        const labelInput = document.createElement('input');
+        labelInput.type = 'text';
+        labelInput.name = 'newLabel[]';
+        labelInput.placeholder = 'New label';
+        labelInput.className =
+            'col-span-3 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm';
 
-    //     // Create remove button with SVG
-    //     const removeBtn = document.createElement('button');
-    //     removeBtn.type = 'button';
-    //     removeBtn.className =
-    //         'remove-btn p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600';
-    //     removeBtn.innerHTML = `
-    //         <svg xmlns="http://www.w3.org/2000/svg"
-    //              width="20" height="20"
-    //              viewBox="0 0 24 24"
-    //              fill="none"
-    //              stroke="currentColor"
-    //              stroke-width="2"
-    //              stroke-linecap="round"
-    //              stroke-linejoin="round"
-    //              class="lucide lucide-trash-2">
-    //             <path d="M10 11v6" />
-    //             <path d="M14 11v6" />
-    //             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-    //             <path d="M3 6h18" />
-    //             <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-    //         </svg>
-    //     `;
+        // Create remove button with SVG
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className =
+            'remove-btn p-3 rounded-md text-sm flex items-start justify-start text-red-500 hover:text-red-600';
+        removeBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="20" height="20"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="lucide lucide-trash-2">
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+        `;
 
-    //     // Append inputs + button to div
-    //     div.appendChild(dayInput);
-    //     div.appendChild(labelInput);
-    //     div.appendChild(removeBtn);
+        // Append inputs + button to div
+        div.appendChild(dayInput);
+        div.appendChild(labelInput);
+        div.appendChild(removeBtn);
 
-    //     // Append div to container
-    //     container.appendChild(div);
-    // });
+        // Append div to container
+        container.appendChild(div);
+    });
 
-    // Event delegation for all remove buttons (existing + future)
-    // container.addEventListener('click', (e) => {
-    //     if (e.target.closest('.remove-btn')) {
-    //         e.target.closest('.grid').remove();
-    //     }
-    // });
+    //Event delegation for all remove buttons (existing + future)
+    container.addEventListener('click', (e) => {
+        if (e.target.closest('.remove-btn')) {
+            e.target.closest('.grid').remove();
+        }
+    });
 </script>
 
 </html>

@@ -140,11 +140,7 @@
                             <input type="hidden" name="service_id" value="{{ $service->id }}">
 
                             <div class="grid grid-cols-2 gap-10">
-                                <div class="flex {{ 
-                                    (in_array($service->id, [1, 2, 3]) && in_array(strtolower($service->name), ['post exposure prophylaxis', 'pre-exposure prophylaxis', 'booster'])) 
-                                        ? ' ' 
-                                        : 'flex justify-center col-span-2' 
-                                }}">
+                                <div class="flex justify-center col-span-2 md:col-span-1">
                                     <div class="md:col-span-1 col-span-2">
                                         <h1 class="text-lg font-bold">Service Details</h1>
                                         <div class="mt-4">
@@ -227,10 +223,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if (
-                                in_array($service->id, [1, 2, 3]) &&
-                                in_array(strtolower($service->name), ['post exposure prophylaxis', 'pre-exposure prophylaxis', 'booster'])
-                                )
+                              
                                 <div class="md:col-span-1 col-span-2">
                                     <h1 class="text-lg font-bold">Service Schedule <span class="text-gray-400 text-sm">(Optional)</span></h1>
                                     <div class="mt-2">
@@ -308,7 +301,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
                             </div>
                             <div class="flex justify-end p-4 items-center gap-4 md:pr-24 mt-4">
                                 <a href="{{ route('clinic.services') }}" class="text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg">Cancel</a>

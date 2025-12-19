@@ -55,7 +55,7 @@
                     </svg>
                 </button>
                 <div>
-                    <div x-show="open" x-collapse class="overflow-x-auto  px-20 flex flex-col gap-4 p-4">
+                    <div x-show="open" x-collapse x-cloak class="overflow-x-auto  px-20 flex flex-col gap-4 p-4">
                         <a href="{{ route('schedule.vaccination_card', ['id' => $transaction->patient_id, 'grouping' => $transaction->id]) }}"
                             target="_blank" class="flex items-center justify-end gap-1  text-blue-500 text-end hover:text-blue-600 font-semibold">
                             <span>Download</span>

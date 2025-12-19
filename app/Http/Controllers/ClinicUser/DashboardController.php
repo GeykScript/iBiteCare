@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ClinicUser;
 use App\Models\ClinicTransactions;
+use App\Models\Inventory_units;
 use App\Models\Messages;
 use App\Models\Notifications;
 use Carbon\Carbon;
@@ -37,6 +38,11 @@ class DashboardController extends Controller
             ->where('scheduled_send_date', '<', now()->toDateString())
             ->update([
                 'status' => 'Unsent',
+            ]);
+        Inventory_units::where('expiration_date', '<', now()->toDateString())
+            ->where('status', '!=', 'Expired')
+            ->update([
+                'status' => 'Expired',
             ]);
 
         return view('ClinicUser.dashboard', compact('clinicUser', 'clinic_transactions', 'today_clinic_transactions', 'clinic_expected_patients', 'services'));

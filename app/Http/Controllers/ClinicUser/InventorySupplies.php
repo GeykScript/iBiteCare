@@ -37,6 +37,8 @@ class InventorySupplies extends Controller
             'items_per_package' => 'required|integer|min:1',
             'volume_per_item' => 'nullable|numeric|min:0',
             'price_per_item' => 'required|numeric|min:0',
+            'batch_no' => 'nullable|string|max:255',
+            'expiration_date' => 'nullable|date',
             // 'total_price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
 
@@ -66,6 +68,7 @@ class InventorySupplies extends Controller
             'total_package_amount' => $request->price_per_item * $total_units,
             'restock_date' => now(),
             'supplier' => $request->supplier,
+            'batch_no' => $request->batch_no,
         ]);
 
         if (strtolower($request->category) === 'supply' || strtolower($request->category) === 'equipment' ) {
@@ -80,7 +83,9 @@ class InventorySupplies extends Controller
                 'unit_quantity' => $total_units,
                 'remaining_quantity' => $total_units,
                 'status' => "Sealed",
-                'unit_price' => $request->price_per_item
+                'unit_price' => $request->price_per_item,
+                'batch_no' => $request->batch_no,
+                'expiration_date' => $request->expiration_date,
             ]);
         } else {
             $global_unit_number = 1; // Start unit numbering globally
@@ -107,7 +112,9 @@ class InventorySupplies extends Controller
                         'unit_quantity'      => null,
                         'remaining_quantity' => null,
                         'status'             => "Sealed",
-                        'unit_price'         => $request->price_per_item
+                        'unit_price'         => $request->price_per_item,
+                        'batch_no'           => $request->batch_no,
+                        'expiration_date'    => $request->expiration_date,
                     ]);
                 }
             }

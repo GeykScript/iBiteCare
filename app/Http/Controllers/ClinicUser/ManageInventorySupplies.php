@@ -33,6 +33,8 @@ class ManageInventorySupplies extends Controller
             'items_per_package' => 'required|integer|min:1',
             'volume_per_item' => 'nullable|numeric|min:0',
             'price_per_item' => 'required|numeric|min:0',
+            'batch_no' => 'nullable|string|max:255',
+            'expiration_date' => 'nullable|date',
             // 'total_price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
 
@@ -52,6 +54,8 @@ class ManageInventorySupplies extends Controller
             'total_package_amount' => $request->price_per_item * $total_units,
             'restock_date' => now(),
             'supplier' => $request->supplier,
+            'batch_no' => $request->batch_no,
+            'expiration_date' => $request->expiration_date,
         ]);
 
         if (strtolower($request->category) === 'supply' || strtolower($request->category) === 'equipment') {
@@ -66,7 +70,9 @@ class ManageInventorySupplies extends Controller
                 'unit_quantity' => $total_units,
                 'remaining_quantity' => $total_units,
                 'status' => "Sealed",
-                'unit_price' => $request->price_per_item
+                'unit_price' => $request->price_per_item,
+                'batch_no' => $request->batch_no,
+                'expiration_date' => $request->expiration_date,
             ]);
         } else {
             $global_unit_number = 1; // Start unit numbering globally
@@ -93,7 +99,9 @@ class ManageInventorySupplies extends Controller
                         'unit_quantity'      => null,
                         'remaining_quantity' => null,
                         'status'             => "Sealed",
-                        'unit_price'         => $request->price_per_item
+                        'unit_price'         => $request->price_per_item,
+                        'batch_no'           => $request->batch_no,
+                        'expiration_date'    => $request->expiration_date,
                     ]);
                 }
             }
@@ -148,13 +156,19 @@ class ManageInventorySupplies extends Controller
             'stock_id' => 'required|exists:inventory_stocks,id',
             'quantity' => 'required|integer|min:0',
             'remaining_quantity' => 'required|integer|min:0',
+            'batch_no' => 'nullable|string|max:255',
+            'expiration_date' => 'nullable|date',
         ]);
 
         $item = Inventory_units::findOrFail($request->id);
+        $itemStatus = $request->remaining_quantity == 0 ? 'Used' : 'Opened';
+
         $item->update([
             'quantity' => $request->quantity,
             'remaining_quantity' => $request->remaining_quantity,
-            'status' => 'Opened',
+            'status' => $itemStatus,
+            'batch_no' => $request->batch_no,
+            'expiration_date' => $request->expiration_date,
         ]);
 
         $stock = Inventory_stock::findOrFail($request->stock_id);
@@ -164,6 +178,44 @@ class ManageInventorySupplies extends Controller
             'items_per_package' => $request->quantity,
             'total_units' => $request->quantity,
             'total_remaining_units' => $request->remaining_quantity,
+        ]);
+
+        return redirect()
+            ->route('clinic.supplies.manage', Crypt::encrypt($request->item_id))
+            ->with('edit-item-success', 'Inventory Item Updated!');
+    }
+
+
+
+    public function editVaccine(Request $request)
+    {
+        $request->validate([
+
+            'id' => 'required|exists:inventory_units,id',
+            'item_id' => 'required|exists:inventory_items,id',
+            'stock_id' => 'required|exists:inventory_stocks,id',
+            'volume' => 'required|numeric|min:0',
+            'remaining_volume' => 'required|numeric|min:0',
+            'batch_no' => 'nullable|string|max:255',
+            'expiration_date' => 'nullable|date',
+            
+        ]);
+
+        $item = Inventory_units::findOrFail($request->id);
+        // Determine status
+        if ($request->remaining_volume == 0) {
+            $itemStatus = 'Used';
+        } elseif ($request->remaining_volume < $request->volume) {
+            $itemStatus = 'Opened';
+        } else {
+            $itemStatus = 'Sealed'; 
+        }
+        $item->update([
+            'unit_volume' => $request->volume,
+            'remaining_volume' => $request->remaining_volume,
+            'status' => $itemStatus,
+            'batch_no' => $request->batch_no,
+            'expiration_date' => $request->expiration_date,
         ]);
 
         return redirect()

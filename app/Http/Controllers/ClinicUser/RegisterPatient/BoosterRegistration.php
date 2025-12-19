@@ -125,7 +125,7 @@ class BoosterRegistration extends Controller
 
             foreach ($serviceSchedules as $serviceSchedule) {
                 $scheduledDate = Carbon::parse($request->date_of_registration)
-                    ->addDays($serviceSchedule->day_offset)
+                    ->addDays($serviceSchedule->day_offset) 
                     ->format('Y-m-d');
 
                 // Determine if this is the "Day 0" schedule

@@ -3,14 +3,14 @@
         <div class="grid grid-cols-12 gap-2">
             <!-- divider border  -->
             <div class="col-span-12 border-2 border-gray-50 mt-4"></div>
-            <div class="col-span-12  md:px-4 mt-4">
-                <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
+            <div class="col-span-12  l:px-4 mt-4">
+                <div class="flex flex-col l:flex-row items-center justify-center gap-6 l:gap-12">
                     <div class=" items-center">
                         <div class="flex flex-col">
                             <div class="grid grid-cols-12 gap-2">
-                                <div class="col-span-12 md:col-span-4">
-                                    <div class="flex flex-col md:px-10 gap-2">
-                                        <h2 class="text-md text-gray-500 font-900 ">Vital Signs <span class="text-gray-500 text-xs font-normal">( Leave blank if N/A )</span></h2>
+                                <div class="col-span-12 l:col-span-4">
+                                    <div class="flex flex-col l:px-10 gap-2">
+                                        <h2 class="text-l text-gray-500 font-900 ">Vital Signs <span class="text-gray-500 text-xs font-normal">( Leave blank if N/A )</span></h2>
                                         <div class="flex flex-col gap-2">
                                             <div>
                                                 <label for="heart_rate" class="block mb-2 text-sm font-bold text-gray-900">Weight (kg)</label>
@@ -33,13 +33,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-span-12 md:col-span-5 flex flex-col">
+                                <div class="col-span-12 l:col-span-5 flex flex-col">
                                     @props(['old_immunization'])
                                     @props(['service_fee'])
                                     <h2 class="text-gray-500 font-900 ">{{ $old_immunization->immunization_type}}</h2>
                                     <h2>{{ $service_fee->name }}</h2>
 
-                                    <h2 class="text-xs md:text-md text-gray-500 font-900 mt-2">Administration Route</h2>
+                                    <h2 class="text-xs l:text-l text-gray-500 font-900 mt-2">Administration Route</h2>
                                     <p id="error_route_of_administration" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                     <div class="flex  gap-4 p-2">
                                         <label class="flex items-center space-x-2">
@@ -53,7 +53,7 @@
                                             <span>IM</span>
                                         </label>
                                     </div>
-                                    <h2 class="text-xs md:text-md text-gray-500 font-900 ">Vaccine Type</h2>
+                                    <h2 class="text-xs l:text-l text-gray-500 font-900 ">Vaccine Type</h2>
                                     <p id="error_active_vaccine_category" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                     <div x-data="{ selectedCategory: 'PVRV' }" class="grid grid-cols-12">
                                         <div class="col-span-12 flex gap-4 p-2">
@@ -70,8 +70,8 @@
                                         </div>
                                         <!-- PVRV DROPDOWN  -->
                                         @props(['pvrvVaccines'])
-                                        <div class="col-span-12 md:col-span-7 mt-2 " x-show="selectedCategory === 'PVRV'">
-                                            <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PVRV Vaccine</h2>
+                                        <div class="col-span-12 l:col-span-7 mt-2 " x-show="selectedCategory === 'PVRV'">
+                                            <h2 class="text-xs l:text-l text-gray-500 font-900 mb-2">PVRV Vaccine</h2>
                                             <div x-data="{ open: false, selected_pvrv: null, selectedLabelPvrv: 'Select Vaccine', volume: null }" class="relative">
                                                 <!-- Hidden input to store the selected id -->
                                                 <input type="hidden" name="pvrv_vaccine_id" x-model="selected_pvrv" :required="selectedCategory === 'PVRV'" :disabled="selectedCategory !== 'PVRV'">
@@ -96,9 +96,9 @@
                                                     @php
                                                     $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
                                                     @endphp
-                                                    <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; volume = '{{ $formattedVolume }}'; open = false"
+                                                    <div @click="selected_pvrv = '{{ $vaccine->id }}'; selectedLabelPvrv = '{{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }}'; volume = '{{ $formattedVolume }}'; open = false"
                                                         class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                        #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
+                                                        {{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }} - ({{ $formattedVolume }} ml)
                                                     </div>
                                                     @endforeach
                                                     @endif
@@ -108,8 +108,8 @@
                                         </div>
                                         <!-- PCEC DROPDOWN  -->
                                         @props(['pcecVaccines'])
-                                        <div class="col-span-12 md:col-span-7 mt-2" x-show="selectedCategory === 'PCEC'">
-                                            <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">PCEC Vaccine</h2>
+                                        <div class="col-span-12 l:col-span-7 mt-2" x-show="selectedCategory === 'PCEC'">
+                                            <h2 class="text-xs l:text-l text-gray-500 font-900 mb-2">PCEC Vaccine</h2>
                                             <div x-data="{ open: false, selected_pcec: null, selectedLabelPcec: 'Select Vaccine', volume: null }" class="relative">
                                                 <!-- Hidden input to store the selected id -->
                                                 <input type="hidden" name="pcec_vaccine_id" x-model="selected_pcec" :required="selectedCategory === 'PCEC'" :disabled="selectedCategory !== 'PCEC'">
@@ -134,9 +134,9 @@
                                                     @php
                                                     $formattedVolume = rtrim(rtrim(number_format($vaccine->remaining_volume, 2, '.', ''), '0'), '.');
                                                     @endphp
-                                                    <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '#{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)'; open = false"
+                                                    <div @click="selected_pcec = '{{ $vaccine->id }}'; selectedLabelPcec = '{{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }}'; open = false"
                                                         class="px-3 py-2 cursor-pointer hover:bg-gray-100 text-sm">
-                                                        #{{ $vaccine->id }} - {{ $vaccine->item->product_type }} ({{ $formattedVolume }} ml)
+                                                        {{ $vaccine->batch_no }} - #{{ $vaccine->unit_number }} - ({{ $formattedVolume }} ml)
                                                     </div>
                                                     @endforeach
                                                     @endif
@@ -145,8 +145,8 @@
                                             <p id="error_pcec_vaccine_id" class="text-red-500 text-xs mt-1 hidden">*This field is required</p>
                                         </div>
 
-                                        <div class="col-span-12 md:col-span-5 mt-2 md:px-4 ">
-                                            <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
+                                        <div class="col-span-12 l:col-span-5 mt-2 l:px-4 ">
+                                            <h2 class="text-xs l:text-l text-gray-500 font-900 mb-2">Dose <span class="font-normal">(ml)</span></h2>
                                             <input type="number" id="vaccine_dose_given" name="vaccine_dose_given" required min="0" step="any"
                                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 focus:ring-sky-500 focus:border-sky-500">
                                             <p id="error_vaccine_dose_given" class="text-red-500 text-xs mt-1  hidden">*required</p>
@@ -156,15 +156,15 @@
                                 </div>
 
                                 <!-- Nurse Verification Section -->
-                                <div class="col-span-12 md:col-span-3 flex flex-col justify-center items-center">
-                                    <h2 class="md:text-lg text-gray-500 font-900 mb-2">Nurse In-charge</h2>
+                                <div class="col-span-12 l:col-span-3 flex flex-col justify-center items-center">
+                                    <h2 class="l:text-lg text-gray-500 font-900 mb-2">Nurse In-charge</h2>
                                     <p id="verifySuccess" class="text-green-500 text-sm mt-1 hidden mb-2">Nurse verified successfully.</p>
 
                                     <div class="flex gap-2 "
                                         x-data="{ open: false, nurse_id: null, nurse_name: 'Select Nurse', modalOpen: false, nursePassword: '' }">
                                         <!-- Nurse Dropdown -->
                                         <div>
-                                            <h2 class="text-xs md:text-md text-gray-500 font-900 mb-2">RN Name</h2>
+                                            <h2 class="text-xs l:text-l text-gray-500 font-900 mb-2">RN Name</h2>
                                             @props(['nurses'])
                                             <div class="relative">
                                                 <!-- Hidden input to store the selected id -->
@@ -198,7 +198,7 @@
                                         </div>
                                         <!-- Verify Button -->
                                         <div class="flex flex-col ">
-                                            <h2 class="text-xs md:text-md text-gray-500 font-900 mb-3">RN Verification</h2>
+                                            <h2 class="text-xs l:text-l text-gray-500 font-900 mb-3">RN Verification</h2>
                                             <!-- Original Verify Button -->
                                             <button
                                                 id="verifyButton"

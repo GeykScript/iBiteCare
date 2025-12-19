@@ -17,6 +17,7 @@ class Inventory_stock extends Model
         'total_remaining_units',
         'total_package_amount',
         'restock_date',
+        'batch_no',
         'supplier',
         'created_at',
         'updated_at'

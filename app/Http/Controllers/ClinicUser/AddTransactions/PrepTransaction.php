@@ -58,6 +58,7 @@ class PrepTransaction extends Controller
     }
 
     public function addPrepTransaction(PrepTransactionRequest $request){
+        dd($request->all());
         $request->validated();
 
         $date = str_replace('T', ' ', $request->datetime_today);

@@ -11,6 +11,7 @@ class Inventory_units extends Model
     protected $fillable = [
         'item_id',
         'stock_id',
+        'batch_no',
         'package_number',
         'unit_number',
         'measurement_unit',
@@ -19,6 +20,7 @@ class Inventory_units extends Model
         'unit_quantity',
         'remaining_quantity',
         'status',
+        'expiration_date',
         'created_at',
         'updated_at'
     ];
