@@ -45,9 +45,9 @@ class MessagesController extends Controller
             ]);
     }
 
-
+    // Send single SMS Function in MessagesController
     public function sendSingleMessage(Request $request){
-        // dd($request->all());
+        // Normalize contact number (convert to 63 format)
         $request->merge([
             'contact_number' => preg_replace(
                 ['/^\+63/', '/^0/'],  // Match +63 or leading 0
@@ -56,13 +56,14 @@ class MessagesController extends Controller
             ),
         ]);
 
+        // Validate request
         $request->validate([
             'message_id' => 'required|integer',
             'contact_number' => 'required|string',
             'message' => 'required|string',
         ]);
 
-
+        //Send message via Semaphore API
         $response = Http::post('https://api.semaphore.co/api/v4/messages', [
             'apikey' => env('SEMAPHORE_API_KEY'),
             'number' => $request->contact_number,
@@ -70,6 +71,7 @@ class MessagesController extends Controller
             'sendername' => env('SEMAPHORE_SENDER_NAME'),
         ]);
 
+        // Check response
         if ($response->successful()) {
             // Message sent successfully
             Messages::where('id', $request->message_id)
@@ -85,10 +87,9 @@ class MessagesController extends Controller
      
         return redirect()->route('clinic.messages')->with('sent-success', 'Message sent successfully!');
     }
-
+    // Send New Message Function in MessagesController
     public function sendNewMessage(Request $request)
     {
-      
         // Validate request
         $request->validate([
             'patient_id' => 'required|integer',
@@ -102,7 +103,7 @@ class MessagesController extends Controller
         if (!$patient) {
             return redirect()->back()->with('sent-error', 'Patient not found.');
         }
-
+        // Normalize contact number (convert to 63 format)
         $contactNumber = str_replace(' ', '', preg_replace(
             ['/^\+63/', '/^0/'],
             ['63', '63'],
@@ -117,7 +118,7 @@ class MessagesController extends Controller
             'sendername' => env('SEMAPHORE_SENDER_NAME'),
         ]);
 
-
+        // Check response
         if ($response->successful()) {
             // Add messages
             Messages::create([
@@ -135,18 +136,19 @@ class MessagesController extends Controller
                 ->with('sent-error', 'Failed to send message: ' . $response->body());
         }
     }
-
+    // Send All Messages Function in MessagesController
     public function sendAllMessages(Request $request)
     {
+        // Validate request
         $request->validate([
             'messages' => 'required|string',
         ]);
-
+        // Decode message IDs from JSON
         $messageIds = json_decode($request->messages, true);
 
         // Fetch messages with patient relationship
         $messages = Messages::with('patient')->whereIn('id', $messageIds)->get();
-
+        // Loop through each message and send
         foreach ($messages as $message) {
             $messageId = $message->id;
 

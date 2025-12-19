@@ -27,7 +27,7 @@ class ClinicUsersController extends Controller
     }
 
 
-    // function to generate unique password
+    // function to generate unique password 
     private function generateUniqueIdAndPassword()
     {
         do {
@@ -45,7 +45,7 @@ class ClinicUsersController extends Controller
     }
 
 
-        // pass the value to the frontend using json
+        // pass the value to the frontend using json 
     public function generateId()
     {
         [$id, $default_password] = $this->generateUniqueIdAndPassword();
@@ -58,7 +58,7 @@ class ClinicUsersController extends Controller
 
 
 
-//function to create user account
+//function to create user account (Admin Side)
     public function createUserAccount(Request $request)
     {
         $request->validate([
@@ -147,7 +147,7 @@ class ClinicUsersController extends Controller
     }
 
 
-    // function to update clinic user information 
+    // function to update clinic user information (Admin Side) 
     public function updateClinicUserInfo(Request $request)
     {
         $validator = Validator::make($request->all(), [

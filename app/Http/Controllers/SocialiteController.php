@@ -24,6 +24,10 @@ class SocialiteController extends Controller
     /**
      * Handle OAuth callback
      */
+    
+
+
+    // Socialite Callback Function to Login or Register User (Using Google) 
     public function callback($provider)
     {
         try {

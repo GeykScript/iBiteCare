@@ -72,8 +72,8 @@ class CompleteImmunizations extends Controller
 
 
 
-
-    public function completeImmunization (CompleteImmunization $request)
+    // Complete Immunization Transaction Function
+    public function completeImmunization(CompleteImmunization $request)
     {
         $request->validated();
 
@@ -82,7 +82,7 @@ class CompleteImmunizations extends Controller
         $patient = Patient::find($request->patient_id);
 
 
-        try{
+        try {
             DB::beginTransaction();
 
             $transaction = ClinicTransactions::create([
@@ -105,6 +105,7 @@ class CompleteImmunizations extends Controller
 
             $patientImmunizationSchedule = PatientImmunizationsSchedule::find($request->schedule_id);
 
+            // Update Immunization Schedule and Adjust Future Schedules
             if ($patientImmunizationSchedule) {
                 $group = $patientImmunizationSchedule->grouping;
 
@@ -126,7 +127,7 @@ class CompleteImmunizations extends Controller
                     ->where('id', '>', $request->schedule_id)
                     ->get();
 
-
+                // Loop through each future schedule and update its date
                 foreach ($futureSchedules as $schedule) {
 
                     $nextDayLabel = $schedule->Day; // Example: Day 3
@@ -144,9 +145,7 @@ class CompleteImmunizations extends Controller
                             'scheduled_date' => $newScheduledDate,
                         ]);
 
-                        /* ------------------------------------
-                            * UPDATE EXISTING REMINDER MESSAGES
-                            * ------------------------------------*/
+                        // Update existing messages related to this schedule
                         $scheduledDateObj = Carbon::parse($newScheduledDate);
                         $twoDaysBefore = $scheduledDateObj->copy()->subDays(2);
                         $serviceLabel = $schedule->Day; // Example Day 3 / Day 7
@@ -154,7 +153,7 @@ class CompleteImmunizations extends Controller
                         // Get existing messages for this sched
                         $messages = Messages::where('immunization_sched_id', $schedule->id)->get();
 
-                        // Track if we found each type of message
+                        // Flags to track if messages exist
                         $hasTwoDaysBefore = false;
                         $hasSameDay = false;
 
@@ -191,10 +190,7 @@ class CompleteImmunizations extends Controller
                             }
                         }
 
-                                            /* ------------------------------------
-                            * CREATE ANY MISSING MESSAGES
-                            * ------------------------------------*/
-
+                        // Create missing messages if they don't exist
                         // Create 2-days-before if missing
                         if (!$hasTwoDaysBefore && $nextDayNumber > 0 && $twoDaysBefore->isFuture()) {
                             Messages::create([
@@ -209,7 +205,7 @@ class CompleteImmunizations extends Controller
                                     ".\nWe're open 8AM-5PM.\nFor any concerns, you may contact us at 0954 195 2374. Thank you!",
                                 'sender_id'            => null,
                                 'status'               => 'Pending',
-                            ]); 
+                            ]);
                         }
 
                         // Create same-day if missing
@@ -233,7 +229,7 @@ class CompleteImmunizations extends Controller
                 }
             }
 
-
+            // Payment Record
             $paymentRecord = PaymentRecords::create([
                 'patient_id' => $request->patient_id,
                 'transaction_id' => $transaction->id,
@@ -269,7 +265,7 @@ class CompleteImmunizations extends Controller
             $nurseClinicRole = ClinicUser::find($request->nurse_id);
             $staffClinicRole = ClinicUser::find($request->staff_id);
 
-
+            // Logs
             ClinicUserLogs::insert([
                 [
                     'user_id' => $request->nurse_id,
@@ -288,7 +284,7 @@ class CompleteImmunizations extends Controller
                     'created_at' => now(),
                 ],
             ]);
-
+            // Inventory Usage
             Inventory_usage::insert([
                 [
                     'unit_id' => $request->active_vaccine_category == 'PVRV'
@@ -336,9 +332,10 @@ class CompleteImmunizations extends Controller
 
             DB::commit();
 
+            // Send Vaccination Card Email to Patient if Email Exists
             if ($patient->email) {
-                            $subject = 'Updated Vaccination Card from Dr. Care Animal Bite Center Guinobatan';
-                            $messageBody = "
+                $subject = 'Updated Vaccination Card from Dr. Care Animal Bite Center Guinobatan';
+                $messageBody = "
                     <p>Dear {$patient->first_name},</p>
                     <p>Thank you for visiting <strong>Dr. Care Animal Bite Center</strong>. Here is your updated <strong>Vaccination Card</strong> for your recent immunization.</p>
                     <p>Please keep this document for your medical records. If you need any assistance, feel free to reach out to us anytime.</p>
@@ -349,13 +346,11 @@ class CompleteImmunizations extends Controller
                 // Send email immediately
                 Mail::to($patient->email)->send(new VaccinationCardMail($patient->id, $subject, $messageBody));
             }
-            
+
             $id = Crypt::encrypt($request->patient_id);
             return redirect()->route('clinic.patients.transactions', ['id' => $id])->with('success', 'Immunization completed successfully.');
-
-
         } catch (\Throwable $e) {
-            DB::rollBack(); // ❌ Undo all partial changes
+            DB::rollBack(); // Undo all partial changes
 
             // Optional: log the error for review
             Log::error('Failed to process patient: ' . $e->getMessage(), [
@@ -364,7 +359,5 @@ class CompleteImmunizations extends Controller
         }
         $id = Crypt::encrypt($request->patient_id);
         return redirect()->route('clinic.patients.transactions', ['id' => $id])->with('error', 'An error occurred while processing your request.');
-
-    
     }
 }

@@ -23,7 +23,7 @@ class ManageInventorySupplies extends Controller
     }
 
 
-    //function to add new stocks
+    // Add New Stock Function (Admin Side)
     public function add_new_stock(Request $request)
     {
         $request->validate([
@@ -114,7 +114,7 @@ class ManageInventorySupplies extends Controller
     }
 
 
-//function to edit product details
+// Edit Product Function (Admin Side)
     public function editProduct(Request $request)
     {
         $request->validate([
@@ -145,8 +145,7 @@ class ManageInventorySupplies extends Controller
             ->with('edit-success', 'No changes were made.');
     }
 
-
-    //function to update quantity on box or pack
+    // Update Quantity Function (Admin Side)
     public function updateQuantity(Request $request)
     {
         $request->validate([
@@ -186,7 +185,7 @@ class ManageInventorySupplies extends Controller
     }
 
 
-
+    // Update Vaccine Details Function (Admin Side) 
     public function editVaccine(Request $request)
     {
         $request->validate([

@@ -57,9 +57,10 @@ class BookingController extends Controller
         return view('auth.booking', compact('appointments', 'appointmentsJson', 'services', 'scheduledAppointments', 'datesInMonth'));
     }
 
-
+    // Book Appointment Function (Patient Side)
     public function store(Request $request)
     {
+        // Check if patient already has an active appointment
         $hasActiveAppointment = PatientAppointment::where('patient_account_id', Auth::id())
             ->whereNotIn('status', ['Arrived', 'Cancelled'])
             ->exists();
@@ -67,7 +68,7 @@ class BookingController extends Controller
         if ($hasActiveAppointment) {
             return back()->with('error', 'You already have an active appointment. Please finish or cancel it before booking a new one.');
         }
-
+        // Validate request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'contact_number' => 'required|string|max:20',
@@ -98,7 +99,9 @@ class BookingController extends Controller
         $validated['status'] = 'Pending';
         $validated['booking_reference'] = $bookingReference;
 
+        // Create appointment
         $appointment = PatientAppointment::create($validated);
+        // Create notification for clinic user
         Notifications::insert([
 
         'content' => 'New appointment booked online on ' 
@@ -111,15 +114,15 @@ class BookingController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+        // Send Booking Confirmation Email
         Mail::to($appointment->email)->send(new BookingConfirmation($appointment));
 
         return back()->with(
             'success',
             "Your appointment has been booked successfully!\nBooking ID: " . $bookingReference
         );   
-     }
-
+    }
+    // Get Available Slots for Appointment Function
     public function getAvailableSlots(Request $request)
     {
         $date = date('Y-m-d', strtotime($request->query('date')));

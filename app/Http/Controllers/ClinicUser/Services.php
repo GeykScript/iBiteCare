@@ -28,7 +28,8 @@ class Services extends Controller
       return view('ClinicUser.services-update', compact('clinicUser', 'service'));
    }
 
-   //function to handle update service details
+   
+   // Update Service Details Function (Admin Side)
    public function updateServiceDetails(Request $request)
    {
       $request->validate([
@@ -121,8 +122,7 @@ class Services extends Controller
       return redirect()->route('clinic.services')->with('success', 'Service Details updated successfully.');
    }
 
-   //function to handle adding new service
-   // function to handle adding new service
+   // Add New Service Function (Admin Side)
    public function addNewService(Request $request)
    {
       // Validate input

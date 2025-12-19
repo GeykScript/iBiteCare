@@ -23,9 +23,9 @@ class InventorySupplies extends Controller
 
 
 
-    //function to add new supplies
+    // Add New Supplies Function (Admin Side)
     public function add_new_supplies(Request $request){
-
+        // Validate request
         $request->validate([
             'category' => 'required|string|max:255',
             'service_id' => 'nullable|integer',
@@ -43,7 +43,7 @@ class InventorySupplies extends Controller
             'supplier' => 'required|string|max:255',
 
         ]);
-
+        // Create Inventory Item
         $item = Inventory_items::create([
             'category' => $request->category,
             'brand_name' => $request->brand_name,
@@ -56,7 +56,7 @@ class InventorySupplies extends Controller
 
             $total_units = $request->packages_received * $request->items_per_package;
         
-
+        // Create Inventory Stock
         $stock = Inventory_stock::create([
             'item_id' => $item->id,
             'package_type' => $request->package_type,
@@ -70,7 +70,7 @@ class InventorySupplies extends Controller
             'supplier' => $request->supplier,
             'batch_no' => $request->batch_no,
         ]);
-
+        // Create Inventory Units
         if (strtolower($request->category) === 'supply' || strtolower($request->category) === 'equipment' ) {
             Inventory_units::create([
                 'item_id' => $item->id,

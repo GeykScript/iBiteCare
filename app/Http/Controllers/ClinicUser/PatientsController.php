@@ -37,7 +37,7 @@ class PatientsController extends Controller
     }
 
 
-
+    // View Patient Profile Function
     public function viewProfile($id){
         $id = Crypt::decrypt($id);
         $clinicUser = Auth::guard('clinic_user')->user();
@@ -51,7 +51,7 @@ class PatientsController extends Controller
         if (!$patient) {
             return redirect()->route('clinic.patients')->with('error', 'Patient not found.');
         }
-
+        // Get Immunization Records
         $previousAntiTetanus = PatientPrevAntiTetanus::where('patient_id', $id)->get();
         $previousAntiRabies = PatientPrevAntiRabies::where('patient_id', $id)->get();
         $currentImmunization = PatientImmunizations::where('patient_id', $id)->get();
@@ -102,7 +102,7 @@ class PatientsController extends Controller
         return view('ClinicUser.patients-profile', compact('clinicUser', 'patient', 'previousAntiTetanus', 'previousAntiRabies', 'currentImmunization', 'schedules','paymentRecords', 'transactions2','transactions', 'groupedSchedules','emails'));
     }
 
-
+    // Generate PDF Vaccination Card Function
     public function pdfVaccinationCard($id,$grouping){
         $id = Crypt::decrypt($id);
         $grouping = Crypt::decrypt($grouping);
@@ -130,7 +130,7 @@ class PatientsController extends Controller
 
 
 
-
+    // Update Patient Profile Function
     public function updateProfile(Request $request)
     {
         $request->validate([
@@ -216,7 +216,7 @@ class PatientsController extends Controller
             ->with('profile-success', 'User account updated successfully!');
     }
 
-
+    // View Immunization Details Function
     public function viewImmunizationDetails($id, $transaction_id){
         $id = Crypt::decrypt($id);
         $transaction_id = Crypt::decrypt($transaction_id);

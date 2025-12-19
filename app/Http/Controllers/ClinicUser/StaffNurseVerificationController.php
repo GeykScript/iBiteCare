@@ -8,7 +8,7 @@ use App\Models\ClinicUser;
 
 class StaffNurseVerificationController extends Controller
 {
-
+    // Verify Nurse Function (Admin Side)
     public function verifyNurse(Request $request)
     {
         $request->validate([
@@ -30,7 +30,7 @@ class StaffNurseVerificationController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Incorrect password.'], 422);
     }
-
+    // Verify Staff Function (Admin Side)
     public function verifyStaff(Request $request)
     {
         $request->validate([

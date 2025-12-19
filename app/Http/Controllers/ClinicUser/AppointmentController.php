@@ -52,7 +52,7 @@ class AppointmentController extends Controller
         return view('ClinicUser.appointment',compact('clinicUser', 'services', 'scheduledAppointments', 'datesInMonth'));
     }
 
-
+// Book Appointment Function (Admin Side)
     public function bookAppointment(Request $request)
     {
         $request->validate([
@@ -89,7 +89,7 @@ class AppointmentController extends Controller
         return redirect()->back()->with('success', 'Appointment Booked Successfully.');
     }
 
-
+// Reschedule Appointment Function (Admin Side)
     public function reschedule(Request $request)
     {
         $request->validate([
@@ -124,10 +124,10 @@ class AppointmentController extends Controller
             $appointmentDate = Carbon::parse($request->appointment_date)->format('M, d, Y');
             $appointmentTime = Carbon::parse($request->appointment_time)->format('h:i A');
 
+            // Send SMS notification via Semaphore API
             $messageText = "Hello! This is Dr. Care ABC Guinobatan. Your appointment has been rescheduled to $appointmentDate at $appointmentTime."."
             \nFor any concerns, Call/Text: 0954 195 2374. Thank you!";
-
-            // dd($contactNumber, $messageText);
+                //Send SMS via Semaphore API
                 Http::post('https://api.semaphore.co/api/v4/messages', [
                         'apikey' => env('SEMAPHORE_API_KEY'),
                         'number' => $contactNumber,
@@ -135,7 +135,7 @@ class AppointmentController extends Controller
                         'sendername' => env('SEMAPHORE_SENDER_NAME'),
                     ]);
             }
-
+        // Send Email Notification if email is provided
         if (!empty($request->email)) {
             $patientEmail = $request->email;
             Mail::to($patientEmail)->send(new AppointmentRescheduleMail($appointment));
@@ -143,7 +143,7 @@ class AppointmentController extends Controller
     
         return redirect()->back()->with('success', 'Appointment Rescheduled Successfully.');
     }
-
+    // Change Appointment Status Function (Admin Side)
     public function changeStatus(Request $request)
     {
         $request->validate([
@@ -173,10 +173,11 @@ class AppointmentController extends Controller
             $appointmentDate = Carbon::parse($request->appointment_date)->format('M, d, Y');
             $appointmentTime = Carbon::parse($request->appointment_time)->format('h:i A');
 
+            // Send SMS notification via Semaphore API
             $messageText = "Hello! This is Dr. Care ABC Guinobatan. Your appointment scheduled on $appointmentDate at $appointmentTime has been cancelled.
             \nFor any concerns, call or text 0954 195 2374. Thank you!";
             
-            // dd($contactNumber, $messageText);
+            // Send SMS via Semaphore API
             Http::post('https://api.semaphore.co/api/v4/messages', [
                 'apikey' => env('SEMAPHORE_API_KEY'),
                 'number' => $contactNumber,
@@ -184,7 +185,7 @@ class AppointmentController extends Controller
                 'sendername' => env('SEMAPHORE_SENDER_NAME'),
             ]);
         }
-
+        // Send Email Notification if status is Cancelled
         if ( $request->status == 'Cancelled' && !empty($appointment->email) ) {
             $patientEmail = $appointment->email;
             Mail::to($patientEmail)->send(new AppointmentCancelledMail($appointment));

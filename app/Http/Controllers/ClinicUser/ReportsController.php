@@ -40,6 +40,7 @@ class ReportsController extends Controller
         return view('ClinicUser.reports', compact('clinicUser', 'services'));
     }
 
+    // Generate Guinobatan Report PDF (Admin Side)
     public function reportGuinobatan()
     {
 
@@ -70,6 +71,7 @@ class ReportsController extends Controller
         }
     }
 
+    // Generate Albay Report PDF (Admin Side)
     public function reportAlbay()
     {
 
@@ -100,7 +102,7 @@ class ReportsController extends Controller
             }
         }
     }
-
+    // Export Albay Report to Excel (Admin Side)
     public function exportAlbayExcel()
     {
         $year = now()->year;
@@ -108,7 +110,7 @@ class ReportsController extends Controller
 
         return Excel::download(new AlbayReportExport($year), $fileName);
     }
-
+    // Export Guinobatan Report to Excel (Admin Side)
     public function exportGuinobatanExcel()
     {
         $year = now()->year;
@@ -117,7 +119,7 @@ class ReportsController extends Controller
         return Excel::download(new GuinobatanReportExport($year), $fileName);
     }
 
-
+    // Get Revenue Chart Data (Admin Side)
     public function getRevenueChartData(Request $request)
     {
         $filter = $request->filter ?? 'all';
@@ -220,7 +222,7 @@ class ReportsController extends Controller
     }
 
 
-
+    // Generate Revenue and Expenses Report PDF (Admin Side)
     public function reportRevenueExpenses()
     {
         $year = now()->year;
@@ -245,7 +247,7 @@ class ReportsController extends Controller
 
         return $pdf->stream($fileName);
     }
-
+    // Export Revenue and Expenses Report to Excel (Admin Side)
     public function exportRevenueExcel()
     {
         $year = now()->year;
@@ -254,7 +256,7 @@ class ReportsController extends Controller
         return Excel::download(new RevenueReport(), $fileName);
     }
 
-
+    // Generate Inventory Report PDF (Admin Side)
     public function reportInventory()
     {
         $year = now()->year;
@@ -287,7 +289,7 @@ class ReportsController extends Controller
         return $pdf->stream($fileName);
     }
 
-
+    // Export Inventory Report to Excel (Admin Side)`
     public function exportInventoryExcel()
     {
         $year = now()->year;
